@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<actions>
+  <action id="TestCop.JumpToTest" text="Jump to and from test file" >
+    <vs-shortcut>Global::Ctrl+G, Ctrl+T</vs-shortcut>
+  </action>
+  <insert group-id="ReSharper.Navigate" position="last">
+    <separator />
+    <action-ref id="TestCop.JumpToTest" shortcut="Global::Ctrl+G, Ctrl+T" >
+    </action-ref>
+  </insert> 
+</actions>
+
+
