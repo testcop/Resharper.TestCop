@@ -44,6 +44,7 @@ namespace TestCop
                 {
                     testingAttributes.Add("TestFixture");
                     testingAttributes.Add("TestClass");
+                    testingAttributes.Add("TestMethod");
                 }
                 return testingAttributes;
             }
@@ -100,11 +101,16 @@ namespace TestCop
             }             
         }
 
+      
+
         private void ProcessTypeDeclaration(ICSharpTypeDeclaration declaration)
         {
-            var testingAttributes =
-                (from a in declaration.Attributes where TestAttributes.Contains(a.Name.QualifiedName) select a).ToList();
-            if (testingAttributes.Count == 0) return;
+            var testingAttributes = FindTestingAttributes(declaration,TestAttributes);                
+            if (testingAttributes.Count == 0)
+            {                
+                /* type is missing attributes - lets check the body */
+                if(!CheckMethodsForTestingAttributes(declaration, TestAttributes))return;
+            }
 
             //We have a testing attribute so now check some conformance.                       
             CheckElementIsPublicAndCreateWarningIfNot(declaration, testingAttributes);
@@ -117,14 +123,31 @@ namespace TestCop
             }
 
         }
-             
+
+        static private bool CheckMethodsForTestingAttributes(ICSharpTypeDeclaration declaration, IList<string> testAttributes )
+        {
+            var sourceFile = declaration.GetSourceFile();
+            if (declaration.DeclaredElement == null) return false;
+            foreach (var m in declaration.DeclaredElement.Methods.SelectMany(m => m.GetDeclarationsIn(sourceFile)).OfType<IAttributesOwnerDeclaration>())
+            {
+                if (FindTestingAttributes(m, testAttributes).Any()) return true;                
+            }
+            return false;
+        }
+
+        static IList<IAttribute> FindTestingAttributes(IAttributesOwnerDeclaration element, IList<string> testAttributes)
+        {
+            var testingAttributes =
+                (from a in element.Attributes where testAttributes.Contains(a.Name.QualifiedName) select a).ToList();
+            return testingAttributes;
+        }
+
         private void ProcessFunctionDeclaration(ICSharpFunctionDeclaration declaration)
         {
             // Nothing to calculate
             if (declaration.Body == null) return;
 
-            var testingAttributes =
-                (from a in declaration.Attributes where TestAttributes.Contains(a.Name.QualifiedName) select a).ToList();
+            var testingAttributes = FindTestingAttributes(declaration, TestAttributes);                
             if (testingAttributes.Count==0) return;
 
             CheckElementIsPublicAndCreateWarningIfNot(declaration, testingAttributes);
