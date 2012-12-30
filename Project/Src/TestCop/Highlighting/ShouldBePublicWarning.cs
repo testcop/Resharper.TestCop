@@ -2,7 +2,7 @@ using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.CSharp.Errors;
 using JetBrains.ReSharper.Psi.Tree;
 
-namespace TestCop.Highlighting
+namespace TestCop.Plugin.Highlighting
 {
     [StaticSeverityHighlighting(Severity.ERROR, Highlighter.HighlightingGroup)]
     public class ShouldBePublicWarning :CSharpHighlightingBase,IHighlighting

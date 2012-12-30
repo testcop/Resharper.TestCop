@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using JetBrains.ProjectModel;
 
-namespace TestCop.Helper
+namespace TestCop.Plugin.Helper
 {
     //http://devnet.jetbrains.net/message/5171924#5171924
 

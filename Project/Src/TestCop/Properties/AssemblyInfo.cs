@@ -40,4 +40,4 @@ using JetBrains.Application.PluginSupport;
 [assembly: PluginVendor("")]
 
 //http://confluence.jetbrains.net/display/ReSharper/2.3+Actions+and+Menu+Items+%28R7%29
-[assembly: ActionsXml("TestCop.Resources.Actions.xml")]
+[assembly: ActionsXml("TestCop.Plugin.Resources.Actions.xml")]

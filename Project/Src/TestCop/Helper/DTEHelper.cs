@@ -2,7 +2,7 @@
 using EnvDTE;
 using JetBrains.Application;
 
-namespace TestCop.Helper
+namespace TestCop.Plugin.Helper
 {
     static public class DTEHelper
     {

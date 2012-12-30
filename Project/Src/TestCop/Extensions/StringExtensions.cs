@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace TestCop.Extensions
+namespace TestCop.Plugin.Extensions
 {
     public static class StringExtensions
     {
