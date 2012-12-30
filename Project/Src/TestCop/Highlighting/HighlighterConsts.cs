@@ -1,4 +1,4 @@
-﻿namespace TestCop.Highlighting
+﻿namespace TestCop.Plugin.Highlighting
 {
     class Highlighter
     {

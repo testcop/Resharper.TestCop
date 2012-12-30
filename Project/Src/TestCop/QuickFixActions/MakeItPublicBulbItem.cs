@@ -8,9 +8,9 @@ using JetBrains.ReSharper.Intentions.Extensibility.Menu;
 using JetBrains.ReSharper.Psi;
 using JetBrains.TextControl;
 using JetBrains.Util;
-using TestCop.Highlighting;
+using TestCop.Plugin.Highlighting;
 
-namespace TestCop.QuickFixActions
+namespace TestCop.Plugin.QuickFixActions
 {
 
     //http://hadihariri.com/tag/resharper/page/3/

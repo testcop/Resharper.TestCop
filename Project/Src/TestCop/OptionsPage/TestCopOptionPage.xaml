@@ -6,7 +6,7 @@
              xmlns:Controls="clr-namespace:JetBrains.UI.Controls;assembly=JetBrains.Platform.ReSharper.UI"
              xmlns:CommonControls="clr-namespace:JetBrains.CommonControls;assembly=JetBrains.Platform.ReSharper.UI"
              xmlns:Misc="clr-namespace:JetBrains.UI.Controls.Misc;assembly=JetBrains.Platform.ReSharper.UI"
-             xmlns:OptionsDialog2="clr-namespace:JetBrains.UI.Options.OptionsDialog2;assembly=JetBrains.Platform.ReSharper.UI" xmlns:Controls1="clr-namespace:JetBrains.UI.Avalon.Controls;assembly=JetBrains.Platform.ReSharper.UI" x:Class="TestCop.OptionsPage.TestCopOptionPage"
+             xmlns:OptionsDialog2="clr-namespace:JetBrains.UI.Options.OptionsDialog2;assembly=JetBrains.Platform.ReSharper.UI" xmlns:Controls1="clr-namespace:JetBrains.UI.Avalon.Controls;assembly=JetBrains.Platform.ReSharper.UI" x:Class="TestCop.Plugin.OptionsPage.TestCopOptionPage"
              mc:Ignorable="d" d:DesignWidth="323" Height="600" VerticalAlignment="Top" HorizontalAlignment="Left">
     <TabControl Height="550" VerticalAlignment="Top" Width="400">
         <TabItem Header="Options">

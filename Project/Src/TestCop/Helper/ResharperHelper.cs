@@ -20,9 +20,9 @@ using JetBrains.UI.RichText;
 using JetBrains.UI.Tooltips;
 using JetBrains.Util;
 using System.Linq;
-using TestCop.Extensions;
+using TestCop.Plugin.Extensions;
 
-namespace TestCop.Helper
+namespace TestCop.Plugin.Helper
 {
     static class ResharperHelper
     {

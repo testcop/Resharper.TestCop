@@ -15,9 +15,9 @@ using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.UI.PopupMenu;
 using JetBrains.UI.RichText;
 using JetBrains.Util;
-using TestCop.Extensions;
+using TestCop.Plugin.Extensions;
 
-namespace TestCop.Helper
+namespace TestCop.Plugin.Helper
 {
     public static class JumpToTestMenuHelper
     {        

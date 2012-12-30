@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using JetBrains.ActionManagement;
 using JetBrains.Application;
@@ -13,20 +14,20 @@ using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.Search;
-using JetBrains.ReSharper.Psi.Services;
 using JetBrains.TextControl;
 using JetBrains.Util;
-using TestCop.Extensions;
-using TestCop.Helper;
+using TestCop.Plugin.Extensions;
+using TestCop.Plugin.Helper;
 using DataConstants = JetBrains.TextControl.DataContext.DataConstants;
 
-namespace TestCop
+namespace TestCop.Plugin
 {
     [ActionHandler("TestCop.JumpToTest")]
     internal class JumpToTestFileAction : IActionHandler
     {        
         public JumpToTestFileAction()
-        {        
+        {
+            ResharperHelper.AppendLineToOutputWindow(Assembly.GetExecutingAssembly().GetName().ToString());            
             ResharperHelper.ForceKeyboardBindings();
         }
 

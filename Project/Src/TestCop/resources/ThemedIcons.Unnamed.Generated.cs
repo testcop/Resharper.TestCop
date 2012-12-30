@@ -8,13 +8,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::System.Windows.Markup.XmlnsDefinitionAttribute("urn:shemas-jetbrains-com:ui-application-icons-unnamed", "TestCop")]
-[assembly: global::JetBrains.UI.Icons.CompiledIcons.CompiledIconsPackAttribute(IconPackResourceIdentification="TestCopForResharper;component/resources/ThemedIcons.Unnamed.Generated.Xaml", IconNames=new string[] {
+[assembly: global::System.Windows.Markup.XmlnsDefinitionAttribute("urn:shemas-jetbrains-com:ui-application-icons-unnamed", "TestCop.Plugin")]
+[assembly: global::JetBrains.UI.Icons.CompiledIcons.CompiledIconsPackAttribute(IconPackResourceIdentification="TestCopForResharper71;component/resources/ThemedIcons.Unnamed.Generated.Xaml", IconNames=new string[] {
 		"Agent16x16",
 		"Agent64x64",
 		"Agent48x48"})]
 
-namespace TestCop
+namespace TestCop.Plugin
 {
 	
 	
@@ -29,17 +29,17 @@ namespace TestCop
 	///  <para>It has two primary goals: load the icons of this assembly to be registered with <see cref="JetBrains.UI.Icons.IThemedIconManager" /> so that they were WPF-accessible and theme-sensitive; and emit early-bound accessors for referencing icons in codebehind in a compile-time-validated manner.</para>
 	///  <h1>XAML</h1>
 	///  <para>For performance reasons, the icons are not individually exposed with application resources. There is a custom markup extension to bind an image source in markup.</para>
-	///  <para>To use an icon from XAML, set an <see cref="System.Windows.Media.ImageSource" /> property to the <see cref="JetBrains.UI.Icons.ThemedIconExtension" /> markup extension, which takes an icon identifier class (nested in <see cref="TestCop.UnnamedThemedIcons" /> class) as a parameter.</para>
+	///  <para>To use an icon from XAML, set an <see cref="System.Windows.Media.ImageSource" /> property to the <see cref="JetBrains.UI.Icons.ThemedIconExtension" /> markup extension, which takes an icon identifier class (nested in <see cref="TestCop.Plugin.UnnamedThemedIcons" /> class) as a parameter.</para>
 	///  <para>Example:</para>
 	///  <code>&lt;Image Source="{icons:ThemedIcon myres:UnnamedThemedIcons+Agent16x16}" /&gt;</code>
 	///  <h1>Attributes</h1>
 	///  <para>Sometimes you have to reference an icon from a type attriute when you're defining objects in code. Typical examples are Options pages and Tool Windows.</para>
-	///  <para>To avoid the use of string IDs which are not validated very well, we've emitted identifier classes to be used with <c>typeof()</c> expression, one per each icon. Use the attribute overload which takes a <see cref="System.Type" /> for an image, and choose your icon class from nested classes in the <see cref="TestCop.UnnamedThemedIcons" /> class.</para>
+	///  <para>To avoid the use of string IDs which are not validated very well, we've emitted identifier classes to be used with <c>typeof()</c> expression, one per each icon. Use the attribute overload which takes a <see cref="System.Type" /> for an image, and choose your icon class from nested classes in the <see cref="TestCop.Plugin.UnnamedThemedIcons" /> class.</para>
 	///  <para>Example:</para>
 	///  <code>[Item(Name="Sample", Icon=typeof(UnnamedThemedIcons.Agent16x16))]</code>
 	///  <h1>CodeBehind</h1>
 	///  <para>In codebehind, we have two distinct tasks: (a) specify some icon in the APIs and (b) render icon images onscreen.</para>
-	///  <para>On the APIs stage you should only manipulate icon identifier objects (of type <see cref="JetBrains.UI.Icons.IconId" />, statically defined in <see cref="TestCop.UnnamedThemedIcons" /> in <c>Id</c> fields). Icon identifier classes (nested in <see cref="TestCop.UnnamedThemedIcons" />) should be turned into icon identifier objects as early as possible. Rendering is about getting an <see cref="System.Windows.Media.ImageSource" /> to assign to WPF, or <see cref="System.Drawing.Bitmap" /> to use with GDI+ / Windows Forms.</para>
+	///  <para>On the APIs stage you should only manipulate icon identifier objects (of type <see cref="JetBrains.UI.Icons.IconId" />, statically defined in <see cref="TestCop.Plugin.UnnamedThemedIcons" /> in <c>Id</c> fields). Icon identifier classes (nested in <see cref="TestCop.Plugin.UnnamedThemedIcons" />) should be turned into icon identifier objects as early as possible. Rendering is about getting an <see cref="System.Windows.Media.ImageSource" /> to assign to WPF, or <see cref="System.Drawing.Bitmap" /> to use with GDI+ / Windows Forms.</para>
 	///  <para>You should turn an identifier object into a rendered image as late as possible. The identifier is static and lightweight and does not depend on the current theme, while the image is themed and has to be loaded or generated/rasterized. You need an <see cref="JetBrains.UI.Icons.IThemedIconManager" /> instance to get the image out of an icon identifier object. Once you got the image, you should take care to change it with theme changes — either by using a live image property, or by listening to the theme change event. See <see cref="JetBrains.UI.Icons.IThemedIconManager" /> and its extensions for the related facilities.</para>
 	///  <para>Example:</para>
 	///  <code>// Getting IconId identifier object to use with APIs
@@ -59,13 +59,13 @@ namespace TestCop
 		/// <summary>
 		///  <para>
 		///    <para>Autogenerated identifier class for the Agent16x16 Themed Icon.</para>
-		///    <para>Identifier classes should be used in attributes, XAML, or generic parameters. Where an <see cref="JetBrains.UI.Icons.IconId" /> value is expected, use the identifier object in the <see cref="TestCop.UnnamedThemedIcons.Agent16x16.Id" /> field of the identifier class.</para>
+		///    <para>Identifier classes should be used in attributes, XAML, or generic parameters. Where an <see cref="JetBrains.UI.Icons.IconId" /> value is expected, use the identifier object in the <see cref="TestCop.Plugin.UnnamedThemedIcons.Agent16x16.Id" /> field of the identifier class.</para>
 		///  </para>
 		///</summary>
 		///<remarks>
-		///  <para>For details on Themed Icons and their use, see Remarks on <see cref="TestCop.UnnamedThemedIcons" /> class.</para>
+		///  <para>For details on Themed Icons and their use, see Remarks on <see cref="TestCop.Plugin.UnnamedThemedIcons" /> class.</para>
 		///</remarks>
-		///<seealso cref="TestCop.UnnamedThemedIcons" />
+		///<seealso cref="TestCop.Plugin.UnnamedThemedIcons" />
 		///<example>
 		///  <code>&lt;Image Source="{icons:ThemedIcon myres:UnnamedThemedIcons+Agent16x16}" /&gt;        &lt;!-- XAML --&gt;</code>
 		///</example>
@@ -78,20 +78,20 @@ namespace TestCop
 		///<example>
 		///  <code>themediconmanager.GetIcon&lt;UnnamedThemedIcons.Agent16x16&gt;()        // Icon image for rendering</code>
 		///</example>
-		[global::JetBrains.UI.Icons.CompiledIcons.CompiledIconClassAttribute("TestCopForResharper;component/resources/ThemedIcons.Unnamed.Generated.Xaml", 0, "Agent16x16")]
+		[global::JetBrains.UI.Icons.CompiledIcons.CompiledIconClassAttribute("TestCopForResharper71;component/resources/ThemedIcons.Unnamed.Generated.Xaml", 0, "Agent16x16")]
 		public sealed class Agent16x16 : global::JetBrains.UI.Icons.CompiledIcons.CompiledIconClass
 		{
 			
 			/// <summary>
 			///  <para>
 			///    <para>Autogenerated identifier object for the Agent16x16 Themed Icon.</para>
-			///    <para>Identifier objects should be used where an <see cref="JetBrains.UI.Icons.IconId" /> value is expected. In attributes, XAML, or generic parameters use the containing <see cref="TestCop.UnnamedThemedIcons.Agent16x16" /> identifier class.</para>
+			///    <para>Identifier objects should be used where an <see cref="JetBrains.UI.Icons.IconId" /> value is expected. In attributes, XAML, or generic parameters use the containing <see cref="TestCop.Plugin.UnnamedThemedIcons.Agent16x16" /> identifier class.</para>
 			///  </para>
 			///</summary>
 			///<remarks>
-			///  <para>For details on Themed Icons and their use, see Remarks on <see cref="TestCop.UnnamedThemedIcons" /> class.</para>
+			///  <para>For details on Themed Icons and their use, see Remarks on <see cref="TestCop.Plugin.UnnamedThemedIcons" /> class.</para>
 			///</remarks>
-			///<seealso cref="TestCop.UnnamedThemedIcons" />
+			///<seealso cref="TestCop.Plugin.UnnamedThemedIcons" />
 			///<example>
 			///  <code>&lt;Image Source="{icons:ThemedIcon myres:UnnamedThemedIcons+Agent16x16}" /&gt;        &lt;!-- XAML --&gt;</code>
 			///</example>
@@ -104,19 +104,19 @@ namespace TestCop
 			///<example>
 			///  <code>themediconmanager.GetIcon&lt;UnnamedThemedIcons.Agent16x16&gt;()        // Icon image for rendering</code>
 			///</example>
-			public static global::JetBrains.UI.Icons.IconId Id = new global::JetBrains.UI.Icons.CompiledIcons.CompiledIconId("TestCopForResharper;component/resources/ThemedIcons.Unnamed.Generated.Xaml", 0, "Agent16x16");
+			public static global::JetBrains.UI.Icons.IconId Id = new global::JetBrains.UI.Icons.CompiledIcons.CompiledIconId("TestCopForResharper71;component/resources/ThemedIcons.Unnamed.Generated.Xaml", 0, "Agent16x16");
 		}
 		
 		/// <summary>
 		///  <para>
 		///    <para>Autogenerated identifier class for the Agent48x48 Themed Icon.</para>
-		///    <para>Identifier classes should be used in attributes, XAML, or generic parameters. Where an <see cref="JetBrains.UI.Icons.IconId" /> value is expected, use the identifier object in the <see cref="TestCop.UnnamedThemedIcons.Agent48x48.Id" /> field of the identifier class.</para>
+		///    <para>Identifier classes should be used in attributes, XAML, or generic parameters. Where an <see cref="JetBrains.UI.Icons.IconId" /> value is expected, use the identifier object in the <see cref="TestCop.Plugin.UnnamedThemedIcons.Agent48x48.Id" /> field of the identifier class.</para>
 		///  </para>
 		///</summary>
 		///<remarks>
-		///  <para>For details on Themed Icons and their use, see Remarks on <see cref="TestCop.UnnamedThemedIcons" /> class.</para>
+		///  <para>For details on Themed Icons and their use, see Remarks on <see cref="TestCop.Plugin.UnnamedThemedIcons" /> class.</para>
 		///</remarks>
-		///<seealso cref="TestCop.UnnamedThemedIcons" />
+		///<seealso cref="TestCop.Plugin.UnnamedThemedIcons" />
 		///<example>
 		///  <code>&lt;Image Source="{icons:ThemedIcon myres:UnnamedThemedIcons+Agent48x48}" /&gt;        &lt;!-- XAML --&gt;</code>
 		///</example>
@@ -129,20 +129,20 @@ namespace TestCop
 		///<example>
 		///  <code>themediconmanager.GetIcon&lt;UnnamedThemedIcons.Agent48x48&gt;()        // Icon image for rendering</code>
 		///</example>
-		[global::JetBrains.UI.Icons.CompiledIcons.CompiledIconClassAttribute("TestCopForResharper;component/resources/ThemedIcons.Unnamed.Generated.Xaml", 2, "Agent48x48")]
+		[global::JetBrains.UI.Icons.CompiledIcons.CompiledIconClassAttribute("TestCopForResharper71;component/resources/ThemedIcons.Unnamed.Generated.Xaml", 2, "Agent48x48")]
 		public sealed class Agent48x48 : global::JetBrains.UI.Icons.CompiledIcons.CompiledIconClass
 		{
 			
 			/// <summary>
 			///  <para>
 			///    <para>Autogenerated identifier object for the Agent48x48 Themed Icon.</para>
-			///    <para>Identifier objects should be used where an <see cref="JetBrains.UI.Icons.IconId" /> value is expected. In attributes, XAML, or generic parameters use the containing <see cref="TestCop.UnnamedThemedIcons.Agent48x48" /> identifier class.</para>
+			///    <para>Identifier objects should be used where an <see cref="JetBrains.UI.Icons.IconId" /> value is expected. In attributes, XAML, or generic parameters use the containing <see cref="TestCop.Plugin.UnnamedThemedIcons.Agent48x48" /> identifier class.</para>
 			///  </para>
 			///</summary>
 			///<remarks>
-			///  <para>For details on Themed Icons and their use, see Remarks on <see cref="TestCop.UnnamedThemedIcons" /> class.</para>
+			///  <para>For details on Themed Icons and their use, see Remarks on <see cref="TestCop.Plugin.UnnamedThemedIcons" /> class.</para>
 			///</remarks>
-			///<seealso cref="TestCop.UnnamedThemedIcons" />
+			///<seealso cref="TestCop.Plugin.UnnamedThemedIcons" />
 			///<example>
 			///  <code>&lt;Image Source="{icons:ThemedIcon myres:UnnamedThemedIcons+Agent48x48}" /&gt;        &lt;!-- XAML --&gt;</code>
 			///</example>
@@ -155,19 +155,19 @@ namespace TestCop
 			///<example>
 			///  <code>themediconmanager.GetIcon&lt;UnnamedThemedIcons.Agent48x48&gt;()        // Icon image for rendering</code>
 			///</example>
-			public static global::JetBrains.UI.Icons.IconId Id = new global::JetBrains.UI.Icons.CompiledIcons.CompiledIconId("TestCopForResharper;component/resources/ThemedIcons.Unnamed.Generated.Xaml", 2, "Agent48x48");
+			public static global::JetBrains.UI.Icons.IconId Id = new global::JetBrains.UI.Icons.CompiledIcons.CompiledIconId("TestCopForResharper71;component/resources/ThemedIcons.Unnamed.Generated.Xaml", 2, "Agent48x48");
 		}
 		
 		/// <summary>
 		///  <para>
 		///    <para>Autogenerated identifier class for the Agent64x64 Themed Icon.</para>
-		///    <para>Identifier classes should be used in attributes, XAML, or generic parameters. Where an <see cref="JetBrains.UI.Icons.IconId" /> value is expected, use the identifier object in the <see cref="TestCop.UnnamedThemedIcons.Agent64x64.Id" /> field of the identifier class.</para>
+		///    <para>Identifier classes should be used in attributes, XAML, or generic parameters. Where an <see cref="JetBrains.UI.Icons.IconId" /> value is expected, use the identifier object in the <see cref="TestCop.Plugin.UnnamedThemedIcons.Agent64x64.Id" /> field of the identifier class.</para>
 		///  </para>
 		///</summary>
 		///<remarks>
-		///  <para>For details on Themed Icons and their use, see Remarks on <see cref="TestCop.UnnamedThemedIcons" /> class.</para>
+		///  <para>For details on Themed Icons and their use, see Remarks on <see cref="TestCop.Plugin.UnnamedThemedIcons" /> class.</para>
 		///</remarks>
-		///<seealso cref="TestCop.UnnamedThemedIcons" />
+		///<seealso cref="TestCop.Plugin.UnnamedThemedIcons" />
 		///<example>
 		///  <code>&lt;Image Source="{icons:ThemedIcon myres:UnnamedThemedIcons+Agent64x64}" /&gt;        &lt;!-- XAML --&gt;</code>
 		///</example>
@@ -180,20 +180,20 @@ namespace TestCop
 		///<example>
 		///  <code>themediconmanager.GetIcon&lt;UnnamedThemedIcons.Agent64x64&gt;()        // Icon image for rendering</code>
 		///</example>
-		[global::JetBrains.UI.Icons.CompiledIcons.CompiledIconClassAttribute("TestCopForResharper;component/resources/ThemedIcons.Unnamed.Generated.Xaml", 1, "Agent64x64")]
+		[global::JetBrains.UI.Icons.CompiledIcons.CompiledIconClassAttribute("TestCopForResharper71;component/resources/ThemedIcons.Unnamed.Generated.Xaml", 1, "Agent64x64")]
 		public sealed class Agent64x64 : global::JetBrains.UI.Icons.CompiledIcons.CompiledIconClass
 		{
 			
 			/// <summary>
 			///  <para>
 			///    <para>Autogenerated identifier object for the Agent64x64 Themed Icon.</para>
-			///    <para>Identifier objects should be used where an <see cref="JetBrains.UI.Icons.IconId" /> value is expected. In attributes, XAML, or generic parameters use the containing <see cref="TestCop.UnnamedThemedIcons.Agent64x64" /> identifier class.</para>
+			///    <para>Identifier objects should be used where an <see cref="JetBrains.UI.Icons.IconId" /> value is expected. In attributes, XAML, or generic parameters use the containing <see cref="TestCop.Plugin.UnnamedThemedIcons.Agent64x64" /> identifier class.</para>
 			///  </para>
 			///</summary>
 			///<remarks>
-			///  <para>For details on Themed Icons and their use, see Remarks on <see cref="TestCop.UnnamedThemedIcons" /> class.</para>
+			///  <para>For details on Themed Icons and their use, see Remarks on <see cref="TestCop.Plugin.UnnamedThemedIcons" /> class.</para>
 			///</remarks>
-			///<seealso cref="TestCop.UnnamedThemedIcons" />
+			///<seealso cref="TestCop.Plugin.UnnamedThemedIcons" />
 			///<example>
 			///  <code>&lt;Image Source="{icons:ThemedIcon myres:UnnamedThemedIcons+Agent64x64}" /&gt;        &lt;!-- XAML --&gt;</code>
 			///</example>
@@ -206,7 +206,7 @@ namespace TestCop
 			///<example>
 			///  <code>themediconmanager.GetIcon&lt;UnnamedThemedIcons.Agent64x64&gt;()        // Icon image for rendering</code>
 			///</example>
-			public static global::JetBrains.UI.Icons.IconId Id = new global::JetBrains.UI.Icons.CompiledIcons.CompiledIconId("TestCopForResharper;component/resources/ThemedIcons.Unnamed.Generated.Xaml", 1, "Agent64x64");
+			public static global::JetBrains.UI.Icons.IconId Id = new global::JetBrains.UI.Icons.CompiledIcons.CompiledIconId("TestCopForResharper71;component/resources/ThemedIcons.Unnamed.Generated.Xaml", 1, "Agent64x64");
 		}
 	}
 }

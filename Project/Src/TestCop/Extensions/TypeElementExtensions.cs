@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Caches2;
 
-namespace TestCop.Extensions
+namespace TestCop.Plugin.Extensions
 {
     public static class TypeElementExtensions
     {

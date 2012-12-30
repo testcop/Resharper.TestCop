@@ -98,6 +98,11 @@
   <ItemGroup>
     <ThemedIconPng Include="resources\agent48x48.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="install.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <PropertyGroup>
     <ReSharperSdkTargets Condition=" '$(ReSharperSdkTargets)' == '' ">$(MSBuildExtensionsPath)\JetBrains\ReSharper.SDK\v7.0</ReSharperSdkTargets>
   </PropertyGroup>

@@ -8,11 +8,11 @@ using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Caches2;
 using JetBrains.ReSharper.Psi.Tree;
-using TestCop.Extensions;
-using TestCop.Helper;
-using TestCop.Highlighting;
+using TestCop.Plugin.Extensions;
+using TestCop.Plugin.Helper;
+using TestCop.Plugin.Highlighting;
 
-namespace TestCop
+namespace TestCop.Plugin
 {
     public class TestFileAnalysisElementProcessor : IRecursiveElementProcessor
     {

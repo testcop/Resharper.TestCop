@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TestCop.Extensions
+namespace TestCop.Plugin.Extensions
 {
     public static class ListExtensions
     {   

@@ -6,7 +6,7 @@ using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 
-namespace TestCop
+namespace TestCop.Plugin
 {
     public class TestFileAnalysisDaemonStageProcess : IDaemonStageProcess
     {

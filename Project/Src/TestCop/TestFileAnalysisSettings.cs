@@ -3,7 +3,7 @@ using System.Linq;
 using JetBrains.Application.Settings;
 using JetBrains.ReSharper.Settings;
 
-namespace TestCop
+namespace TestCop.Plugin
 {    
     [SettingsKey(typeof (CodeInspectionSettings), "Testing Attributes")]
     public class TestFileAnalysisSettings

@@ -14,7 +14,7 @@ using JetBrains.UI.Icons;
 using JetBrains.UI.Options;
 using JetBrains.Util;
 
-namespace TestCop.OptionsPage
+namespace TestCop.Plugin.OptionsPage
 {
   [OptionsPage(PID, "TestCop ", typeof(UnnamedThemedIcons.Agent16x16), ParentId = ToolsPage.PID)]  
   public partial class TestCopOptionPage : IOptionsPage
