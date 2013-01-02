@@ -6,11 +6,16 @@ namespace TestCop.Plugin.Helper
 {
     static public class DTEHelper
     {
+        public static bool VisualStudioIsPresent()
+        {
+            return Shell.Instance.HasComponent<DTE>();
+        }
+
         /// <summary>
         /// Must run on main UI thread
         /// </summary>
         public static void AssignKeyboardShortcutIfMissing(string macroName, string keyboardShortcut)
-        {
+        {            
             var dte = Shell.Instance.GetComponent<DTE>();            
             var command = dte.Commands.Item(macroName);
             var currentBindings = (System.Object[])command.Bindings;
@@ -22,9 +27,9 @@ namespace TestCop.Plugin.Helper
                     );
             }            
         }
-
-        public static OutputWindowPane GetOutputWindowPane( string name, bool show)
-        {
+        
+        public static OutputWindowPane GetOutputWindowPane(string name, bool show)
+        {               
             var dte = Shell.Instance.GetComponent<DTE>();
             return GetOutputWindowPane(dte, name, show);
         }      
@@ -32,7 +37,7 @@ namespace TestCop.Plugin.Helper
         /// <summary>
         /// Must run on main UI thread
         /// </summary>
-        public static OutputWindowPane GetOutputWindowPane(DTE dte, string name, bool show)
+        private static OutputWindowPane GetOutputWindowPane(DTE dte, string name, bool show)
         {
             var win = dte.Windows.Item(EnvDTE.Constants.vsWindowKindOutput);
             if(show)win.Visible = true;

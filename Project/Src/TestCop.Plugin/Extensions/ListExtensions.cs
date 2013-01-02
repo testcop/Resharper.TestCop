@@ -27,6 +27,5 @@ namespace TestCop.Plugin.Extensions
                 list.AddIfMissing(newItem, matcher);
             }
         }
-
     }
 }

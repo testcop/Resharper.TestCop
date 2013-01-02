@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{248FA9A1-358A-4C34-8093-22BACE5E7246}</ProjectGuid>
+    <ProjectGuid>{67FDD024-6A0F-4979-839D-2B3FA8C89D20}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TestCop</RootNamespace>
-    <AssemblyName>TestCopForResharper</AssemblyName>
+    <RootNamespace>TestCop.Plugin</RootNamespace>
+    <AssemblyName>TestCopForResharper71</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -21,7 +21,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\7.0\</OutputPath>
+    <OutputPath>bin\Debug\7.1\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -29,7 +29,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\7.0\</OutputPath>
+    <OutputPath>bin\Release\7.1\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -55,7 +55,7 @@
     <Compile Include="Helper\DTEHelper.cs" />
     <Compile Include="Helper\JumpToTestMenuHelper.cs" />
     <Compile Include="Helper\ProjectFileFinder.cs" />
-    <Compile Include="Extensions\IListExtensions.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Highlighting\TestFileNameSpaceWarning.cs" />
     <Compile Include="Highlighting\HighlighterConsts.cs" />
@@ -104,7 +104,7 @@
     </None>
   </ItemGroup>
   <PropertyGroup>
-    <ReSharperSdkTargets Condition=" '$(ReSharperSdkTargets)' == '' ">$(MSBuildExtensionsPath)\JetBrains\ReSharper.SDK\v7.0</ReSharperSdkTargets>
+    <ReSharperSdkTargets Condition=" '$(ReSharperSdkTargets)' == '' ">$(MSBuildExtensionsPath)\JetBrains\ReSharper.SDK\v7.1</ReSharperSdkTargets>
   </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(ReSharperSdkTargets)\Plugin.Targets" />

@@ -1,5 +1,5 @@
 @ECHO OFF
-SET TARGET=%APPDATA%\JetBrains\ReSharper\v7.0\Plugins\TestCop
+SET TARGET=%APPDATA%\JetBrains\ReSharper\v7.1\Plugins\TestCop
 
 @ECHO ===============================================================
 IF NOT EXIST %TARGET%\nul mkdir %TARGET%

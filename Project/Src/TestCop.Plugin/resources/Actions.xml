@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<actions>  
+  <action id="TestCop.JumpToTest" text="Jump to and from test file">
+    <shortcut>Control+G Control+T</shortcut>
+    <vs-shortcut>Control+G Control+T</vs-shortcut>
+  </action>  
+  <insert group-id="ReSharper" position="last">    
+    <action-group id="ReSharper.TestCop" text="&amp;TestCop">      
+      <action-ref id="TestCop.JumpToTest" />
+    </action-group>  
+  </insert>
+</actions>
