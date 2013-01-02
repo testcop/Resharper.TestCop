@@ -27,18 +27,24 @@ namespace TestCop.Plugin.Helper
     static class ResharperHelper
     {
         public static void ForceKeyboardBindings()
-        {
+        {            
             const string macroName = "Resharper_TestCop_JumpToTest";
             const string keyboardShortcut = "Global::Ctrl+G, Ctrl+T";
 
-            ExecuteActionOnUiThread("force TestCop keyboard shortcut hack",
-                ()=>DTEHelper.AssignKeyboardShortcutIfMissing(macroName, keyboardShortcut) );        
+            if (DTEHelper.VisualStudioIsPresent())
+            {
+                ExecuteActionOnUiThread("force TestCop keyboard shortcut hack",
+                                        () => DTEHelper.AssignKeyboardShortcutIfMissing(macroName, keyboardShortcut));
+            }
         }
 
         public static void AppendLineToOutputWindow(string msg)
         {
-            ExecuteActionOnUiThread("testCop append text to output pane",
-                () => DTEHelper.GetOutputWindowPane("TestCop",false).OutputString(msg+"\n") );                    
+            if (DTEHelper.VisualStudioIsPresent())
+            {
+                ExecuteActionOnUiThread("testCop append text to output pane",
+                                        () => DTEHelper.GetOutputWindowPane("TestCop", false).OutputString(msg + "\n"));
+            }
         }
 
         public static Action ProtectActionFromReEntry(Lifetime lifetime, Action fOnExecute)
@@ -207,7 +213,7 @@ namespace TestCop.Plugin.Helper
         private static void ExecuteActionOnUiThread(string description, Action fOnExecute)
         {
             var threading = Shell.Instance.GetComponent<IThreading>();
-            threading.ExecuteOrQueue(description, fOnExecute);                    
+            threading.ReentrancyGuard.ExecuteOrQueueEx(description, fOnExecute);                        
         }
 
         public static void CreateFileWithinProject(IDataContext context, IProject associatedProject,
@@ -219,7 +225,7 @@ namespace TestCop.Plugin.Helper
 
             if(folder==null)
             {
-                Logger.LogMessage(LoggingLevel.NORMAL, "Error failed to create/location project folder"+fileSystemPath);
+                AppendLineToOutputWindow("Error failed to create/location project folder"+fileSystemPath);                
                 return;
             }
             IProjectFile newFile = FileTemplatesManager.Instance.CreateFileFromTemplate(targetFile+".cs", folder, classTemplate);            

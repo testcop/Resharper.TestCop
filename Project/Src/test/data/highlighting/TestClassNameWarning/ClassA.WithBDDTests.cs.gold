@@ -1,0 +1,5 @@
+[TestFixture]
+public class GivenClassTestedInABddStyleTests
+{
+}
+---------------------------------------------------------

@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.ExtensionsAPI.Caches2;
 
 namespace TestCop.Plugin.Extensions
 {
     public static class TypeElementExtensions
     {
-        public static string OwnerNamespaceDeclaration(this TypeElement element)
+        public static string OwnerNamespaceDeclaration(this ITypeElement element)
         {
             INamespace containingNamespace = element.GetContainingNamespace();
             var list = new List<string>();
@@ -14,7 +13,6 @@ namespace TestCop.Plugin.Extensions
                 list.Add(containingNamespace.ShortName);
             list.Reverse();
             return string.Join(".", list.ToArray());
-        }     
-    
+        }         
     }
 }
