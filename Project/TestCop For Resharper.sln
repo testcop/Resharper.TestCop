@@ -11,11 +11,11 @@ Global
 		SccNumberOfProjects = 3
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs34
-		SccProjectUniqueName0 = Src\\TestCop.Plugin\\TestCop.Plugin71.csproj
-		SccProjectTopLevelParentUniqueName0 = TestCop\u0020For\u0020Resharper.sln
-		SccProjectName0 = Src/TestCop.Plugin
-		SccLocalPath0 = Src\\TestCop.Plugin
-		SccLocalPath1 = .
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Src\\TestCop.Plugin\\TestCop.Plugin71.csproj
+		SccProjectTopLevelParentUniqueName1 = TestCop\u0020For\u0020Resharper.sln
+		SccProjectName1 = Src/TestCop.Plugin
+		SccLocalPath1 = Src\\TestCop.Plugin
 		SccProjectUniqueName2 = Src\\TestCop.Plugin.Tests\\TestCop.Plugin.Tests.csproj
 		SccProjectTopLevelParentUniqueName2 = TestCop\u0020For\u0020Resharper.sln
 		SccProjectName2 = Src/TestCop.Plugin.Tests
