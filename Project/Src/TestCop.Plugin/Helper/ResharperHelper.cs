@@ -27,14 +27,19 @@ namespace TestCop.Plugin.Helper
     static class ResharperHelper
     {
         public static void ForceKeyboardBindings()
-        {            
+        {
+            const string conflictingMacroName = "Edit.GoTo";
             const string macroName = "Resharper_TestCop_JumpToTest";
             const string keyboardShortcut = "Global::Ctrl+G, Ctrl+T";
 
             if (DTEHelper.VisualStudioIsPresent())
             {
                 ExecuteActionOnUiThread("force TestCop keyboard shortcut hack",
-                                        () => DTEHelper.AssignKeyboardShortcutIfMissing(macroName, keyboardShortcut));
+                                        () =>
+                                            {
+                                                DTEHelper.AssignKeyboardShortcutIfMissing(conflictingMacroName, "", "Global::Ctrl+G");
+                                                DTEHelper.AssignKeyboardShortcutIfMissing(macroName, keyboardShortcut, null);
+                                            });
             }
         }
 
