@@ -14,18 +14,39 @@ namespace TestCop.Plugin.Helper
         /// <summary>
         /// Must run on main UI thread
         /// </summary>
-        public static void AssignKeyboardShortcutIfMissing(string macroName, string keyboardShortcut)
+        public static void AssignKeyboardShortcutIfMissing(string macroName, string keyboardShortcut, string replaceIfThisKeyboardShortcut)
         {            
-            var dte = Shell.Instance.GetComponent<DTE>();            
+            var dte = Shell.Instance.GetComponent<DTE>();
+            
             var command = dte.Commands.Item(macroName);
-            var currentBindings = (System.Object[])command.Bindings;
-            if (currentBindings.Length == 0)
+
+            if (command != null)
             {
-                command.Bindings = keyboardShortcut;
+                var currentBindings = (System.Object[]) command.Bindings;
+
+                if (currentBindings.Length == 1 && !string.IsNullOrEmpty(replaceIfThisKeyboardShortcut))
+                {
+                    if (currentBindings[0].ToString() != replaceIfThisKeyboardShortcut)
+                    {
+                        //already mapped and doesn't need to be overidden
+                        return;
+                    }
+                }
+
+                if (currentBindings.Length == 1 && string.IsNullOrEmpty(replaceIfThisKeyboardShortcut))
+                {           
+                    //already mapped
+                    return;                   
+                }
+
+                command.Bindings = string.IsNullOrEmpty(keyboardShortcut)
+                                        ? new Object[] {}
+                                        : new Object[] {keyboardShortcut};
                 GetOutputWindowPane(dte, "TestCop", true).OutputString(
-                    string.Format("Setting keyboard shortcut for '{0}' to '{1}'\n",macroName,keyboardShortcut)
+                    string.Format("Setting keyboard shortcut for '{0}' to '{1}'\n", macroName, keyboardShortcut)
                     );
-            }            
+                
+            }
         }
         
         public static OutputWindowPane GetOutputWindowPane(string name, bool show)
