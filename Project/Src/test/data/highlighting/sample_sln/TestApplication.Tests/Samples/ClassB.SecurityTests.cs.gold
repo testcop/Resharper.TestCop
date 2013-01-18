@@ -1,0 +1,12 @@
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace TestCop.TestApplication.Tests.Samples
+{
+    [TestClass]
+    public class |ClassBSecurityTests|(0)
+    {
+    }
+}
+
+---------------------------------------------------------
+(0): ReSharper Warning: The file name begins with ClassB but no matching class exists in associated project
