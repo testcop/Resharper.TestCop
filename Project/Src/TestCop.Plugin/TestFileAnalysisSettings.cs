@@ -30,7 +30,7 @@ namespace TestCop.Plugin
             }
         }
         
-        [SettingsEntry("TestClass,TestMethod,TestFixture,Test", "Testing Attributes to detect")]
+        [SettingsEntry("TestClass,TestMethod,TestFixture,Test,Fact", "Testing Attributes to detect")]
         public string TestingAttributeText { get; set; }
 
         [SettingsEntry("Given,When", "Context prefixes for class names")]
