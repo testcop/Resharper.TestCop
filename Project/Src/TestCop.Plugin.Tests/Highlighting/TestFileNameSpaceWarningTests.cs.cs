@@ -6,11 +6,11 @@ using TestCop.Plugin.Highlighting;
 namespace TestCop.Plugin.Tests.Highlighting
 {
     [TestFixture]
-    public class TestFileNameWarningTests : CSharpHighlightingWithinSolutionTestBase
+    public class TestFileNameSpaceWarningTests : CSharpHighlightingWithinSolutionTestBase
     {
         protected override bool HighlightingPredicate(IHighlighting highlighting, IContextBoundSettingsStore settingsstore)
         {
-            return highlighting is TestFileNameWarning;
+            return highlighting is TestFileNameSpaceWarning;
         }
 
         protected override string RelativeTestDataPath
@@ -24,9 +24,8 @@ namespace TestCop.Plugin.Tests.Highlighting
         }
 
         [Test]
-        [TestCase(@"<TestApplication.Tests>\Samples\ClassB.SecurityTests.cs")]
-        [TestCase(@"<TestApplication.Tests>\ClassATests.cs")]
-        [TestCase(@"<TestApplication.Tests>\ClassA.SomeMoreTests.cs")]       
+        [TestCase(@"<TestApplication.Tests>\Samples\ClassCTests.cs")]
+        [TestCase(@"<TestApplication.Tests>\ClassDTests.cs")]     
         public void Test(string testName)
         {
             DoTestFiles(testName);

@@ -54,6 +54,7 @@
     <Compile Include="Extensions\ListExtensionsTests.cs" />
     <Compile Include="Extensions\StringExtensionsTests.cs" />
     <Compile Include="Extensions\TypeElementExtensionsTests.cs" />
+    <Compile Include="Highlighting\TestFileNameSpaceWarningTests.cs.cs" />
     <Compile Include="Highlighting\TestFileNameWarningTests.cs.cs" />
     <Compile Include="Highlighting\ShouldBePublicWarningTests.cs" />
     <Compile Include="Highlighting\TestClassNameWarningTests.cs" />

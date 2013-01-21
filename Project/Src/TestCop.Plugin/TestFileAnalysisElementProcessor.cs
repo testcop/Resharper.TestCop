@@ -288,7 +288,7 @@ namespace TestCop.Plugin
                 if (ns.StartsWith(associatedProjectsDefaultNameSpace))
                 {                    
                     string suggestedNameSpace =
-                        thisProjectsDefaultNamespace.AppendIfNotNull(".", ns.Substring(associatedProjectsDefaultNameSpace.Length+1));
+                        thisProjectsDefaultNamespace.AppendIfNotNull(".", ns.Substring(associatedProjectsDefaultNameSpace.Length).TrimStart(new [] {'.'}) );
                     
                     var highlight = new TestFileNameSpaceWarning(thisDeclaration, suggestedNameSpace);
                     _myHighlightings.Add(new HighlightingInfo(thisDeclaration.GetNameDocumentRange(), highlight));                   
