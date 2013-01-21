@@ -21,6 +21,9 @@ namespace TestCop.Plugin.Tests.Highlighting
 
         [Test]
         [TestCase("PrivateNUnitTestClass.cs")]
+        [TestCase("PrivateMSTestTestMethod.cs")]
+        [TestCase("PrivateNUnitTestMethod.cs")]
+        [TestCase("PrivateXUnitTestMethod.cs")]
         public void Test(string testName)
         {
             DoTestFiles(testName);
