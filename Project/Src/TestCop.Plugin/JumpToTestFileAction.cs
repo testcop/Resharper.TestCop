@@ -138,7 +138,7 @@ namespace TestCop.Plugin
                 //look for similar named files that also have references to this code            
                 var items = new List<IProjectFile>();
                 var pattern = string.Format("{0}.*{1}", clrTypeClassName.ShortName, Settings.TestClassSuffix);
-                var finder = new ProjectFileFinder2(items, new Regex(pattern));
+                var finder = new ProjectFileFinder(items, new Regex(pattern));
                 targetProject.Accept(finder);
                 searchDomain = SearchDomainFactory.Instance.CreateSearchDomain(items.Select(p => p.ToSourceFile()));
             }
@@ -149,13 +149,7 @@ namespace TestCop.Plugin
 
             var findReferences = services.Finder.FindReferences(
                 declaredElement, searchDomain, new ProgressIndicator(textControl.Lifetime));
-            /*            
-            var containingTypeOrTypeMember = TextControlToPsi.GetContainingTypeOrTypeMember(solution, textControl);
-            if(containingTypeOrTypeMember==null)return new List<IClrDeclaredElement>();
-                                            
-            var findReferences = services.Finder.FindReferences(
-                containingTypeOrTypeMember, searchDomain, new ProgressIndicator(textControl.Lifetime));
-           */
+         
             List<IClassDeclaration> findReferencesWithinAssociatedAssembly = findReferences.Select(p => ((IClassDeclaration) p.GetTreeNode().GetContainingNode(typeof (IClassDeclaration)))).ToList();
             return findReferencesWithinAssociatedAssembly
                 .Select(p => p.DeclaredElement).ToList()                

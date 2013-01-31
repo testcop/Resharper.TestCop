@@ -7,10 +7,10 @@
              xmlns:CommonControls="clr-namespace:JetBrains.CommonControls;assembly=JetBrains.Platform.ReSharper.UI"
              xmlns:Misc="clr-namespace:JetBrains.UI.Controls.Misc;assembly=JetBrains.Platform.ReSharper.UI"
              xmlns:OptionsDialog2="clr-namespace:JetBrains.UI.Options.OptionsDialog2;assembly=JetBrains.Platform.ReSharper.UI" xmlns:Controls1="clr-namespace:JetBrains.UI.Avalon.Controls;assembly=JetBrains.Platform.ReSharper.UI" x:Class="TestCop.Plugin.OptionsPage.TestCopOptionPage"
-             mc:Ignorable="d" d:DesignWidth="323" Height="600" VerticalAlignment="Top" HorizontalAlignment="Left">
-    <TabControl Height="550" VerticalAlignment="Top" Width="400">
+             mc:Ignorable="d" d:DesignWidth="416" Height="738" VerticalAlignment="Top" HorizontalAlignment="Left">
+    <TabControl Height="728" VerticalAlignment="Top" Width="400" Margin="8,0">
         <TabItem Header="Options">
-            <StackPanel Margin="0,0,0,0" >
+            <StackPanel Margin="0,0,0,-164" >
                 <Grid Background="#FFE5E5E5"/>            
             <TextBlock TextWrapping="Wrap" Height="auto" FontWeight="Bold">Testing Attributes</TextBlock >
         <TextBlock TextWrapping="Wrap" Height="auto">Enter C# attributes that identify a class or method is test related (e.g. TestClass).</TextBlock >
@@ -30,10 +30,23 @@
         </StackPanel>
         <ListBox x:Name="contextPrefixesListBox" Height="100" SelectionChanged="contextPrefixesListBox_SelectionChanged" />
         <Separator Height="21" Margin="0"/>
-        <TextBlock TextWrapping="Wrap" Height="auto" FontWeight="Bold">Options</TextBlock >
+                <TextBlock TextWrapping="Wrap" Height="auto" FontWeight="Bold">Test Classes And Test Namespaces</TextBlock >
+                <TextBlock x:Name="tbSuffixGuidance" TextWrapping="Wrap" Height="auto"  HorizontalAlignment="Center" >The above configuration means that all  Unit  Test Class es  must end in       Tests  (e.g. ClassA Tests ) and the namespace of  all  test assemblies must end in .Tests (e.g. MyCompany.MyApplication.Tests).</TextBlock >                
+                <StackPanel Orientation="Horizontal" >                    
+                    <TextBlock TextWrapping="Wrap" Height="auto" >Test Class Suffix: </TextBlock >
+                    <TextBox x:Name="testClassSuffixTextBox" Width="79" MaxLength="10"  TextChanged="classAndNamespace_TextChanged">                        
+                        </TextBox>
+                </StackPanel>                
+                <StackPanel Orientation="Horizontal" Margin="-1,0,1,0" >
+                    <TextBlock TextWrapping="Wrap" Height="auto" >Test Namespace Suffix:</TextBlock >
+                    <TextBox x:Name="testNamespaceSuffixTextBox" Width="79" MaxLength="10" TextChanged="classAndNamespace_TextChanged" />                    
+                </StackPanel>                
+                <Separator Height="21" Margin="0"/>
+                <TextBlock TextWrapping="Wrap" Height="auto" FontWeight="Bold">Options</TextBlock >
         <CheckBox Content="When switching to test find all usages of class within test assembly" Name="showAllTestsWithUsageCheckBox" />
-        <CheckBox Content="Warn if namespace of test doesn't match class under test" x:Name="checkTestNamespaces" />                    
-    </StackPanel>
+        <CheckBox Content="Warn if namespace of test doesn't match class under test" x:Name="checkTestNamespaces" />
+                <Separator Height="21" Margin="0"/>
+            </StackPanel>
     </TabItem>
     <TabItem Header="Precinct Rules">            
                 <Border Width="300" Background="SkyBlue" BorderBrush="Black" BorderThickness="1" CornerRadius="12,12,12,12" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">

@@ -163,28 +163,30 @@ namespace TestCop.Plugin.Helper
 
         public static IProject FindAssociatedProject(IProject project)
         {
+            var testingNamespaceSuffix = TestCopSettingsManager.Instance.Settings.TestNameSpaceSuffix;
+
              ISolution solution = project.GetSolution();
             string currentProjectNamespace = project.GetDefaultNamespace();
             if (string.IsNullOrEmpty(currentProjectNamespace)) return null;
 
             IProject associatedProject;
-            if (currentProjectNamespace.EndsWith(".Tests"))
+            if (currentProjectNamespace.EndsWith(testingNamespaceSuffix))
             {
                 associatedProject =
-                    GetNonTestProjects(solution).SingleOrDefault(
-                        p => p.GetDefaultNamespace() == currentProjectNamespace.RemoveTrailing(".Tests"));
+                    GetNonTestProjects(solution, testingNamespaceSuffix).SingleOrDefault(
+                        p => p.GetDefaultNamespace() == currentProjectNamespace.RemoveTrailing(testingNamespaceSuffix));
             }
             else
             {
                 associatedProject =
-                    GetTestProjects(solution).SingleOrDefault(p => p.GetDefaultNamespace() == currentProjectNamespace + ".Tests");
+                    GetTestProjects(solution, testingNamespaceSuffix).SingleOrDefault(p => p.GetDefaultNamespace() == currentProjectNamespace + testingNamespaceSuffix);
             }
             return associatedProject;
         }
 
-        public static IEnumerable<IProject> GetTestProjects(ISolution solution)
-        {
-            return solution.GetAllProjects().Where(x=>x.GetOutputAssemblyName().EndsWith(".Tests"));
+        private static IEnumerable<IProject> GetTestProjects(ISolution solution, string testingNamespaceSuffix)
+        {            
+            return solution.GetAllProjects().Where(x => x.GetOutputAssemblyName().EndsWith(testingNamespaceSuffix));
         }
 
         public static void RemoveElementsNotInProject(List<IClrDeclaredElement> declaredElements, IProject associatedProject)
@@ -197,9 +199,9 @@ namespace TestCop.Plugin.Helper
             }));
         }
 
-        public static IEnumerable<IProject> GetNonTestProjects(ISolution solution)
+        private static IEnumerable<IProject> GetNonTestProjects(ISolution solution, string testingNamespaceSuffix)
         {
-            return solution.GetAllProjects().Where(x => !x.GetOutputAssemblyName().EndsWith(".Tests"));
+            return solution.GetAllProjects().Where(x => !x.GetOutputAssemblyName().EndsWith(testingNamespaceSuffix));
         }
 
         public static List<IClrDeclaredElement> FindClass(ISolution solution, string classNameToFind, params IProject[] restrictToThisProjects)

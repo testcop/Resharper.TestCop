@@ -111,7 +111,7 @@ namespace TestCop.Plugin.Helper
         //------------------------------------------------------------------------------------------------------------------------
         static public bool DeriveRelatedFileNameAndAddCreateMenus(IDataContext context, Lifetime lifetime, IProject project, IProject associatedTargetProject,IList<SimpleMenuItem> currentMenus, IClrTypeName clrTypeClassName)
         {
-            const string testSuffix = "Tests";
+            string testSuffix = TestCopSettingsManager.Instance.Settings.TestClassSuffix;
             if (clrTypeClassName == null) return false;
 
             string targetNameSpace = ResharperHelper.GetRelativeNameSpace(project, clrTypeClassName);

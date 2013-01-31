@@ -24,9 +24,33 @@ namespace TestCop.Plugin.Tests.Highlighting
         [TestCase("ClassA.WithBDDTests.cs")]
         [TestCase("ClassATests.cs")]
         [TestCase("ClassBHasClassATests.cs")]        
-        public void Test(string testName)
+        public void TestsWithClassSuffixOfTests(string testName)
         {
             DoTestFiles(testName);
+        }
+
+        [TestCase("TestClassWithDifferentRandomExt.cs")]
+        [TestCase("ClassA.SomeCategoryWithDifferentRandomExt.cs")]
+        [TestCase("ClassAMissingSuffix.cs")]
+        public void TestsWithClassSuffixDifferentToDefault(string testName)
+        {
+            /* the default suffix is 'Tests' - we test that this can be overidden */
+            this.ExecuteWithinSettingsTransaction(
+                (settingsStore =>{
+                                        this.RunGuarded((() =>
+                                        {
+                                            IContextBoundSettingsStore
+                                                settings=settingsStore.BindToContextTransient
+                                                            (ContextRange.ManuallyRestrictWritesToOneContext
+                                                                (((lifetime,contexts)=>contexts.Empty)));
+
+                                            settings.SetValue<TestFileAnalysisSettings, string>(
+                                                s => s.TestClassSuffix, "RandomExt");
+                                            
+                                        } ));
+                                        DoTestFiles(testName);
+            } ));
+
         }
        
     }
