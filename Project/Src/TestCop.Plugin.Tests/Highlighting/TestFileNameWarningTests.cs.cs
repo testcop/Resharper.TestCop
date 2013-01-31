@@ -10,7 +10,7 @@ namespace TestCop.Plugin.Tests.Highlighting
     {
         protected override bool HighlightingPredicate(IHighlighting highlighting, IContextBoundSettingsStore settingsstore)
         {
-            return highlighting is TestFileNameWarning;
+            return true;
         }
 
         protected override string RelativeTestDataPath

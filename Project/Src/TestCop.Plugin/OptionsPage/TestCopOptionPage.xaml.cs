@@ -31,11 +31,12 @@ namespace TestCop.Plugin.OptionsPage
           var testFileAnalysisSettings = settings.GetKey<TestFileAnalysisSettings>(SettingsOptimization.DoMeSlowly);
 
           InitializeComponent();
-          testFileAnalysisSettings.TestingAttributes
-                                  .ForEach(p => testingAttributesListBox.Items.Add(p));
 
-          testFileAnalysisSettings.BddPrefixes
-                                  .ForEach(p => contextPrefixesListBox.Items.Add(p));
+          testClassSuffixTextBox.Text = testFileAnalysisSettings.TestClassSuffix;
+          testNamespaceSuffixTextBox.Text = testFileAnalysisSettings.TestNameSpaceSuffix;
+
+          testFileAnalysisSettings.TestingAttributes.ForEach(p => testingAttributesListBox.Items.Add(p));
+          testFileAnalysisSettings.BddPrefixes.ForEach(p => contextPrefixesListBox.Items.Add(p));
 
           showAllTestsWithUsageCheckBox.IsChecked = testFileAnalysisSettings.FindAnyUsageInTestAssembly;
           checkTestNamespaces.IsChecked = testFileAnalysisSettings.CheckTestNamespaces;
@@ -66,6 +67,9 @@ namespace TestCop.Plugin.OptionsPage
         
         _settings.SetValue((TestFileAnalysisSettings s) => s.FindAnyUsageInTestAssembly, showAllTestsWithUsageCheckBox.IsChecked);        
         _settings.SetValue((TestFileAnalysisSettings s) => s.CheckTestNamespaces, checkTestNamespaces.IsChecked);
+
+        _settings.SetValue((TestFileAnalysisSettings s) => s.TestClassSuffix, testClassSuffixTextBox.Text.Replace(" ","") );
+        _settings.SetValue((TestFileAnalysisSettings s) => s.TestNameSpaceSuffix, testNamespaceSuffixTextBox.Text.Replace(" ", ""));
 
         return true;
     }
@@ -118,6 +122,14 @@ namespace TestCop.Plugin.OptionsPage
               lb.Items.Remove(tb.Text);
               tb.Clear();
           }
+      }
+
+      private void classAndNamespace_TextChanged(object sender, TextChangedEventArgs e)
+      {
+          tbSuffixGuidance.Text=string.Format("The test class and test namespace configuration below means that all Unit Test Classes " +
+                                              "must end in '{0}' (e.g. ClassA{0} ) and the namespace of all " +
+                                              "test assemblies must end in '{1}' (e.g. MyCompany.MyApplication{1})."
+                                        ,testClassSuffixTextBox.Text,testNamespaceSuffixTextBox.Text);                       
       }
   }
 

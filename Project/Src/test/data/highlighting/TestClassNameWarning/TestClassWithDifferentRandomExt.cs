@@ -1,0 +1,5 @@
+[TestFixture]
+public class TestClassWithDifferentRandomExt
+{
+	/* Test to ensure that config permits tests to have different suffix */
+}

@@ -89,6 +89,8 @@ namespace TestCop.Plugin.Tests
             Assert.IsNotNull(_loadedTestSolution, "Expected solution to be loaded");
             bool processedFile = false;
 
+            var listOfProjectPaths = new List<string>();
+
             RunGuarded(() =>
                                 {
                                     foreach (var project in _loadedTestSolution.GetAllProjects())
@@ -98,15 +100,16 @@ namespace TestCop.Plugin.Tests
                                         foreach (IProjectFile projectFile in
                                                 projectFiles.Where(p => p.LanguageType.Is<CSharpProjectFileType>()))
                                         {
-                                            
+                                            listOfProjectPaths.Add(projectFile.GetPresentableProjectPath());                                            
                                             if (fullProjectPathToTestFile != projectFile.GetPresentableProjectPath())
                                                 continue;
-
+                                                                                       
                                             IPsiSourceFile sourceFile = projectFile.ToSourceFile();
                                             Assert.IsNotNull(sourceFile);
 
                                             if (!sourceFile.Properties.IsNonUserFile)
                                             {
+                                                processedFile = true;
                                                 Assert.IsTrue(projectFile.Kind == ProjectItemKind.PHYSICAL_FILE);
                                                 ExecuteWithGold(projectFile.Location.FullPath
                                                                 , (writer =>
@@ -117,13 +120,16 @@ namespace TestCop.Plugin.Tests
                                                                                DaemonProcessKind.VISIBLE_DOCUMENT);
                                                                            highlightDumper.Dump();
                                                                        }));
-                                                processedFile = true;
+                                                return;
                                             }
                                         }
                                     }
                                 });
-
-            Assert.IsTrue(processedFile,"Failed to project file by project path "+fullProjectPathToTestFile);
+            if (!processedFile)
+            {
+                listOfProjectPaths.ForEach(f => System.Diagnostics.Trace.WriteLine("Located Item:" + f));
+                Assert.Fail("Failed to project file by project path " + fullProjectPathToTestFile);
+            }
         }
     }
 }

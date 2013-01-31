@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Application;
 using JetBrains.Application.Settings;
+using JetBrains.Application.Settings.Store.Implementation;
+using JetBrains.DataFlow;
 using JetBrains.ReSharper.Settings;
 
 namespace TestCop.Plugin
 {    
     [SettingsKey(typeof (CodeInspectionSettings), "Testing Attributes")]
     public class TestFileAnalysisSettings
-    {
-      
-
+    {     
         public IList<string> TestingAttributes 
         { 
             get
@@ -45,13 +46,42 @@ namespace TestCop.Plugin
         [SettingsEntry("Tests", "Suffix to always be applied to Test classes")]
         public string TestClassSuffix { get; set; }
 
-        /*
-        [SettingsEntry(true, "Prompt to create missing class file when switching between code & test")]
-        public bool OfferToCreateAssociatedClass { get; set; }
-        */
-        
-        
-        
+        [SettingsEntry(".Tests", "Suffix to always be applied to the namespace of Tests - include . if needed")]
+        public string TestNameSpaceSuffix { get; set; }  
+    }
+
+    [ShellComponent]
+    public class TestCopSettingsManager
+    {
+        private readonly Lifetime _lifetime;
+        private readonly ISettingsStore _settingsStore;
+
+        public TestCopSettingsManager(Lifetime lifetime, ISettingsStore settingsStore)
+        {
+            _lifetime = lifetime;
+            _settingsStore = settingsStore;
+        }
+
+        public static TestCopSettingsManager Instance
+        {
+            get
+            {
+                return Shell.Instance.GetComponent<TestCopSettingsManager>();
+            }
+        }
+
+        public TestFileAnalysisSettings Settings
+        {
+            get
+            {
+
+                IContextBoundSettingsStoreLive contextLive = _settingsStore.BindToContextLive(_lifetime, ContextRange.ApplicationWide);
+                
+                var testFileAnalysisSettings =
+                    contextLive.GetKey<TestFileAnalysisSettings>(SettingsOptimization.OptimizeDefault);
+                return testFileAnalysisSettings;
+            }
+        } 
     }
 }
 

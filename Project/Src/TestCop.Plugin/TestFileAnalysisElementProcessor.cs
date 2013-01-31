@@ -111,7 +111,7 @@ namespace TestCop.Plugin
                 /* type is missing attributes - lets check the body */
                 if(!CheckMethodsForTestingAttributes(declaration, TestAttributes))return;
             }
-
+            
             //We have a testing attribute so now check some conformance.                       
             CheckElementIsPublicAndCreateWarningIfNot(declaration, testingAttributes);
             if (CheckNamingOfTypeEndsWithTestSuffix(declaration))
@@ -188,7 +188,7 @@ namespace TestCop.Plugin
             if (testClassNameFromFileName != declaredClassName)
             {
                 string message = string.Format("Test classname and filename are not in sync {0}<>{1}.", declaredClassName, testClassNameFromFileName);
-                var testingWarning = new TestClassNameWarning(message, declaration);
+                var testingWarning = new TestClassNameWarning(message, declaration);                                
                 _myHighlightings.Add(new HighlightingInfo(declaration.GetNameDocumentRange(), testingWarning));
                 return false;
             }
@@ -223,7 +223,12 @@ namespace TestCop.Plugin
 
             var thisProject = thisDeclaration.GetProject();
             var associatedProject = ResharperHelper.FindAssociatedProject(thisProject);
-            if (associatedProject == null) return;
+            if (associatedProject == null)
+            {
+                var highlight = new TestFileNameWarning("Project for this test assembly was not found - check namespace of projects", thisDeclaration);
+                _myHighlightings.Add(new HighlightingInfo(thisDeclaration.GetNameDocumentRange(), highlight));
+                return;
+            }
 
             var filteredDeclaredElements = new List<IClrDeclaredElement>(declaredElements);
             ResharperHelper.RemoveElementsNotInProject(filteredDeclaredElements, associatedProject);
@@ -254,14 +259,15 @@ namespace TestCop.Plugin
         }
 
         private void CheckClassNamespaceOfTestMatchesClassUnderTest(ICSharpTypeDeclaration thisDeclaration, List<IClrDeclaredElement> declaredElements)
-        {            
+        {
+            var testingNamespaceSuffix = this.Settings.TestNameSpaceSuffix;
             var thisProject = thisDeclaration.GetProject();
             var associatedProject = ResharperHelper.FindAssociatedProject(thisProject);
             if (associatedProject == null) return;
             ResharperHelper.RemoveElementsNotInProject(declaredElements, associatedProject);   
 
             var thisProjectsDefaultNamespace = thisProject.GetDefaultNamespace();
-           var associatedProjectsDefaultNameSpace = thisProjectsDefaultNamespace.RemoveTrailing(".Tests");
+            var associatedProjectsDefaultNameSpace = thisProjectsDefaultNamespace.RemoveTrailing(testingNamespaceSuffix);
             var relativePathNamespaceOfClass =
                 thisDeclaration.OwnerNamespaceDeclaration.DeclaredName.RemoveLeading(thisProjectsDefaultNamespace)
                                .RemoveLeading(".");
