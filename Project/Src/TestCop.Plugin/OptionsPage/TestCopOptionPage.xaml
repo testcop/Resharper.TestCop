@@ -31,8 +31,9 @@
         <ListBox x:Name="contextPrefixesListBox" Height="100" SelectionChanged="contextPrefixesListBox_SelectionChanged" />
         <Separator Height="21" Margin="0"/>
                 <TextBlock TextWrapping="Wrap" Height="auto" FontWeight="Bold">Test Classes And Test Namespaces</TextBlock >
-                <TextBlock x:Name="tbSuffixGuidance" TextWrapping="Wrap" Height="auto"  HorizontalAlignment="Center" >The above configuration means that all  Unit  Test Class es  must end in       Tests  (e.g. ClassA Tests ) and the namespace of  all  test assemblies must end in .Tests (e.g. MyCompany.MyApplication.Tests).</TextBlock >                
-                <StackPanel Orientation="Horizontal" >                    
+                <TextBlock x:Name="tbSuffixGuidance" TextWrapping="Wrap" Height="auto"  HorizontalAlignment="Center" >The above configuration means that all  Unit  Test Class es  must end in       Tests  (e.g. ClassA Tests ) and the namespace of  all  test assemblies must end in .Tests (e.g. MyCompany.MyApplication.Tests).</TextBlock >
+                <Separator Height="21" Margin="0" Visibility="Hidden"/>
+                <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Left" >                    
                     <TextBlock TextWrapping="Wrap" Height="auto" >Test Class Suffix: </TextBlock >
                     <TextBox x:Name="testClassSuffixTextBox" Width="79" MaxLength="10"  TextChanged="classAndNamespace_TextChanged">                        
                         </TextBox>
@@ -57,7 +58,12 @@
                                 <Run FontWeight="Bold" Language="en-gb" Text="PRECINCT RULES"/>
                             </Paragraph>
                             <Paragraph>
+                                <Run FontWeight="Bold" Language="en-gb"/>
+                                <Run Language="en-gb" Text="'default' settings"/>
+                            </Paragraph>
+                            <Paragraph>
                                 <Run Language="en-gb" Text="1) The name of unit test classes should always end in "/>
+                                <Run Text=" "/>
                                 <Run FontWeight="Bold" Language="en-gb" Text="Tests"/>
                             </Paragraph>
                             <Paragraph>
@@ -65,15 +71,20 @@
                             </Paragraph>
                             <Paragraph>
                                 <Run Language="en-gb" Text="3) The namespace of the assembly containing unit tests should end in "/>
+                                <Run Text=" "/>
                                 <Run FontWeight="Bold" Language="en-gb" Text=".Tests"/>
+                                <Run Text=" "/>
                                 <Run Language="en-gb" Text=" and match the namespace of the assembly under test."/>
                             </Paragraph>
                             <Paragraph>
                                 <Run Language="en-gb" Text="4) Test class file names should begin with the class under test. e.g. "/>
+                                <Run Text=" "/>
                                 <Run FontWeight="Bold" Language="en-gb" Text="MyClass"/>
                                 <Run Language="en-gb" Text="Tests.cs or "/>
+                                <Run Text=" "/>
                                 <Run FontWeight="Bold" Language="en-gb" Text="MyClass"/>
-                                <Run Language="en-gb" Text=".SecurityTests.cs"/>
+                                <Run Text=" "/>
+                                <Run Language="en-gb" Text="SecurityTests.cs"/>
                             </Paragraph>
                             <Paragraph>
                                 <Run Language="en-gb" Text="5) The unit tests class name should match the file name unless the class name begins with a BDD prefix "/>
