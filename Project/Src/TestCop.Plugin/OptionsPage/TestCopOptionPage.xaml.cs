@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -21,8 +22,7 @@ namespace TestCop.Plugin.OptionsPage
   {
       private readonly OptionsSettingsSmartContext _settings;
       private const string PID = "TestCopPageId";
-
-
+      
       public TestCopOptionPage(Lifetime lifetime, OptionsSettingsSmartContext settings, IThemedIconManager iconManager)
       {
           _settings = settings;
@@ -32,9 +32,9 @@ namespace TestCop.Plugin.OptionsPage
 
           InitializeComponent();
 
-          testClassSuffixTextBox.Text = testFileAnalysisSettings.TestClassSuffix;
-          testNamespaceSuffixTextBox.Text = testFileAnalysisSettings.TestNameSpaceSuffix;
-
+          BindWithRegexValidation(testFileAnalysisSettings, testNamespaceSuffixTextBox, "TestNameSpaceSuffix","^[.]?[A-Z][a-zA-Z]*$");
+          BindWithRegexValidation(testFileAnalysisSettings, testClassSuffixTextBox, "TestClassSuffix", "^[a-zA-Z]*$");
+                                            
           testFileAnalysisSettings.TestingAttributes.ForEach(p => testingAttributesListBox.Items.Add(p));
           testFileAnalysisSettings.BddPrefixes.ForEach(p => contextPrefixesListBox.Items.Add(p));
 
@@ -47,54 +47,78 @@ namespace TestCop.Plugin.OptionsPage
 
       }
 
-    public EitherControl Control
-    {
-      get { return this; }
-    }
+      private void BindWithRegexValidation(TestFileAnalysisSettings testFileAnalysisSettings,TextBox tb, string property, string regexString)
+      {
+          var namespaceSuffixBinding = new Binding { Path = new PropertyPath(property) };
+          var namespaceRule = new RegexValidationRule
+          {
+              RegexText = regexString,
+              ErrorMessage = "Invalid suffix.",
+              RegexOptions = RegexOptions.IgnoreCase
+          };
 
-    public string Id
-    {
-      get { return PID; }
-    }
+          namespaceSuffixBinding.ValidationRules.Add(namespaceRule);
+          namespaceSuffixBinding.NotifyOnValidationError = true;
+          tb.DataContext = testFileAnalysisSettings;
+          tb.SetBinding(TextBox.TextProperty, namespaceSuffixBinding);
+      }
 
-    public bool OnOk()
-    {
-        var attributes = testingAttributesListBox.Items.Cast<string>().ToList().Join(",");
-        _settings.SetValue((TestFileAnalysisSettings s) => s.TestingAttributeText, attributes);
+      public EitherControl Control
+      {
+          get { return this; }
+      }
 
-        attributes = contextPrefixesListBox.Items.Cast<string>().ToList().Join(",");
-        _settings.SetValue((TestFileAnalysisSettings s) => s.BddPrefix, attributes);
-        
-        _settings.SetValue((TestFileAnalysisSettings s) => s.FindAnyUsageInTestAssembly, showAllTestsWithUsageCheckBox.IsChecked);        
-        _settings.SetValue((TestFileAnalysisSettings s) => s.CheckTestNamespaces, checkTestNamespaces.IsChecked);
+      public string Id
+      {
+          get { return PID; }
+      }
 
-        _settings.SetValue((TestFileAnalysisSettings s) => s.TestClassSuffix, testClassSuffixTextBox.Text.Replace(" ","") );
-        _settings.SetValue((TestFileAnalysisSettings s) => s.TestNameSpaceSuffix, testNamespaceSuffixTextBox.Text.Replace(" ", ""));
+      public bool OnOk()
+      {
+          if (Validation.GetHasError(testNamespaceSuffixTextBox))return false;
+          if (Validation.GetHasError(testClassSuffixTextBox))return false;         
 
-        return true;
-    }
+          var attributes = testingAttributesListBox.Items.Cast<string>().ToList().Join(",");
+          _settings.SetValue((TestFileAnalysisSettings s) => s.TestingAttributeText, attributes);
 
-    public bool ValidatePage()
-    {
-      return true;
-    }
+          attributes = contextPrefixesListBox.Items.Cast<string>().ToList().Join(",");
+          _settings.SetValue((TestFileAnalysisSettings s) => s.BddPrefix, attributes);
 
-    private void btnAdd_Click(object sender, System.Windows.RoutedEventArgs e)
-    {
-        AddItemFromTextbox(attributeTextBox, testingAttributesListBox);      
-    }
+          _settings.SetValue((TestFileAnalysisSettings s) => s.FindAnyUsageInTestAssembly,
+                             showAllTestsWithUsageCheckBox.IsChecked);
+          _settings.SetValue((TestFileAnalysisSettings s) => s.CheckTestNamespaces, checkTestNamespaces.IsChecked);
 
-    private void btnRemove_Click(object sender, System.Windows.RoutedEventArgs e)
-    {
-        RemoveAndClearItem(attributeTextBox, testingAttributesListBox);    
-    }
+          _settings.SetValue((TestFileAnalysisSettings s) => s.TestClassSuffix,
+                             testClassSuffixTextBox.Text.Replace(" ", ""));
+          _settings.SetValue((TestFileAnalysisSettings s) => s.TestNameSpaceSuffix,
+                             testNamespaceSuffixTextBox.Text.Replace(" ", ""));
 
-    private void testingAttributesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        attributeTextBox.Text = testingAttributesListBox.SelectedItem != null ? testingAttributesListBox.SelectedItem.ToString() : "";
-    }
+          return true;
+      }
 
-    private void btnAddContext_Click(object sender, System.Windows.RoutedEventArgs e)
+      public bool ValidatePage()
+      {
+          return true;
+      }
+
+      private void btnAdd_Click(object sender, System.Windows.RoutedEventArgs e)
+      {
+          AddItemFromTextbox(attributeTextBox, testingAttributesListBox);
+      }
+
+      private void btnRemove_Click(object sender, System.Windows.RoutedEventArgs e)
+      {
+          RemoveAndClearItem(attributeTextBox, testingAttributesListBox);
+      }
+
+      private void testingAttributesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+      {
+          attributeTextBox.Text = testingAttributesListBox.SelectedItem != null
+                                      ? testingAttributesListBox.SelectedItem.ToString()
+                                      : "";
+      }
+
+      private void btnAddContext_Click(object sender, System.Windows.RoutedEventArgs e)
     {
         AddItemFromTextbox(contextTextBox, contextPrefixesListBox);
     }
@@ -126,7 +150,7 @@ namespace TestCop.Plugin.OptionsPage
 
       private void classAndNamespace_TextChanged(object sender, TextChangedEventArgs e)
       {
-          tbSuffixGuidance.Text=string.Format("The test class and test namespace configuration below means that all Unit Test Classes " +
+          tbSuffixGuidance.Text=string.Format("The test class and test namespace configuration below define that all UnitTest Classes " +
                                               "must end in '{0}' (e.g. ClassA{0} ) and the namespace of all " +
                                               "test assemblies must end in '{1}' (e.g. MyCompany.MyApplication{1})."
                                         ,testClassSuffixTextBox.Text,testNamespaceSuffixTextBox.Text);                       

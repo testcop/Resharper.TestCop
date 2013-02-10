@@ -62,6 +62,7 @@
     <Compile Include="Highlighting\TestClassNameWarning.cs" />
     <Compile Include="Highlighting\TestFileNameWarning.cs" />
     <Compile Include="Highlighting\ShouldBePublicWarning.cs" />
+    <Compile Include="OptionsPage\RegexValidationRule.cs" />
     <Compile Include="OptionsPage\TestCopOptionPage.xaml.cs">
       <DependentUpon>TestCopOptionPage.xaml</DependentUpon>
     </Compile>
