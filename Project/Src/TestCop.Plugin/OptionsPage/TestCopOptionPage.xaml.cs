@@ -151,7 +151,7 @@ namespace TestCop.Plugin.OptionsPage
       private void classAndNamespace_TextChanged(object sender, TextChangedEventArgs e)
       {
           tbSuffixGuidance.Text=string.Format("The test class and test namespace configuration below define that all UnitTest Classes " +
-                                              "must end in '{0}' (e.g. ClassA{0} ) and the namespace of all " +
+                                              "must end in '{0}' (e.g. ClassA{0}, ClassA.Security{0}, ClassB{0} ) and the namespace of all " +
                                               "test assemblies must end in '{1}' (e.g. MyCompany.MyApplication{1})."
                                         ,testClassSuffixTextBox.Text,testNamespaceSuffixTextBox.Text);                       
       }
