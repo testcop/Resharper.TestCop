@@ -55,7 +55,7 @@ namespace TestCop.Plugin
             var targetProject = ResharperHelper.FindAssociatedProject(currentProject);     
             if(targetProject==null)
             {
-                ResharperHelper.AppendLineToOutputWindow("Unable to locate associated assembly");
+                ResharperHelper.AppendLineToOutputWindow("Unable to locate associated assembly" );
                 return;
             }
             
