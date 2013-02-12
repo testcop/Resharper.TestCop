@@ -29,7 +29,7 @@
           <DownloadUri>
             <xsl:value-of select="concat('>http://testcop.codeplex.com/releases/TestCop.', $LatestMajor, '.', $LatestMinor, '.zip')" />
           </DownloadUri>
-          <CompanyName></CompanyName>
+          <CompanyName>TestCop</CompanyName>
           <ProductName>TestCop for Resharper</ProductName>
           <ProductVersion>
             <xsl:value-of select="concat($LatestMajor, '.', $LatestMinor, '.', $LatestBuild, '.0')"/>
