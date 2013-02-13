@@ -28,7 +28,7 @@
           <Description>A minor upgrade is available.</Description>
           <DownloadUri>
             <!--<xsl:value-of select="concat('>http://testcop.codeplex.com/releases/TestCop.', $LatestMajor, '.', $LatestMinor, '.zip')" />-->
-            <xsl:value-of select="concat('>http://testcop.codeplex.com/downloads/get/622317#','')" />            
+            <xsl:value-of select="concat('http://testcop.codeplex.com/downloads/get/622317#','')" />            
           </DownloadUri>
           <CompanyName>TestCop</CompanyName>
           <ProductName>TestCop for Resharper</ProductName>
