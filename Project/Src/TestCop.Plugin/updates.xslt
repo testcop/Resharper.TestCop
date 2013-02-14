@@ -8,28 +8,30 @@
   <!-- This is the latest version available -->
   <xsl:variable name="LatestMajor" select="0" />
   <xsl:variable name="LatestMinor" select="0" />
-  <xsl:variable name="LatestBuild" select="4" />
-
+  <xsl:variable name="LatestBuild" select="0" />
+  <xsl:variable name="LatestRevision" select="4" />
+  
   <!-- Match the PluginLocalInfo element created by serialising the data from the category -->
   <xsl:template match="/PluginLocalInfo">
     <UpdateInfos>
       <xsl:variable name="InstalledMajor" select="PluginVersion/@Major" />
       <xsl:variable name="InstalledMinor" select="PluginVersion/@Minor" />
       <xsl:variable name="InstalledBuild" select="PluginVersion/@Build" />
+      <xsl:variable name="InstalledRevision" select="PluginVersion/@Revision" />
 
       <!-- If we have a new version, add an <UpdateInfo /> element to tell ReSharper a new version is ready -->
-      <xsl:if test="($InstalledMajor &lt; $LatestMajor) or ($InstalledMajor = $LatestMajor and $InstalledMinor &lt; $LatestMinor) or ($InstalledMajor = $LatestMajor and $InstalledMinor = $LatestMinor and $InstalledBuild &lt; $LatestBuild)">
+      <xsl:if test="($InstalledMajor &lt; $LatestMajor) or ($InstalledMajor = $LatestMajor and $InstalledMinor &lt; $LatestMinor) or ($InstalledMajor = $LatestMajor and $InstalledMinor = $LatestMinor and $InstalledBuild &lt; $LatestBuild) or ($InstalledMajor = $LatestMajor and $InstalledMinor = $LatestMinor and $InstalledBuild = $LatestBuild and $InstalledRevision &lt; $LatestRevision)">
 
         <UpdateInfo>
           <InformationUri>http://testcop.codeplex.com/releases</InformationUri>
           <Title>
-            <xsl:value-of select="concat('TestCop for ReSharper ', $LatestMajor, '.', $LatestMinor, '.', $LatestBuild, ' Released')" />
+            <xsl:value-of select="concat('TestCop for ReSharper ', $LatestMajor, '.', $LatestMinor, '.', $LatestBuild, '.', $LatestRevision, ' Released')" />
           </Title>
-          <Description>A minor upgrade is available.</Description>
+          <Description>A minor upgrade is available for your version of <xsl:value-of select="concat($InstalledMajor, '.', $InstalledMinor, '.', $InstalledBuild, '.', $InstalledRevision)" /></Description>
           <DownloadUri>http://testcop.codeplex.com/downloads/get/622317</DownloadUri>          
           <CompanyName>TestCop</CompanyName>
           <ProductName>TestCop for Resharper</ProductName>
-          <ProductVersion><xsl:value-of select="concat($LatestMajor, '.', $LatestMinor, '.', $LatestBuild, '.0')"/></ProductVersion>
+          <ProductVersion><xsl:value-of select="concat($LatestMajor, '.', $LatestMinor, '.', $LatestBuild, '.', $LatestRevision)"/></ProductVersion>
           <PriceTag />
           <IsFree>true</IsFree>
           <IconData>
