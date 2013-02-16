@@ -51,6 +51,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helper\UpdatesNotifier.cs" />
     <Compile Include="Extensions\TypeElementExtensions.cs" />
     <Compile Include="Helper\DTEHelper.cs" />
     <Compile Include="Helper\JumpToTestMenuHelper.cs" />
@@ -103,6 +104,11 @@
     <None Include="install.bat">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="updates.xslt">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <ReSharperSdkTargets Condition=" '$(ReSharperSdkTargets)' == '' ">$(MSBuildExtensionsPath)\JetBrains\ReSharper.SDK\v7.1</ReSharperSdkTargets>
