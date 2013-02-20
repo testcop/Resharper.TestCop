@@ -15,6 +15,7 @@ using JetBrains.ReSharper.Psi.Services;
 using JetBrains.TextControl;
 using JetBrains.Threading;
 using JetBrains.UI;
+using JetBrains.UI.Controls.GotoByName;
 using JetBrains.UI.PopupWindowManager;
 using JetBrains.UI.RichText;
 using JetBrains.UI.Tooltips;
@@ -223,9 +224,12 @@ namespace TestCop.Plugin.Helper
             threading.ReentrancyGuard.ExecuteOrQueueEx(description, fOnExecute);                        
         }
 
-        public static void CreateFileWithinProject(IDataContext context, IProject associatedProject,
+        public static void CreateFileWithinProject(Lifetime lifetime, IProject associatedProject,
                                                     FileSystemPath fileSystemPath, string targetFile)
         {
+            var dataContexts = Shell.Instance.GetComponent<DataContexts>();
+            var context = dataContexts.CreateOnActiveControl(lifetime);
+                                
             Template classTemplate = FileTemplatesManager.Instance.GetFileTemplatesForActions(context).Where(c => c.Shortcut == "Class").SingleOrDefault();
             IProjectFolder folder = (IProjectFolder) associatedProject.FindProjectItemByLocation(fileSystemPath)
                                     ?? AddNewItemUtil.GetOrCreateProjectFolder(associatedProject, fileSystemPath);

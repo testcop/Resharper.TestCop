@@ -151,7 +151,7 @@ namespace TestCop.Plugin.Helper
                                             , null,
                                             ResharperHelper.ProtectActionFromReEntry(lifetime,
                                                                      () =>
-                                                                     ResharperHelper.CreateFileWithinProject(context, associatedTargetProject,
+                                                                     ResharperHelper.CreateFileWithinProject(lifetime, associatedTargetProject,
                                                                                              targetLocationDirectory, targetFile)));
             result.Style = MenuItemStyle.Enabled;
             result.Icon = UnnamedThemedIcons.Agent16x16.Id;
@@ -172,7 +172,7 @@ namespace TestCop.Plugin.Helper
             {
                 DocumentRange documentRange = declaration.GetNavigationRange();
                 if (!documentRange.IsValid())
-                    documentRange = TreeNodeExtensions.GetDocumentRange((ITreeNode)declaration);
+                    documentRange = TreeNodeExtensions.GetDocumentRange(declaration);
 
                 if (documentRange.IsValid())
                 {
