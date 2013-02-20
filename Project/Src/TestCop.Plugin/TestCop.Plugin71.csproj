@@ -101,11 +101,16 @@
     <ThemedIconPng Include="resources\agent48x48.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="install.bat">
+    <None Include="..\InstallSupport\Install-TestCop.7.1.bat">
+      <Link>Install-TestCop.7.1.bat</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\InstallSupport\UnblockZoneIdentifier.exe">
+      <Link>UnblockZoneIdentifier.exe</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="updates.xslt">
       <SubType>Designer</SubType>
     </Content>
