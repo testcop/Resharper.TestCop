@@ -7,7 +7,7 @@ namespace TestCop.Plugin.Helper
     static public class DTEHelper
     {
         public static bool VisualStudioIsPresent()
-        {
+        {            
             return Shell.Instance.HasComponent<DTE>();
         }
 
@@ -60,7 +60,10 @@ namespace TestCop.Plugin.Helper
         /// </summary>
         private static OutputWindowPane GetOutputWindowPane(DTE dte, string name, bool show)
         {
-            var win = dte.Windows.Item(EnvDTE.Constants.vsWindowKindOutput);
+            /* If compilation generates:: 'EnvDTE.Constants' can be used only as one of its applicable interfaces
+             * then set DTE assembly reference property Embed Interop Types = false  */
+            
+            var win = dte.Windows.Item(EnvDTE.Constants.vsWindowKindOutput);            
             if(show)win.Visible = true;
 
             var ow = (OutputWindow) win.Object;
