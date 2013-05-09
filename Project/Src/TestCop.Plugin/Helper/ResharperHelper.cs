@@ -15,7 +15,6 @@ using JetBrains.ReSharper.Psi.Services;
 using JetBrains.TextControl;
 using JetBrains.Threading;
 using JetBrains.UI;
-using JetBrains.UI.Controls.GotoByName;
 using JetBrains.UI.PopupWindowManager;
 using JetBrains.UI.RichText;
 using JetBrains.UI.Tooltips;
@@ -186,8 +185,8 @@ namespace TestCop.Plugin.Helper
         }
 
         private static IEnumerable<IProject> GetTestProjects(ISolution solution, string testingNamespaceSuffix)
-        {            
-            return solution.GetAllProjects().Where(x => x.GetOutputAssemblyName().EndsWith(testingNamespaceSuffix));
+        {
+            return GetAllCodeProjects(solution).Where(x => x.GetOutputAssemblyName().EndsWith(testingNamespaceSuffix));
         }
 
         public static void RemoveElementsNotInProject(List<IClrDeclaredElement> declaredElements, IProject associatedProject)
@@ -202,19 +201,50 @@ namespace TestCop.Plugin.Helper
 
         private static IEnumerable<IProject> GetNonTestProjects(ISolution solution, string testingNamespaceSuffix)
         {
-            return solution.GetAllProjects().Where(x => !x.GetOutputAssemblyName().EndsWith(testingNamespaceSuffix));
+            return GetAllCodeProjects(solution).Where(x => !x.GetOutputAssemblyName().EndsWith(testingNamespaceSuffix));
         }
+
+        public static IEnumerable<IProject> GetAllCodeProjects(ISolution solution)
+        {
+            return solution.GetAllProjects().Where(p => p.IsProjectFromUserView());
+        }
+
+
 
         public static List<IClrDeclaredElement> FindClass(ISolution solution, string classNameToFind, params IProject[] restrictToThisProjects)
         {
-            IDeclarationsCache declarationsCache = solution.GetPsiServices().CacheManager.GetDeclarationsCache(DeclarationCacheLibraryScope.NONE, false);
-            var results=declarationsCache.GetElementsByShortName(classNameToFind).ToList();
+            #if R7
+                        var declarationsCache = solution.GetPsiServices().CacheManager.GetDeclarationsCache(DeclarationCacheLibraryScope.NONE, false);
+            #else     
+                        var declarationsCache = solution.GetPsiServices().Symbols
+                                            .GetSymbolScope(LibrarySymbolScope.FULL, false
+                                            , GetAllCodeProjects(solution).First().GetResolveContext());
+            #endif
+
+            var results = declarationsCache.GetElementsByShortName(classNameToFind).ToList();
 
             foreach (var restrictToThisProject in restrictToThisProjects)
             {
                 RemoveElementsNotInProject(results, restrictToThisProject);    
             }
             
+            /*
+            return results;
+            if (restrictToThisProjects.Length == 0)
+            {
+                restrictToThisProjects = GetAllCodeProjects(solution).ToArray();
+            }
+
+            var results = new List<IClrDeclaredElement>();
+            foreach (var project in restrictToThisProjects)
+            {
+                var declarationsCache = solution.GetPsiServices().Symbols
+                    .GetSymbolScope(LibrarySymbolScope.FULL, false, project.GetResolveContext());
+
+                results.AddRange(declarationsCache.GetElementsByShortName(classNameToFind));
+            }
+             */
+                                               
             return results;
         }
                

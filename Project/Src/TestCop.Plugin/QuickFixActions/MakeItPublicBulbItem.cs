@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using JetBrains.Application.Progress;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Daemon;
@@ -35,12 +36,18 @@ namespace TestCop.Plugin.QuickFixActions
         {
             get { return String.Format("Make public"); }
         }
-
+#if R7
         public void CreateBulbItems(BulbMenu menu, Severity severity)
         {
-            menu.ArrangeQuickFix(this,Severity.ERROR);;
+            menu.ArrangeQuickFix(this, Severity.ERROR); ;
         }
-
+#else     
+        public IEnumerable<IntentionAction> CreateBulbItems()
+        {
+            foreach (IntentionAction intentionAction in  BulbActionExtensions.ToQuickFixAction(this))
+                yield return intentionAction;
+        }
+#endif
         public bool IsAvailable(IUserDataHolder cache)
         {
             return _highlight.IsValid();

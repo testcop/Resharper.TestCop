@@ -21,8 +21,8 @@ namespace TestCop.Plugin
 
         public void Execute(Action<DaemonStageResult> commiter)
         {
-            // Getting PSI (AST) for the file being highlighted
-            var file = _myDaemonProcess.SourceFile.GetNonInjectedPsiFile<CSharpLanguage>() as ICSharpFile;
+            // Getting PSI (AST) for the file being highlighted            
+            var file = _myDaemonProcess.SourceFile.GetTheOnlyPsiFile(CSharpLanguage.Instance) as ICSharpFile;
             if (file == null)
                 return;
 
