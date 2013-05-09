@@ -143,10 +143,15 @@ namespace TestCop.Plugin
                 searchDomain = SearchDomainFactory.Instance.CreateSearchDomain(items.Select(p => p.ToSourceFile()));
             }
 
+#if R7
+            var declarationsCache = solution.GetPsiServices().CacheManager.GetDeclarationsCache(DeclarationCacheLibraryScope.REFERENCED, true);
+#else            
+            var declarationsCache = solution.GetPsiServices().Symbols
+                    .GetSymbolScope(LibrarySymbolScope.FULL, false, currentProject.GetResolveContext());
+#endif
 
-            var decCache = solution.GetPsiServices().CacheManager.GetDeclarationsCache(DeclarationCacheLibraryScope.REFERENCED, true);
-            ITypeElement declaredElement = decCache.GetTypeElementByCLRName(clrTypeClassName);
-
+            ITypeElement declaredElement = declarationsCache.GetTypeElementByCLRName(clrTypeClassName);
+                 
             var findReferences = services.Finder.FindReferences(
                 declaredElement, searchDomain, new ProgressIndicator(textControl.Lifetime));
          
