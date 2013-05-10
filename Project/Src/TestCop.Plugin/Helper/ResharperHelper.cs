@@ -55,7 +55,7 @@ namespace TestCop.Plugin.Helper
         public static Action ProtectActionFromReEntry(Lifetime lifetime, Action fOnExecute)
         {
             System.Action fOnExecute2 = (System.Action)(() => IThreadingEx.ExecuteOrQueue(
-                (IThreading)Shell.Instance.Locks, lifetime, "TestingMenuNavigation", fOnExecute));
+                (IThreading)Shell.Instance.Locks, lifetime, "TestingMenuNavigation",()=> ReadLockCookie.Execute(fOnExecute) ));
             return fOnExecute2;
         }
 
@@ -227,24 +227,7 @@ namespace TestCop.Plugin.Helper
             {
                 RemoveElementsNotInProject(results, restrictToThisProject);    
             }
-            
-            /*
-            return results;
-            if (restrictToThisProjects.Length == 0)
-            {
-                restrictToThisProjects = GetAllCodeProjects(solution).ToArray();
-            }
-
-            var results = new List<IClrDeclaredElement>();
-            foreach (var project in restrictToThisProjects)
-            {
-                var declarationsCache = solution.GetPsiServices().Symbols
-                    .GetSymbolScope(LibrarySymbolScope.FULL, false, project.GetResolveContext());
-
-                results.AddRange(declarationsCache.GetElementsByShortName(classNameToFind));
-            }
-             */
-                                               
+                                                           
             return results;
         }
                
