@@ -16,6 +16,7 @@
     <tags>resharper unittest xunit nunit mstest tdd c#</tags>
   </metadata>   
 	<files>     
-		<file src="TestCopForResharper80.dll" target="ReSharper\v8.0\plugins\TestCop" />     		
-	</files> 
+		<file src="TestCopForResharper80.dll" target="ReSharper\v8.0\plugins" />
+    <file src="TestCopForResharper80.pdb" target="ReSharper\v8.0\plugins" />
+  </files> 
 </package>
