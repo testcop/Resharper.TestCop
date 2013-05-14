@@ -1,5 +1,8 @@
+using System;
+using System.Collections.Generic;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.Application.Settings;
+using JetBrains.ReSharper.Psi.ControlFlow;
 using NUnit.Framework;
 
 namespace TestCop.Plugin.Tests.Highlighting
@@ -9,7 +12,7 @@ namespace TestCop.Plugin.Tests.Highlighting
     {
         protected override bool HighlightingPredicate(IHighlighting highlighting, IContextBoundSettingsStore settingsstore)
         {
-            return true;
+            return highlighting.GetType().FullName.Contains("TestCop");
         }
 
         protected override string RelativeTestDataPath
@@ -28,23 +31,33 @@ namespace TestCop.Plugin.Tests.Highlighting
         [TestCase(@"<TestApplication2Tests>\ClassA.SomeMoreTests.cs")]       
         public void Test(string testName)
         {           
-            /* the default namespace is '.Tests' - we test that this can be overidden with 'Tests' */
-            this.ExecuteWithinSettingsTransaction(
-                (settingsStore =>
+            // the default namespace is '.Tests' - we test that this can be overidden with 'Tests'            
+#if R7
+        this.ExecuteWithinSettingsTransaction(
+            (settingsStore =>
+            {
+                this.RunGuarded((() =>
                 {
-                    this.RunGuarded((() =>
-                    {
-                        IContextBoundSettingsStore
-                            settings = settingsStore.BindToContextTransient
-                                        (ContextRange.ManuallyRestrictWritesToOneContext
-                                            (((lifetime, contexts) => contexts.Empty)));
+                    settingsStore.SetBinding();
+                        
+                    IContextBoundSettingsStore
+                        settings = settingsStore.BindToContextTransient
+                                    (ContextRange.ManuallyRestrictWritesToOneContext
+                                        (((lifetime, contexts) => contexts.Empty)));
+                        
+                    settings.SetValue<TestFileAnalysisSettings, string>(
+                        s => s.TestNameSpaceSuffix, "Tests");
 
-                        settings.SetValue<TestFileAnalysisSettings, string>(
-                            s => s.TestNameSpaceSuffix, "Tests");
-
-                    }));
-                    DoTestFiles(testName);
                 }));
+                DoTestFiles(testName);
+            }));
+#else   
+            this.ExecuteWithinSettingsTransaction((Action<IContextBoundSettingsStore>)(settingsStore =>
+            {
+                this.RunGuarded((Action)(() => settingsStore.SetValue<TestFileAnalysisSettings, string>(s => s.TestNameSpaceSuffix, "Tests")));
+                DoTestFiles(testName);
+            }));
+#endif
         }
        
     }
