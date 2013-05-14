@@ -1,3 +1,4 @@
+using System;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.CSharp;
 using JetBrains.Application.Settings;
@@ -34,8 +35,9 @@ namespace TestCop.Plugin.Tests.Highlighting
         [TestCase("ClassAMissingSuffix.cs")]
         public void TestsWithClassSuffixDifferentToDefault(string testName)
         {
-            /* the default suffix is 'Tests' - we test that this can be overidden */
-            this.ExecuteWithinSettingsTransaction(
+            // the default suffix is 'Tests' - we test that this can be overidden 
+#if R7
+                 this.ExecuteWithinSettingsTransaction(
                 (settingsStore =>{
                                         this.RunGuarded((() =>
                                         {
@@ -50,8 +52,14 @@ namespace TestCop.Plugin.Tests.Highlighting
                                         } ));
                                         DoTestFiles(testName);
             } ));
-
+#else
+            this.ExecuteWithinSettingsTransaction((Action<IContextBoundSettingsStore>)(settingsStore =>
+            {
+                this.RunGuarded((Action)(() => settingsStore.SetValue<TestFileAnalysisSettings, string>(s => s.TestClassSuffix, "RandomExt")));
+                DoTestFiles(testName);
+            }));
+        
         }
-       
+#endif       
     }
 }

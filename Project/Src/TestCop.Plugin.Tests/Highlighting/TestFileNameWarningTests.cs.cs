@@ -10,7 +10,7 @@ namespace TestCop.Plugin.Tests.Highlighting
     {
         protected override bool HighlightingPredicate(IHighlighting highlighting, IContextBoundSettingsStore settingsstore)
         {
-            return true;
+            return highlighting.GetType().FullName.Contains("TestCop");
         }
 
         protected override string RelativeTestDataPath
