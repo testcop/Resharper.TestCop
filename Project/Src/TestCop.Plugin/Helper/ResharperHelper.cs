@@ -252,7 +252,9 @@ namespace TestCop.Plugin.Helper
                 AppendLineToOutputWindow("Error failed to create/location project folder"+fileSystemPath);                
                 return;
             }
-            IProjectFile newFile = FileTemplatesManager.Instance.CreateFileFromTemplate(targetFile+".cs", folder, classTemplate);            
+            
+            string extension = Enumerable.First<string>(Shell.Instance.GetComponent<IProjectFileExtensions>().GetExtensions(associatedProject.ProjectProperties.DefaultLanguage.DefaultProjectFileType));
+            IProjectFile newFile = FileTemplatesManager.Instance.CreateFileFromTemplate(targetFile + extension, folder, classTemplate);            
         }
     }    
 }
