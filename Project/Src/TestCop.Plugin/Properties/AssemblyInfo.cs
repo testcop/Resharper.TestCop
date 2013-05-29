@@ -2,6 +2,8 @@
 using System.Runtime.InteropServices;
 using JetBrains.ActionManagement;
 using JetBrains.Application.PluginSupport;
+using JetBrains.ReSharper.Daemon;
+using TestCop.Plugin.Highlighting;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -31,8 +33,8 @@ using JetBrains.Application.PluginSupport;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.0.0.4")]
-[assembly: AssemblyFileVersion("0.0.0.4")]
+[assembly: AssemblyVersion("0.0.0.5")]
+[assembly: AssemblyFileVersion("0.0.0.5")]
 
 // The following information is displayed by ReSharper in the Plugins dialog
 [assembly: PluginTitle("TestCop Resharper Plugin")]
@@ -41,3 +43,5 @@ using JetBrains.Application.PluginSupport;
 
 //http://confluence.jetbrains.net/display/ReSharper/2.3+Actions+and+Menu+Items+%28R7%29
 [assembly: ActionsXml("TestCop.Plugin.Resources.Actions.xml")]
+
+[assembly: RegisterStaticHighlightingsGroup(Highlighter.HighlightingGroup, "Testing", true)]
