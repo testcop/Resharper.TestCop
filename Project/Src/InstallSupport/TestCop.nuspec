@@ -2,10 +2,11 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>     
 		<id>Resharper.TestCop</id>     
-		<version>0.0.0.6-EAP</version>     
+		<version>0.0.0.7-EAP</version>     
 		<title>TestCop</title>     
 		<authors>Alcaeus</authors>     
 		<description>Provides action to create and switch between unit tests and code. Includes highlightings to keep test projects neat and tidy. Works with NUnit, MSTest and xUnit.net.</description>
+		<releaseNotes>Added RegEx support for matching Test project namespace to Code project namespace</releaseNotes>
     <projectUrl>https://testcop.codeplex.com/</projectUrl>
     <licenseUrl>https://testcop.codeplex.com/license</licenseUrl>
     <iconUrl>https://testcop.svn.codeplex.com/svn/Project/Src/TestCop.Plugin/resources/agent48x48.png</iconUrl>

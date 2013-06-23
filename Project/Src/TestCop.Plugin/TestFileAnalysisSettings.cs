@@ -46,8 +46,8 @@ namespace TestCop.Plugin
         [SettingsEntry("Tests", "Suffix to always be applied to Test classes")]
         public string TestClassSuffix { get; set; }
 
-        [SettingsEntry(".Tests", "Suffix to always be applied to the namespace of Tests - include . if needed")]
-        public string TestNameSpaceSuffix { get; set; }  
+        [SettingsEntry(@"^(.*?)\.?Tests$", "Regex to identify tests project by their namespace")]
+        public string TestProjectToCodeProjectNameSpaceRegEx { get; set; }  
     }
 
     [ShellComponent]
@@ -75,10 +75,10 @@ namespace TestCop.Plugin
             get
             {
 
-                IContextBoundSettingsStoreLive contextLive = _settingsStore.BindToContextLive(_lifetime, ContextRange.ApplicationWide);
+                IContextBoundSettingsStore context = _settingsStore.BindToContextLive(_lifetime, ContextRange.ApplicationWide);
                 
                 var testFileAnalysisSettings =
-                    contextLive.GetKey<TestFileAnalysisSettings>(SettingsOptimization.OptimizeDefault);
+                    context.GetKey<TestFileAnalysisSettings>(SettingsOptimization.OptimizeDefault);
                 return testFileAnalysisSettings;
             }
         } 
