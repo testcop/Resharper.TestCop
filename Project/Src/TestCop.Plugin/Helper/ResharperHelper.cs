@@ -52,10 +52,10 @@ namespace TestCop.Plugin.Helper
             }
         }
 
-        public static Action ProtectActionFromReEntry(Lifetime lifetime, Action fOnExecute)
+        public static Action ProtectActionFromReEntry(Lifetime lifetime, string name, Action fOnExecute)
         {
             System.Action fOnExecute2 = (System.Action)(() => IThreadingEx.ExecuteOrQueue(
-                (IThreading)Shell.Instance.Locks, lifetime, "TestingMenuNavigation",()=> ReadLockCookie.Execute(fOnExecute) ));
+                (IThreading)Shell.Instance.Locks, lifetime, name,()=> ReadLockCookie.Execute(fOnExecute) ));
             return fOnExecute2;
         }
 
@@ -163,30 +163,7 @@ namespace TestCop.Plugin.Helper
 
         public static IProject FindAssociatedProject(IProject project)
         {
-            var testingNamespaceSuffix = TestCopSettingsManager.Instance.Settings.TestNameSpaceSuffix;
-
-             ISolution solution = project.GetSolution();
-            string currentProjectNamespace = project.GetDefaultNamespace();
-            if (string.IsNullOrEmpty(currentProjectNamespace)) return null;
-
-            IProject associatedProject;
-            if (currentProjectNamespace.EndsWith(testingNamespaceSuffix))
-            {
-                associatedProject =
-                    GetNonTestProjects(solution, testingNamespaceSuffix).SingleOrDefault(
-                        p => p.GetDefaultNamespace() == currentProjectNamespace.RemoveTrailing(testingNamespaceSuffix));
-            }
-            else
-            {
-                associatedProject =
-                    GetTestProjects(solution, testingNamespaceSuffix).SingleOrDefault(p => p.GetDefaultNamespace() == currentProjectNamespace + testingNamespaceSuffix);
-            }
-            return associatedProject;
-        }
-
-        private static IEnumerable<IProject> GetTestProjects(ISolution solution, string testingNamespaceSuffix)
-        {
-            return GetAllCodeProjects(solution).Where(x => x.GetOutputAssemblyName().EndsWith(testingNamespaceSuffix));
+            return project.GetAssociatedProject();
         }
 
         public static void RemoveElementsNotInProject(List<IClrDeclaredElement> declaredElements, IProject associatedProject)
@@ -198,19 +175,7 @@ namespace TestCop.Plugin.Helper
                        project != associatedProject;
             }));
         }
-
-        private static IEnumerable<IProject> GetNonTestProjects(ISolution solution, string testingNamespaceSuffix)
-        {
-            return GetAllCodeProjects(solution).Where(x => !x.GetOutputAssemblyName().EndsWith(testingNamespaceSuffix));
-        }
-
-        public static IEnumerable<IProject> GetAllCodeProjects(ISolution solution)
-        {
-            return solution.GetAllProjects().Where(p => p.IsProjectFromUserView());
-        }
-
-
-
+            
         public static List<IClrDeclaredElement> FindClass(ISolution solution, string classNameToFind, params IProject[] restrictToThisProjects)
         {
             #if R7
@@ -218,7 +183,7 @@ namespace TestCop.Plugin.Helper
             #else     
                         var declarationsCache = solution.GetPsiServices().Symbols
                                             .GetSymbolScope(LibrarySymbolScope.FULL, false
-                                            , GetAllCodeProjects(solution).First().GetResolveContext());
+                                            , solution.GetAllCodeProjects().First().GetResolveContext());
             #endif
 
             var results = declarationsCache.GetElementsByShortName(classNameToFind).ToList();

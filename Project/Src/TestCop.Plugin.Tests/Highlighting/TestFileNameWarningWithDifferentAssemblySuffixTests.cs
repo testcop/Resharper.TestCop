@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.Application.Settings;
-using JetBrains.ReSharper.Psi.ControlFlow;
 using NUnit.Framework;
 
 namespace TestCop.Plugin.Tests.Highlighting
@@ -30,8 +28,8 @@ namespace TestCop.Plugin.Tests.Highlighting
         [TestCase(@"<TestApplication2Tests>\ClassATests.cs")]        
         [TestCase(@"<TestApplication2Tests>\ClassA.SomeMoreTests.cs")]       
         public void Test(string testName)
-        {           
-            // the default namespace is '.Tests' - we test that this can be overidden with 'Tests'            
+        {
+            // the default namespace is '^(.*)\.Tests$' - we test that this can be overidden with '^(.*)Tests$'            
 #if R7
         this.ExecuteWithinSettingsTransaction(
             (settingsStore =>
@@ -54,7 +52,7 @@ namespace TestCop.Plugin.Tests.Highlighting
 #else   
             this.ExecuteWithinSettingsTransaction((Action<IContextBoundSettingsStore>)(settingsStore =>
             {
-                this.RunGuarded((Action)(() => settingsStore.SetValue<TestFileAnalysisSettings, string>(s => s.TestNameSpaceSuffix, "Tests")));
+                this.RunGuarded((Action)(() => settingsStore.SetValue<TestFileAnalysisSettings, string>(s => s.TestProjectToCodeProjectNameSpaceRegEx, "^(.*)Tests$")));
                 DoTestFiles(testName);
             }));
 #endif

@@ -98,7 +98,7 @@ namespace TestCop.Plugin.Helper
                 var np = new ProjectFileNavigationPoint(currentProjectFile);
 
                 var result = new SimpleMenuItem(np.GetPresentationText(), np.GetPresentationImage()
-                                                , ResharperHelper.ProtectActionFromReEntry(lifetime, clickAction.Invoke(projectFile)));
+                                                , ResharperHelper.ProtectActionFromReEntry(lifetime,"TestingMenuNavigation", clickAction.Invoke(projectFile)));
 
                 result.ShortcutText = np.GetSecondaryPresentationText();
                 result.Style = MenuItemStyle.Enabled;
@@ -149,7 +149,7 @@ namespace TestCop.Plugin.Helper
 
             var result = new SimpleMenuItem("Create associated file"
                                             , null,
-                                            ResharperHelper.ProtectActionFromReEntry(lifetime,
+                                            ResharperHelper.ProtectActionFromReEntry(lifetime,"TestingMenuNavigation",
                                                                      () =>
                                                                      ResharperHelper.CreateFileWithinProject(lifetime, associatedTargetProject,
                                                                                              targetLocationDirectory, targetFile)));

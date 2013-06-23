@@ -11,89 +11,51 @@
     <TabControl Height="728" VerticalAlignment="Top" Width="400" Margin="8,0">
         <TabItem Header="Options">
             <StackPanel Margin="0,0,0,-164" >
-                <Grid Background="#FFE5E5E5"/>            
-            <TextBlock TextWrapping="Wrap" Height="auto" FontWeight="Bold">Testing Attributes</TextBlock >
-        <TextBlock TextWrapping="Wrap" Height="auto">Enter C# attributes that identify a class or method is test related (e.g. TestClass).</TextBlock >
-        <StackPanel Orientation="Horizontal" >                        
-                <TextBox x:Name="attributeTextBox" Width="200"/>
-            <Button x:Name="btnAdd" Content="Add" Width="auto" Click="btnAdd_Click"/>            
-            <Button x:Name="btnRemove" Content="Remove" Width="auto" Click="btnRemove_Click"/>
-        </StackPanel>
-            <ListBox x:Name="testingAttributesListBox" Height="100" SelectionChanged="testingAttributesListBox_SelectionChanged"/>
-        <Separator Height="21" Margin="0"/>
-        <TextBlock TextWrapping="Wrap" Height="auto" FontWeight="Bold">BDD Test Class Naming</TextBlock >
-        <TextBlock TextWrapping="Wrap" Height="auto"><Run Text="Enter test class prefixes that indicate a BDD style unittest - testCop understands that these test classes are named differently and that the class and file names won't match."/></TextBlock>
-        <StackPanel Orientation="Horizontal" >
-            <TextBox x:Name="contextTextBox" Width="200"/>
-        <Button x:Name="btnAddContext" Content="Add" Width="auto" Click="btnAddContext_Click"/>
-            <Button x:Name="btnRemoveContext" Content="Remove" Width="auto" Click="btnRemoveContext_Click" />
-        </StackPanel>
-        <ListBox x:Name="contextPrefixesListBox" Height="100" SelectionChanged="contextPrefixesListBox_SelectionChanged" />
-        <Separator Height="21" Margin="0"/>
-                <TextBlock TextWrapping="Wrap" Height="auto" FontWeight="Bold">Test Classes And Test Namespaces</TextBlock >
-                <TextBlock x:Name="tbSuffixGuidance" TextWrapping="Wrap" Height="auto"  HorizontalAlignment="Center" >The above configuration means that all  Unit  Test Class es  must end in       Tests  (e.g. ClassA Tests ) and the namespace of  all  test assemblies must end in .Tests (e.g. MyCompany.MyApplication.Tests).</TextBlock >
-                <Separator Height="21" Margin="0" Visibility="Hidden"/>
-                <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Left" >                    
-                    <TextBlock TextWrapping="Wrap" Height="auto" >Test Class Suffix: </TextBlock >
-                    <TextBox x:Name="testClassSuffixTextBox" Width="79" MaxLength="10" TextChanged="classAndNamespace_TextChanged">                        
-                    </TextBox>
-                </StackPanel>                
-                <StackPanel Orientation="Horizontal" Margin="-1,0,1,0" >
-                    <TextBlock TextWrapping="Wrap" Height="auto" >Test Namespace Suffix:</TextBlock >
-                    <TextBox x:Name="testNamespaceSuffixTextBox" Width="79" MaxLength="10" TextChanged="classAndNamespace_TextChanged" />                    
-                </StackPanel>                
-                <Separator Height="21" Margin="0"/>
-                <TextBlock TextWrapping="Wrap" Height="auto" FontWeight="Bold">Options</TextBlock >
-        <CheckBox Content="When switching to test find all usages of class within test assembly" Name="showAllTestsWithUsageCheckBox" />
-        <CheckBox Content="Warn if namespace of test doesn't match class under test" x:Name="checkTestNamespaces" />
-                <Separator Height="21" Margin="0"/>
-            </StackPanel>
-    </TabItem>
-    <TabItem Header="Precinct Rules">            
-                <Border Width="300" Background="SkyBlue" BorderBrush="Black" BorderThickness="1" CornerRadius="12,12,12,12" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <StackPanel Height="auto" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,55">
-                    <RichTextBox x:Name="testCopGuideTextBox" Width="200" Margin="10,10,0,0" Height="420" AllowDrop="False" IsEnabled="False"   >
-                        <FlowDocument>
-                            <Paragraph>
-                                <Run FontWeight="Bold" Language="en-gb" Text="PRECINCT RULES"/>
-                            </Paragraph>
-                            <Paragraph>
-                                <Run FontWeight="Bold" Language="en-gb"/>
-                                <Run Language="en-gb" Text="'default' settings"/>
-                            </Paragraph>
-                            <Paragraph>
-                                <Run Language="en-gb" Text="1) The name of unit test classes should always end in "/>
-                                <Run Text=" "/>
-                                <Run FontWeight="Bold" Language="en-gb" Text="Tests"/>
-                            </Paragraph>
-                            <Paragraph>
-                                <Run Language="en-gb" Text="2) Unit test classes should be in an assembly separate to the main application."/>
-                            </Paragraph>
-                            <Paragraph>
-                                <Run Language="en-gb" Text="3) The namespace of the assembly containing unit tests should end in "/>
-                                <Run Text=" "/>
-                                <Run FontWeight="Bold" Language="en-gb" Text=".Tests"/>
-                                <Run Text=" "/>
-                                <Run Language="en-gb" Text=" and match the namespace of the assembly under test."/>
-                            </Paragraph>
-                            <Paragraph>
-                                <Run Language="en-gb" Text="4) Test class file names should begin with the class under test. e.g. "/>
-                                <Run Text=" "/>
-                                <Run FontWeight="Bold" Language="en-gb" Text="MyClass"/>
-                                <Run Language="en-gb" Text="Tests.cs or "/>
-                                <Run Text=" "/>
-                                <Run FontWeight="Bold" Language="en-gb" Text="MyClass"/>
-                                <Run Text=" "/>
-                                <Run Language="en-gb" Text="SecurityTests.cs"/>
-                            </Paragraph>
-                            <Paragraph>
-                                <Run Language="en-gb" Text="5) The unit tests class name should match the file name unless the class name begins with a BDD prefix "/>
-                            </Paragraph>
-                        </FlowDocument>
-                    </RichTextBox>
-                    <Image x:Name="TestCopLogoImage" Height="100" Source="../resources/agent64x64.png" HorizontalAlignment="Right" VerticalAlignment="Top" Panel.ZIndex="-1"/>
+                <Grid Background="#FFE5E5E5"/>
+                <TextBlock TextWrapping="Wrap" Height="auto" FontWeight="Bold">Testing Attributes</TextBlock >
+                <TextBlock TextWrapping="Wrap" Height="auto">Enter C# attributes that identify a class or method is test related (e.g. TestClass).</TextBlock >
+                <StackPanel Orientation="Horizontal" >
+                    <TextBox x:Name="attributeTextBox" Width="200"/>
+                    <Button x:Name="btnAdd" Content="Add" Width="auto" Click="btnAdd_Click"/>
+                    <Button x:Name="btnRemove" Content="Remove" Width="auto" Click="btnRemove_Click"/>
                 </StackPanel>
-                </Border>            
+                <ListBox x:Name="testingAttributesListBox" Height="100" SelectionChanged="testingAttributesListBox_SelectionChanged"/>
+                <Separator Height="21" Margin="0"/>
+                <TextBlock TextWrapping="Wrap" Height="auto" FontWeight="Bold">BDD Test Class Naming</TextBlock >
+                <TextBlock TextWrapping="Wrap" Height="auto"><Run Text="Enter test class prefixes that indicate a BDD style unittest - testCop understands that these test classes are named differently and that the class and file names won't match."/></TextBlock>
+                <StackPanel Orientation="Horizontal" >
+                    <TextBox x:Name="contextTextBox" Width="200"/>
+                    <Button x:Name="btnAddContext" Content="Add" Width="auto" Click="btnAddContext_Click"/>
+                    <Button x:Name="btnRemoveContext" Content="Remove" Width="auto" Click="btnRemoveContext_Click" />
+                </StackPanel>
+                <ListBox x:Name="contextPrefixesListBox" Height="100" SelectionChanged="contextPrefixesListBox_SelectionChanged" />
+                <Separator Height="21" Margin="0"/>
+                <TextBlock TextWrapping="Wrap" Height="auto" FontWeight="Bold">Test Classes And Test Namespaces</TextBlock >
+                <TextBlock x:Name="tbSuffixGuidance" TextWrapping="Wrap" Height="auto"  HorizontalAlignment="Center" >The above configuration means that all  Unit  Test Class es  must end in       Tests  (e.g. ClassA Tests ) and the namespace of  all  test assemblies must match the RegEx xxAAxx.</TextBlock >
+                <Separator Height="21" Margin="0" Visibility="Hidden"/>
+                <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Left" >
+                    <TextBlock TextWrapping="Wrap" Height="auto" >Test Class Suffix:</TextBlock >
+                    <TextBox x:Name="testClassSuffixTextBox" Width="79" MaxLength="10" TextChanged="classAndNamespace_TextChanged">
+                    </TextBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="-1,0,1,0" >
+                    <TextBlock TextWrapping="Wrap" Height="auto" >Test Namespace RegEx:</TextBlock >
+                    <TextBox x:Name="testNamespaceRegExTextBox" Width="222" MaxLength="90" TextChanged="classAndNamespace_TextChanged" />
+                </StackPanel>
+                <TextBlock x:Name="regExOutcome" TextWrapping="Wrap" Height="auto" Foreground="#FFEC3939" >WARNING WARNING</TextBlock >
+                <TextBlock TextWrapping="Wrap" Height="auto" FontWeight="Bold">Options</TextBlock >
+                <CheckBox Content="When switching to test find all usages of class within test assembly" Name="showAllTestsWithUsageCheckBox" />
+                <CheckBox Content="Warn if namespace of test doesn't match class under test" x:Name="checkTestNamespaces" />               
+            </StackPanel>
+        </TabItem>
+        <TabItem Header="RegEx Help">
+            <!--<Border Width="300" Background="SkyBlue" BorderBrush="Black" BorderThickness="1" CornerRadius="12,12,12,12" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">-->
+            <StackPanel Height="auto" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,55">
+
+                <Image x:Name="TestCopLogoImage" Height="100" Source="../resources/agent64x64.png" HorizontalAlignment="Right" VerticalAlignment="Top" Panel.ZIndex="-1"/>
+                <TextBlock Height="655" TextWrapping="Wrap" Width="288"><Run Language="en-gb" Text="TestCop uses a RegEx (configurable) to identify which projects within the solution are test projects by applying the RegEx against the '"/><Run FontWeight="Bold" Language="en-gb" Text="default namespace"/><Run Language="en-gb" Text="' of the project. TestCop does not use the name of the project."/><LineBreak/><Run Language="en-gb"/><LineBreak/><Run Language="en-gb" Text="You must name your code and test projects so that it is possible to derive the namespace of the code project from its associated test project namespace e.g. MyCorp.MyApp.DataAccess.Tests =&gt; MyCorp.MyApp.DataAccess. Use RegEx groupings (brackets) to extract the code namespace project from the test projects namespace."/><LineBreak/><Run Language="en-gb"/><LineBreak/><Run Language="en-gb" Text="Define the RegEx according to your namespace standards."/><LineBreak/><Run Language="en-gb"/><LineBreak/><Run FontWeight="Bold" Language="en-gb" Text="Example RegExs :"/><LineBreak/><LineBreak/><Run Language="en-gb" Text="^"/><Run FontWeight="Bold" Language="en-gb" Text="("/><Run Language="en-gb" Text=".*"/><Run FontWeight="Bold" Language="en-gb" Text=")"/><Run Language="en-gb" Text="\.Tests$ "/><LineBreak/><Run Language="en-gb" Text="for MyCorp.MyApp.DataAccess.Tests "/><LineBreak/><Run Language="en-gb"/><LineBreak/><Run Language="en-gb" Text="^"/><Run FontWeight="Bold" Language="en-gb" Text="("/><Run Language="en-gb" Text=".*"/><Run FontWeight="Bold" Language="en-gb" Text=")"/><Run Language="en-gb" Text="Tests$ "/><LineBreak/><Run Language="en-gb" Text="for MyCorp.MyApp.DataAccessTests "/><LineBreak/><LineBreak/><Run Language="en-gb" Text="^"/><Run FontWeight="Bold" Language="en-gb" Text="("/><Run Language="en-gb" Text=".*"/><Run FontWeight="Bold" Language="en-gb" Text=")"/><Run Language="en-gb" Text="\.Tests"/><Run FontWeight="Bold" Language="en-gb" Text="("/><Run Language="en-gb" Text="\..*"/><Run FontWeight="Bold" Language="en-gb" Text=")"/><Run Language="en-gb" Text="$ "/><LineBreak/><Run Language="en-gb" Text="for   MyCorp.MyApp.Tests.DataAccess   "/><LineBreak/><Run Language="en-gb"/><LineBreak/><Run Language="en-gb"/><LineBreak/><LineBreak/><Run Language="en-gb"/></TextBlock>
+            </StackPanel>
+            <!-- "</Border>            -->
         </TabItem>
     </TabControl>
 

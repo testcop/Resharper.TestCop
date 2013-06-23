@@ -1,39 +1,50 @@
 ﻿using System;
-using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
+using JetBrains.Application;
 using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
+using JetBrains.ProjectModel;
+using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.ReSharper.Features.Common.Options;
+using JetBrains.Threading;
 using JetBrains.UI.CrossFramework;
 using JetBrains.UI.Icons;
 using JetBrains.UI.Options;
 using JetBrains.Util;
+using TestCop.Plugin.Extensions;
+using TestCop.Plugin.Helper;
 
 namespace TestCop.Plugin.OptionsPage
 {
   [OptionsPage(PID, "TestCop ", typeof(UnnamedThemedIcons.Agent16x16), ParentId = ToolsPage.PID)]  
   public partial class TestCopOptionPage : IOptionsPage
-  {
-      private readonly OptionsSettingsSmartContext _settings;
+  {      
+      private readonly Lifetime _lifetime;
+      private readonly OptionsSettingsSmartContext _settings;      
+      private readonly ISolution _solution;
       private const string PID = "TestCopPageId";
       
-      public TestCopOptionPage(Lifetime lifetime, OptionsSettingsSmartContext settings, IThemedIconManager iconManager)
+      public TestCopOptionPage(Lifetime lifetime, OptionsSettingsSmartContext settings
+          , IThemedIconManager iconManager
+        , ISolution solution=null)
       {
-          _settings = settings;
+          _lifetime = lifetime;
+          _settings = settings;         
+          _solution = solution;
+         
           InitializeComponent();
-          
+         
           var testFileAnalysisSettings = settings.GetKey<TestFileAnalysisSettings>(SettingsOptimization.DoMeSlowly);
 
           InitializeComponent();
 
-          BindWithRegexValidation(testFileAnalysisSettings, testNamespaceSuffixTextBox, "TestNameSpaceSuffix","^[.]?[A-Z][a-zA-Z]*$");
-          BindWithRegexValidation(testFileAnalysisSettings, testClassSuffixTextBox, "TestClassSuffix", "^[a-zA-Z]*$");
+          BindWithValidationMustBeARegex(testFileAnalysisSettings, testNamespaceRegExTextBox, "TestProjectToCodeProjectNameSpaceRegEx");
+          BindWithRegexMatchesValidation(testFileAnalysisSettings, testClassSuffixTextBox, "TestClassSuffix", "^[a-zA-Z]*$");
                                             
           testFileAnalysisSettings.TestingAttributes.ForEach(p => testingAttributesListBox.Items.Add(p));
           testFileAnalysisSettings.BddPrefixes.ForEach(p => contextPrefixesListBox.Items.Add(p));
@@ -43,24 +54,43 @@ namespace TestCop.Plugin.OptionsPage
 
           TestCopLogoImage.Source =
           (ImageSource) new BitmapToImageSourceConverter().Convert(
-              iconManager.Icons[UnnamedThemedIcons.Agent64x64.Id].CurrentGdipBitmap96, null, null, null);
-
+              iconManager.Icons[UnnamedThemedIcons.Agent64x64.Id].CurrentGdipBitmap96, null, null, null);         
       }
 
-      private void BindWithRegexValidation(TestFileAnalysisSettings testFileAnalysisSettings,TextBox tb, string property, string regexString)
+      private void BindWithRegexMatchesValidation(TestFileAnalysisSettings testFileAnalysisSettings,TextBox tb, string property, string regexString)
       {
-          var namespaceSuffixBinding = new Binding { Path = new PropertyPath(property) };
+          var binding = new Binding { Path = new PropertyPath(property) };
           var namespaceRule = new RegexValidationRule
           {
               RegexText = regexString,
               ErrorMessage = "Invalid suffix.",
-              RegexOptions = RegexOptions.IgnoreCase
+              RegexOptions = RegexOptions.IgnoreCase,
+              ValidatesOnTargetUpdated = true
           };
 
-          namespaceSuffixBinding.ValidationRules.Add(namespaceRule);
-          namespaceSuffixBinding.NotifyOnValidationError = true;
+          binding.ValidationRules.Add(namespaceRule);
+          binding.NotifyOnValidationError = true;
+          binding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
           tb.DataContext = testFileAnalysisSettings;
-          tb.SetBinding(TextBox.TextProperty, namespaceSuffixBinding);
+          tb.SetBinding(TextBox.TextProperty, binding);
+      }
+
+      private void BindWithValidationMustBeARegex(TestFileAnalysisSettings testFileAnalysisSettings, TextBox tb, string property)
+      {
+          var binding = new Binding { Path = new PropertyPath(property)};
+          var namespaceRule = new IsARegexValidationRule
+          {              
+              ErrorMessage = "Invalid Regex",
+              RegexOptions = RegexOptions.IgnoreCase,
+              MinimumGroupsInRegex = 2,
+              ValidatesOnTargetUpdated = true              
+          };
+
+          binding.ValidationRules.Add(namespaceRule);
+          binding.NotifyOnValidationError = true;
+          binding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+          tb.DataContext = testFileAnalysisSettings;
+          tb.SetBinding(TextBox.TextProperty, binding);
       }
 
       public EitherControl Control
@@ -75,7 +105,7 @@ namespace TestCop.Plugin.OptionsPage
 
       public bool OnOk()
       {
-          if (Validation.GetHasError(testNamespaceSuffixTextBox))return false;
+          if (Validation.GetHasError(testNamespaceRegExTextBox))return false;
           if (Validation.GetHasError(testClassSuffixTextBox))return false;         
 
           var attributes = testingAttributesListBox.Items.Cast<string>().ToList().Join(",");
@@ -84,14 +114,13 @@ namespace TestCop.Plugin.OptionsPage
           attributes = contextPrefixesListBox.Items.Cast<string>().ToList().Join(",");
           _settings.SetValue((TestFileAnalysisSettings s) => s.BddPrefix, attributes);
 
-          _settings.SetValue((TestFileAnalysisSettings s) => s.FindAnyUsageInTestAssembly,
-                             showAllTestsWithUsageCheckBox.IsChecked);
+          _settings.SetValue((TestFileAnalysisSettings s) => s.FindAnyUsageInTestAssembly,showAllTestsWithUsageCheckBox.IsChecked);
           _settings.SetValue((TestFileAnalysisSettings s) => s.CheckTestNamespaces, checkTestNamespaces.IsChecked);
 
           _settings.SetValue((TestFileAnalysisSettings s) => s.TestClassSuffix,
                              testClassSuffixTextBox.Text.Replace(" ", ""));
-          _settings.SetValue((TestFileAnalysisSettings s) => s.TestNameSpaceSuffix,
-                             testNamespaceSuffixTextBox.Text.Replace(" ", ""));
+          _settings.SetValue((TestFileAnalysisSettings s) => s.TestProjectToCodeProjectNameSpaceRegEx,
+                             testNamespaceRegExTextBox.Text.Replace(" ", ""));
 
           return true;
       }
@@ -150,30 +179,33 @@ namespace TestCop.Plugin.OptionsPage
 
       private void classAndNamespace_TextChanged(object sender, TextChangedEventArgs e)
       {
-          tbSuffixGuidance.Text=string.Format("The test class and test namespace configuration below define that all UnitTest Classes " +
-                                              "must end in '{0}' (e.g. ClassA{0}, ClassA.Security{0}, ClassB{0} ) and the namespace of all " +
-                                              "test assemblies must end in '{1}' (e.g. MyCompany.MyApplication{1})."
-                                        ,testClassSuffixTextBox.Text,testNamespaceSuffixTextBox.Text);                       
-      }
-  }
+            Regex regEx;
+          
+            tbSuffixGuidance.Text=string.Format("The test class and test namespace configuration below define that all UnitTest Classes " +
+                                                "must end in '{0}' (e.g. ClassA{0}, ClassA.Security{0}, ClassB{0} ) and the namespace of all " +
+                                                "test assemblies must match the RegEx '{1}'. Use brackets to extract the associated project namespace."
+                                        ,testClassSuffixTextBox.Text,testNamespaceRegExTextBox.Text);
+            try
+            {
+                regExOutcome.Text = "";
+                regEx = new Regex(testNamespaceRegExTextBox.Text);               
+            }
+            catch (Exception){return;}
 
-  [ValueConversion(typeof(System.Drawing.Bitmap), typeof(ImageSource))]
-  public class BitmapToImageSourceConverter : IValueConverter
-  {
-      public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-      {
-          var bmp = value as System.Drawing.Bitmap;
-          if (bmp == null)return null;
-          return System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                      bmp.GetHbitmap(),
-                      IntPtr.Zero,
-                      Int32Rect.Empty,
-                      BitmapSizeOptions.FromEmptyOptions());
-      }
-
-      public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-      {
-          throw new NotSupportedException();
-      }
+            if (regEx.GetGroupNames().Count() < 2)
+            {
+                regExOutcome.Text = "RegEx must contain at least one regex group ().";
+                return;
+            }
+                             
+            if (_solution != null)
+            {              
+                ResharperHelper.ProtectActionFromReEntry(_lifetime, "TestcopOptionsPage", () =>
+                { 
+                    var testProjects = _solution.GetAllCodeProjects().Select(p=>p).Where(p=>regEx.IsMatch(p.GetDefaultNamespace()??"")).ToList();
+                    regExOutcome.Text = testProjects.Any() ? "" : "Warning: the regex does not match the namespace of any loaded projects.";
+                }).Invoke();
+            }        
+      }     
   }
 }

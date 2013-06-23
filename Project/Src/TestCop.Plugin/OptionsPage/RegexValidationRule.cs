@@ -27,7 +27,7 @@ namespace TestCop.Plugin.OptionsPage
                 if (!Regex.IsMatch(text, this.RegexText, this.RegexOptions))
                     result = new ValidationResult(false, this.ErrorMessage);
             }
-
+            
             return result;
         }
     }

@@ -259,22 +259,24 @@ namespace TestCop.Plugin
         }
 
         private void CheckClassNamespaceOfTestMatchesClassUnderTest(ICSharpTypeDeclaration thisDeclaration, List<IClrDeclaredElement> declaredElements)
-        {
-            var testingNamespaceSuffix = this.Settings.TestNameSpaceSuffix;
+        {            
             var thisProject = thisDeclaration.GetProject();
-            var associatedProject = ResharperHelper.FindAssociatedProject(thisProject);
+            var associatedProject = thisProject.GetAssociatedProject();
             if (associatedProject == null) return;
             ResharperHelper.RemoveElementsNotInProject(declaredElements, associatedProject);   
 
             var thisProjectsDefaultNamespace = thisProject.GetDefaultNamespace();
-            var associatedProjectsDefaultNameSpace = thisProjectsDefaultNamespace.RemoveTrailing(testingNamespaceSuffix);
+            if (string.IsNullOrEmpty(thisProjectsDefaultNamespace)) return;
+
+            var associatedProjectsDefaultNameSpace = associatedProject.GetDefaultNamespace();
+            if (string.IsNullOrEmpty(associatedProjectsDefaultNameSpace)) return;
+
             var relativePathNamespaceOfClass =
                 thisDeclaration.OwnerNamespaceDeclaration.DeclaredName.RemoveLeading(thisProjectsDefaultNamespace)
                                .RemoveLeading(".");
             var nsToBeFoundShouldBe = associatedProjectsDefaultNameSpace.AppendIfNotNull(".", relativePathNamespaceOfClass);
                        
-            //Lookup the namespaces of the declaredElements we've found that possibly match this test 
-            //TODO: We could go and find references to get the correct one...
+            //Lookup the namespaces of the declaredElements we've found that possibly match this test             
             IList<string> foundNameSpaces = new List<string>();
             foreach (var declaredTestElement in declaredElements)
             {
