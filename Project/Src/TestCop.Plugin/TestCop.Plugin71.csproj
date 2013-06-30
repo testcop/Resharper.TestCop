@@ -52,18 +52,22 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helper\UpdatesNotifier.cs" />
+    <Compile Include="Extensions\ProjectExtensions.cs" />
+    <Compile Include="Extensions\SolutionExtensions.cs" />
     <Compile Include="Extensions\TypeElementExtensions.cs" />
+    <Compile Include="Helper\BitmapToImageSourceConverter.cs" />
     <Compile Include="Helper\DTEHelper.cs" />
     <Compile Include="Helper\JumpToTestMenuHelper.cs" />
     <Compile Include="Helper\ProjectFileFinder.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Helper\UpdatesNotifier71.cs" />
     <Compile Include="Highlighting\TestFileNameSpaceWarning.cs" />
     <Compile Include="Highlighting\HighlighterConsts.cs" />
     <Compile Include="Highlighting\TestClassNameWarning.cs" />
     <Compile Include="Highlighting\TestFileNameWarning.cs" />
     <Compile Include="Highlighting\ShouldBePublicWarning.cs" />
+    <Compile Include="OptionsPage\IsARegexValidationRule.cs" />
     <Compile Include="OptionsPage\RegexValidationRule.cs" />
     <Compile Include="OptionsPage\TestCopOptionPage.xaml.cs">
       <DependentUpon>TestCopOptionPage.xaml</DependentUpon>

@@ -13,7 +13,9 @@ using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.Caches;
+#if !R7
 using JetBrains.ReSharper.Psi.Modules;
+#endif
 using JetBrains.ReSharper.Psi.Search;
 using JetBrains.TextControl;
 using JetBrains.Util;

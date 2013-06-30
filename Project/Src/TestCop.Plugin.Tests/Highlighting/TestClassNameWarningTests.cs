@@ -37,21 +37,22 @@ namespace TestCop.Plugin.Tests.Highlighting
         {
             // the default suffix is 'Tests' - we test that this can be overidden 
 #if R7
-                 this.ExecuteWithinSettingsTransaction(
-                (settingsStore =>{
-                                        this.RunGuarded((() =>
-                                        {
-                                            IContextBoundSettingsStore
-                                                settings=settingsStore.BindToContextTransient
-                                                            (ContextRange.ManuallyRestrictWritesToOneContext
-                                                                (((lifetime,contexts)=>contexts.Empty)));
+            this.ExecuteWithinSettingsTransaction(
+                (settingsStore =>
+                     {
+                         this.RunGuarded((() =>
+                                              {
+                                                  IContextBoundSettingsStore
+                                                      settings = settingsStore.BindToContextTransient
+                                                          (ContextRange.ManuallyRestrictWritesToOneContext
+                                                               (((lifetime, contexts) => contexts.Empty)));
 
-                                            settings.SetValue<TestFileAnalysisSettings, string>(
-                                                s => s.TestClassSuffix, "RandomExt");
-                                            
-                                        } ));
-                                        DoTestFiles(testName);
-            } ));
+                                                  settings.SetValue<TestFileAnalysisSettings, string>(
+                                                      s => s.TestClassSuffix, "RandomExt");
+
+                                              }));
+                         DoTestFiles(testName);
+                     }));
 #else
             this.ExecuteWithinSettingsTransaction((Action<IContextBoundSettingsStore>)(settingsStore =>
             {
@@ -59,7 +60,8 @@ namespace TestCop.Plugin.Tests.Highlighting
                 DoTestFiles(testName);
             }));
         
+        
+#endif
         }
-#endif       
     }
 }
