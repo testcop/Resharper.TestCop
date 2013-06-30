@@ -28,7 +28,7 @@
             <xsl:value-of select="concat('TestCop for ReSharper ', $LatestMajor, '.', $LatestMinor, '.', $LatestBuild, '.', $LatestRevision, ' Released')" />
           </Title>
           <Description>A minor upgrade with RegEx support for namespaces is available for your version of <xsl:value-of select="concat($InstalledMajor, '.', $InstalledMinor, '.', $InstalledBuild, '.', $InstalledRevision)" /></Description>
-          <DownloadUri>http://testcop.codeplex.com/downloads/get/622317</DownloadUri>          
+          <DownloadUri>https://testcop.codeplex.com/downloads/get/698008</DownloadUri>          
           <CompanyName>TestCop</CompanyName>
           <ProductName>TestCop for Resharper</ProductName>
           <ProductVersion><xsl:value-of select="concat($LatestMajor, '.', $LatestMinor, '.', $LatestBuild, '.', $LatestRevision)"/></ProductVersion>
