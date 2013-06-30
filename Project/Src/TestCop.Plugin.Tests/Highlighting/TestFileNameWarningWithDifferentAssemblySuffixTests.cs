@@ -29,22 +29,21 @@ namespace TestCop.Plugin.Tests.Highlighting
         [TestCase(@"<TestApplication2Tests>\ClassA.SomeMoreTests.cs")]       
         public void Test(string testName)
         {
+            string altRegEx = "^(.*)Tests$";
             // the default namespace is '^(.*)\.Tests$' - we test that this can be overidden with '^(.*)Tests$'            
 #if R7
         this.ExecuteWithinSettingsTransaction(
             (settingsStore =>
             {
                 this.RunGuarded((() =>
-                {
-                    settingsStore.SetBinding();
-                        
+                {                    
                     IContextBoundSettingsStore
                         settings = settingsStore.BindToContextTransient
                                     (ContextRange.ManuallyRestrictWritesToOneContext
                                         (((lifetime, contexts) => contexts.Empty)));
                         
                     settings.SetValue<TestFileAnalysisSettings, string>(
-                        s => s.TestNameSpaceSuffix, "Tests");
+                        s => s.TestProjectToCodeProjectNameSpaceRegEx, altRegEx);
 
                 }));
                 DoTestFiles(testName);
@@ -52,7 +51,7 @@ namespace TestCop.Plugin.Tests.Highlighting
 #else   
             this.ExecuteWithinSettingsTransaction((Action<IContextBoundSettingsStore>)(settingsStore =>
             {
-                this.RunGuarded((Action)(() => settingsStore.SetValue<TestFileAnalysisSettings, string>(s => s.TestProjectToCodeProjectNameSpaceRegEx, "^(.*)Tests$")));
+                this.RunGuarded((Action)(() => settingsStore.SetValue<TestFileAnalysisSettings, string>(s => s.TestProjectToCodeProjectNameSpaceRegEx, altRegEx)));
                 DoTestFiles(testName);
             }));
 #endif
