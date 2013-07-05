@@ -157,8 +157,8 @@ namespace TestCop.Plugin
                  
             var findReferences = services.Finder.FindReferences(
                 declaredElement, searchDomain, new ProgressIndicator(textControl.Lifetime));
-         
-            List<IClassDeclaration> findReferencesWithinAssociatedAssembly = findReferences.Select(p => ((IClassDeclaration) p.GetTreeNode().GetContainingNode(typeof (IClassDeclaration)))).ToList();
+
+            List<IClassDeclaration> findReferencesWithinAssociatedAssembly = findReferences.Select(p => ((IClassDeclaration)p.GetTreeNode().GetContainingNode<IClassDeclaration>(true))).ToList();
             return findReferencesWithinAssociatedAssembly
                 .Select(p => p.DeclaredElement).ToList()                
                 .Select(p => p as IClrDeclaredElement).ToList();                                    
