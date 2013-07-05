@@ -48,16 +48,33 @@ namespace TestCop.Plugin.Extensions
         }
 
         public static IProject GetAssociatedProject(this IProject currentProject)
-        {            
+        {
+            const string warningMessage = "Not Supported: More than one project has a default namespace of ";
+
             if (currentProject.IsTestProject())
             {
                 var nameSpaceOfAssociateProject = currentProject.GetNameSpaceOfAssociateProject();
-                return currentProject.GetSolution().GetNonTestProjects().SingleOrDefault(
-                        p => p.GetDefaultNamespace() == nameSpaceOfAssociateProject);
+
+                var matchedCodeProjects=currentProject.GetSolution().GetNonTestProjects().Where(
+                    p => p.GetDefaultNamespace() == nameSpaceOfAssociateProject).ToList();
+
+                if (matchedCodeProjects.Count() > 1)
+                {
+                    ResharperHelper.AppendLineToOutputWindow(warningMessage + nameSpaceOfAssociateProject);                    
+                }
+
+                return matchedCodeProjects.FirstOrDefault();
             }
 
-            return currentProject.GetSolution().GetTestProjects().SingleOrDefault(
-                        p => p.GetNameSpaceOfAssociateProject() == currentProject.GetDefaultNamespace());                                        
+            var matchedTestProjects = currentProject.GetSolution().GetTestProjects().Where(
+                p => p.GetNameSpaceOfAssociateProject() == currentProject.GetDefaultNamespace()).ToList();
+
+            if (matchedTestProjects.Count() > 1)
+            {
+                ResharperHelper.AppendLineToOutputWindow(warningMessage + currentProject.GetDefaultNamespace());                
+            }
+
+            return matchedTestProjects.FirstOrDefault();                                        
         }
     }
 }
