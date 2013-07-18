@@ -33,8 +33,8 @@ using TestCop.Plugin.Highlighting;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.0.0.9")]
-[assembly: AssemblyFileVersion("0.0.0.9")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
 
 // The following information is displayed by ReSharper in the Plugins dialog
 [assembly: PluginTitle("TestCop Resharper Plugin")]
