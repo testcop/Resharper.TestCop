@@ -1,6 +1,8 @@
+using JetBrains.Application.Components;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.CSharp;
 using JetBrains.Application.Settings;
+using JetBrains.TestFramework.ProjectModel;
 using NUnit.Framework;
 using TestCop.Plugin.Highlighting;
 
@@ -18,6 +20,18 @@ namespace TestCop.Plugin.Tests.Highlighting
         {
             get { return @"highlighting\ShouldBePublicWarning"; }
         }
+
+        #if !R7
+        public override void TestFixtureTearDown()
+        {
+            /* this logic is needed to undo the Resharper solution caching in place for tests
+             * that break the more complex 'solution based tests' within the test solution */
+            base.TestFixtureTearDown();
+
+            base.RunGuarded(
+              () => ShellInstance.GetComponent<ReuseSolutionInTestsComponent>().CloseSolution());
+        }
+        #endif
 
         [Test]
         [TestCase("PrivateNUnitTestClass.cs")]
