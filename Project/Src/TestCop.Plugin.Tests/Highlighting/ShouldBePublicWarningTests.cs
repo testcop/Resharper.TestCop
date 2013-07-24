@@ -1,7 +1,13 @@
+// --
+// -- TestCop http://testcop.codeplex.com
+// -- License http://testcop.codeplex.com/license
+// -- Copyright 2013
+// --
+
 using JetBrains.Application.Components;
+using JetBrains.Application.Settings;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.CSharp;
-using JetBrains.Application.Settings;
 using JetBrains.TestFramework.ProjectModel;
 using NUnit.Framework;
 using TestCop.Plugin.Highlighting;

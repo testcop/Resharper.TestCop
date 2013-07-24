@@ -1,9 +1,13 @@
+// --
+// -- TestCop http://testcop.codeplex.com
+// -- License http://testcop.codeplex.com/license
+// -- Copyright 2013
+// --
+
+using System.Collections.Generic;
+using System.Reflection;
 using JetBrains.Application;
 using JetBrains.Threading;
-using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Collections.Generic;
 using NUnit.Framework;
 using TestCop.Plugin.Highlighting;
 

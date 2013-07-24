@@ -1,4 +1,10 @@
-﻿using System;
+﻿// --
+// -- TestCop http://testcop.codeplex.com
+// -- License http://testcop.codeplex.com/license
+// -- Copyright 2013
+// --
+
+using System;
 using System.Collections.Generic;
 using JetBrains.Application.Settings;
 using JetBrains.ReSharper.Daemon;

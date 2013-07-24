@@ -1,17 +1,21 @@
-﻿using System;
+﻿// --
+// -- TestCop http://testcop.codeplex.com
+// -- License http://testcop.codeplex.com/license
+// -- Copyright 2013
+// --
+
+using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
-using JetBrains.Application;
 using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.ReSharper.Features.Common.Options;
-using JetBrains.Threading;
 using JetBrains.UI.CrossFramework;
 using JetBrains.UI.Icons;
 using JetBrains.UI.Options;

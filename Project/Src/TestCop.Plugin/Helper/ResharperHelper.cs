@@ -1,5 +1,12 @@
-﻿using System;
+﻿// --
+// -- TestCop http://testcop.codeplex.com
+// -- License http://testcop.codeplex.com/license
+// -- Copyright 2013
+// --
+
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Application;
 using JetBrains.Application.DataContext;
 using JetBrains.DataFlow;
@@ -19,7 +26,6 @@ using JetBrains.UI.PopupWindowManager;
 using JetBrains.UI.RichText;
 using JetBrains.UI.Tooltips;
 using JetBrains.Util;
-using System.Linq;
 using TestCop.Plugin.Extensions;
 
 namespace TestCop.Plugin.Helper

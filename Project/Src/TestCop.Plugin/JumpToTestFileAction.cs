@@ -1,4 +1,10 @@
-﻿using System;
+﻿// --
+// -- TestCop http://testcop.codeplex.com
+// -- License http://testcop.codeplex.com/license
+// -- Copyright 2013
+// --
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -11,17 +17,17 @@ using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.Caches;
-#if !R7
-using JetBrains.ReSharper.Psi.Modules;
-#endif
+using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.Search;
 using JetBrains.TextControl;
 using JetBrains.Util;
 using TestCop.Plugin.Extensions;
 using TestCop.Plugin.Helper;
 using DataConstants = JetBrains.TextControl.DataContext.DataConstants;
+#if !R7
+using JetBrains.ReSharper.Psi.Modules;
+#endif
 
 namespace TestCop.Plugin
 {

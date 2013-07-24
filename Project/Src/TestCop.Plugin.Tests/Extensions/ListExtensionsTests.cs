@@ -1,7 +1,13 @@
-﻿using System;
+﻿// --
+// -- TestCop http://testcop.codeplex.com
+// -- License http://testcop.codeplex.com/license
+// -- Copyright 2013
+// --
+
+using System;
 using System.Collections.Generic;
-using TestCop.Plugin.Extensions;
 using NUnit.Framework;
+using TestCop.Plugin.Extensions;
 
 namespace TestCop.Plugin.Tests.Extensions
 {
