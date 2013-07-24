@@ -1,6 +1,11 @@
-﻿using System.Collections.Generic;
+﻿// --
+// -- TestCop http://testcop.codeplex.com
+// -- License http://testcop.codeplex.com/license
+// -- Copyright 2013
+// --
+
+using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using JetBrains.ProjectModel;
 
 namespace TestCop.Plugin.Extensions

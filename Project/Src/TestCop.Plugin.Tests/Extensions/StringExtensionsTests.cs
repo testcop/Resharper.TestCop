@@ -1,5 +1,11 @@
-﻿using TestCop.Plugin.Extensions;
+﻿// --
+// -- TestCop http://testcop.codeplex.com
+// -- License http://testcop.codeplex.com/license
+// -- Copyright 2013
+// --
+
 using NUnit.Framework;
+using TestCop.Plugin.Extensions;
 
 namespace TestCop.Plugin.Tests.Extensions
 {

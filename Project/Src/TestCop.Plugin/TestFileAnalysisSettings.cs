@@ -1,8 +1,13 @@
-﻿using System.Collections.Generic;
+﻿// --
+// -- TestCop http://testcop.codeplex.com
+// -- License http://testcop.codeplex.com/license
+// -- Copyright 2013
+// --
+
+using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Application;
 using JetBrains.Application.Settings;
-using JetBrains.Application.Settings.Store.Implementation;
 using JetBrains.DataFlow;
 using JetBrains.ReSharper.Settings;
 

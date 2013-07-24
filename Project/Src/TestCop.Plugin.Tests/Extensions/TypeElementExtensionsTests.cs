@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿// --
+// -- TestCop http://testcop.codeplex.com
+// -- License http://testcop.codeplex.com/license
+// -- Copyright 2013
+// --
+
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.Asp.Impl.PsiModules.Website.Modules;
-using JetBrains.ReSharper.Psi.ExtensionsAPI.Caches2;
-using JetBrains.ReSharper.Psi.Impl;
-using JetBrains.ReSharper.Psi.Impl.Types;
 using NUnit.Framework;
 using Rhino.Mocks;
 using TestCop.Plugin.Extensions;
