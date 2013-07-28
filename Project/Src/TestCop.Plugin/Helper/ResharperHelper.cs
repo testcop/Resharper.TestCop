@@ -214,7 +214,11 @@ namespace TestCop.Plugin.Helper
             var dataContexts = Shell.Instance.GetComponent<DataContexts>();
             var context = dataContexts.CreateOnActiveControl(lifetime);
                                 
-            Template classTemplate = FileTemplatesManager.Instance.GetFileTemplatesForActions(context).Where(c => c.Shortcut == "Class").FirstOrDefault();
+            Template classTemplate = FileTemplatesManager.Instance.GetFileTemplatesForActions(context).Where(c => c.Description == "Class").FirstOrDefault();
+            if (classTemplate == null)
+            {
+                AppendLineToOutputWindow("Template for 'Class' not found");
+            }
             IProjectFolder folder = (IProjectFolder) associatedProject.FindProjectItemByLocation(fileSystemPath)
                                     ?? AddNewItemUtil.GetOrCreateProjectFolder(associatedProject, fileSystemPath);
 
