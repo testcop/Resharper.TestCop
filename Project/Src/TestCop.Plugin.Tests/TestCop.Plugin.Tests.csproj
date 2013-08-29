@@ -38,6 +38,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="Rhino.Mocks">
       <HintPath>..\..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
     </Reference>
@@ -60,6 +61,8 @@
     <Compile Include="Highlighting\TestFileNameWarningTests.cs.cs" />
     <Compile Include="Highlighting\ShouldBePublicWarningTests.cs" />
     <Compile Include="Highlighting\TestClassNameWarningTests.cs" />
+    <Compile Include="OptionsPage\IsARegexValidationRuleTests.cs" />
+    <Compile Include="OptionsPage\RegexValidationRuleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CSharpHighlightingWithinSolutionTestBase.cs" />
   </ItemGroup>
