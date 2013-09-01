@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
+using EnvDTE;
 using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
 using JetBrains.ProjectModel;
@@ -52,6 +53,8 @@ namespace TestCop.Plugin.OptionsPage
                                             
           testFileAnalysisSettings.TestingAttributes.ForEach(p => testingAttributesListBox.Items.Add(p));
           testFileAnalysisSettings.BddPrefixes.ForEach(p => contextPrefixesListBox.Items.Add(p));
+
+          SwitchBetweenFilesShortcutTextBox.Text = testFileAnalysisSettings.ShortcutToSwitchBetweenFiles;
 
           showAllTestsWithUsageCheckBox.IsChecked = testFileAnalysisSettings.FindAnyUsageInTestAssembly;
           checkTestNamespaces.IsChecked = testFileAnalysisSettings.CheckTestNamespaces;
@@ -125,6 +128,9 @@ namespace TestCop.Plugin.OptionsPage
                              testClassSuffixTextBox.Text.Replace(" ", ""));
           _settings.SetValue((TestFileAnalysisSettings s) => s.TestProjectToCodeProjectNameSpaceRegEx,
                              testNamespaceRegExTextBox.Text.Replace(" ", ""));
+
+          DTEHelper.AssignKeyboardShortcutIfMissing(ResharperHelper.MacroNameSwitchBetweenFiles, SwitchBetweenFilesShortcutTextBox.Text);
+          _settings.SetValue((TestFileAnalysisSettings s) => s.ShortcutToSwitchBetweenFiles, SwitchBetweenFilesShortcutTextBox.Text);
 
           return true;
       }

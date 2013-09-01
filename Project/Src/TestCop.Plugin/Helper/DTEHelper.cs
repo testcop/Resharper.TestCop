@@ -20,7 +20,7 @@ namespace TestCop.Plugin.Helper
         /// <summary>
         /// Must run on main UI thread
         /// </summary>
-        public static void AssignKeyboardShortcutIfMissing(string macroName, string keyboardShortcut, string replaceIfThisKeyboardShortcut)
+        public static void AssignKeyboardShortcutIfMissing(string macroName, string keyboardShortcut)
         {            
             var dte = Shell.Instance.GetComponent<DTE>();
             
@@ -29,20 +29,15 @@ namespace TestCop.Plugin.Helper
             if (command != null)
             {
                 var currentBindings = (System.Object[]) command.Bindings;
-
-                if (currentBindings.Length == 1 && !string.IsNullOrEmpty(replaceIfThisKeyboardShortcut))
+             
+                if (currentBindings.Length == 1)
                 {
-                    if (currentBindings[0].ToString() != replaceIfThisKeyboardShortcut)
+                    if (currentBindings[0].ToString() == keyboardShortcut)
                     {
-                        //already mapped and doesn't need to be overidden
+                        GetOutputWindowPane(dte, "TestCop", true).OutputString(
+                            string.Format("Keyboard shortcut for '{0}' is '{1}'\n", macroName, keyboardShortcut));
                         return;
                     }
-                }
-
-                if (currentBindings.Length == 1 && string.IsNullOrEmpty(replaceIfThisKeyboardShortcut))
-                {           
-                    //already mapped
-                    return;                   
                 }
 
                 command.Bindings = string.IsNullOrEmpty(keyboardShortcut)
