@@ -2,11 +2,11 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>     
 		<id>Resharper.TestCop</id>     
-		<version>1.0.0.1</version>     
+		<version>1.0.0.2</version>     
 		<title>TestCop</title>     
 		<authors>Alcaeus</authors>     
-		<description>Provides action to create and switch between unit tests and code. Includes highlightings to keep test projects neat and tidy. Works with NUnit, MSTest and xUnit.net.</description>
-		<releaseNotes>Minor bug fixes.</releaseNotes>
+		<description>Easily switch between unit tests and code. Includes highlightings to keep test projects neat and tidy. Works with NUnit, MSTest and xUnit.net.</description>
+		<releaseNotes>Added ability to change shortcut key that TestCop uses.</releaseNotes>
     <projectUrl>https://testcop.codeplex.com/</projectUrl>
     <licenseUrl>https://testcop.codeplex.com/license</licenseUrl>
     <iconUrl>https://testcop.svn.codeplex.com/svn/Project/Src/TestCop.Plugin/resources/agent48x48.png</iconUrl>
@@ -14,7 +14,7 @@
     <dependencies>
       <dependency id="ReSharper" version="8.0" />
     </dependencies>
-    <tags>resharper unittest xunit nunit mstest tdd c#</tags>
+    <tags>resharper unittest xUnit.net nunit mstest tdd c#</tags>
   </metadata>   
 	<files>     
 		<file src="TestCopForResharper80.dll" target="ReSharper\v8.0\plugins" />

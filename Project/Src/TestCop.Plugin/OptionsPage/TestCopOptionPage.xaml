@@ -44,7 +44,13 @@
                 <TextBlock x:Name="regExOutcome" TextWrapping="Wrap" Height="auto" Foreground="#FFEC3939" >WARNING WARNING</TextBlock >
                 <TextBlock TextWrapping="Wrap" Height="auto" FontWeight="Bold">Options</TextBlock >
                 <CheckBox Content="When switching to test find all usages of class within test assembly" Name="showAllTestsWithUsageCheckBox" />
-                <CheckBox Content="Warn if namespace of test doesn't match class under test" x:Name="checkTestNamespaces" />               
+                <CheckBox Content="Warn if namespace of test doesn't match class under test" x:Name="checkTestNamespaces" />
+                <Separator Height="21" Margin="0"/>
+                <TextBlock TextWrapping="Wrap" Height="auto" FontWeight="Bold"><Run Text="Keyboard Shortcut"/><Run Language="en-gb" Text="s"/></TextBlock>
+                <StackPanel Orientation="Horizontal" Margin="-1,0,1,0" >
+                    <TextBlock TextWrapping="Wrap" Height="auto" >Shortcut to switch between test and code:</TextBlock >
+                    <TextBox x:Name="SwitchBetweenFilesShortcutTextBox" Width="150" MaxLength="50" />
+                </StackPanel>
             </StackPanel>
         </TabItem>
         <TabItem Header="RegEx Help">

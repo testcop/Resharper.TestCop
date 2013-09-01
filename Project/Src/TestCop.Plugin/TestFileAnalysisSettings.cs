@@ -52,7 +52,10 @@ namespace TestCop.Plugin
         public string TestClassSuffix { get; set; }
 
         [SettingsEntry(@"^(.*?)\.?Tests$", "Regex to identify tests project by their namespace")]
-        public string TestProjectToCodeProjectNameSpaceRegEx { get; set; }  
+        public string TestProjectToCodeProjectNameSpaceRegEx { get; set; }
+
+        [SettingsEntry(@"Global::Ctrl+G, Ctrl+T", "Keyboard shortcut for switching between code and unit test files")]
+        public string ShortcutToSwitchBetweenFiles { get; set; }
     }
 
     [ShellComponent]
