@@ -50,8 +50,22 @@
                 <StackPanel Orientation="Horizontal" Margin="-1,0,1,0" >
                     <TextBlock TextWrapping="Wrap" Height="auto" >Shortcut to switch between test and code:</TextBlock >
                     <TextBox x:Name="SwitchBetweenFilesShortcutTextBox" Width="150" MaxLength="50" />
-                </StackPanel>
+                </StackPanel>                
             </StackPanel>
+        </TabItem>
+        <TabItem Header="File Templates">
+            <!--<Border Width="300" Background="SkyBlue" BorderBrush="Black" BorderThickness="1" CornerRadius="12,12,12,12" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">-->
+            <StackPanel Height="auto" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" >
+                <TextBlock Height="171" TextWrapping="Wrap" Width="288"><Run Language="en-gb" Text="Configure TestCop to use different templates when creating the a code class and unit test class. By default TestCop will use the 'class' template."/><LineBreak/><Run Language="en-gb"/><LineBreak/><Run Language="en-gb" Text="To see the list of templates use the Resharper 'template explorer'."/><LineBreak/><Run Language="en-gb"/><LineBreak/><Run Language="en-gb" Text="Note: Currently on '"/><Run FontWeight="Bold" Language="en-gb" Text="quicklist"/><Run Language="en-gb" Text="' file templates are supported."/><LineBreak/><Run Language="en-gb"/><LineBreak/><Run Language="en-gb"/><LineBreak/><Run Language="en-gb"/><LineBreak/><LineBreak/><Run Language="en-gb"/><LineBreak/><Run Language="en-gb"/><LineBreak/><LineBreak/><Run Language="en-gb"/></TextBlock>
+                <StackPanel Orientation="Horizontal"  >
+                    <TextBlock TextWrapping="Wrap" Height="auto" >Template for Code files:</TextBlock >
+                    <TextBox x:Name="codeTemplateTextBox" Width="150" MaxLength="50" MouseDoubleClick="FileTemplateSelectFromList" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"  >
+                    <TextBlock TextWrapping="Wrap" Height="auto" >Template for UnitTest files:</TextBlock >
+                    <TextBox x:Name="unitTestTemplateTextBox" Width="150" MaxLength="50" MouseDoubleClick="FileTemplateSelectFromList"/>                    
+                </StackPanel>
+            </StackPanel>                       
         </TabItem>
         <TabItem Header="RegEx Help">
             <!--<Border Width="300" Background="SkyBlue" BorderBrush="Black" BorderThickness="1" CornerRadius="12,12,12,12" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">-->

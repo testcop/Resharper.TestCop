@@ -11,6 +11,11 @@ namespace TestCop.Plugin.Extensions
 {
     public static class StringExtensions
     {
+        public static bool In(this String refString, params string[] values)
+        {
+            return values.Contains(refString);
+        }
+
         public static bool StartsWith(this String refString, string[] values)
         {
             return values.Any(refString.StartsWith);

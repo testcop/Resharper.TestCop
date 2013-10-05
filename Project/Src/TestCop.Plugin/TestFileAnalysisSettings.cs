@@ -56,6 +56,12 @@ namespace TestCop.Plugin
 
         [SettingsEntry(@"Global::Ctrl+G, Ctrl+T", "Keyboard shortcut for switching between code and unit test files")]
         public string ShortcutToSwitchBetweenFiles { get; set; }
+
+        [SettingsEntry(@"Class", "Name of Template to use when creating a code class")]
+        public string CodeFileTemplateName { get; set; }
+
+        [SettingsEntry(@"Class", "Name of Template to use when creating a unittest class")]
+        public string UnitTestFileTemplateName { get; set; }
     }
 
     [ShellComponent]
