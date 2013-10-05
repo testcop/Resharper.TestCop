@@ -9,11 +9,14 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Application;
 using JetBrains.Application.DataContext;
+using JetBrains.Application.Settings;
+using JetBrains.Application.Settings.Store.Implementation;
 using JetBrains.DataFlow;
 using JetBrains.DocumentModel;
 using JetBrains.IDE;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.FileTemplates;
+using JetBrains.ReSharper.Feature.Services.LiveTemplates.Settings;
 using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.ReSharper.LiveTemplates.Templates;
 using JetBrains.ReSharper.Psi;
@@ -55,8 +58,8 @@ namespace TestCop.Plugin.Helper
 
         public static Action ProtectActionFromReEntry(Lifetime lifetime, string name, Action fOnExecute)
         {
-            System.Action fOnExecute2 = (System.Action)(() => IThreadingEx.ExecuteOrQueue(
-                (IThreading)Shell.Instance.Locks, lifetime, name,()=> ReadLockCookie.Execute(fOnExecute) ));
+            System.Action fOnExecute2 = () => IThreadingEx.ExecuteOrQueue(
+                Shell.Instance.Locks, lifetime, name,()=> ReadLockCookie.Execute(fOnExecute) );
             return fOnExecute2;
         }
 
@@ -202,29 +205,44 @@ namespace TestCop.Plugin.Helper
             var threading = Shell.Instance.GetComponent<IThreading>();
             threading.ReentrancyGuard.ExecuteOrQueueEx(description, fOnExecute);                        
         }
-
+    
         public static void CreateFileWithinProject(Lifetime lifetime, IProject associatedProject,
                                                     FileSystemPath fileSystemPath, string targetFile)
         {
+            //TODO: move into shell component with proper DI 
+            var storedTemplatesProvider = Shell.Instance.GetComponent<StoredTemplatesProvider>();                        
+            var settingsStore= Shell.Instance.GetComponent<ISettingsStore>();
+            var boundSettingsStore=settingsStore.BindToContextTransient(ContextRange.ApplicationWide, BindToContextFlags.Normal);
+
+            var desiredTemplateName = associatedProject.IsTestProject()
+                ? TestCopSettingsManager.Instance.Settings.UnitTestFileTemplateName
+                : TestCopSettingsManager.Instance.Settings.CodeFileTemplateName;
+
             var dataContexts = Shell.Instance.GetComponent<DataContexts>();
             var context = dataContexts.CreateOnActiveControl(lifetime);
-                                
-            Template classTemplate = FileTemplatesManager.Instance.GetFileTemplatesForActions(context).Where(c => c.Description == "Class").FirstOrDefault();
+            var projectLanguage = associatedProject.ProjectProperties.DefaultLanguage.PresentableName;
+
+            var classTemplate = storedTemplatesProvider.EnumerateTemplates(boundSettingsStore, TemplateApplicability.File)
+               .Where(x => x.Description == desiredTemplateName && x.ScopePoints.Any(s=>s.RelatedLanguage.PresentableName==projectLanguage))
+               .Select(x => x)
+               .FirstOrDefault();
+            
             if (classTemplate == null)
             {
-                AppendLineToOutputWindow("Template for 'Class' not found");
+                AppendLineToOutputWindow(string.Format("File Template for '{0}' not found will default to 'Class'", desiredTemplateName));
+                classTemplate = FileTemplatesManager.Instance.GetFileTemplatesForActions(context).FirstOrDefault(c => c.Description == "Class");
             }
-            IProjectFolder folder = (IProjectFolder) associatedProject.FindProjectItemByLocation(fileSystemPath)
+            IProjectFolder folder = (IProjectFolder)associatedProject.FindProjectItemByLocation(fileSystemPath)
                                     ?? AddNewItemUtil.GetOrCreateProjectFolder(associatedProject, fileSystemPath);
 
-            if(folder==null)
+            if (folder == null)
             {
-                AppendLineToOutputWindow("Error failed to create/location project folder"+fileSystemPath);                
+                AppendLineToOutputWindow("Error failed to create/location project folder" + fileSystemPath);
                 return;
             }
-            
+
             string extension = Enumerable.First<string>(Shell.Instance.GetComponent<IProjectFileExtensions>().GetExtensions(associatedProject.ProjectProperties.DefaultLanguage.DefaultProjectFileType));
-            IProjectFile newFile = FileTemplatesManager.Instance.CreateFileFromTemplate(targetFile + extension, folder, classTemplate);            
+            FileTemplatesManager.Instance.CreateFileFromTemplate(targetFile + extension, folder, classTemplate);
         }
     }    
 }

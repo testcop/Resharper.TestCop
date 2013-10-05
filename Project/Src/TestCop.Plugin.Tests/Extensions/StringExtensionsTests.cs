@@ -13,6 +13,13 @@ namespace TestCop.Plugin.Tests.Extensions
     public class StringExtensionsTests
     {
         [Test]
+        public void StringInTests()
+        {
+            Assert.IsTrue("ABC".In("C", "B", "ABC" ));
+            Assert.IsFalse("ABC".In("C", "B", "a" ));
+        }
+
+        [Test]
         public void StartsWithTests()
         {
             Assert.IsTrue("ABC".StartsWith(new[]{"C", "B", "A"}));
