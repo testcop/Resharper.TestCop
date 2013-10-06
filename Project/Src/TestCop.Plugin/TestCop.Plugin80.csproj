@@ -61,6 +61,7 @@
     <Compile Include="Helper\ProjectFileFinder.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Helper\TestCopFileCreater.cs" />
     <Compile Include="Highlighting\TestFileNameSpaceWarning.cs" />
     <Compile Include="Highlighting\HighlighterConsts.cs" />
     <Compile Include="Highlighting\TestClassNameWarning.cs" />
@@ -113,6 +114,7 @@
     <None Include="..\InstallSupport\TestCop.nuspec">
       <Link>TestCop.nuspec</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <PropertyGroup>

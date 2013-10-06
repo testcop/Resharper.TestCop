@@ -5,7 +5,7 @@
 		<version>1.0.0.3</version>     
 		<title>TestCop</title>     
 		<authors>Alcaeus</authors>     
-		<description>Easily switch between unit tests and code. Create missing associated files. Includes highlightings to keep test projects neat and tidy. Works with NUnit, MSTest and xUnit.net.</description>
+		<description>Easily switch between unit tests and code. Create missing associated files. Includes highlightings to keep test projects neat and tidy. Works with NUnit, MSTest, xUnit ...</description>
 		<releaseNotes>Select file template macro to use when creating tests and classes.</releaseNotes>
     <projectUrl>https://testcop.codeplex.com/</projectUrl>
     <licenseUrl>https://testcop.codeplex.com/license</licenseUrl>
