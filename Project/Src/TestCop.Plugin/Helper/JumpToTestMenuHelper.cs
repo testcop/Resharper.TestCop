@@ -157,7 +157,7 @@ namespace TestCop.Plugin.Helper
                                             , null,
                                             ResharperHelper.ProtectActionFromReEntry(lifetime,"TestingMenuNavigation",
                                                                      () =>
-                                                                     ResharperHelper.CreateFileWithinProject(lifetime, associatedTargetProject,
+                                                                     ResharperHelper.CreateFileWithinProject(associatedTargetProject,
                                                                                              targetLocationDirectory, targetFile)));
             result.Style = MenuItemStyle.Enabled;
             result.Icon = UnnamedThemedIcons.Agent16x16.Id;

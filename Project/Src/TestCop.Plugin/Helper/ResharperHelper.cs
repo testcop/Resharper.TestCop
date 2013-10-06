@@ -18,7 +18,6 @@ using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.FileTemplates;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Settings;
 using JetBrains.ReSharper.Feature.Services.Util;
-using JetBrains.ReSharper.LiveTemplates.Templates;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.Services;
@@ -206,43 +205,10 @@ namespace TestCop.Plugin.Helper
             threading.ReentrancyGuard.ExecuteOrQueueEx(description, fOnExecute);                        
         }
     
-        public static void CreateFileWithinProject(Lifetime lifetime, IProject associatedProject,
-                                                    FileSystemPath fileSystemPath, string targetFile)
+        public static void CreateFileWithinProject(IProject associatedProject,FileSystemPath fileSystemPath, string targetFile)
         {
-            //TODO: move into shell component with proper DI 
-            var storedTemplatesProvider = Shell.Instance.GetComponent<StoredTemplatesProvider>();                        
-            var settingsStore= Shell.Instance.GetComponent<ISettingsStore>();
-            var boundSettingsStore=settingsStore.BindToContextTransient(ContextRange.ApplicationWide, BindToContextFlags.Normal);
-
-            var desiredTemplateName = associatedProject.IsTestProject()
-                ? TestCopSettingsManager.Instance.Settings.UnitTestFileTemplateName
-                : TestCopSettingsManager.Instance.Settings.CodeFileTemplateName;
-
-            var dataContexts = Shell.Instance.GetComponent<DataContexts>();
-            var context = dataContexts.CreateOnActiveControl(lifetime);
-            var projectLanguage = associatedProject.ProjectProperties.DefaultLanguage.PresentableName;
-
-            var classTemplate = storedTemplatesProvider.EnumerateTemplates(boundSettingsStore, TemplateApplicability.File)
-               .Where(x => x.Description == desiredTemplateName && x.ScopePoints.Any(s=>s.RelatedLanguage.PresentableName==projectLanguage))
-               .Select(x => x)
-               .FirstOrDefault();
-            
-            if (classTemplate == null)
-            {
-                AppendLineToOutputWindow(string.Format("File Template for '{0}' not found will default to 'Class'", desiredTemplateName));
-                classTemplate = FileTemplatesManager.Instance.GetFileTemplatesForActions(context).FirstOrDefault(c => c.Description == "Class");
-            }
-            IProjectFolder folder = (IProjectFolder)associatedProject.FindProjectItemByLocation(fileSystemPath)
-                                    ?? AddNewItemUtil.GetOrCreateProjectFolder(associatedProject, fileSystemPath);
-
-            if (folder == null)
-            {
-                AppendLineToOutputWindow("Error failed to create/location project folder" + fileSystemPath);
-                return;
-            }
-
-            string extension = Enumerable.First<string>(Shell.Instance.GetComponent<IProjectFileExtensions>().GetExtensions(associatedProject.ProjectProperties.DefaultLanguage.DefaultProjectFileType));
-            FileTemplatesManager.Instance.CreateFileFromTemplate(targetFile + extension, folder, classTemplate);
+            var testCopFileCreater = Shell.Instance.GetComponent<TestCopFileCreater>();
+            testCopFileCreater.CreateFileWithinProject(associatedProject, fileSystemPath, targetFile);
         }
     }    
 }
