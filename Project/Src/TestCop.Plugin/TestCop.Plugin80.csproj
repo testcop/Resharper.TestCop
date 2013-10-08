@@ -124,7 +124,8 @@
   <Import Project="$(ReSharperSdkTargets)\Plugin.Targets" />
   <Import Project="$(ReSharperSdkTools)\MSBuild\JetBrains.Build.Platform.ThemedIconsConverter.Targets" />
   <PropertyGroup>
-    <PostBuildEvent>$(ProjectDir)\..\InstallSupport\nuget.build.bat</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -133,4 +134,11 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="AfterBuild" Condition="'$(Configuration)' == 'Release'">
+    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+      <Output TaskParameter="Assemblies" ItemName="AssemblyVersion" />
+    </GetAssemblyIdentity>
+    <Message Text="Releasing %(AssemblyVersion.Version)" Importance="high" />
+    <Exec Command="$(ProjectDir)\..\InstallSupport\nuget.build.bat %(AssemblyVersion.Version)" WorkingDirectory="$(OutputPath)"/>
+  </Target>
 </Project>

@@ -9,26 +9,24 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Controls;
-using EnvDTE;
 using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
-using JetBrains.ProjectModel.Properties;
-using JetBrains.ReSharper.LiveTemplates.CSharp.Context;
+using JetBrains.ReSharper.Feature.Services.LiveTemplates.Scope;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Settings;
+using JetBrains.ReSharper.LiveTemplates.CSharp.Scope;
 using JetBrains.ReSharper.LiveTemplates.Templates;
-using JetBrains.ReSharper.LiveTemplates.VB.Context;
-using TestCop.Plugin.Extensions;
+using JetBrains.ReSharper.LiveTemplates.VB.Scope;
 using TestCop.Plugin.Helper;
+
 
 namespace TestCop.Plugin.OptionsPage
 {    
     public class IsAFileTemplateValidationRule : ValidationRule
     {
-        readonly InCSharpFile _sharpFile = new InCSharpFile();
-        readonly InVBFile _vbFile = new InVBFile();
         private readonly Lifetime _lifetime;
         readonly StoredTemplatesProvider _storedTemplatesProvider;
         private readonly IContextBoundSettingsStore _settingsStore;
+        
 
         public IsAFileTemplateValidationRule(Lifetime lifetime
             , StoredTemplatesProvider storedTemplatesProvider
@@ -36,7 +34,7 @@ namespace TestCop.Plugin.OptionsPage
         {
             _lifetime = lifetime;
             _storedTemplatesProvider = storedTemplatesProvider;
-            _settingsStore = settingsStore;
+            _settingsStore = settingsStore;            
         }
 
         public override ValidationResult Validate(object value,
@@ -64,14 +62,16 @@ namespace TestCop.Plugin.OptionsPage
         }
 
         private IEnumerable<Template> GetTemplatesForName(string templateDescription)
-        {
+        {            
+            IList<ITemplateScopePoint> applicableFileTeamplateScope = new List<ITemplateScopePoint>();
+            applicableFileTeamplateScope.Add(new InAnyProject());
+            applicableFileTeamplateScope.Add(new InCSharpProjectFile());
+            applicableFileTeamplateScope.Add(new InVBProjectFile());
+
             var template = _storedTemplatesProvider.EnumerateTemplates(_settingsStore, TemplateApplicability.File)
                 .Where(x => x.Description == templateDescription
-                            && x.ScopePoints.Any(s => s.RelatedLanguage != null
-                                                      &&
-                                                      s.RelatedLanguage.Name.In(_sharpFile.RelatedLanguage.Name,
-                                                          _vbFile.RelatedLanguage.Name)))
-                .Select(x => x);
+                            && TemplateScopeManager.TemplateIsAvailable(x, applicableFileTeamplateScope))
+                .Select(x=>x);
             return template;
         }
     }
