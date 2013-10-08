@@ -13,26 +13,20 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Media;
-using EnvDTE;
 using JetBrains.Application;
 using JetBrains.Application.DataContext;
 using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
-using JetBrains.Interop.WinApi;
 using JetBrains.ProjectModel;
 using JetBrains.ProjectModel.DataContext;
-using JetBrains.ProjectModel.Properties;
-using JetBrains.ReSharper.Feature.Services.LiveTemplates.Context;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.FileTemplates;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Scope;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Settings;
+using JetBrains.ReSharper.Feature.Services.LiveTemplates.Support;
 using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.ReSharper.Features.Common.Options;
-using JetBrains.ReSharper.LiveTemplates.CSharp.Context;
-using JetBrains.ReSharper.LiveTemplates.CSharp.Scope;
 using JetBrains.ReSharper.LiveTemplates.Templates;
 using JetBrains.ReSharper.LiveTemplates.UI;
-using JetBrains.ReSharper.LiveTemplates.VB.Scope;
 using JetBrains.UI.Application;
 using JetBrains.UI.CrossFramework;
 using JetBrains.UI.Icons;
@@ -55,15 +49,17 @@ namespace TestCop.Plugin.OptionsPage
       private readonly UIApplication _application;
       private readonly ISolution _solution;
       private const string PID = "TestCopPageId";
+      private readonly FileTemplatesManager _fileTemplatesManager;
       
       public TestCopOptionPage(Lifetime lifetime, OptionsSettingsSmartContext settings
           , IThemedIconManager iconManager, UIApplication application
-        , StoredTemplatesProvider storedTemplatesProvider, ISolution solution = null)
+        , StoredTemplatesProvider storedTemplatesProvider,FileTemplatesManager fileTemplatesManager, ISolution solution = null)
       {
           _lifetime = lifetime;
           _settings = settings;
           _application = application;
           _solution = solution;
+          _fileTemplatesManager = fileTemplatesManager;
           _storedTemplatesProvider = storedTemplatesProvider;
 
           InitializeComponent();
@@ -185,34 +181,34 @@ namespace TestCop.Plugin.OptionsPage
           return true;
       }
 
-      private void btnAdd_Click(object sender, System.Windows.RoutedEventArgs e)
+      private void BtnAddClick(object sender, RoutedEventArgs e)
       {
           AddItemFromTextbox(attributeTextBox, testingAttributesListBox);
       }
 
-      private void btnRemove_Click(object sender, System.Windows.RoutedEventArgs e)
+      private void BtnRemoveClick(object sender, RoutedEventArgs e)
       {
           RemoveAndClearItem(attributeTextBox, testingAttributesListBox);
       }
 
-      private void testingAttributesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+      private void TestingAttributesListBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
       {
           attributeTextBox.Text = testingAttributesListBox.SelectedItem != null
                                       ? testingAttributesListBox.SelectedItem.ToString()
                                       : "";
       }
 
-      private void btnAddContext_Click(object sender, System.Windows.RoutedEventArgs e)
+      private void BtnAddContextClick(object sender, RoutedEventArgs e)
     {
         AddItemFromTextbox(contextTextBox, contextPrefixesListBox);
     }
     
-    private void btnRemoveContext_Click(object sender, System.Windows.RoutedEventArgs e)
+    private void BtnRemoveContextClick(object sender, RoutedEventArgs e)
     {
         RemoveAndClearItem(contextTextBox, contextPrefixesListBox);
     }      
 
-    private void contextPrefixesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void ContextPrefixesListBoxSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         contextTextBox.Text = contextPrefixesListBox.SelectedItem != null ? contextPrefixesListBox.SelectedItem.ToString() : "";
     }
@@ -232,7 +228,7 @@ namespace TestCop.Plugin.OptionsPage
           }
       }
 
-      private void classAndNamespace_TextChanged(object sender, TextChangedEventArgs e)
+      private void ClassAndNamespaceTextChanged(object sender, TextChangedEventArgs e)
       {
             Regex regEx;
           
@@ -262,55 +258,48 @@ namespace TestCop.Plugin.OptionsPage
                 }).Invoke();
             }        
       }
-
-     
+      
       private void FileTemplateSelectFromList(object sender, System.Windows.Input.MouseButtonEventArgs e)
       {          
           var dataContexts = Shell.Instance.GetComponent<DataContexts>();
                               
           Template template=null;
           
-          Lifetimes.Using((System.Action<Lifetime>)(l =>
-                                                    {
-                                                        var context = dataContexts.CreateOnActiveControl(l);
+          Lifetimes.Using(lifetime =>
+                          {
+                              var context = dataContexts.CreateOnActiveControl(lifetime);
 
-                                                        IProjectFolder projectFolder = FileTemplateUtil.GetProjectFolderFromContext(context);
-                                                        if (projectFolder == null) return;
-                                                        var project = projectFolder.GetProject();
-                                                        if (project == null) return;
+                              IProjectFolder projectFolder = FileTemplateUtil.GetProjectFolderFromContext(context);
+                              if (projectFolder == null) return;
+                              var project = projectFolder.GetProject();
+                              if (project == null) return;
 
-                                                        var scope = new List<ITemplateScopePoint>();
-                                                                                                                                                                        
-                                                        if (project.ProjectProperties.DefaultLanguage == ProjectLanguage.VBASIC)
-                                                        {
-                                                            scope.Add(new InVBProjectFile());   
-                                                        }
-                                                        else
-                                                        {
-                                                            scope.Add(new InCSharpProjectFile());   
-                                                        }
+                              IEnumerable<IFileTemplatesSupport> applicableFileTemplates = _fileTemplatesManager.FileTemplatesSupports.Where(s => s.Accepts(project));                              
+                              var scope = applicableFileTemplates.SelectMany(s => s.ScopePoints)
+                                  .Distinct()
+                                  .Where(s=>s.GetDefaultUID()!= new InAnyProject().GetDefaultUID())
+                                  .ToList();
                                                         
-                                                        using (                                                                                                                
-                                                            var templateDialog =
-                                                                new TemplateChooserDialog(l,
-                                                                    FileTemplatesManager.Instance.QuickListSupports,
-                                                                    scope, projectFolder.ToDataContext(),
-                                                                    TemplateApplicability.File))
-                                                        {
-                                                            if (templateDialog.ShowDialog(_application.MainWindow) !=
-                                                                DialogResult.OK)
-                                                            {
-                                                                return;
-                                                            }
-                                                            template = templateDialog.Template;
-                                                        }
-                                                    }));
+                              using (                                                                                                                
+                                  var templateDialog =
+                                      new TemplateChooserDialog(lifetime,
+                                          FileTemplatesManager.Instance.QuickListSupports,
+                                          scope, projectFolder.ToDataContext(),
+                                          TemplateApplicability.File))
+                              {
+                                  if (templateDialog.ShowDialog(_application.MainWindow) !=
+                                      DialogResult.OK)
+                                  {
+                                      return;
+                                  }
+                                  template = templateDialog.Template;
+                              }
+                          });
                                                                                               
           if (template != null)
           {
               ((TextBox) sender).Text = template.Description;
-          }
-          
+          }          
       }     
   }
 }
