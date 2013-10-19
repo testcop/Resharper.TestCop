@@ -21,6 +21,7 @@ using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.Search;
 using JetBrains.TextControl;
+using JetBrains.UI.PopupMenu;
 using JetBrains.Util;
 using TestCop.Plugin.Extensions;
 using TestCop.Plugin.Helper;
@@ -32,8 +33,15 @@ using JetBrains.ReSharper.Psi.Modules;
 namespace TestCop.Plugin
 {
     [ActionHandler("TestCop.JumpToTest")]
-    internal class JumpToTestFileAction : IActionHandler
-    {        
+    public class JumpToTestFileAction : IActionHandler
+    {
+        private Action<JetPopupMenu, JetPopupMenu.ShowWhen> _menuDisplayer = (menu, showWhen) => menu.Show(showWhen);
+
+        public JumpToTestFileAction(Action<JetPopupMenu, JetPopupMenu.ShowWhen> overrideMenuDisplay): this()
+        {
+            _menuDisplayer = overrideMenuDisplay;
+        }
+        
         public JumpToTestFileAction()
         {
             ResharperHelper.AppendLineToOutputWindow(Assembly.GetExecutingAssembly().GetName().ToString());            
@@ -48,7 +56,7 @@ namespace TestCop.Plugin
             // enable this action if we are in text editor, disable otherwise            
             return textControl != null;
         }
-      
+     
         void IActionHandler.Execute(IDataContext context, DelegateExecute nextExecute)
         {            
             ITextControl textControl = context.GetData(DataConstants.TEXT_CONTROL);
@@ -102,7 +110,7 @@ namespace TestCop.Plugin
                 elementsFoundInTarget.AddRangeIfMissing(references, declElementMatcher);                
             }
 
-            JumpToTestMenuHelper.PromptToOpenOrCreateClassFiles(textControl.Lifetime, context, solution
+            JumpToTestMenuHelper.PromptToOpenOrCreateClassFiles(_menuDisplayer, textControl.Lifetime, context, solution
                     ,currentProject, clrTypeClassName,targetProject
                     ,elementsFoundInTarget, elementsFoundInSolution);            
         }

@@ -4,21 +4,29 @@
 // -- Copyright 2013
 // --
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using JetBrains.ActionManagement;
 using JetBrains.Annotations;
 using JetBrains.Application.Components;
+using JetBrains.Application.DataContext;
 using JetBrains.Application.Settings;
+using JetBrains.DataFlow;
+using JetBrains.IDE;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Impl;
 using JetBrains.ReSharper.Daemon.Test;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
+using JetBrains.ReSharper.Psi.Services.ValueTracking;
 using JetBrains.ReSharper.TestFramework;
 using JetBrains.TestFramework.ProjectModel;
 using JetBrains.TestShell.Infra;
+using JetBrains.TextControl;
+using JetBrains.UI.PopupMenu;
 using JetBrains.Util;
 using NUnit.Framework;
 
@@ -89,6 +97,7 @@ namespace TestCop.Plugin.Tests
         {
             return true;
         }
+        
          
         public void DoTestFiles(string fullProjectPathToTestFile)
         {
@@ -112,11 +121,13 @@ namespace TestCop.Plugin.Tests
                                                                                        
                                             IPsiSourceFile sourceFile = projectFile.ToSourceFile();
                                             Assert.IsNotNull(sourceFile);
-
+                                            
                                             if (!sourceFile.Properties.IsNonUserFile)
                                             {
                                                 processedFile = true;
                                                 Assert.IsTrue(projectFile.Kind == ProjectItemKind.PHYSICAL_FILE);
+
+                                                IProjectFile file = projectFile;
                                                 ExecuteWithGold(projectFile.Location.FullPath
                                                                 , (writer =>
                                                                        {
@@ -125,6 +136,8 @@ namespace TestCop.Plugin.Tests
                                                                            highlightDumper.DoHighlighting(
                                                                                DaemonProcessKind.VISIBLE_DOCUMENT);
                                                                            highlightDumper.Dump();
+
+                                                                           DumperShortCutAction(file, writer);
                                                                        }));
                                                 return;
                                             }
@@ -137,5 +150,50 @@ namespace TestCop.Plugin.Tests
                 Assert.Fail("Failed to project file by project path " + fullProjectPathToTestFile);
             }
         }
+
+        protected virtual void DumperShortCutAction(IProjectFile projectFile, TextWriter textwriter)
+        {            
+            Lifetimes.Using((lifetime =>
+                {                                    
+                    using (ITextControl textControl = OpenTextControl(projectFile))
+                    {
+                        var jumpToTestFileAction = GetShortcutAction(textwriter);
+                        if(jumpToTestFileAction==null) return;
+
+                        IDataContext context = DataContextOfTestTextControl.Create(lifetime,textControl, _loadedTestSolution);
+                        
+                        if ((jumpToTestFileAction).Update(context, new ActionPresentation(), null))
+                        {                            
+                            (jumpToTestFileAction).Execute(context, null);                                    
+                        }                        
+                    }
+                }));
+        }
+
+        protected virtual IActionHandler GetShortcutAction(TextWriter textwriter)
+        {
+            return null;
+        }
+
+        protected ITextControl OpenTextControl(IProjectFile projectFile, int? caretOffset = null)
+        {            
+            ITextControl openProjectFile = EditorManager.GetInstance(projectFile.GetSolution()).OpenProjectFile(projectFile, true);
+            return openProjectFile;
+        }
+
+        public Action<JetPopupMenu, JetPopupMenu.ShowWhen> CreateJetPopMenuShowToWriterAction(TextWriter textWriter)
+        {
+           Action<JetPopupMenu, JetPopupMenu.ShowWhen> menuDisplayer = (menu, when) =>
+            {
+                foreach (var itm in Enumerable.ToList(menu.ItemKeys).Cast<SimpleMenuItem>())
+                {
+                    var s = itm.Text+ itm.ShortcutText ?? "";
+                    textWriter.WriteLine("[{0}] {1}", menu.Caption.Value, s);
+                }
+            };
+
+            return menuDisplayer;
+        }
     }
+        
 }
