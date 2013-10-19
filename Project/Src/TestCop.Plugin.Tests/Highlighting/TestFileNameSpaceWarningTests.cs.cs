@@ -4,6 +4,8 @@
 // -- Copyright 2013
 // --
 
+using System.IO;
+using JetBrains.ActionManagement;
 using JetBrains.Application.Settings;
 using JetBrains.ReSharper.Daemon;
 using NUnit.Framework;
@@ -25,6 +27,11 @@ namespace TestCop.Plugin.Tests.Highlighting
             get { return @"highlighting\sample_sln"; }
         }
 
+        protected override IActionHandler GetShortcutAction(TextWriter textwriter)
+        {
+            IActionHandler jumpToTestFileAction = new JumpToTestFileAction(CreateJetPopMenuShowToWriterAction(textwriter));
+            return jumpToTestFileAction;
+        }
         protected override string SolutionName
         {
             get { return @"TestApplication.sln"; }

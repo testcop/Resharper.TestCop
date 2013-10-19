@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TestCop.TestApplication2Tests.Samples
 {
@@ -13,3 +13,4 @@ namespace TestCop.TestApplication2Tests.Samples
 
 ---------------------------------------------------------
 (0): ReSharper Warning: The file name begins with ClassB but no matching class exists in associated project
+[Switch to:] Create |ClassB|(<TestApplication2>\Samples)

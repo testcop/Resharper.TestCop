@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TestCop.TestApplication.Tests
 {
@@ -12,3 +12,4 @@ namespace TestCop.TestApplication.Tests
         }
     }
 }
+

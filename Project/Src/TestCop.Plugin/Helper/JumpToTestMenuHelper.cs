@@ -28,7 +28,7 @@ namespace TestCop.Plugin.Helper
     public static class JumpToTestMenuHelper
     {        
         //------------------------------------------------------------------------------------------------------------------------
-        public static void PromptToOpenOrCreateClassFiles(Lifetime lifetime, IDataContext context, ISolution solution
+        public static void PromptToOpenOrCreateClassFiles(Action<JetPopupMenu, JetPopupMenu.ShowWhen> menuDisplayer,Lifetime lifetime, IDataContext context, ISolution solution
     , IProject project, IClrTypeName clrTypeClassName, IProject targetProject
     , List<IClrDeclaredElement> preferred, List<IClrDeclaredElement> fullList)
         {
@@ -60,7 +60,8 @@ namespace TestCop.Plugin.Helper
 
             menu.KeyboardAcceleration.SetValue(KeyboardAccelerationFlags.Mnemonics);
             menu.NoItemsBanner = WindowlessControl.Create("No destinations found.");
-            menu.Show(autoExecuteIfSingleEnabledItem);
+     
+            menuDisplayer.Invoke(menu, autoExecuteIfSingleEnabledItem);                        
         }
         //------------------------------------------------------------------------------------------------------------------------
         private static void AppendNavigateToMenuItems(Lifetime lifetime, ISolution solution, List<IClrDeclaredElement> clrDeclaredElements,
