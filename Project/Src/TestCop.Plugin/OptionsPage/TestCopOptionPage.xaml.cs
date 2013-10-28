@@ -3,7 +3,7 @@
 // -- License http://testcop.codeplex.com/license
 // -- Copyright 2013
 // --
-
+ 
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -280,12 +280,16 @@ namespace TestCop.Plugin.OptionsPage
                                   .Where(s=>s.GetDefaultUID()!= new InAnyProject().GetDefaultUID())
                                   .ToList();
                                                         
-                              using (                                                                                                                
+                              using (       
                                   var templateDialog =
-                                      new TemplateChooserDialog(lifetime,
+                                      new TemplateChooserDialog(
+                                      #if !R7
+                                        lifetime,
+                                      #endif
                                           FileTemplatesManager.Instance.QuickListSupports,
                                           scope, projectFolder.ToDataContext(),
                                           TemplateApplicability.File))
+
                               {
                                   if (templateDialog.ShowDialog(_application.MainWindow) !=
                                       DialogResult.OK)
