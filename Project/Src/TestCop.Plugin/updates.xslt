@@ -6,10 +6,10 @@
   <xsl:output method="xml" indent="yes"/>
 
   <!-- This is the latest version available -->
-  <xsl:variable name="LatestMajor" select="0" />
+  <xsl:variable name="LatestMajor" select="1" />
   <xsl:variable name="LatestMinor" select="0" />
   <xsl:variable name="LatestBuild" select="0" />
-  <xsl:variable name="LatestRevision" select="7" />
+  <xsl:variable name="LatestRevision" select="4" />
   
   <!-- Match the PluginLocalInfo element created by serialising the data from the category -->
   <xsl:template match="/PluginLocalInfo">
@@ -27,7 +27,7 @@
           <Title>
             <xsl:value-of select="concat('TestCop for ReSharper ', $LatestMajor, '.', $LatestMinor, '.', $LatestBuild, '.', $LatestRevision, ' Released')" />
           </Title>
-          <Description>A minor upgrade with RegEx support for namespaces is available for your version of <xsl:value-of select="concat($InstalledMajor, '.', $InstalledMinor, '.', $InstalledBuild, '.', $InstalledRevision)" /></Description>
+          <Description>Upgrade that adds support for selecting file templates to use when creating files.<xsl:value-of select="concat($InstalledMajor, '.', $InstalledMinor, '.', $InstalledBuild, '.', $InstalledRevision)" /></Description>
           <DownloadUri>https://testcop.codeplex.com/downloads/get/698008</DownloadUri>          
           <CompanyName>TestCop</CompanyName>
           <ProductName>TestCop for Resharper</ProductName>
