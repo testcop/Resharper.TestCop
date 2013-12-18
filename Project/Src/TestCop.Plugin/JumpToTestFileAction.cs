@@ -146,8 +146,8 @@ namespace TestCop.Plugin
             ISearchDomain searchDomain;
 
             if (Settings.FindAnyUsageInTestAssembly)
-            {                
-                searchDomain = SearchDomainFactory.Instance.CreateSearchDomain(
+            {
+                searchDomain = PsiShared.GetComponent<SearchDomainFactory>().CreateSearchDomain(                
                 targetProject.GetAllProjectFiles().Select(p => p.GetPsiModule()));
             }
             else
@@ -157,7 +157,7 @@ namespace TestCop.Plugin
                 var pattern = string.Format("{0}.*{1}", clrTypeClassName.ShortName, Settings.TestClassSuffix);
                 var finder = new ProjectFileFinder(items, new Regex(pattern));
                 targetProject.Accept(finder);
-                searchDomain = SearchDomainFactory.Instance.CreateSearchDomain(items.Select(p => p.ToSourceFile()));
+                searchDomain = PsiShared.GetComponent<SearchDomainFactory>().CreateSearchDomain(items.Select(p => p.ToSourceFile()));
             }
 
 #if R7
