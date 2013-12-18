@@ -68,9 +68,6 @@
     <Compile Include="CSharpHighlightingWithinSolutionTestBase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\TestCop.Plugin\TestCop.Plugin81.csproj">
       <Project>{67fdd024-6a0f-4979-839d-2b3fa8c89d20}</Project>
       <Name>TestCop.Plugin81</Name>
