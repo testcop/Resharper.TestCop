@@ -29,7 +29,7 @@ namespace TestCop.Plugin.Helper
     {        
         //------------------------------------------------------------------------------------------------------------------------
         public static void PromptToOpenOrCreateClassFiles(Action<JetPopupMenu, JetPopupMenu.ShowWhen> menuDisplayer,Lifetime lifetime, IDataContext context, ISolution solution
-    , IProject project, IClrTypeName clrTypeClassName, IProject targetProject
+    , IProject project, IClrTypeName clrTypeClassName, IList<IProject> targetProject
     , List<IClrDeclaredElement> preferred, List<IClrDeclaredElement> fullList)
         {
             var autoExecuteIfSingleEnabledItem = JetPopupMenu.ShowWhen.AutoExecuteIfSingleEnabledItem;
@@ -116,7 +116,7 @@ namespace TestCop.Plugin.Helper
             return menuItems;
         }
         //------------------------------------------------------------------------------------------------------------------------
-        static public bool DeriveRelatedFileNameAndAddCreateMenus(IDataContext context, Lifetime lifetime, IProject project, IProject associatedTargetProject,IList<SimpleMenuItem> currentMenus, IClrTypeName clrTypeClassName)
+        static public bool DeriveRelatedFileNameAndAddCreateMenus(IDataContext context, Lifetime lifetime, IProject project, IList<IProject> associatedTargetProjects,IList<SimpleMenuItem> currentMenus, IClrTypeName clrTypeClassName)
         {
             string testSuffix = TestCopSettingsManager.Instance.Settings.TestClassSuffix;
             if (clrTypeClassName == null) return false;
@@ -127,27 +127,51 @@ namespace TestCop.Plugin.Helper
             var baseFileName = ResharperHelper.GetBaseFileName(context, project.GetSolution());
             
             var targetFile = ResharperHelper.UsingFileNameGetClassName(baseFileName).RemoveTrailing(testSuffix);
-            bool isTestFile = baseFileName.EndsWith(testSuffix);
+            bool currentFileisTestFile = baseFileName.EndsWith(testSuffix);
 
-            if (!isTestFile)         
+            if (!currentFileisTestFile)         
             {
                 targetFile += testSuffix;
             }
             
-            var targetLocationDirectory = new FileSystemPath(associatedTargetProject.ProjectFileLocation.Directory + "\\" + targetDirectory);
+            bool addedCreateMenuItem = false;
 
-            foreach (var menuItem in currentMenus)
+            foreach (var associatedTargetProject in associatedTargetProjects)
             {
-                if (menuItem.Tag==null) continue;
-                if(menuItem.Tag.ToString().StartsWith(targetLocationDirectory.FullPath+"\\"+targetFile, StringComparison.CurrentCultureIgnoreCase))
-                {                    
-                    return false;
+                if (currentFileisTestFile == associatedTargetProject.IsTestProject())
+                {
+                    ResharperHelper.AppendLineToOutputWindow(
+                        string.Format("Internal Error: Attempted to create '{0}' within project '{1}'"
+                        , targetFile, associatedTargetProject.Name) );
+                    continue;
+                }
+
+                var targetLocationDirectory = new FileSystemPath(associatedTargetProject.ProjectFileLocation.Directory + "\\" + targetDirectory);
+                string targetFileLocation = targetLocationDirectory.FullPath + "\\" + targetFile;
+
+                if (!IsMenuItemPresentForFile(currentMenus, targetFileLocation))
+                {
+                    currentMenus.AddRange(AddCreateFileMenuItem(context, lifetime, associatedTargetProject,
+                        targetLocationDirectory, targetFile));
+                    addedCreateMenuItem = true;
                 }
             }
-
-            currentMenus.AddRange(AddCreateFileMenuItem(context, lifetime, associatedTargetProject, targetLocationDirectory, targetFile));
-            return true;
+            return addedCreateMenuItem;
         }
+
+        private static bool IsMenuItemPresentForFile(IList<SimpleMenuItem> currentMenus, string targetFileLocation)
+        {
+            foreach (var menuItem in currentMenus)
+            {
+                if (menuItem.Tag == null) continue;
+                if (menuItem.Tag.ToString().StartsWith(targetFileLocation, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         //------------------------------------------------------------------------------------------------------------------------
         private static List<SimpleMenuItem> AddCreateFileMenuItem(IDataContext context, Lifetime lifetime, IProject associatedTargetProject,
                                           FileSystemPath targetLocationDirectory, string targetFile)

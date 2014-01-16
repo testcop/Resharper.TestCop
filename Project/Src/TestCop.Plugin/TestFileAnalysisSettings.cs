@@ -54,6 +54,9 @@ namespace TestCop.Plugin
         [SettingsEntry(@"^(.*?)\.?Tests$", "Regex to identify tests project by their namespace")]
         public string TestProjectToCodeProjectNameSpaceRegEx { get; set; }
 
+        [SettingsEntry(@"", "RegEx replacement text")]
+        public string TestProjectToCodeProjectNameSpaceRegExReplace { get; set; }
+
         [SettingsEntry(@"Global::Ctrl+G, Ctrl+T", "Keyboard shortcut for switching between code and unit test files")]
         public string ShortcutToSwitchBetweenFiles { get; set; }
 
@@ -62,6 +65,8 @@ namespace TestCop.Plugin
 
         [SettingsEntry(@"Class", "Name of Template to use when creating a unittest class")]
         public string UnitTestFileTemplateName { get; set; }
+
+
     }
 
     [ShellComponent]

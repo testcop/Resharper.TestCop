@@ -6,7 +6,7 @@
 		<title>TestCop</title>     
 		<authors>Alcaeus</authors>     
 		<description>Easily switch between unit tests and code. Create missing associated files. Includes highlightings and test templates to keep test projects neat and tidy. Works with NUnit, MSTest, xUnit ...</description>
-		<releaseNotes>Rebuilt for R#8.1</releaseNotes>
+		<releaseNotes>Added support for multiple test project mapping to a single code project</releaseNotes>
     <projectUrl>https://testcop.codeplex.com/</projectUrl>
     <licenseUrl>https://testcop.codeplex.com/license</licenseUrl>
     <iconUrl>https://testcop.svn.codeplex.com/svn/Project/Src/TestCop.Plugin/resources/agent48x48.png</iconUrl>
@@ -14,7 +14,7 @@
     <dependencies>
       <dependency id="ReSharper" version="[8.1,8.2)" />
     </dependencies>
-    <tags>resharper unittest xUnit.net nunit mstest tdd c#</tags>
+    <tags>resharper unittest xunit nunit mstest tdd c#</tags>
   </metadata>   
 	<files>     
 		<file src="TestCopForResharper.dll" target="ReSharper\v8.1\plugins" />

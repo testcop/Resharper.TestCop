@@ -228,8 +228,8 @@ namespace TestCop.Plugin
             var declaredElements = ResharperHelper.FindClass(Solution,className);
 
             var thisProject = thisDeclaration.GetProject();
-            var associatedProject = ResharperHelper.FindAssociatedProject(thisProject);
-            if (associatedProject == null)
+            var associatedProjects = ResharperHelper.FindAssociatedProjects(thisProject);
+            if (associatedProjects == null)
             {
                 var highlight = new TestFileNameWarning("Project for this test assembly was not found - check namespace of projects", thisDeclaration);
                 _myHighlightings.Add(new HighlightingInfo(thisDeclaration.GetNameDocumentRange(), highlight));
@@ -237,7 +237,7 @@ namespace TestCop.Plugin
             }
 
             var filteredDeclaredElements = new List<IClrDeclaredElement>(declaredElements);
-            ResharperHelper.RemoveElementsNotInProject(filteredDeclaredElements, associatedProject);
+            ResharperHelper.RemoveElementsNotInProjects(filteredDeclaredElements, associatedProjects);
             
             if (filteredDeclaredElements.Count == 0)
             {
@@ -267,9 +267,9 @@ namespace TestCop.Plugin
         private void CheckClassNamespaceOfTestMatchesClassUnderTest(ICSharpTypeDeclaration thisDeclaration, List<IClrDeclaredElement> declaredElements)
         {            
             var thisProject = thisDeclaration.GetProject();
-            var associatedProject = thisProject.GetAssociatedProject();
+            var associatedProject = thisProject.GetAssociatedProject().FirstOrDefault();
             if (associatedProject == null) return;
-            ResharperHelper.RemoveElementsNotInProject(declaredElements, associatedProject);   
+            ResharperHelper.RemoveElementsNotInProjects(declaredElements,new []{associatedProject});   
 
             var thisProjectsDefaultNamespace = thisProject.GetDefaultNamespace();
             if (string.IsNullOrEmpty(thisProjectsDefaultNamespace)) return;
