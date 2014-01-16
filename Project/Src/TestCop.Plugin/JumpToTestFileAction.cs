@@ -69,8 +69,8 @@ namespace TestCop.Plugin
             if (solution == null){return;}
 
             var currentProject = context.GetData(JetBrains.ProjectModel.DataContext.DataConstants.Project);
-            var targetProject = ResharperHelper.FindAssociatedProject(currentProject);     
-            if(targetProject==null)
+            var targetProjects = ResharperHelper.FindAssociatedProjects(currentProject);     
+            if(targetProjects.IsEmpty())
             {
                 ResharperHelper.AppendLineToOutputWindow("Unable to locate associated assembly - check project namespaces and testcop Regex");
                 return;
@@ -93,15 +93,15 @@ namespace TestCop.Plugin
             if(clrTypeClassName!=null)
             {
                 string className = clrTypeClassName.ShortName.Flip(isTestFile, settings.TestClassSuffix);                
-                elementsFoundInTarget.AddRangeIfMissing(ResharperHelper.FindClass(solution, className, targetProject), declElementMatcher );
+                elementsFoundInTarget.AddRangeIfMissing(ResharperHelper.FindClass(solution, className, targetProjects), declElementMatcher );
 
                 classNamesToFind.Add(className);
-                elementsFoundInTarget.AddRangeIfMissing(ResharperHelper.FindClass(solution, className, targetProject), declElementMatcher);
+                elementsFoundInTarget.AddRangeIfMissing(ResharperHelper.FindClass(solution, className, targetProjects), declElementMatcher);
                 elementsFoundInSolution.AddRangeIfMissing(ResharperHelper.FindClass(solution, className), declElementMatcher );
             }
             
             classNamesToFind.Add(classNameFromFileName);
-            elementsFoundInTarget.AddRangeIfMissing(ResharperHelper.FindClass(solution, classNameFromFileName, targetProject), declElementMatcher);
+            elementsFoundInTarget.AddRangeIfMissing(ResharperHelper.FindClass(solution, classNameFromFileName, targetProjects), declElementMatcher);
             elementsFoundInSolution.AddRangeIfMissing(ResharperHelper.FindClass(solution, classNameFromFileName), declElementMatcher); 
             
             if (!isTestFile)
@@ -111,7 +111,7 @@ namespace TestCop.Plugin
             }
 
             JumpToTestMenuHelper.PromptToOpenOrCreateClassFiles(_menuDisplayer, textControl.Lifetime, context, solution
-                    ,currentProject, clrTypeClassName,targetProject
+                    ,currentProject, clrTypeClassName,targetProjects
                     ,elementsFoundInTarget, elementsFoundInSolution);            
         }
         
@@ -142,13 +142,13 @@ namespace TestCop.Plugin
             IPsiServices services = solution.GetPsiServices();
             IProject currentProject = context.GetData(JetBrains.ProjectModel.DataContext.DataConstants.Project);
 
-            var targetProject = ResharperHelper.FindAssociatedProject(currentProject);
+            var targetProjects = ResharperHelper.FindAssociatedProjects(currentProject);
             ISearchDomain searchDomain;
 
             if (Settings.FindAnyUsageInTestAssembly)
             {
                 searchDomain = PsiShared.GetComponent<SearchDomainFactory>().CreateSearchDomain(                
-                targetProject.GetAllProjectFiles().Select(p => p.GetPsiModule()));
+                targetProjects.SelectMany(proj=>proj.GetAllProjectFiles().Select(p => p.GetPsiModule())) );
             }
             else
             {
@@ -156,7 +156,7 @@ namespace TestCop.Plugin
                 var items = new List<IProjectFile>();
                 var pattern = string.Format("{0}.*{1}", clrTypeClassName.ShortName, Settings.TestClassSuffix);
                 var finder = new ProjectFileFinder(items, new Regex(pattern));
-                targetProject.Accept(finder);
+                targetProjects.ForEach(p=>p.Accept(finder));
                 searchDomain = PsiShared.GetComponent<SearchDomainFactory>().CreateSearchDomain(items.Select(p => p.ToSourceFile()));
             }
 

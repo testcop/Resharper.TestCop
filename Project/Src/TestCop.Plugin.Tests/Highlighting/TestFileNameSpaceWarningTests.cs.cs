@@ -12,8 +12,7 @@ using NUnit.Framework;
 using TestCop.Plugin.Highlighting;
 
 namespace TestCop.Plugin.Tests.Highlighting
-{
-    //TODO: Review TestGotoFile
+{    
     [TestFixture]
     public class TestFileNameSpaceWarningTests : CSharpHighlightingWithinSolutionTestBase
     {

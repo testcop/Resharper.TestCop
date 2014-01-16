@@ -164,22 +164,32 @@ namespace TestCop.Plugin.Helper
               });
         }
 
-        public static IProject FindAssociatedProject(IProject project)
+        public static IList<IProject> FindAssociatedProjects(IProject project)
         {
             return project.GetAssociatedProject();
         }
 
-        public static void RemoveElementsNotInProject(List<IClrDeclaredElement> declaredElements, IProject associatedProject)
+        public static void RemoveElementsNotInProjects(List<IClrDeclaredElement> declaredElements, IList<IProject> associatedProjects)
         {
             declaredElements.RemoveAll(p => p.GetSourceFiles().Any(de =>
             {
                 var project = de.GetProject();
-                return project != null &&
-                       project != associatedProject;
+                return project != null && associatedProjects.Contains(project)==false;
             }));
         }
-            
-        public static List<IClrDeclaredElement> FindClass(ISolution solution, string classNameToFind, params IProject[] restrictToThisProjects)
+
+        public static List<IClrDeclaredElement> FindClass(ISolution solution, string classNameToFind)
+        {
+            var codeProjects = solution.GetAllCodeProjects().ToList();
+            return FindClass(solution, classNameToFind, codeProjects);
+        }
+
+        public static List<IClrDeclaredElement> FindClass(ISolution solution, string classNameToFind, IProject restrictToThisProject)
+        {
+            return FindClass(solution, classNameToFind, new[] { restrictToThisProject });
+        }
+
+        public static List<IClrDeclaredElement> FindClass(ISolution solution, string classNameToFind, IList<IProject> restrictToTheseProjects)
         {
             #if R7
                         var declarationsCache = solution.GetPsiServices().CacheManager.GetDeclarationsCache(DeclarationCacheLibraryScope.NONE, false);
@@ -191,10 +201,8 @@ namespace TestCop.Plugin.Helper
 
             var results = declarationsCache.GetElementsByShortName(classNameToFind).ToList();
 
-            foreach (var restrictToThisProject in restrictToThisProjects)
-            {
-                RemoveElementsNotInProject(results, restrictToThisProject);    
-            }
+            RemoveElementsNotInProjects(results, restrictToTheseProjects);    
+            
                                                            
             return results;
         }
