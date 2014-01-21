@@ -6,7 +6,7 @@
 		<title>TestCop</title>     
 		<authors>Alcaeus</authors>     
 		<description>Easily switch between unit tests and code. Create missing associated files. Includes highlightings and test templates to keep test projects neat and tidy. Works with NUnit, MSTest, xUnit ...</description>
-		<releaseNotes>Added support for multiple test project mapping to a single code project</releaseNotes>
+		<releaseNotes>Added support for multiple test project mapping to a single code project. Can now turn off 'must be public' warnings.</releaseNotes>
     <projectUrl>https://testcop.codeplex.com/</projectUrl>
     <licenseUrl>https://testcop.codeplex.com/license</licenseUrl>
     <iconUrl>https://testcop.svn.codeplex.com/svn/Project/Src/TestCop.Plugin/resources/agent48x48.png</iconUrl>

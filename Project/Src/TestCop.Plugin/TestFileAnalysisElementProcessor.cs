@@ -107,19 +107,24 @@ namespace TestCop.Plugin
             }             
         }
 
-      
+
 
         private void ProcessTypeDeclaration(ICSharpTypeDeclaration declaration)
-        {
-            var testingAttributes = FindTestingAttributes(declaration,TestAttributes);                
+        {            
+            var testingAttributes = FindTestingAttributes(declaration, TestAttributes);
             if (testingAttributes.Count == 0)
-            {                
+            {
                 /* type is missing attributes - lets check the body */
-                if(!CheckMethodsForTestingAttributes(declaration, TestAttributes))return;
+                if (!CheckMethodsForTestingAttributes(declaration, TestAttributes)) return;
             }
-            
+
             //We have a testing attribute so now check some conformance.                       
-            CheckElementIsPublicAndCreateWarningIfNot(declaration, testingAttributes);
+
+            if (Settings.TestClassShouldBePublic && !declaration.IsAbstract)
+            {
+                CheckElementIsPublicAndCreateWarningIfNot(declaration, testingAttributes);
+            }
+
             if (CheckNamingOfTypeEndsWithTestSuffix(declaration))
             {
                 if (CheckNamingOfFileAgainstTypeAndCreateWarningIfNot(declaration))
@@ -156,7 +161,10 @@ namespace TestCop.Plugin
             var testingAttributes = FindTestingAttributes(declaration, TestAttributes);                
             if (testingAttributes.Count==0) return;
 
-            CheckElementIsPublicAndCreateWarningIfNot(declaration, testingAttributes);
+            if (Settings.TestMethodShouldBePublic)
+            {
+                CheckElementIsPublicAndCreateWarningIfNot(declaration, testingAttributes);
+            }
         }
 
         public bool ProcessingIsFinished
