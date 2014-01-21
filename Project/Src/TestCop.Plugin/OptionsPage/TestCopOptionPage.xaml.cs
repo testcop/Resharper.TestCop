@@ -80,8 +80,10 @@ namespace TestCop.Plugin.OptionsPage
           BindWithValidationMustBeAFileTemplate(testFileAnalysisSettings, codeTemplateTextBox, "CodeFileTemplateName");
           BindWithValidationMustBeAFileTemplate(testFileAnalysisSettings, unitTestTemplateTextBox, "UnitTestFileTemplateName");
 
-          showAllTestsWithUsageCheckBox.IsChecked = testFileAnalysisSettings.FindAnyUsageInTestAssembly;
-          checkTestNamespaces.IsChecked = testFileAnalysisSettings.CheckTestNamespaces;
+          ShowAllTestsWithUsageCheckBox.IsChecked = testFileAnalysisSettings.FindAnyUsageInTestAssembly;
+          CheckTestNamespaces.IsChecked = testFileAnalysisSettings.CheckTestNamespaces;
+          CheckTestMethodShouldBePublic.IsChecked = testFileAnalysisSettings.TestMethodShouldBePublic;
+          CheckTestClassShouldBePublic.IsChecked = testFileAnalysisSettings.TestClassShouldBePublic;
 
           TestCopLogoImage.Source =
           (ImageSource) new BitmapToImageSourceConverter().Convert(
@@ -160,9 +162,11 @@ namespace TestCop.Plugin.OptionsPage
           attributes = contextPrefixesListBox.Items.Cast<string>().ToList().Join(",");
           _settings.SetValue((TestFileAnalysisSettings s) => s.BddPrefix, attributes);
 
-          _settings.SetValue((TestFileAnalysisSettings s) => s.FindAnyUsageInTestAssembly,showAllTestsWithUsageCheckBox.IsChecked);
-          _settings.SetValue((TestFileAnalysisSettings s) => s.CheckTestNamespaces, checkTestNamespaces.IsChecked);
-
+          _settings.SetValue((TestFileAnalysisSettings s) => s.FindAnyUsageInTestAssembly,ShowAllTestsWithUsageCheckBox.IsChecked);
+          _settings.SetValue((TestFileAnalysisSettings s) => s.CheckTestNamespaces, CheckTestNamespaces.IsChecked);
+          _settings.SetValue((TestFileAnalysisSettings s) => s.TestMethodShouldBePublic, CheckTestMethodShouldBePublic.IsChecked);
+          _settings.SetValue((TestFileAnalysisSettings s) => s.TestClassShouldBePublic, CheckTestClassShouldBePublic.IsChecked);
+          
           _settings.SetValue((TestFileAnalysisSettings s) => s.TestClassSuffix,
                              testClassSuffixTextBox.Text.Replace(" ", ""));
           _settings.SetValue((TestFileAnalysisSettings s) => s.TestProjectToCodeProjectNameSpaceRegEx,
