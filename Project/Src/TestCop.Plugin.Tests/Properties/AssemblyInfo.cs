@@ -25,7 +25,7 @@ public class TestEnvironmentAssembly : ReSharperTestEnvironmentAssembly
   {
     // Test assembly
     yield return Assembly.GetExecutingAssembly();    
-    yield return typeof(ShouldBePublicWarning).Assembly;
+    yield return typeof(AbstractShouldBePublicWarning).Assembly;
   }
 
   public override void SetUp()

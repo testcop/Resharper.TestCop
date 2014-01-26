@@ -10,8 +10,8 @@
 
 [assembly: global::System.Windows.Markup.XmlnsDefinitionAttribute("urn:shemas-jetbrains-com:ui-application-icons-unnamed", "TestCop.Plugin")]
 [assembly: global::JetBrains.UI.Icons.CompiledIcons.CompiledIconsPackAttribute(IconPackResourceIdentification="TestCopForResharper;component/resources/ThemedIcons.Unnamed.Generated.Xaml", IconNames=new string[] {
-		"Agent64x64",
 		"Agent16x16",
+		"Agent64x64",
 		"Agent48x48"})]
 
 namespace TestCop.Plugin
@@ -78,7 +78,7 @@ namespace TestCop.Plugin
 		///<example>
 		///  <code>themediconmanager.GetIcon&lt;UnnamedThemedIcons.Agent16x16&gt;()        // Icon image for rendering</code>
 		///</example>
-		[global::JetBrains.UI.Icons.CompiledIcons.CompiledIconClassAttribute("TestCopForResharper;component/resources/ThemedIcons.Unnamed.Generated.Xaml", 1, "Agent16x16")]
+		[global::JetBrains.UI.Icons.CompiledIcons.CompiledIconClassAttribute("TestCopForResharper;component/resources/ThemedIcons.Unnamed.Generated.Xaml", 0, "Agent16x16")]
 		public sealed class Agent16x16 : global::JetBrains.UI.Icons.CompiledIcons.CompiledIconClass
 		{
 			
@@ -104,7 +104,7 @@ namespace TestCop.Plugin
 			///<example>
 			///  <code>themediconmanager.GetIcon&lt;UnnamedThemedIcons.Agent16x16&gt;()        // Icon image for rendering</code>
 			///</example>
-			public static global::JetBrains.UI.Icons.IconId Id = new global::JetBrains.UI.Icons.CompiledIcons.CompiledIconId("TestCopForResharper;component/resources/ThemedIcons.Unnamed.Generated.Xaml", 1, "Agent16x16");
+			public static global::JetBrains.UI.Icons.IconId Id = new global::JetBrains.UI.Icons.CompiledIcons.CompiledIconId("TestCopForResharper;component/resources/ThemedIcons.Unnamed.Generated.Xaml", 0, "Agent16x16");
 		}
 		
 		/// <summary>
@@ -180,7 +180,7 @@ namespace TestCop.Plugin
 		///<example>
 		///  <code>themediconmanager.GetIcon&lt;UnnamedThemedIcons.Agent64x64&gt;()        // Icon image for rendering</code>
 		///</example>
-		[global::JetBrains.UI.Icons.CompiledIcons.CompiledIconClassAttribute("TestCopForResharper;component/resources/ThemedIcons.Unnamed.Generated.Xaml", 0, "Agent64x64")]
+		[global::JetBrains.UI.Icons.CompiledIcons.CompiledIconClassAttribute("TestCopForResharper;component/resources/ThemedIcons.Unnamed.Generated.Xaml", 1, "Agent64x64")]
 		public sealed class Agent64x64 : global::JetBrains.UI.Icons.CompiledIcons.CompiledIconClass
 		{
 			
@@ -206,7 +206,7 @@ namespace TestCop.Plugin
 			///<example>
 			///  <code>themediconmanager.GetIcon&lt;UnnamedThemedIcons.Agent64x64&gt;()        // Icon image for rendering</code>
 			///</example>
-			public static global::JetBrains.UI.Icons.IconId Id = new global::JetBrains.UI.Icons.CompiledIcons.CompiledIconId("TestCopForResharper;component/resources/ThemedIcons.Unnamed.Generated.Xaml", 0, "Agent64x64");
+			public static global::JetBrains.UI.Icons.IconId Id = new global::JetBrains.UI.Icons.CompiledIcons.CompiledIconId("TestCopForResharper;component/resources/ThemedIcons.Unnamed.Generated.Xaml", 1, "Agent64x64");
 		}
 	}
 }

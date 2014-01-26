@@ -82,8 +82,6 @@ namespace TestCop.Plugin.OptionsPage
 
           ShowAllTestsWithUsageCheckBox.IsChecked = testFileAnalysisSettings.FindAnyUsageInTestAssembly;
           CheckTestNamespaces.IsChecked = testFileAnalysisSettings.CheckTestNamespaces;
-          CheckTestMethodShouldBePublic.IsChecked = testFileAnalysisSettings.TestMethodShouldBePublic;
-          CheckTestClassShouldBePublic.IsChecked = testFileAnalysisSettings.TestClassShouldBePublic;
 
           TestCopLogoImage.Source =
           (ImageSource) new BitmapToImageSourceConverter().Convert(
@@ -164,8 +162,6 @@ namespace TestCop.Plugin.OptionsPage
 
           _settings.SetValue((TestFileAnalysisSettings s) => s.FindAnyUsageInTestAssembly,ShowAllTestsWithUsageCheckBox.IsChecked);
           _settings.SetValue((TestFileAnalysisSettings s) => s.CheckTestNamespaces, CheckTestNamespaces.IsChecked);
-          _settings.SetValue((TestFileAnalysisSettings s) => s.TestMethodShouldBePublic, CheckTestMethodShouldBePublic.IsChecked);
-          _settings.SetValue((TestFileAnalysisSettings s) => s.TestClassShouldBePublic, CheckTestClassShouldBePublic.IsChecked);
           
           _settings.SetValue((TestFileAnalysisSettings s) => s.TestClassSuffix,
                              testClassSuffixTextBox.Text.Replace(" ", ""));

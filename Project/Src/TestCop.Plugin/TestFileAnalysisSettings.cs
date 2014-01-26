@@ -65,12 +65,6 @@ namespace TestCop.Plugin
 
         [SettingsEntry(@"Class", "Name of Template to use when creating a unittest class")]
         public string UnitTestFileTemplateName { get; set; }
-
-        [SettingsEntry(true, "Should TestCop produce warnings if test method is not public")]
-        public bool TestMethodShouldBePublic { get; set; }
-
-        [SettingsEntry(true, "Should TestCop produce warnings if test class is not public")]
-        public bool TestClassShouldBePublic { get; set; }
     }
 
     [ShellComponent]

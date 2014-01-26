@@ -4,6 +4,7 @@
 // -- Copyright 2013
 // --
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Application.Settings;
@@ -14,6 +15,7 @@ using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Caches2;
 using JetBrains.ReSharper.Psi.Tree;
+using JetBrains.ReSharper.Psi.VB.Util;
 using TestCop.Plugin.Extensions;
 using TestCop.Plugin.Helper;
 using TestCop.Plugin.Highlighting;
@@ -119,11 +121,8 @@ namespace TestCop.Plugin
             }
 
             //We have a testing attribute so now check some conformance.                       
-
-            if (Settings.TestClassShouldBePublic && !declaration.IsAbstract)
-            {
-                CheckElementIsPublicAndCreateWarningIfNot(declaration, testingAttributes);
-            }
+            CheckElementIsPublicAndCreateWarningIfNot(declaration, testingAttributes);
+            
 
             if (CheckNamingOfTypeEndsWithTestSuffix(declaration))
             {
@@ -161,10 +160,7 @@ namespace TestCop.Plugin
             var testingAttributes = FindTestingAttributes(declaration, TestAttributes);                
             if (testingAttributes.Count==0) return;
 
-            if (Settings.TestMethodShouldBePublic)
-            {
-                CheckElementIsPublicAndCreateWarningIfNot(declaration, testingAttributes);
-            }
+            CheckElementIsPublicAndCreateWarningIfNot(declaration, testingAttributes);            
         }
 
         public bool ProcessingIsFinished
@@ -180,9 +176,8 @@ namespace TestCop.Plugin
             if (!declaredClassName.StartsWith(Enumerable.ToArray(BDDPrefixes)))
             {
                 if (!declaredClassName.EndsWith(TestClassSuffix))
-                {
-                    string message = string.Format("Test class names should end with '{0}'.", TestClassSuffix);
-                    var testingWarning = new TestClassNameWarning(message, declaration);
+                {                    
+                    var testingWarning = new TestClassNameSuffixWarning(TestClassSuffix, declaration);
                     _myHighlightings.Add(new HighlightingInfo(declaration.GetNameDocumentRange(), testingWarning));
                     return false;
 
@@ -200,9 +195,8 @@ namespace TestCop.Plugin
             var testClassNameFromFileName = currentFileName.Replace(".", "");
 
             if (testClassNameFromFileName != declaredClassName)
-            {
-                string message = string.Format("Test classname and filename are not in sync {0}<>{1}.", declaredClassName, testClassNameFromFileName);
-                var testingWarning = new TestClassNameWarning(message, declaration);                                
+            {                
+                var testingWarning = new TestClassNameDoesNotMatchFileNameWarning(declaredClassName, testClassNameFromFileName, declaration);                                
                 _myHighlightings.Add(new HighlightingInfo(declaration.GetNameDocumentRange(), testingWarning));
                 return false;
             }
@@ -213,16 +207,23 @@ namespace TestCop.Plugin
         private void CheckElementIsPublicAndCreateWarningIfNot(IAccessRightsOwnerDeclaration declaration, IEnumerable<IAttribute> testingAttributes)
         {
             AccessRights accessRights = declaration.GetAccessRights();
-
+            if (accessRights == AccessRights.PUBLIC) return;
+            
             foreach (var attribute in testingAttributes)
             {
-                if (accessRights != AccessRights.PUBLIC)
-                {                    
-                    string message = string.Format("Types with [{0}] must be public.", attribute.Name.QualifiedName);
-                    var testingWarning = new ShouldBePublicWarning(message, declaration);
-                    _myHighlightings.Add(new HighlightingInfo(declaration.GetNameDocumentRange(), testingWarning));
-                    return;
+                IHighlighting highlighting;                     
+                
+                if (declaration.DeclaredElement.IsClass())
+                {
+                    highlighting = new ClassShouldBePublicWarning(attribute.Name.QualifiedName, declaration);
                 }
+                else
+                {
+                    highlighting = new MethodShouldBePublicWarning(attribute.Name.QualifiedName, declaration);
+                }
+
+                _myHighlightings.Add(new HighlightingInfo(declaration.GetNameDocumentRange(), highlighting));
+                return;
             }
         }
 
