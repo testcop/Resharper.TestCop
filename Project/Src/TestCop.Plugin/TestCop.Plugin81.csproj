@@ -67,11 +67,15 @@
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Helper\TestCopFileCreater.cs" />
+    <Compile Include="Highlighting\ClassShouldBePublicWarning.cs" />
+    <Compile Include="Highlighting\MethodShouldBePublicWarning.cs" />
+    <Compile Include="Highlighting\TestClassNameDoesNotMatchFileNameWarning.cs" />
+    <Compile Include="Highlighting\TestClassNameSuffixWarning.cs" />
     <Compile Include="Highlighting\TestFileNameSpaceWarning.cs" />
     <Compile Include="Highlighting\HighlighterConsts.cs" />
-    <Compile Include="Highlighting\TestClassNameWarning.cs" />
+    <Compile Include="Highlighting\AbstractTestClassNameWarning.cs" />
     <Compile Include="Highlighting\TestFileNameWarning.cs" />
-    <Compile Include="Highlighting\ShouldBePublicWarning.cs" />
+    <Compile Include="Highlighting\AbstractShouldBePublicWarning.cs" />
     <Compile Include="OptionsPage\IsAFileTemplateValidationRule.cs" />
     <Compile Include="OptionsPage\IsARegexValidationRule.cs" />
     <Compile Include="OptionsPage\RegexValidationRule.cs" />

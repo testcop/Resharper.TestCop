@@ -25,9 +25,9 @@ namespace TestCop.Plugin.QuickFixActions
     [QuickFix]
     public class MakeItPublicBulbItem : BulbActionBase, IQuickFix
     {
-        private readonly ShouldBePublicWarning _highlight;
+        private readonly AbstractShouldBePublicWarning _highlight;
 
-        public MakeItPublicBulbItem(ShouldBePublicWarning highlight)
+        public MakeItPublicBulbItem(AbstractShouldBePublicWarning highlight)
         {
             _highlight = highlight;
         }

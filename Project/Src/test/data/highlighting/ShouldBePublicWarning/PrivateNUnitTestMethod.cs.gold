@@ -7,4 +7,4 @@ public class PrivateNUnitTestMethod
 	}
 }
 ---------------------------------------------------------
-(0): ReSharper Underlined Error Highlighting: Types with [Test] must be public.
+(0): ReSharper Underlined Error Highlighting: Methods with [Test] must be public.

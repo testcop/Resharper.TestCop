@@ -40,8 +40,8 @@ using TestCop.Plugin.Highlighting;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.8.1.5")]
-[assembly: AssemblyFileVersion("1.8.1.5")]
+[assembly: AssemblyVersion("1.8.1.6")]
+[assembly: AssemblyFileVersion("1.8.1.6")]
 
 // The following information is displayed by ReSharper in the Plugins dialog
 [assembly: PluginTitle("TestCop Resharper Plugin")]
@@ -52,3 +52,36 @@ using TestCop.Plugin.Highlighting;
 [assembly: ActionsXml("TestCop.Plugin.Resources.Actions.xml")]
 
 [assembly: RegisterStaticHighlightingsGroup(Highlighter.HighlightingGroup, "Testing", true)]
+[assembly: RegisterConfigurableHighlightingsGroupAttribute("Testing", "Testing")]
+
+[assembly: RegisterConfigurableSeverity(
+        MethodShouldBePublicWarning.SeverityId,
+        null, "Testing",
+        "Test method should be public",
+        "TestCop : Method with testing attributes should be public",
+        Severity.ERROR,
+        false)]
+
+[assembly: RegisterConfigurableSeverity(
+        ClassShouldBePublicWarning.SeverityId,
+        null, "Testing",
+        "Test class should be public",
+        "TestCop : Class with testing attributes should be public",
+        Severity.ERROR,
+        false)]
+
+[assembly: RegisterConfigurableSeverity(
+        TestClassNameDoesNotMatchFileNameWarning.SeverityId,
+        null, "Testing",
+        "Test class name should match file name",
+        "TestCop : The name of the test file should match the test class name it contains",
+        Severity.ERROR,
+        false)]
+
+[assembly: RegisterConfigurableSeverity(
+        TestClassNameSuffixWarning.SeverityId,
+        null, "Testing",
+        "All test classes should have the same suffix",
+        "TestCop : To easily identify a test class by its name it must have the configured suffix",
+        Severity.ERROR,
+        false)]

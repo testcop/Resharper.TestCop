@@ -1,7 +1,7 @@
 // --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
-// -- Copyright 2013
+// -- Copyright 2014
 // --
 
 using JetBrains.ReSharper.Daemon;
@@ -10,9 +10,8 @@ using JetBrains.ReSharper.Psi.Tree;
 
 namespace TestCop.Plugin.Highlighting
 {
-    [StaticSeverityHighlighting(Severity.ERROR, Highlighter.HighlightingGroup)]
-    public class ShouldBePublicWarning :CSharpHighlightingBase,IHighlighting
-    {
+    public abstract class AbstractShouldBePublicWarning :CSharpHighlightingBase,IHighlighting
+    {       
         private readonly string _tooltipString;
         private readonly IAccessRightsOwnerDeclaration _declaration;
 
@@ -21,7 +20,7 @@ namespace TestCop.Plugin.Highlighting
             get { return _declaration; }
         }
 
-        public ShouldBePublicWarning(string toolTip, IAccessRightsOwnerDeclaration declaration)
+        protected AbstractShouldBePublicWarning(string toolTip, IAccessRightsOwnerDeclaration declaration)
         {
             _tooltipString = toolTip;
             _declaration = declaration;

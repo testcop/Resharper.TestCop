@@ -3,4 +3,4 @@ public class |ClassAMissingSuffix|(0)
 {
 }
 ---------------------------------------------------------
-(0): ReSharper Warning: Test class names should end with 'RandomExt'.
+(0): ReSharper Underlined Error Highlighting: Test class names should end with 'RandomExt'.

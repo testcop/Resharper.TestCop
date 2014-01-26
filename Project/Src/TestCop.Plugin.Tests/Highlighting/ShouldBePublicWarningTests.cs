@@ -19,7 +19,7 @@ namespace TestCop.Plugin.Tests.Highlighting
     {
         protected override bool HighlightingPredicate(IHighlighting highlighting, IContextBoundSettingsStore settingsstore)
         {
-            return highlighting is ShouldBePublicWarning;
+            return highlighting is AbstractShouldBePublicWarning;
         }
 
         protected override string RelativeTestDataPath

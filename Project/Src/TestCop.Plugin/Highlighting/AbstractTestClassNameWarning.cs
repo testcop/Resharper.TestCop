@@ -10,8 +10,7 @@ using JetBrains.ReSharper.Psi.Tree;
 
 namespace TestCop.Plugin.Highlighting
 {
-    [StaticSeverityHighlighting(Severity.WARNING, Highlighter.HighlightingGroup)]
-    public class TestClassNameWarning : CSharpHighlightingBase, IHighlighting
+    public abstract class AbstractTestClassNameWarning : CSharpHighlightingBase, IHighlighting
     {
         private readonly string _tooltipString;
         private readonly IAccessRightsOwnerDeclaration _declaration;
@@ -21,7 +20,7 @@ namespace TestCop.Plugin.Highlighting
             get { return _declaration; }
         }
 
-        public TestClassNameWarning(string toolTip, IAccessRightsOwnerDeclaration declaration)
+        protected AbstractTestClassNameWarning(string toolTip, IAccessRightsOwnerDeclaration declaration)
         {
             _tooltipString = toolTip;
             _declaration = declaration;
