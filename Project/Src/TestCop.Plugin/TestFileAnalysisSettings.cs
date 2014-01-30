@@ -92,7 +92,7 @@ namespace TestCop.Plugin
             get
             {
 
-                IContextBoundSettingsStore context = _settingsStore.BindToContextLive(_lifetime, ContextRange.ApplicationWide);
+                IContextBoundSettingsStore context = _settingsStore.BindToContextTransient(ContextRange.ApplicationWide);
                 
                 var testFileAnalysisSettings =
                     context.GetKey<TestFileAnalysisSettings>(SettingsOptimization.OptimizeDefault);

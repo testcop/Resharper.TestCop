@@ -77,7 +77,7 @@ namespace TestCop.Plugin
             }
             
             var settings = solution.GetPsiServices().SettingsStore
-                .BindToContextLive(textControl.Lifetime, ContextRange.ApplicationWide).GetKey<TestFileAnalysisSettings>(SettingsOptimization.OptimizeDefault);
+                .BindToContextTransient(ContextRange.ApplicationWide).GetKey<TestFileAnalysisSettings>(SettingsOptimization.OptimizeDefault);
                                                 
             IClrTypeName clrTypeClassName = ResharperHelper.GetClassNameAppropriateToLocation(solution, textControl);            
             var classNamesToFind = new List<string>();
@@ -120,11 +120,9 @@ namespace TestCop.Plugin
         private TestFileAnalysisSettings Settings { 
             get
             {
-                var lifetimeDefinition = Lifetimes.Define(EternalLifetime.Instance, "TestCop");
-                var lifetime = lifetimeDefinition.Lifetime;
                 var settingsStore = Shell.Instance.GetComponent<ISettingsStore>();
-                var contextBoundSettingsStoreLive = settingsStore.BindToContextLive(lifetime, ContextRange.ApplicationWide);
-                var mySettings = contextBoundSettingsStoreLive.GetKey<TestFileAnalysisSettings>(SettingsOptimization.OptimizeDefault);                
+                var contextBoundSettingsStore = settingsStore.BindToContextTransient(ContextRange.ApplicationWide);
+                var mySettings = contextBoundSettingsStore.GetKey<TestFileAnalysisSettings>(SettingsOptimization.OptimizeDefault);                
                 return mySettings; 
             }
 
