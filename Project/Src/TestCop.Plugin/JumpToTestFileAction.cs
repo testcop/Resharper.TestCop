@@ -14,13 +14,13 @@ using JetBrains.Application;
 using JetBrains.Application.DataContext;
 using JetBrains.Application.Progress;
 using JetBrains.Application.Settings;
-using JetBrains.DataFlow;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.Search;
 using JetBrains.TextControl;
+using JetBrains.TextControl.DataConstants;
 using JetBrains.UI.PopupMenu;
 using JetBrains.Util;
 using TestCop.Plugin.Extensions;
@@ -75,9 +75,10 @@ namespace TestCop.Plugin
                 ResharperHelper.AppendLineToOutputWindow("Unable to locate associated assembly - check project namespaces and testcop Regex");
                 return;
             }
-            
+                       
             var settings = solution.GetPsiServices().SettingsStore
-                .BindToContextTransient(ContextRange.ApplicationWide).GetKey<TestFileAnalysisSettings>(SettingsOptimization.OptimizeDefault);
+                .BindToContextTransient(ContextRange.Smart(textControl.ToDataContext()))                
+                .GetKey<TestFileAnalysisSettings>(SettingsOptimization.OptimizeDefault);
                                                 
             IClrTypeName clrTypeClassName = ResharperHelper.GetClassNameAppropriateToLocation(solution, textControl);            
             var classNamesToFind = new List<string>();
@@ -170,7 +171,7 @@ namespace TestCop.Plugin
             var findReferences = services.Finder.FindReferences(
                 declaredElement, searchDomain, new ProgressIndicator(textControl.Lifetime));
 
-            List<IClassDeclaration> findReferencesWithinAssociatedAssembly = findReferences.Select(p => ((IClassDeclaration)p.GetTreeNode().GetContainingNode<IClassDeclaration>(true))).ToList();
+            List<IClassDeclaration> findReferencesWithinAssociatedAssembly = findReferences.Select(p => p.GetTreeNode().GetContainingNode<IClassDeclaration>(true)).ToList();
             return findReferencesWithinAssociatedAssembly
                 .Select(p => p.DeclaredElement).ToList()                
                 .Select(p => p as IClrDeclaredElement).ToList();                                    
