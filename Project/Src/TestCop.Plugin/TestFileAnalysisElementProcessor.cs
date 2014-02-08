@@ -1,7 +1,7 @@
 // --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
-// -- Copyright 2013
+// -- Copyright 2014
 // --
 
 using System;
@@ -112,14 +112,19 @@ namespace TestCop.Plugin
 
 
         private void ProcessTypeDeclaration(ICSharpTypeDeclaration declaration)
-        {            
+        {
+            if (declaration.GetContainingNode<ICSharpTypeDeclaration>() != null)
+            {
+                return;//Dont instpect types already within a type
+            }
+            
             var testingAttributes = FindTestingAttributes(declaration, TestAttributes);
             if (testingAttributes.Count == 0)
             {
                 /* type is missing attributes - lets check the body */
                 if (!CheckMethodsForTestingAttributes(declaration, TestAttributes)) return;
             }
-
+            
             //We have a testing attribute so now check some conformance.                       
             CheckElementIsPublicAndCreateWarningIfNot(declaration, testingAttributes);
             

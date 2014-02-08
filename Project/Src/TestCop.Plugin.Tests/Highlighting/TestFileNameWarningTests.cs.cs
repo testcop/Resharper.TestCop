@@ -39,7 +39,9 @@ namespace TestCop.Plugin.Tests.Highlighting
         [Test]
         [TestCase(@"<TestApplication.Tests>\Samples\ClassB.SecurityTests.cs")]
         [TestCase(@"<TestApplication.Tests>\ClassATests.cs")]
-        [TestCase(@"<TestApplication.Tests>\ClassA.SomeMoreTests.cs")]       
+        [TestCase(@"<TestApplication.Tests>\ClassA.SomeMoreTests.cs")]
+        [TestCase(@"<TestApplication.Tests>\ClassE.WithNestedTests.cs")]
+        [TestCase(@"<TestApplication.Tests>\AbstractTestClass.cs")]  
         public void Test(string testName)
         {
             DoTestFiles(testName);

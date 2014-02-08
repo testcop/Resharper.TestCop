@@ -1,7 +1,7 @@
 ﻿// --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
-// -- Copyright 2013
+// -- Copyright 2014
 // --
  
 using System;
@@ -261,6 +261,13 @@ namespace TestCop.Plugin.OptionsPage
                 }).Invoke();
             }        
       }
+
+      private void DisplayLoadProjectTip()
+      {
+          LoadProjectToSelectFileTemplate.Text = "Note: A project/solution needs to be loaded.";
+          LoadProjectToSelectFileTemplate.Visibility=Visibility.Visible;
+          LoadProjectToSelectFileTemplate.Foreground = new SolidColorBrush(Colors.Red);
+      }
       
       private void FileTemplateSelectFromList(object sender, System.Windows.Input.MouseButtonEventArgs e)
       {          
@@ -273,9 +280,17 @@ namespace TestCop.Plugin.OptionsPage
                               var context = dataContexts.CreateOnActiveControl(lifetime);
 
                               IProjectFolder projectFolder = FileTemplateUtil.GetProjectFolderFromContext(context);
-                              if (projectFolder == null) return;
+                              if (projectFolder == null)
+                              {
+                                  DisplayLoadProjectTip();
+                                  return; 
+                              }
                               var project = projectFolder.GetProject();
-                              if (project == null) return;
+                              if (project == null)
+                              {
+                                  DisplayLoadProjectTip();
+                                  return;
+                              }
 
                               IEnumerable<IFileTemplatesSupport> applicableFileTemplates = _fileTemplatesManager.FileTemplatesSupports.Where(s => s.Accepts(project));                              
                               var scope = applicableFileTemplates.SelectMany(s => s.ScopePoints)
