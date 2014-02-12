@@ -13,12 +13,12 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Media;
-using JetBrains.Application;
 using JetBrains.Application.DataContext;
 using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
 using JetBrains.ProjectModel;
 using JetBrains.ProjectModel.DataContext;
+using JetBrains.ReSharper.Feature.Services.LiveTemplates.Context;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.FileTemplates;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Scope;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Settings;
@@ -50,16 +50,18 @@ namespace TestCop.Plugin.OptionsPage
       private readonly ISolution _solution;
       private const string PID = "TestCopPageId";
       private readonly FileTemplatesManager _fileTemplatesManager;
-      
+      private readonly TemplateScopeManager _templatesScopeManager;
+
       public TestCopOptionPage(Lifetime lifetime, OptionsSettingsSmartContext settings
           , IThemedIconManager iconManager, UIApplication application
-        , StoredTemplatesProvider storedTemplatesProvider,FileTemplatesManager fileTemplatesManager, ISolution solution = null)
+        , StoredTemplatesProvider storedTemplatesProvider, FileTemplatesManager fileTemplatesManager, TemplateScopeManager templatesScopeManager, ISolution solution = null)
       {
           _lifetime = lifetime;
           _settings = settings;
           _application = application;
           _solution = solution;
           _fileTemplatesManager = fileTemplatesManager;
+          _templatesScopeManager = templatesScopeManager;
           _storedTemplatesProvider = storedTemplatesProvider;
 
           InitializeComponent();
@@ -270,53 +272,50 @@ namespace TestCop.Plugin.OptionsPage
       }
       
       private void FileTemplateSelectFromList(object sender, System.Windows.Input.MouseButtonEventArgs e)
-      {          
-          var dataContexts = Shell.Instance.GetComponent<DataContexts>();
-                              
+      {                    
           Template template=null;
           
-          Lifetimes.Using(lifetime =>
-                          {
-                              var context = dataContexts.CreateOnActiveControl(lifetime);
+                        
+            if (_solution == null)
+            {
+                ResharperHelper.AppendLineToOutputWindow("Unable to identify current solution.");
+                DisplayLoadProjectTip();
+                return; 
+            }
 
-                              IProjectFolder projectFolder = FileTemplateUtil.GetProjectFolderFromContext(context);
-                              if (projectFolder == null)
-                              {
-                                  DisplayLoadProjectTip();
-                                  return; 
-                              }
-                              var project = projectFolder.GetProject();
-                              if (project == null)
-                              {
-                                  DisplayLoadProjectTip();
-                                  return;
-                              }
+            var project = _solution.GetAllCodeProjects().FirstOrDefault();
+            if (project == null)
+            {
+                ResharperHelper.AppendLineToOutputWindow("Unable to identify a code project.");
+                DisplayLoadProjectTip();
+                return;
+            }
+                    
+            IEnumerable<IFileTemplatesSupport> applicableFileTemplates = _fileTemplatesManager.FileTemplatesSupports.Where(s => s.Accepts(project));                              
+            var scope = applicableFileTemplates.SelectMany(s =>s.ScopePoints)
+                .Distinct()
+                .Where(s=>s.GetDefaultUID()!= new InAnyProject().GetDefaultUID())
+                .ToList();
+                                       
+            using (       
+                var templateDialog =
+                    new TemplateChooserDialog(
+                    #if !R7
+                    _lifetime,
+                    #endif
+                        FileTemplatesManager.Instance.QuickListSupports,
+                        scope, project.ToDataContext(),
+                        TemplateApplicability.File))
 
-                              IEnumerable<IFileTemplatesSupport> applicableFileTemplates = _fileTemplatesManager.FileTemplatesSupports.Where(s => s.Accepts(project));                              
-                              var scope = applicableFileTemplates.SelectMany(s => s.ScopePoints)
-                                  .Distinct()
-                                  .Where(s=>s.GetDefaultUID()!= new InAnyProject().GetDefaultUID())
-                                  .ToList();
-                                                        
-                              using (       
-                                  var templateDialog =
-                                      new TemplateChooserDialog(
-                                      #if !R7
-                                        lifetime,
-                                      #endif
-                                          FileTemplatesManager.Instance.QuickListSupports,
-                                          scope, projectFolder.ToDataContext(),
-                                          TemplateApplicability.File))
-
-                              {
-                                  if (templateDialog.ShowDialog(_application.MainWindow) !=
-                                      DialogResult.OK)
-                                  {
-                                      return;
-                                  }
-                                  template = templateDialog.Template;
-                              }
-                          });
+            {
+                if (templateDialog.ShowDialog(_application.MainWindow) !=
+                    DialogResult.OK)
+                {
+                    return;
+                }
+                template = templateDialog.Template;
+            }
+                          
                                                                                               
           if (template != null)
           {
