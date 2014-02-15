@@ -13,12 +13,10 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Media;
-using JetBrains.Application.DataContext;
 using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
 using JetBrains.ProjectModel;
 using JetBrains.ProjectModel.DataContext;
-using JetBrains.ReSharper.Feature.Services.LiveTemplates.Context;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.FileTemplates;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Scope;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Settings;
@@ -50,18 +48,16 @@ namespace TestCop.Plugin.OptionsPage
       private readonly ISolution _solution;
       private const string PID = "TestCopPageId";
       private readonly FileTemplatesManager _fileTemplatesManager;
-      private readonly TemplateScopeManager _templatesScopeManager;
-
+      
       public TestCopOptionPage(Lifetime lifetime, OptionsSettingsSmartContext settings
           , IThemedIconManager iconManager, UIApplication application
-        , StoredTemplatesProvider storedTemplatesProvider, FileTemplatesManager fileTemplatesManager, TemplateScopeManager templatesScopeManager, ISolution solution = null)
+        , StoredTemplatesProvider storedTemplatesProvider, FileTemplatesManager fileTemplatesManager, ISolution solution = null)
       {
           _lifetime = lifetime;
           _settings = settings;
           _application = application;
           _solution = solution;
-          _fileTemplatesManager = fileTemplatesManager;
-          _templatesScopeManager = templatesScopeManager;
+          _fileTemplatesManager = fileTemplatesManager;          
           _storedTemplatesProvider = storedTemplatesProvider;
 
           InitializeComponent();
@@ -91,9 +87,11 @@ namespace TestCop.Plugin.OptionsPage
       }
 
       private void BindWithValidationMustBeAFileTemplate(TestFileAnalysisSettings testFileAnalysisSettings, TextBox tb, string property)
-      {
+      {                    
+          var boundSettingsStore = _application.Settings.BindToContextTransient(ContextRange.ApplicationWide);
+
           var binding = new Binding { Path = new PropertyPath(property) };
-          var rule = new IsAFileTemplateValidationRule(_lifetime,_storedTemplatesProvider ,_settings);
+          var rule = new IsAFileTemplateValidationRule(_lifetime, _storedTemplatesProvider, boundSettingsStore);
 
           binding.ValidationRules.Add(rule);
           binding.NotifyOnValidationError = true;
@@ -274,8 +272,7 @@ namespace TestCop.Plugin.OptionsPage
       private void FileTemplateSelectFromList(object sender, System.Windows.Input.MouseButtonEventArgs e)
       {                    
           Template template=null;
-          
-                        
+                                  
             if (_solution == null)
             {
                 ResharperHelper.AppendLineToOutputWindow("Unable to identify current solution.");
