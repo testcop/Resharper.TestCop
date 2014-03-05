@@ -29,7 +29,7 @@ namespace TestCop.Plugin.Helper
     {        
         //------------------------------------------------------------------------------------------------------------------------
         public static void PromptToOpenOrCreateClassFiles(Action<JetPopupMenu, JetPopupMenu.ShowWhen> menuDisplayer,Lifetime lifetime, IDataContext context, ISolution solution
-    , IProject project, IClrTypeName clrTypeClassName, IList<IProject> targetProject
+    , IProject project, IClrTypeName clrTypeClassName, IList<IProject> targetProjects
     , List<IClrDeclaredElement> preferred, List<IClrDeclaredElement> fullList)
         {
             var autoExecuteIfSingleEnabledItem = JetPopupMenu.ShowWhen.AutoExecuteIfSingleEnabledItem;
@@ -44,13 +44,17 @@ namespace TestCop.Plugin.Helper
                 AppendNavigateToMenuItems(lifetime, solution, fullList, menuItems);                
             }
 
+            MoveBestMatchesToTopWhenSwitchingFromTestToCode(menuItems, project, targetProjects, clrTypeClassName);
+
             if (clrTypeClassName != null)
             {                
-                if(DeriveRelatedFileNameAndAddCreateMenus(context, lifetime, project, targetProject,menuItems, clrTypeClassName))
+                if(DeriveRelatedFileNameAndAddCreateMenus(context, lifetime, project, targetProjects,menuItems, clrTypeClassName))
                 {
                     autoExecuteIfSingleEnabledItem = JetPopupMenu.ShowWhen.NoItemsBannerIfNoItems;
-                }                
+                }
             }
+
+            
             
             var menu = Shell.Instance.GetComponent<JetPopupMenus>().Create();
             menu.Caption.Value = WindowlessControl.Create("Switch to:");
@@ -115,6 +119,41 @@ namespace TestCop.Plugin.Helper
             }
             return menuItems;
         }
+
+        static public void MoveBestMatchesToTopWhenSwitchingFromTestToCode(IList<SimpleMenuItem> currentMenus
+            , IProject project
+            , IList<IProject> associatedTargetProjects
+            , IClrTypeName clrTypeClassName)
+        {
+            if (clrTypeClassName == null) return;
+            if (!project.IsTestProject()) return;
+
+            string targetNameSpace = ResharperHelper.GetRelativeNameSpace(project, clrTypeClassName);
+            string targetSubDirectoryPath = targetNameSpace.Replace('.', '\\');
+
+            string testSuffix = TestCopSettingsManager.Instance.Settings.TestClassSuffix;
+            bool currentFileisTestFile = clrTypeClassName.ShortName.EndsWith(testSuffix);
+            string targetFileName = clrTypeClassName.ShortName.Flip(currentFileisTestFile, testSuffix);
+            
+            foreach (var associatedTargetProject in associatedTargetProjects)
+            {
+                var targetFilePathName = FileSystemPath.Parse(associatedTargetProject.ProjectFileLocation.Directory + "\\" + targetSubDirectoryPath + "\\" + targetFileName);
+                
+                for (int i = 0; i < currentMenus.Count; i++)
+                {
+                    var menuItem = currentMenus[i];
+                    if (menuItem.Tag == null) continue;
+
+                    if (menuItem.Tag.ToString().StartsWith(targetFilePathName.FullPath, StringComparison.CurrentCultureIgnoreCase))
+                    {                        
+                        currentMenus.RemoveAt(i);
+                        currentMenus.Insert(0, menuItem);
+                    }
+                }
+            }
+        }
+
+
         //------------------------------------------------------------------------------------------------------------------------
         static public bool DeriveRelatedFileNameAndAddCreateMenus(IDataContext context, Lifetime lifetime, IProject project, IList<IProject> associatedTargetProjects,IList<SimpleMenuItem> currentMenus, IClrTypeName clrTypeClassName)
         {

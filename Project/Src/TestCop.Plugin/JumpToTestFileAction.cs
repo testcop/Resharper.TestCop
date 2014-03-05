@@ -95,9 +95,8 @@ namespace TestCop.Plugin
             {
                 string className = clrTypeClassName.ShortName.Flip(isTestFile, settings.TestClassSuffix);                
                 elementsFoundInTarget.AddRangeIfMissing(ResharperHelper.FindClass(solution, className, targetProjects), declElementMatcher );
-
-                classNamesToFind.Add(className);
-                elementsFoundInTarget.AddRangeIfMissing(ResharperHelper.FindClass(solution, className, targetProjects), declElementMatcher);
+                
+                classNamesToFind.Add(className);               
                 elementsFoundInSolution.AddRangeIfMissing(ResharperHelper.FindClass(solution, className), declElementMatcher );
             }
             
