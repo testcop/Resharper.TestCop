@@ -63,6 +63,7 @@
     <Compile Include="Highlighting\ShouldBePublicWarningTests.cs" />
     <Compile Include="Highlighting\TestClassNameWarningTests.cs" />
     <Compile Include="MultipleTestProject\ClassToTestFileNavigationTests.cs" />
+    <Compile Include="MultipleTestProject\TestToClassFileNavigationTests.cs" />
     <Compile Include="OptionsPage\IsARegexValidationRuleTests.cs" />
     <Compile Include="OptionsPage\RegexValidationRuleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
