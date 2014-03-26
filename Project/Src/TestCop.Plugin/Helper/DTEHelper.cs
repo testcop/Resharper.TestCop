@@ -20,7 +20,7 @@ namespace TestCop.Plugin.Helper
         /// <summary>
         /// Must run on main UI thread
         /// </summary>
-        public static void AssignKeyboardShortcutIfMissing(string macroName, string keyboardShortcut)
+        public static void AssignKeyboardShortcutIfMissing(bool showOutputPane, string macroName, string keyboardShortcut)
         {            
             var dte = Shell.Instance.GetComponent<DTE>();
             
