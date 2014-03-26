@@ -41,7 +41,9 @@ namespace TestCop.Plugin.Helper
             if (DTEHelper.VisualStudioIsPresent())
             {
                 ExecuteActionOnUiThread("force TestCop keyboard shortcut hack on every startup",
-                                        () => DTEHelper.AssignKeyboardShortcutIfMissing(MacroNameSwitchBetweenFiles
+                                        () => DTEHelper.AssignKeyboardShortcutIfMissing(
+                                            TestCopSettingsManager.Instance.Settings.OutputPanelOpenOnKeyboardMapping
+                                            , MacroNameSwitchBetweenFiles
                                             , TestCopSettingsManager.Instance.Settings.ShortcutToSwitchBetweenFiles));
             }
         }

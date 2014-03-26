@@ -4,6 +4,7 @@
 // -- Copyright 2013
 // --
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Application;
@@ -64,7 +65,10 @@ namespace TestCop.Plugin
         public string CodeFileTemplateName { get; set; }
 
         [SettingsEntry(@"Class", "Name of Template to use when creating a unittest class")]
-        public string UnitTestFileTemplateName { get; set; }
+        public string UnitTestFileTemplateName { get; set; }   
+        
+        [SettingsEntry(@"true", "Should the TestCop output panel be opened on startup")]
+        public bool OutputPanelOpenOnKeyboardMapping { get; set; }
     }
 
     [ShellComponent]
