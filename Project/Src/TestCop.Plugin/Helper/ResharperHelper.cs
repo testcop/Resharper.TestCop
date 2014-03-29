@@ -1,7 +1,7 @@
 ﻿// --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
-// -- Copyright 2013
+// -- Copyright 2014
 // --
 
 using System;
