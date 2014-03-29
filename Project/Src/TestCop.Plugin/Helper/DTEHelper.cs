@@ -1,7 +1,7 @@
 ﻿// --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
-// -- Copyright 2013
+// -- Copyright 2014
 // --
 
 using System;
@@ -34,7 +34,7 @@ namespace TestCop.Plugin.Helper
                 {
                     if (currentBindings[0].ToString() == keyboardShortcut)
                     {
-                        GetOutputWindowPane(dte, "TestCop", true).OutputString(
+                        GetOutputWindowPane(dte, "TestCop", showOutputPane).OutputString(
                             string.Format("Keyboard shortcut for '{0}' is '{1}'\n", macroName, keyboardShortcut));
                         return;
                     }
@@ -43,10 +43,9 @@ namespace TestCop.Plugin.Helper
                 command.Bindings = string.IsNullOrEmpty(keyboardShortcut)
                                         ? new Object[] {}
                                         : new Object[] {keyboardShortcut};
-                GetOutputWindowPane(dte, "TestCop", true).OutputString(
+                GetOutputWindowPane(dte, "TestCop", showOutputPane).OutputString(
                     string.Format("Setting keyboard shortcut for '{0}' to '{1}'\n", macroName, keyboardShortcut)
-                    );
-                
+                    );      
             }
         }
         

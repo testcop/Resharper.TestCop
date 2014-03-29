@@ -7,7 +7,8 @@
 		<authors>Alcaeus</authors>     
 		<description>Easily switch between unit tests and code. Create missing associated files. Includes highlightings and test templates to keep test projects neat and tidy. Works with NUnit, MSTest, xUnit ...</description>
 		<releaseNotes>
-1.8.2.0 Puts exact match first in list when switching from test to code      
+1.8.2.0 Rebuilt with R#8.2
+1.8.2.0-EAP Puts exact match first in list when switching from test to code      
 1.8.1.9 Minor bug fix to file template selection within settings dialog 
 1.8.1.8 Now ignores nested test classes
 1.8.1.7 Fixed Memory Leak
@@ -23,9 +24,9 @@
     <tags>resharper unittest xunit nunit mstest tdd c# template</tags>
   </metadata>   
 	<files>     
-		<file src="TestCopForResharper.dll" target="ReSharper\v8.1\plugins" />
-    		<file src="TestCopForResharper.pdb" target="ReSharper\v8.1\plugins" />
+		<file src="TestCopForResharper.dll" target="ReSharper\v8.2\plugins" />
+    		<file src="TestCopForResharper.pdb" target="ReSharper\v8.2\plugins" />
    <file src="..\..\..\ResharperTemplates\templates.DotSettings"
-          target="ReSharper\v8.1\settings" />
+          target="ReSharper\v8.2\settings" />
   </files> 
 </package>

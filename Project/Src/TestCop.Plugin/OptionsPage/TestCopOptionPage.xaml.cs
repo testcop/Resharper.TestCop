@@ -80,6 +80,7 @@ namespace TestCop.Plugin.OptionsPage
 
           ShowAllTestsWithUsageCheckBox.IsChecked = testFileAnalysisSettings.FindAnyUsageInTestAssembly;
           CheckTestNamespaces.IsChecked = testFileAnalysisSettings.CheckTestNamespaces;
+          OutputPanelOpenOnKeyboardMapping.IsChecked = testFileAnalysisSettings.OutputPanelOpenOnKeyboardMapping;
 
           TestCopLogoImage.Source =
           (ImageSource) new BitmapToImageSourceConverter().Convert(
@@ -162,6 +163,7 @@ namespace TestCop.Plugin.OptionsPage
 
           _settings.SetValue((TestFileAnalysisSettings s) => s.FindAnyUsageInTestAssembly,ShowAllTestsWithUsageCheckBox.IsChecked);
           _settings.SetValue((TestFileAnalysisSettings s) => s.CheckTestNamespaces, CheckTestNamespaces.IsChecked);
+          _settings.SetValue((TestFileAnalysisSettings s) => s.OutputPanelOpenOnKeyboardMapping, OutputPanelOpenOnKeyboardMapping.IsChecked);
           
           _settings.SetValue((TestFileAnalysisSettings s) => s.TestClassSuffix,
                              testClassSuffixTextBox.Text.Replace(" ", ""));
@@ -173,7 +175,9 @@ namespace TestCop.Plugin.OptionsPage
           _settings.SetValue((TestFileAnalysisSettings s) => s.CodeFileTemplateName, codeTemplateTextBox.Text);
           _settings.SetValue((TestFileAnalysisSettings s) => s.UnitTestFileTemplateName, unitTestTemplateTextBox.Text);
 
-          DTEHelper.AssignKeyboardShortcutIfMissing(true, ResharperHelper.MacroNameSwitchBetweenFiles, SwitchBetweenFilesShortcutTextBox.Text);
+          DTEHelper.AssignKeyboardShortcutIfMissing(
+              true, 
+              ResharperHelper.MacroNameSwitchBetweenFiles, SwitchBetweenFilesShortcutTextBox.Text);
           _settings.SetValue((TestFileAnalysisSettings s) => s.ShortcutToSwitchBetweenFiles, SwitchBetweenFilesShortcutTextBox.Text);
           
           return true;

@@ -52,7 +52,10 @@
                     <TextBlock TextWrapping="Wrap" Height="auto" FontWeight="Bold"><Run Text="Keyboard Shortcut"/><Run Language="en-gb" Text="s"/></TextBlock>
                     <StackPanel Orientation="Horizontal" Margin="-1,0,1,0" >
                         <TextBlock TextWrapping="Wrap" Height="auto" ><Run Text="Shortcut to switch between test and code:"/></TextBlock>
-                        <TextBox x:Name="SwitchBetweenFilesShortcutTextBox" Width="150" MaxLength="50" Foreground="#FFEC3939"/>
+                        <TextBox x:Name="SwitchBetweenFilesShortcutTextBox" Width="150" MaxLength="50" Foreground="#FFEC3939"/>             
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="-1,0,1,0" >
+                        <CheckBox Content="Show panel when mapping keyboard shortcut" x:Name="OutputPanelOpenOnKeyboardMapping" />
                     </StackPanel>
                 </StackPanel>
             </TabItem>
