@@ -67,7 +67,7 @@ namespace TestCop.Plugin.OptionsPage
           InitializeComponent();
 
           BindWithValidationMustBeARegex(testFileAnalysisSettings, testNamespaceRegExTextBox, "TestProjectToCodeProjectNameSpaceRegEx");
-          BindWithRegexMatchesValidation(testFileAnalysisSettings, testClassSuffixTextBox, "TestClassSuffix", "^[a-zA-Z]*$");
+          BindWithRegexMatchesValidation(testFileAnalysisSettings, testClassSuffixTextBox, "TestClassSuffix", "^[_a-zA-Z]*$");
           BindWithRegexMatchesValidation(testFileAnalysisSettings, testNamespaceRegExReplaceTextBox, "TestProjectToCodeProjectNameSpaceRegExReplace", "^[\\$\\.a-zA-Z1-9]*$");
                                             
           testFileAnalysisSettings.TestingAttributes.ForEach(p => testingAttributesListBox.Items.Add(p));

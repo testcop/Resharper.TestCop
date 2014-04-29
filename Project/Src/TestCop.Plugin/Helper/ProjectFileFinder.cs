@@ -5,6 +5,7 @@
 // --
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using JetBrains.ProjectModel;
 
@@ -13,12 +14,12 @@ namespace TestCop.Plugin.Helper
     public class ProjectFileFinder: RecursiveProjectVisitor
     {
         private readonly List<IProjectFile> _items;
-        private readonly Regex _regex;
+        private readonly Regex[] _regexs;
 
-        public ProjectFileFinder(List<IProjectFile> items, Regex regex)
+        public ProjectFileFinder(List<IProjectFile> items, params Regex[] regexs)
         {
             _items = items;
-            _regex = regex;
+            _regexs = regexs;
         }
 
         public override void VisitProjectFile(IProjectFile projectFile)
@@ -28,10 +29,10 @@ namespace TestCop.Plugin.Helper
 
             if (projectFile.Kind == ProjectItemKind.PHYSICAL_FILE)
             {
-                if (_regex.IsMatch(projectFileName))
+                if (_regexs.Any(regex => regex.IsMatch(projectFileName)))
                 {
                     _items.Add(projectFile);
-                }
+                }               
             }
         }
     }
