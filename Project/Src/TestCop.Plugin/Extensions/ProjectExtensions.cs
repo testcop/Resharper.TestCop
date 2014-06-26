@@ -38,18 +38,23 @@ namespace TestCop.Plugin.Extensions
             var match = TestingRegEx.Match(currentProjectNamespace);
             if (match.Success && match.Groups.Count>1)
             {
-                if (replaceText.IsNullOrEmpty() || replaceText == "*")
-                {
-                    string result = "";
-                    for (int i = 1; i < match.Groups.Count; i++) result += match.Groups[i].Value;
-                    return result;
-                }
-
-                return TestingRegEx.Replace(currentProjectNamespace, replaceText);                
+                return RegExApplyReplaceText(match, replaceText, currentProjectNamespace);
             }
 
             ResharperHelper.AppendLineToOutputWindow("ERROR: Regex pattern matching failed to extract group");
             throw new ApplicationException("Unexpected internal error.");
+        }
+
+        private static string RegExApplyReplaceText(Match match, string replaceText, string currentProjectNamespace)
+        {
+            if (replaceText.IsNullOrEmpty() || replaceText == "*")
+            {
+                string result = "";
+                for (int i = 1; i < match.Groups.Count; i++) result += match.Groups[i].Value;
+                return result;
+            }
+
+            return TestingRegEx.Replace(currentProjectNamespace, replaceText);
         }
 
         private static Regex TestingRegEx
