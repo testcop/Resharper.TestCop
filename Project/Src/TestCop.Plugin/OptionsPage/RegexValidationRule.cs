@@ -22,13 +22,13 @@ namespace TestCop.Plugin.OptionsPage
         {
             ValidationResult result = ValidationResult.ValidResult;
            
-            if (!String.IsNullOrEmpty(this.RegexText))
+            if (!String.IsNullOrEmpty(RegexText))
             {              
                 string text = value as string ?? String.Empty;
 
                
-                if (!Regex.IsMatch(text, this.RegexText, this.RegexOptions))
-                    result = new ValidationResult(false, this.ErrorMessage);
+                if (!Regex.IsMatch(text, RegexText, RegexOptions))
+                    result = new ValidationResult(false, ErrorMessage);
             }
             
             return result;

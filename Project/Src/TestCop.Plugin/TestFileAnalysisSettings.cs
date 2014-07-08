@@ -4,12 +4,10 @@
 // -- Copyright 2013
 // --
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Application;
 using JetBrains.Application.Settings;
-using JetBrains.DataFlow;
 using JetBrains.ReSharper.Settings;
 
 namespace TestCop.Plugin
@@ -74,12 +72,10 @@ namespace TestCop.Plugin
     [ShellComponent]
     public class TestCopSettingsManager
     {
-        private readonly Lifetime _lifetime;
         private readonly ISettingsStore _settingsStore;
 
-        public TestCopSettingsManager(Lifetime lifetime, ISettingsStore settingsStore)
+        public TestCopSettingsManager(ISettingsStore settingsStore)
         {
-            _lifetime = lifetime;
             _settingsStore = settingsStore;
         }
 

@@ -43,7 +43,7 @@ namespace TestCop.Plugin.Tests.Highlighting
         [TestCase(@"<TestApplication2Tests>\ClassA.SomeMoreTests.cs")]       
         public void Test(string testName)
         {
-            string altRegEx = "^(.*)Tests$";
+            const string altRegEx = "^(.*)Tests$";
             // the default namespace is '^(.*)\.Tests$' - we test that this can be overidden with '^(.*)Tests$'            
 #if R7
         this.ExecuteWithinSettingsTransaction(
@@ -63,13 +63,12 @@ namespace TestCop.Plugin.Tests.Highlighting
                 DoTestFiles(testName);
             }));
 #else   
-            this.ExecuteWithinSettingsTransaction((Action<IContextBoundSettingsStore>)(settingsStore =>
+            ExecuteWithinSettingsTransaction((Action<IContextBoundSettingsStore>)(settingsStore =>
             {
-                this.RunGuarded((Action)(() => settingsStore.SetValue<TestFileAnalysisSettings, string>(s => s.TestProjectToCodeProjectNameSpaceRegEx, altRegEx)));
+                RunGuarded((Action)(() => settingsStore.SetValue<TestFileAnalysisSettings, string>(s => s.TestProjectToCodeProjectNameSpaceRegEx, altRegEx)));
                 DoTestFiles(testName);
             }));
 #endif
         }
-       
     }
 }

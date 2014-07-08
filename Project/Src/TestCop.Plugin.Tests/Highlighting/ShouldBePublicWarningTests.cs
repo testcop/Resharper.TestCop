@@ -34,7 +34,7 @@ namespace TestCop.Plugin.Tests.Highlighting
              * that break the more complex 'solution based tests' within the test solution */
             base.TestFixtureTearDown();
 
-            base.RunGuarded(
+            RunGuarded(
               () => ShellInstance.GetComponent<ReuseSolutionInTestsComponent>().CloseSolution());
         }
         #endif

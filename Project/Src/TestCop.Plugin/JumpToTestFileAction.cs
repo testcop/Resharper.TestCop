@@ -35,7 +35,7 @@ namespace TestCop.Plugin
     [ActionHandler("TestCop.JumpToTest")]
     public class JumpToTestFileAction : IActionHandler
     {
-        private Action<JetPopupMenu, JetPopupMenu.ShowWhen> _menuDisplayer = (menu, showWhen) => menu.Show(showWhen);
+        private readonly Action<JetPopupMenu, JetPopupMenu.ShowWhen> _menuDisplayer = (menu, showWhen) => menu.Show(showWhen);
 
         public JumpToTestFileAction(Action<JetPopupMenu, JetPopupMenu.ShowWhen> overrideMenuDisplay): this()
         {
@@ -68,8 +68,10 @@ namespace TestCop.Plugin
             ISolution solution = context.GetData(JetBrains.ProjectModel.DataContext.DataConstants.SOLUTION);
             if (solution == null){return;}
 
+            IClrTypeName clrTypeClassName = ResharperHelper.GetClassNameAppropriateToLocation(solution, textControl);            
+
             var currentProject = context.GetData(JetBrains.ProjectModel.DataContext.DataConstants.Project);
-            var targetProjects = ResharperHelper.FindAssociatedProjects(currentProject);     
+            var targetProjects = currentProject.GetAssociatedProjects(clrTypeClassName.GetNamespaceName());     
             if(targetProjects.IsEmpty())
             {
                 ResharperHelper.AppendLineToOutputWindow("Unable to locate associated assembly - check project namespaces and testcop Regex");
@@ -80,7 +82,6 @@ namespace TestCop.Plugin
                 .BindToContextTransient(ContextRange.Smart(textControl.ToDataContext()))                
                 .GetKey<TestFileAnalysisSettings>(SettingsOptimization.OptimizeDefault);
                                                 
-            IClrTypeName clrTypeClassName = ResharperHelper.GetClassNameAppropriateToLocation(solution, textControl);            
             var classNamesToFind = new List<string>();
 
             var baseFileName = ResharperHelper.GetBaseFileName(context, solution);
@@ -115,8 +116,6 @@ namespace TestCop.Plugin
                     ,elementsFoundInTarget, elementsFoundInSolution);            
         }
         
-       
-
         private TestFileAnalysisSettings Settings { 
             get
             {
@@ -140,13 +139,13 @@ namespace TestCop.Plugin
             IPsiServices services = solution.GetPsiServices();
             IProject currentProject = context.GetData(JetBrains.ProjectModel.DataContext.DataConstants.Project);
 
-            var targetProjects = ResharperHelper.FindAssociatedProjects(currentProject);
+            var targetProjects = currentProject.GetAssociatedProjects(clrTypeClassName.GetNamespaceName() );
             ISearchDomain searchDomain;
 
             if (Settings.FindAnyUsageInTestAssembly)
             {
                 searchDomain = PsiShared.GetComponent<SearchDomainFactory>().CreateSearchDomain(                
-                targetProjects.SelectMany(proj=>proj.GetAllProjectFiles().Select(p => p.GetPsiModule())) );
+                targetProjects.SelectMany(proj=>proj.Project.GetAllProjectFiles().Select(p => p.GetPsiModule())) );
             }
             else
             {
@@ -154,7 +153,7 @@ namespace TestCop.Plugin
                 var items = new List<IProjectFile>();
                 var pattern = string.Format("{0}.*{1}", clrTypeClassName.ShortName, Settings.TestClassSuffix);
                 var finder = new ProjectFileFinder(items, new Regex(pattern));
-                targetProjects.ForEach(p=>p.Accept(finder));
+                targetProjects.ForEach(p=>p.Project.Accept(finder));
                 searchDomain = PsiShared.GetComponent<SearchDomainFactory>().CreateSearchDomain(items.Select(p => p.ToSourceFile()));
             }
 

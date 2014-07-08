@@ -34,7 +34,7 @@ namespace TestCop.Plugin.OptionsPage
             }
             catch (Exception)
             {
-                result = new ValidationResult(false, this.ErrorMessage); 
+                result = new ValidationResult(false, ErrorMessage); 
             }                
             
             return result;

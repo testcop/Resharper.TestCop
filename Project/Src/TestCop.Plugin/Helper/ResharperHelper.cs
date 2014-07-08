@@ -9,14 +9,10 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Application;
 using JetBrains.Application.DataContext;
-using JetBrains.Application.Settings;
-using JetBrains.Application.Settings.Store.Implementation;
 using JetBrains.DataFlow;
 using JetBrains.DocumentModel;
 using JetBrains.IDE;
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Feature.Services.LiveTemplates.FileTemplates;
-using JetBrains.ReSharper.Feature.Services.LiveTemplates.Settings;
 using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
@@ -97,7 +93,7 @@ namespace TestCop.Plugin.Helper
                      
             return fileName;                        
         }
-        
+       
         public static IClrTypeName FindFirstTypeInFile(ISolution solution, IDocument document)
         {           
             for (int i = document.DocumentRange.StartOffset; i < document.DocumentRange.EndOffset; i++)
@@ -166,11 +162,6 @@ namespace TestCop.Plugin.Helper
               });
         }
 
-        public static IList<IProject> FindAssociatedProjects(IProject project)
-        {
-            return project.GetAssociatedProject();
-        }
-
         public static void RemoveElementsNotInProjects(List<IClrDeclaredElement> declaredElements, IList<IProject> associatedProjects)
         {
             declaredElements.RemoveAll(p => p.GetSourceFiles().Any(de =>
@@ -189,6 +180,11 @@ namespace TestCop.Plugin.Helper
         public static List<IClrDeclaredElement> FindClass(ISolution solution, string classNameToFind, IProject restrictToThisProject)
         {
             return FindClass(solution, classNameToFind, new[] { restrictToThisProject });
+        }
+
+        public static List<IClrDeclaredElement> FindClass(ISolution solution, string classNameToFind, IList<TestCopProjectItem> restrictToTheseProjects)
+        {
+            return FindClass(solution, classNameToFind, restrictToTheseProjects.ToList(p=>p.Project));
         }
 
         public static List<IClrDeclaredElement> FindClass(ISolution solution, string classNameToFind, IList<IProject> restrictToTheseProjects)

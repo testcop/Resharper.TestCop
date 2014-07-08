@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using JetBrains.Application;
 using JetBrains.Application.DataContext;
 using JetBrains.CommonControls;
@@ -29,7 +30,7 @@ namespace TestCop.Plugin.Helper
     {        
         //------------------------------------------------------------------------------------------------------------------------
         public static void PromptToOpenOrCreateClassFiles(Action<JetPopupMenu, JetPopupMenu.ShowWhen> menuDisplayer,Lifetime lifetime, IDataContext context, ISolution solution
-    , IProject project, IClrTypeName clrTypeClassName, IList<IProject> targetProjects
+    , IProject project, IClrTypeName clrTypeClassName, IList<TestCopProjectItem> targetProjects
     , List<IClrDeclaredElement> preferred, List<IClrDeclaredElement> fullList)
         {
             var autoExecuteIfSingleEnabledItem = JetPopupMenu.ShowWhen.AutoExecuteIfSingleEnabledItem;
@@ -53,9 +54,7 @@ namespace TestCop.Plugin.Helper
                     autoExecuteIfSingleEnabledItem = JetPopupMenu.ShowWhen.NoItemsBannerIfNoItems;
                 }
             }
-
-            
-            
+             
             var menu = Shell.Instance.GetComponent<JetPopupMenus>().Create();
             menu.Caption.Value = WindowlessControl.Create("Switch to:");
             menu.SetItems(menuItems.ToArray());
@@ -122,7 +121,7 @@ namespace TestCop.Plugin.Helper
 
         static public void MoveBestMatchesToTopWhenSwitchingFromTestToCode(IList<SimpleMenuItem> currentMenus
             , IProject project
-            , IList<IProject> associatedTargetProjects
+            , IList<TestCopProjectItem> associatedTargetProjects
             , IClrTypeName clrTypeClassName)
         {
             if (clrTypeClassName == null) return;
@@ -135,7 +134,7 @@ namespace TestCop.Plugin.Helper
             bool currentFileisTestFile = clrTypeClassName.ShortName.EndsWith(testSuffix);
             string targetFileName = clrTypeClassName.ShortName.Flip(currentFileisTestFile, testSuffix);
             
-            foreach (var associatedTargetProject in associatedTargetProjects)
+            foreach (var associatedTargetProject in associatedTargetProjects.Select(p=>p.Project))
             {
                 var targetFilePathName = FileSystemPath.Parse(associatedTargetProject.ProjectFileLocation.Directory + "\\" + targetSubDirectoryPath + "\\" + targetFileName);
                 
@@ -153,16 +152,11 @@ namespace TestCop.Plugin.Helper
             }
         }
 
-
         //------------------------------------------------------------------------------------------------------------------------
-        static public bool DeriveRelatedFileNameAndAddCreateMenus(IDataContext context, Lifetime lifetime, IProject project, IList<IProject> associatedTargetProjects,IList<SimpleMenuItem> currentMenus, IClrTypeName clrTypeClassName)
+        static public bool DeriveRelatedFileNameAndAddCreateMenus(IDataContext context, Lifetime lifetime, IProject project, IList<TestCopProjectItem> associatedTargetProjects,IList<SimpleMenuItem> currentMenus, IClrTypeName clrTypeClassName)
         {
             string testSuffix = TestCopSettingsManager.Instance.Settings.TestClassSuffix;
-            if (clrTypeClassName == null) return false;
-
-            string targetNameSpace = ResharperHelper.GetRelativeNameSpace(project, clrTypeClassName);
-            string targetDirectory = targetNameSpace.Replace('.', '\\');
-                        
+            if (clrTypeClassName == null) return false;                        
             var baseFileName = ResharperHelper.GetBaseFileName(context, project.GetSolution());
             
             var targetFile = ResharperHelper.UsingFileNameGetClassName(baseFileName).RemoveTrailing(testSuffix);
@@ -177,21 +171,20 @@ namespace TestCop.Plugin.Helper
 
             foreach (var associatedTargetProject in associatedTargetProjects)
             {
-                if (currentFileisTestFile == associatedTargetProject.IsTestProject())
+                if (currentFileisTestFile == associatedTargetProject.Project.IsTestProject())
                 {
                     ResharperHelper.AppendLineToOutputWindow(
                         string.Format("Internal Error: Attempted to create '{0}' within project '{1}'"
-                        , targetFile, associatedTargetProject.Name) );
+                        , targetFile, associatedTargetProject.Project.Name) );
                     continue;
                 }
 
-                var targetLocationDirectory = new FileSystemPath(associatedTargetProject.ProjectFileLocation.Directory + "\\" + targetDirectory);
-                string targetFileLocation = targetLocationDirectory.FullPath + "\\" + targetFile;
+                string targetFileLocation = associatedTargetProject.SubNamespaceFolder.FullPath + "\\" + targetFile;
 
                 if (!IsMenuItemPresentForFile(currentMenus, targetFileLocation))
                 {
-                    currentMenus.AddRange(AddCreateFileMenuItem(context, lifetime, associatedTargetProject,
-                        targetLocationDirectory, targetFile));
+                    currentMenus.AddRange(AddCreateFileMenuItem(lifetime, associatedTargetProject.Project,
+                        associatedTargetProject.SubNamespaceFolder, targetFile));
                     addedCreateMenuItem = true;
                 }
             }
@@ -212,7 +205,7 @@ namespace TestCop.Plugin.Helper
         }
 
         //------------------------------------------------------------------------------------------------------------------------
-        private static List<SimpleMenuItem> AddCreateFileMenuItem(IDataContext context, Lifetime lifetime, IProject associatedTargetProject,
+        private static List<SimpleMenuItem> AddCreateFileMenuItem(Lifetime lifetime, IProject associatedTargetProject,
                                           FileSystemPath targetLocationDirectory, string targetFile)
         {
             var menuItems = new List<SimpleMenuItem>();
