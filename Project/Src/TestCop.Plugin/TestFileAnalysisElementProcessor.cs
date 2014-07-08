@@ -4,7 +4,6 @@
 // -- Copyright 2014
 // --
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Application.Settings;
@@ -127,7 +126,6 @@ namespace TestCop.Plugin
             
             //We have a testing attribute so now check some conformance.                       
             CheckElementIsPublicAndCreateWarningIfNot(declaration, testingAttributes);
-            
 
             if (CheckNamingOfTypeEndsWithTestSuffix(declaration))
             {
@@ -241,8 +239,10 @@ namespace TestCop.Plugin
             
             var declaredElements = ResharperHelper.FindClass(Solution,className);
 
-            var thisProject = thisDeclaration.GetProject();
-            var associatedProjects = ResharperHelper.FindAssociatedProjects(thisProject);
+            var currentProject = thisDeclaration.GetProject();
+            var currentDeclarationNamespace = thisDeclaration.OwnerNamespaceDeclaration!=null ? thisDeclaration.OwnerNamespaceDeclaration.DeclaredName : "";
+            
+            var associatedProjects = currentProject.GetAssociatedProjects(currentDeclarationNamespace);
             if (associatedProjects == null)
             {
                 var highlight = new TestFileNameWarning("Project for this test assembly was not found - check namespace of projects", thisDeclaration);
@@ -251,7 +251,7 @@ namespace TestCop.Plugin
             }
 
             var filteredDeclaredElements = new List<IClrDeclaredElement>(declaredElements);
-            ResharperHelper.RemoveElementsNotInProjects(filteredDeclaredElements, associatedProjects);
+            ResharperHelper.RemoveElementsNotInProjects(filteredDeclaredElements, associatedProjects.Select(p=>p.Project).ToList());
             
             if (filteredDeclaredElements.Count == 0)
             {
@@ -281,14 +281,14 @@ namespace TestCop.Plugin
         private void CheckClassNamespaceOfTestMatchesClassUnderTest(ICSharpTypeDeclaration thisDeclaration, List<IClrDeclaredElement> declaredElements)
         {            
             var thisProject = thisDeclaration.GetProject();
-            var associatedProject = thisProject.GetAssociatedProject().FirstOrDefault();
+            var associatedProject = thisProject.GetAssociatedProjects(thisDeclaration.GetContainingNamespaceDeclaration().DeclaredName).FirstOrDefault();
             if (associatedProject == null) return;
-            ResharperHelper.RemoveElementsNotInProjects(declaredElements,new []{associatedProject});   
+            ResharperHelper.RemoveElementsNotInProjects(declaredElements,new []{associatedProject.Project});   
 
             var thisProjectsDefaultNamespace = thisProject.GetDefaultNamespace();
             if (string.IsNullOrEmpty(thisProjectsDefaultNamespace)) return;
 
-            var associatedProjectsDefaultNameSpace = associatedProject.GetDefaultNamespace();
+            var associatedProjectsDefaultNameSpace = associatedProject.Project.GetDefaultNamespace();
             if (string.IsNullOrEmpty(associatedProjectsDefaultNameSpace)) return;
 
             var relativePathNamespaceOfClass =

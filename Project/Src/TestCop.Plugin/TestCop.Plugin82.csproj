@@ -59,10 +59,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\SolutionExtensions.cs" />
+    <Compile Include="Extensions\TestCopProjectItem.cs" />
     <Compile Include="Extensions\TypeElementExtensions.cs" />
     <Compile Include="Helper\BitmapToImageSourceConverter.cs" />
     <Compile Include="Helper\DTEHelper.cs" />
     <Compile Include="Helper\JumpToTestMenuHelper.cs" />
+    <Compile Include="Helper\Mapper\IProjectMappingHeper.cs" />
+    <Compile Include="Helper\Mapper\ProjectMappingHelper.cs" />
+    <Compile Include="Helper\Mapper\TestProjectsMapToSingCodeProjectHeper.cs" />
     <Compile Include="Helper\ProjectFileFinder.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />

@@ -35,7 +35,7 @@ namespace TestCop.Plugin.Tests.Highlighting
              * that break the more complex 'solution based tests' within the test solution */
             base.TestFixtureTearDown();
 
-            base.RunGuarded(
+            RunGuarded(
               () => ShellInstance.GetComponent<ReuseSolutionInTestsComponent>().CloseSolution());            
         }
         #endif
@@ -76,7 +76,7 @@ namespace TestCop.Plugin.Tests.Highlighting
 #else
             this.ExecuteWithinSettingsTransaction((Action<IContextBoundSettingsStore>)(settingsStore =>
             {
-                this.RunGuarded((Action)(() => settingsStore.SetValue<TestFileAnalysisSettings, string>(s => s.TestClassSuffix, "RandomExt")));
+                RunGuarded((() => settingsStore.SetValue<TestFileAnalysisSettings, string>(s => s.TestClassSuffix, "RandomExt")));
                 DoTestFiles(testName);
             }));
         

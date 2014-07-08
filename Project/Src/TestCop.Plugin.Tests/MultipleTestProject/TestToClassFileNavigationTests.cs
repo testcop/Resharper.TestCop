@@ -40,11 +40,11 @@ namespace TestCop.Plugin.Tests.MultipleTestProject
         [TestCase(@"<TestApplication2Tests>\NS2\ClassGTests.cs")]
         public void Test(string testName)
         {
-            string altRegEx = "^(.*?)\\.?(Integration)*Tests$";
+            const string altRegEx = "^(.*?)\\.?(Integration)*Tests$";
 
-            this.ExecuteWithinSettingsTransaction((settingsStore =>
+            ExecuteWithinSettingsTransaction((settingsStore =>
             {
-                this.RunGuarded(
+                RunGuarded(
                     () =>
                     {
                         settingsStore.SetValue<TestFileAnalysisSettings, string>(
@@ -56,8 +56,6 @@ namespace TestCop.Plugin.Tests.MultipleTestProject
                     );
                 DoTestFiles(testName);
             }));
-
         }
-
     }
 }
