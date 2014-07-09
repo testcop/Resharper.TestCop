@@ -80,6 +80,7 @@
     <Compile Include="Highlighting\AbstractTestClassNameWarning.cs" />
     <Compile Include="Highlighting\TestFileNameWarning.cs" />
     <Compile Include="Highlighting\AbstractShouldBePublicWarning.cs" />
+    <Compile Include="Highlighting\TestMethodMissingCodeWarning.cs" />
     <Compile Include="OptionsPage\IsAFileTemplateValidationRule.cs" />
     <Compile Include="OptionsPage\IsARegexValidationRule.cs" />
     <Compile Include="OptionsPage\RegexValidationRule.cs" />
