@@ -85,3 +85,13 @@ using TestCop.Plugin.Highlighting;
         "TestCop : To easily identify a test class by its name it must have the configured suffix",
         Severity.ERROR,
         false)]
+
+[assembly: RegisterConfigurableSeverity(
+        TestMethodMissingCodeWarning.SeverityId,
+        null, "Testing",
+        "Test methods should contain code",
+        "TestCop : All tests methods should test something",
+        Severity.ERROR,
+        false)]
+
+    

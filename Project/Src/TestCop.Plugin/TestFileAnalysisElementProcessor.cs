@@ -18,6 +18,8 @@ using JetBrains.ReSharper.Psi.VB.Util;
 using TestCop.Plugin.Extensions;
 using TestCop.Plugin.Helper;
 using TestCop.Plugin.Highlighting;
+using IAttribute = JetBrains.ReSharper.Psi.CSharp.Tree.IAttribute;
+using IAttributesOwnerDeclaration = JetBrains.ReSharper.Psi.CSharp.Tree.IAttributesOwnerDeclaration;
 
 namespace TestCop.Plugin
 {
@@ -98,7 +100,7 @@ namespace TestCop.Plugin
             var functionDeclaration = element as ICSharpFunctionDeclaration;
             if (functionDeclaration != null)
             {
-                ProcessFunctionDeclaration(functionDeclaration);
+                ProcessFunctionDeclaration(functionDeclaration);                
             }
             
             var typeDeclaration = element as ICSharpTypeDeclaration;
@@ -126,7 +128,7 @@ namespace TestCop.Plugin
             
             //We have a testing attribute so now check some conformance.                       
             CheckElementIsPublicAndCreateWarningIfNot(declaration, testingAttributes);
-
+            
             if (CheckNamingOfTypeEndsWithTestSuffix(declaration))
             {
                 if (CheckNamingOfFileAgainstTypeAndCreateWarningIfNot(declaration))
@@ -136,6 +138,8 @@ namespace TestCop.Plugin
             }
 
         }
+
+    
 
         static private bool CheckMethodsForTestingAttributes(ICSharpTypeDeclaration declaration, IList<string> testAttributes )
         {
@@ -163,7 +167,8 @@ namespace TestCop.Plugin
             var testingAttributes = FindTestingAttributes(declaration, TestAttributes);                
             if (testingAttributes.Count==0) return;
 
-            CheckElementIsPublicAndCreateWarningIfNot(declaration, testingAttributes);            
+            CheckElementIsPublicAndCreateWarningIfNot(declaration, testingAttributes);
+            CheckTestMethodHasCodeAndCreateWarningIfNot(declaration);
         }
 
         public bool ProcessingIsFinished
@@ -205,6 +210,18 @@ namespace TestCop.Plugin
             }
 
             return true;
+        }
+        
+        private void CheckTestMethodHasCodeAndCreateWarningIfNot(ICSharpFunctionDeclaration declaration)
+        {
+            var statements = declaration.Body.Statements;
+            
+            if (!statements.Any())
+            {
+                IHighlighting highlighting = new TestMethodMissingCodeWarning("Test method is empty");
+                _myHighlightings.Add(new HighlightingInfo(declaration.GetNameDocumentRange(), highlighting));
+            }
+            //declaration.Body.Accept(TreeNodeVisitor) -- extend to look at code for at least one IExpressionStatement
         }
 
         private void CheckElementIsPublicAndCreateWarningIfNot(IAccessRightsOwnerDeclaration declaration, IEnumerable<IAttribute> testingAttributes)
