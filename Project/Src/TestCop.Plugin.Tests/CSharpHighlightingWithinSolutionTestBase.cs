@@ -62,7 +62,13 @@ namespace TestCop.Plugin.Tests
                            {
                                using (Locks.UsingWriteLock())
                                {
-                                   FileSystemPath solutionFilePath = GetTestDataFilePath2(SolutionName);                                   
+                                   FileSystemPath solutionFilePath = GetTestDataFilePath2(SolutionName);
+
+                                   if (!solutionFilePath.ExistsFile)
+                                   {
+                                       Assert.Fail("Solution file doesn't exist: " + solutionFilePath);
+                                   }
+
                                    _loadedTestSolution =                            
                                        SolutionManager.OpenExistingSolution(solutionFilePath);
                                    Assert.IsNotNull(_loadedTestSolution, "Failed to load solution " + solutionFilePath.FullPath);
