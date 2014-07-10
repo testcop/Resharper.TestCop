@@ -11,7 +11,7 @@ using JetBrains.ReSharper.Daemon;
 using NUnit.Framework;
 using TestCop.Plugin.Highlighting;
 
-namespace TestCop.Plugin.Tests.MultipleTestProject
+namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProject
 {    
     [TestFixture]
     public class ClassToTestFileNavigationTests : CSharpHighlightingWithinSolutionTestBase
@@ -23,7 +23,7 @@ namespace TestCop.Plugin.Tests.MultipleTestProject
 
         protected override string RelativeTestDataPath
         {
-            get { return @"highlighting\sample_integration_sln"; }
+            get { return @"MultipleTestProjectToSingleCodeProject\ClassToTestNavigation"; }
         }
 
         protected override IActionHandler GetShortcutAction(TextWriter textwriter)
