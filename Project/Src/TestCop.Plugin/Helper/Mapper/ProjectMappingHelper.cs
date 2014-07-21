@@ -10,6 +10,11 @@ namespace TestCop.Plugin.Helper.Mapper
     {
         public static IProjectMappingHeper GetProjectMappingHeper()
         {
+            var settings = TestCopSettingsManager.Instance.Settings;
+
+            if (settings.ConfiguredForSingleTestProject)
+                return new CodeProjectMapsToSingleTestProjectHeper();
+
             return new TestProjectsMapToSingCodeProjectHeper();
         } 
     }

@@ -64,6 +64,7 @@
     <Compile Include="Helper\BitmapToImageSourceConverter.cs" />
     <Compile Include="Helper\DTEHelper.cs" />
     <Compile Include="Helper\JumpToTestMenuHelper.cs" />
+    <Compile Include="Helper\Mapper\CodeProjectMapsToSingleTestProjectHeper.cs" />
     <Compile Include="Helper\Mapper\IProjectMappingHeper.cs" />
     <Compile Include="Helper\Mapper\ProjectMappingHelper.cs" />
     <Compile Include="Helper\Mapper\TestProjectsMapToSingCodeProjectHeper.cs" />

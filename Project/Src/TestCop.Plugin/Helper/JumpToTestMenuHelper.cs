@@ -125,18 +125,15 @@ namespace TestCop.Plugin.Helper
             , IClrTypeName clrTypeClassName)
         {
             if (clrTypeClassName == null) return;
-            if (!project.IsTestProject()) return;
-
-            string targetNameSpace = ResharperHelper.GetRelativeNameSpace(project, clrTypeClassName);
-            string targetSubDirectoryPath = targetNameSpace.Replace('.', '\\');
+//            if (!project.IsTestProject()) return;
 
             string testSuffix = TestCopSettingsManager.Instance.Settings.TestClassSuffix;
             bool currentFileisTestFile = clrTypeClassName.ShortName.EndsWith(testSuffix);
             string targetFileName = clrTypeClassName.ShortName.Flip(currentFileisTestFile, testSuffix);
             
-            foreach (var associatedTargetProject in associatedTargetProjects.Select(p=>p.Project))
+            foreach (var associatedTargetProject in associatedTargetProjects)
             {
-                var targetFilePathName = FileSystemPath.Parse(associatedTargetProject.ProjectFileLocation.Directory + "\\" + targetSubDirectoryPath + "\\" + targetFileName);
+                var targetFilePathName = FileSystemPath.Parse(associatedTargetProject.SubNamespaceFolder + "\\" + targetFileName);
                 
                 for (int i = 0; i < currentMenus.Count; i++)
                 {
