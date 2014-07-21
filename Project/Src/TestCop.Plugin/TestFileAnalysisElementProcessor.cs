@@ -308,10 +308,7 @@ namespace TestCop.Plugin
             var associatedProjectsDefaultNameSpace = associatedProject.Project.GetDefaultNamespace();
             if (string.IsNullOrEmpty(associatedProjectsDefaultNameSpace)) return;
 
-            var relativePathNamespaceOfClass =
-                thisDeclaration.OwnerNamespaceDeclaration.DeclaredName.RemoveLeading(thisProjectsDefaultNamespace)
-                               .RemoveLeading(".");
-            var nsToBeFoundShouldBe = associatedProjectsDefaultNameSpace.AppendIfNotNull(".", relativePathNamespaceOfClass);
+            var nsToBeFoundShouldBe = associatedProject.Project.GetDefaultNamespace()+associatedProject.SubNamespace;
                        
             //Lookup the namespaces of the declaredElements we've found that possibly match this test             
             IList<string> foundNameSpaces = new List<string>();

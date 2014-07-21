@@ -58,7 +58,7 @@ namespace TestCop.Plugin.Helper.Mapper
             throw new ApplicationException("Unexpected internal error.");
         }
 
-        private static bool RegexReplace(string regexPattern, string regexReplaceText, string inputString, out string resultString )
+        public static bool RegexReplace(string regexPattern, string regexReplaceText, string inputString, out string resultString )
         {
             resultString = "";
             var regex = new Regex(regexPattern);

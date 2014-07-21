@@ -67,6 +67,9 @@ namespace TestCop.Plugin
         
         [SettingsEntry(@"true", "Should the TestCop output panel be opened on startup")]
         public bool OutputPanelOpenOnKeyboardMapping { get; set; }
+
+        [SettingsEntry(@"false", "Should the TestCop be configured for a single test project per solution")]
+        public bool ConfiguredForSingleTestProject { get; set; }
     }
 
     [ShellComponent]
