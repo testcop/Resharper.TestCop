@@ -1,4 +1,4 @@
-﻿namespace TestApplication.NG1
+namespace TestApplication.NG1
 {
     public class ClassWithBoth
     {
@@ -7,5 +7,5 @@
 }
 
 ---------------------------------------------------------
-[Switch to:] ClassWithBothTests.cs|(in <TestApplication.IntegrationTests>\NG1)
 [Switch to:] ClassWithBothTests.cs|(in <TestApplication.Tests>\NG1)
+[Switch to:] ClassWithBothTests.cs|(in <TestApplication.IntegrationTests>\NG1)
