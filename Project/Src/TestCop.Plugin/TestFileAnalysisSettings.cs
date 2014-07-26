@@ -70,6 +70,9 @@ namespace TestCop.Plugin
 
         [SettingsEntry(@"false", "Should the TestCop be configured for a single test project per solution")]
         public bool ConfiguredForSingleTestProject { get; set; }
+
+        [SettingsEntry('.', "The char separator be used when naming test files to separate class from description e.g. ClassA_SecurityTests")]
+        public char SeparatorUsedToBreakUpTestFileNames { get; set; }
     }
 
     [ShellComponent]
