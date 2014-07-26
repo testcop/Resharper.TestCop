@@ -58,6 +58,8 @@
     <Compile Include="Extensions\ListExtensionsTests.cs" />
     <Compile Include="Extensions\StringExtensionsTests.cs" />
     <Compile Include="Extensions\TypeElementExtensionsTests.cs" />
+    <Compile Include="SingleTestProjectToMultipleCodeProject\ClassToTestFileNavigationTests.cs" />
+    <Compile Include="SingleTestProjectToMultipleCodeProject\TestToClassFileNavigationTests.cs" />
     <Compile Include="Highlighting\TestFileNameSpaceWarningTests.cs.cs" />
     <Compile Include="Highlighting\TestFileNameWarningTests.cs.cs" />
     <Compile Include="Highlighting\ShouldBePublicWarningTests.cs" />

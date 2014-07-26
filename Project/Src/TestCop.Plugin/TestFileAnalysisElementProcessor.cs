@@ -260,7 +260,7 @@ namespace TestCop.Plugin
             var currentDeclarationNamespace = thisDeclaration.OwnerNamespaceDeclaration!=null ? thisDeclaration.OwnerNamespaceDeclaration.DeclaredName : "";
             
             var associatedProjects = currentProject.GetAssociatedProjects(currentDeclarationNamespace);
-            if (associatedProjects == null)
+            if (associatedProjects == null || associatedProjects.Count==0)
             {
                 var highlight = new TestFileNameWarning("Project for this test assembly was not found - check namespace of projects", thisDeclaration);
                 _myHighlightings.Add(new HighlightingInfo(thisDeclaration.GetNameDocumentRange(), highlight));

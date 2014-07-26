@@ -13,9 +13,7 @@ using TestCop.Plugin.Helper.Mapper;
 namespace TestCop.Plugin.Extensions
 {
     public static class ProjectExtensions
-    {
-        private static readonly IProjectMappingHeper MappingHelper = ProjectMappingHelper.GetProjectMappingHeper();
-
+    {        
         /// <summary>
         /// project namespace matches TestCop regex
         /// </summary>        
@@ -39,7 +37,7 @@ namespace TestCop.Plugin.Extensions
         
         public static IList<TestCopProjectItem> GetAssociatedProjects(this IProject currentProject, string currentNamespace)
         {
-            return MappingHelper.GetAssociatedProject(currentProject, currentNamespace);
+            return ProjectMappingHelper.GetProjectMappingHeper().GetAssociatedProject(currentProject, currentNamespace);
         }       
     }
 }
