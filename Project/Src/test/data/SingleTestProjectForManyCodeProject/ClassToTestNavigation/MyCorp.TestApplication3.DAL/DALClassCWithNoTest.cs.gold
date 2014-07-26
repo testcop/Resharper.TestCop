@@ -1,0 +1,9 @@
+﻿namespace MyCorp.TestApplication3.DAL
+{
+    class DALClassCWithNoTest
+    {
+    }
+}
+
+---------------------------------------------------------
+[Switch to:] Create |DALClassCWithNoTestTests|(<MyCorp.TestApplication3.Tests>\DAL)

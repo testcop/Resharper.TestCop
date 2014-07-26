@@ -15,20 +15,21 @@ namespace TestCop.Plugin.Helper.Mapper
 {
     public class CodeProjectMapsToSingleTestProjectHeper : IProjectMappingHeper
     {
+        // http://myregexp.com/
         string regexTestToAssembly = @"^(.*?)\.?Tests(\..*?)(\..*)*$";
         string regexTestToAssemblyProjectReplace = "$1$2";
         private string regexTestToAssemblyProjectSubNamespaceReplace = "$3";
 
-        string regexCodeToTestAssembly = @"^(.*?)(\..*?)(\..*)*$";
+        string regexCodeToTestAssembly = @"^(.*?\..*?)(\..*?)$";
         string regexCodeToTestReplace = "$2";
 
         public IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string currentTypeNamespace)
         {
             const string warningMessage = "Not Supported: More than one code project has a default namespace of ";
-            string subNameSpace = currentTypeNamespace.RemoveLeading(currentProject.GetDefaultNamespace());
-
+          
             if (currentProject.IsTestProject())
             {
+                string subNameSpace = currentTypeNamespace.RemoveLeading(currentProject.GetDefaultNamespace());
                 // <MyCorp.App.Tests>.API.ClassA --> <MyCorp.App.API>.ClassA
 
                 string nameSpaceOfAssociateProject;
@@ -56,7 +57,6 @@ namespace TestCop.Plugin.Helper.Mapper
                 , regexCodeToTestReplace, currentTypeNamespace,
                 out subNameSpaceOfTest);
 
-            subNameSpace = subNameSpaceOfTest.AppendIfMissing(".") + subNameSpace.RemoveLeading(".");
             
             var matchedTestProjects = currentProject.GetSolution().GetTestProjects().ToList();
             if (matchedTestProjects.Count > 1)
@@ -64,7 +64,7 @@ namespace TestCop.Plugin.Helper.Mapper
                 ResharperHelper.AppendLineToOutputWindow("Not Supported: Expected only one test project for all code projects to use");                
             }
 
-            return matchedTestProjects.Select(p => new TestCopProjectItem(p, subNameSpace)).Take(1).ToList();                                        
+            return matchedTestProjects.Select(p => new TestCopProjectItem(p, subNameSpaceOfTest)).Take(1).ToList();                                        
         }
     }
 }
