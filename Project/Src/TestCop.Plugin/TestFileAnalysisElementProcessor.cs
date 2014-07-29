@@ -200,8 +200,9 @@ namespace TestCop.Plugin
             if (declaredClassName.StartsWith(Enumerable.ToArray(BDDPrefixes))) return false;
 
             var currentFileName = CurrentSourceFile.GetLocation().NameWithoutExtension;
-            var testClassNameFromFileName = currentFileName.Replace(".", "");
-
+            
+            var testClassNameFromFileName = currentFileName.Replace(new string(Settings.SeparatorUsedToBreakUpTestFileNames,1), "");
+            
             if (testClassNameFromFileName != declaredClassName)
             {                
                 var testingWarning = new TestClassNameDoesNotMatchFileNameWarning(declaredClassName, testClassNameFromFileName, declaration);                                
@@ -252,7 +253,7 @@ namespace TestCop.Plugin
             if (thisDeclaration.IsAbstract) return;
             
             var currentFileName = CurrentSourceFile.GetLocation().NameWithoutExtension;            
-            var className = currentFileName.Split(new[] { '.' }, 2)[0].RemoveTrailing(TestClassSuffix);
+            var className = currentFileName.Split(new[] { Settings.SeparatorUsedToBreakUpTestFileNames }, 2)[0].RemoveTrailing(TestClassSuffix);
             
             var declaredElements = ResharperHelper.FindClass(Solution,className);
 
