@@ -80,6 +80,7 @@ namespace TestCop.Plugin.OptionsPage
 
           ShowAllTestsWithUsageCheckBox.IsChecked = testFileAnalysisSettings.FindAnyUsageInTestAssembly;
           CheckTestNamespaces.IsChecked = testFileAnalysisSettings.CheckTestNamespaces;
+          CheckUseUnderscoreTestSeparator.IsChecked = testFileAnalysisSettings.SeparatorUsedToBreakUpTestFileNames=='_';
           OutputPanelOpenOnKeyboardMapping.IsChecked = testFileAnalysisSettings.OutputPanelOpenOnKeyboardMapping;
 
           TestCopLogoImage.Source =
@@ -163,6 +164,7 @@ namespace TestCop.Plugin.OptionsPage
 
           _settings.SetValue((TestFileAnalysisSettings s) => s.FindAnyUsageInTestAssembly,ShowAllTestsWithUsageCheckBox.IsChecked);
           _settings.SetValue((TestFileAnalysisSettings s) => s.CheckTestNamespaces, CheckTestNamespaces.IsChecked);
+          _settings.SetValue((TestFileAnalysisSettings s) => s.SeparatorUsedToBreakUpTestFileNames, CheckUseUnderscoreTestSeparator.IsChecked==true ? '_' : '.');
           _settings.SetValue((TestFileAnalysisSettings s) => s.OutputPanelOpenOnKeyboardMapping, OutputPanelOpenOnKeyboardMapping.IsChecked);
           
           _settings.SetValue((TestFileAnalysisSettings s) => s.TestClassSuffix,
