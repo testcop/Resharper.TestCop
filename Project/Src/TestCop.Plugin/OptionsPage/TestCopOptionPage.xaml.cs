@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -66,26 +67,37 @@ namespace TestCop.Plugin.OptionsPage
 
           InitializeComponent();
 
-          BindWithValidationMustBeARegex(testFileAnalysisSettings, testNamespaceRegExTextBox, "TestProjectToCodeProjectNameSpaceRegEx");
-          BindWithRegexMatchesValidation(testFileAnalysisSettings, testClassSuffixTextBox, "TestClassSuffix", "^[_a-zA-Z]*$");
-          BindWithRegexMatchesValidation(testFileAnalysisSettings, testNamespaceRegExReplaceTextBox, "TestProjectToCodeProjectNameSpaceRegExReplace", "^[\\$\\.a-zA-Z1-9]*$");
-                                            
+          //Regex Config for Multiple Test Assemply Logic
+          BindWithValidationMustBeARegex(testFileAnalysisSettings, testNamespaceRegExTextBox, P(x=>x.TestProjectToCodeProjectNameSpaceRegEx));
+          BindWithRegexMatchesValidation(testFileAnalysisSettings, testClassSuffixTextBox, P(x=>x.TestClassSuffix), "^[_a-zA-Z]*$");
+          BindWithRegexMatchesValidation(testFileAnalysisSettings, testNamespaceRegExReplaceTextBox, P(x=>x.TestProjectToCodeProjectNameSpaceRegExReplace), "^[\\$\\.a-zA-Z1-9]*$");
+          //
+          //Regex Config for Single Test Assemply Logic
+          BindWithRegexMatchesValidation(testFileAnalysisSettings, SingleTestNamespaceRegExTextBox,P(x=>x.SingleTestRegexTestToAssembly) , "^[\\$\\.a-zA-Z1-9]*$");
+          BindWithRegexMatchesValidation(testFileAnalysisSettings, SingleTestNamespaceToAssemblyRegExReplaceTextBox, P(x => x.SingleTestRegexTestToAssemblyProjectReplace), "^[\\$\\.a-zA-Z1-9]*$");
+          BindWithRegexMatchesValidation(testFileAnalysisSettings, SingleTestNamespaceToAssemblySubNameSpaceRegExReplaceTextBox, P(x => x.SingleTestRegexTestToAssemblyProjectSubNamespaceReplace), "^[\\$\\.a-zA-Z1-9]*$");
+          BindWithRegexMatchesValidation(testFileAnalysisSettings, SingleTestCodeNamespaceRegExTextBox, P(x => x.SingleTestRegexCodeToTestAssembly), "^[\\$\\.a-zA-Z1-9]*$");
+          BindWithRegexMatchesValidation(testFileAnalysisSettings, SingleTestCodeNamespaceToTestRegExReplaceTextBox, P(x => x.SingleTestRegexCodeToTestReplace), "^[\\$\\.a-zA-Z1-9]*$");
+          //          
           testFileAnalysisSettings.TestingAttributes.ForEach(p => testingAttributesListBox.Items.Add(p));
           testFileAnalysisSettings.BddPrefixes.ForEach(p => contextPrefixesListBox.Items.Add(p));
 
           SwitchBetweenFilesShortcutTextBox.Text = testFileAnalysisSettings.ShortcutToSwitchBetweenFiles;
 
-          BindWithValidationMustBeAFileTemplate(testFileAnalysisSettings, codeTemplateTextBox, "CodeFileTemplateName");
-          BindWithValidationMustBeAFileTemplate(testFileAnalysisSettings, unitTestTemplateTextBox, "UnitTestFileTemplateName");
+          BindWithValidationMustBeAFileTemplate(testFileAnalysisSettings, codeTemplateTextBox, P(x=>x.CodeFileTemplateName));
+          BindWithValidationMustBeAFileTemplate(testFileAnalysisSettings, unitTestTemplateTextBox, P(x => x.UnitTestFileTemplateName));
 
           ShowAllTestsWithUsageCheckBox.IsChecked = testFileAnalysisSettings.FindAnyUsageInTestAssembly;
           CheckTestNamespaces.IsChecked = testFileAnalysisSettings.CheckTestNamespaces;
           CheckUseUnderscoreTestSeparator.IsChecked = testFileAnalysisSettings.SeparatorUsedToBreakUpTestFileNames=='_';
           OutputPanelOpenOnKeyboardMapping.IsChecked = testFileAnalysisSettings.OutputPanelOpenOnKeyboardMapping;
+          TestProjectPerCodeProject.IsChecked = !testFileAnalysisSettings.ConfiguredForSingleTestProject;
 
           TestCopLogoImage.Source =
           (ImageSource) new BitmapToImageSourceConverter().Convert(
-              iconManager.Icons[UnnamedThemedIcons.Agent64x64.Id].CurrentGdipBitmap96, null, null, null);         
+              iconManager.Icons[UnnamedThemedIcons.Agent64x64.Id].CurrentGdipBitmap96, null, null, null);
+
+          HideShowTabs();
       }
 
       private void BindWithValidationMustBeAFileTemplate(TestFileAnalysisSettings testFileAnalysisSettings, TextBox tb, string property)
@@ -103,8 +115,18 @@ namespace TestCop.Plugin.OptionsPage
 
       }
 
-      private void BindWithRegexMatchesValidation(TestFileAnalysisSettings testFileAnalysisSettings,TextBox tb, string property, string regexString)
+      private string P<T>(Expression<Func<TestFileAnalysisSettings, T>> expression)
       {
+          var member = expression.Body as MemberExpression;
+
+          if (member != null)
+              return member.Member.Name;
+
+          throw new ArgumentException("Expression is not a member access", "expression");
+      }
+
+      private void BindWithRegexMatchesValidation(TestFileAnalysisSettings testFileAnalysisSettings,TextBox tb, string property, string regexString)
+      {         
           var binding = new Binding { Path = new PropertyPath(property) };
           var namespaceRule = new RegexValidationRule
           {
@@ -118,7 +140,7 @@ namespace TestCop.Plugin.OptionsPage
           binding.NotifyOnValidationError = true;
           binding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
           tb.DataContext = testFileAnalysisSettings;
-          tb.SetBinding(TextBox.TextProperty, binding);
+          tb.SetBinding(TextBox.TextProperty, binding);          
       }
 
       private void BindWithValidationMustBeARegex(TestFileAnalysisSettings testFileAnalysisSettings, TextBox tb, string property)
@@ -166,14 +188,27 @@ namespace TestCop.Plugin.OptionsPage
           _settings.SetValue((TestFileAnalysisSettings s) => s.CheckTestNamespaces, CheckTestNamespaces.IsChecked);
           _settings.SetValue((TestFileAnalysisSettings s) => s.SeparatorUsedToBreakUpTestFileNames, CheckUseUnderscoreTestSeparator.IsChecked==true ? '_' : '.');
           _settings.SetValue((TestFileAnalysisSettings s) => s.OutputPanelOpenOnKeyboardMapping, OutputPanelOpenOnKeyboardMapping.IsChecked);
-          
+          _settings.SetValue((TestFileAnalysisSettings s) => s.ConfiguredForSingleTestProject, !TestProjectPerCodeProject.IsChecked);
+
+          //Regex Config for Multi Test Assemply Logic
           _settings.SetValue((TestFileAnalysisSettings s) => s.TestClassSuffix,
                              testClassSuffixTextBox.Text.Replace(" ", ""));
           _settings.SetValue((TestFileAnalysisSettings s) => s.TestProjectToCodeProjectNameSpaceRegEx,
                              testNamespaceRegExTextBox.Text.Replace(" ", "")); 
           _settings.SetValue((TestFileAnalysisSettings s) => s.TestProjectToCodeProjectNameSpaceRegExReplace,
-                             testNamespaceRegExReplaceTextBox.Text.Replace(" ", ""));
-
+                             testNamespaceRegExReplaceTextBox.Text.Replace(" ", ""));          
+          //Regex Config for Single Test Assemply Logic          
+          _settings.SetValue((TestFileAnalysisSettings s) => s.SingleTestRegexTestToAssembly,
+                   SingleTestNamespaceRegExTextBox.Text.Replace(" ", ""));
+          _settings.SetValue((TestFileAnalysisSettings s) => s.SingleTestRegexTestToAssemblyProjectReplace,
+                             SingleTestNamespaceToAssemblyRegExReplaceTextBox.Text.Replace(" ", ""));
+          _settings.SetValue((TestFileAnalysisSettings s) => s.SingleTestRegexTestToAssemblyProjectSubNamespaceReplace,
+                   SingleTestNamespaceToAssemblySubNameSpaceRegExReplaceTextBox.Text.Replace(" ", ""));
+          _settings.SetValue((TestFileAnalysisSettings s) => s.SingleTestRegexCodeToTestAssembly,
+                   SingleTestCodeNamespaceRegExTextBox.Text.Replace(" ", ""));
+          _settings.SetValue((TestFileAnalysisSettings s) => s.SingleTestRegexCodeToTestReplace,
+                   SingleTestCodeNamespaceToTestRegExReplaceTextBox.Text.Replace(" ", ""));
+          //                    
           _settings.SetValue((TestFileAnalysisSettings s) => s.CodeFileTemplateName, codeTemplateTextBox.Text);
           _settings.SetValue((TestFileAnalysisSettings s) => s.UnitTestFileTemplateName, unitTestTemplateTextBox.Text);
 
@@ -324,6 +359,33 @@ namespace TestCop.Plugin.OptionsPage
           {
               ((TextBox) sender).Text = template.Description;
           }          
+      }
+
+      private void TestProjectPerCodeProject_Checked(object sender, RoutedEventArgs e)
+      {
+          HideShowTabs();
+      }
+
+      private void HideShowTabs()
+      {
+          MultiTestRegex.Visibility = TestProjectPerCodeProject.IsChecked == true 
+              ? Visibility.Visible 
+              : Visibility.Collapsed;
+
+          MultiTestRegexHelp.Visibility = TestProjectPerCodeProject.IsChecked == true
+              ? Visibility.Visible
+              : Visibility.Collapsed;
+
+          SingleTestRegex.Visibility = TestProjectPerCodeProject.IsChecked == false
+              ? Visibility.Visible
+              : Visibility.Collapsed;
+
+      }
+
+      private void TestProjectPerCodeProject_Unchecked(object sender, RoutedEventArgs e)
+      {
+          HideShowTabs();
+
       }     
   }
 }

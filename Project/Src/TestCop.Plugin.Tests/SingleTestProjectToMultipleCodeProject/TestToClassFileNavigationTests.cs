@@ -49,12 +49,7 @@ namespace TestCop.Plugin.Tests.SingleTestProjectToMultipleCodeProject
         public void Test(string testName)
         {   
              // http://myregexp.com/
-            string regexTestToAssembly = @"^(.*?)\.?Tests(\..*?)(\..*)*$";
-            string regexTestToAssemblyProjectReplace = "$1$2";
-            string regexTestToAssemblyProjectSubNamespaceReplace = "$3";
-
-            string regexCodeToTestAssembly = @"^(.*?\..*?)(\..*?)$";
-            string regexCodeToTestReplace = "$2";
+        
 
             ExecuteWithinSettingsTransaction((settingsStore =>
             {
@@ -63,6 +58,17 @@ namespace TestCop.Plugin.Tests.SingleTestProjectToMultipleCodeProject
                     {
                         settingsStore.SetValue<TestFileAnalysisSettings, bool>(
                             s => s.ConfiguredForSingleTestProject, true);
+
+                        settingsStore.SetValue<TestFileAnalysisSettings, string>(
+                            s => s.SingleTestRegexTestToAssembly, @"^(.*?)\.?Tests(\..*?)(\..*)*$");
+                        settingsStore.SetValue<TestFileAnalysisSettings, string>(
+                            s => s.SingleTestRegexTestToAssemblyProjectReplace, @"$1$2");
+                        settingsStore.SetValue<TestFileAnalysisSettings, string>(
+                            s => s.SingleTestRegexTestToAssemblyProjectSubNamespaceReplace, @"$3");
+                        settingsStore.SetValue<TestFileAnalysisSettings, string>(
+                            s => s.SingleTestRegexCodeToTestAssembly, @"^(.*?\..*?)(\..*?)$");
+                        settingsStore.SetValue<TestFileAnalysisSettings, string>(
+                            s => s.SingleTestRegexCodeToTestReplace, @"$2"); 
                     }
 
                     );

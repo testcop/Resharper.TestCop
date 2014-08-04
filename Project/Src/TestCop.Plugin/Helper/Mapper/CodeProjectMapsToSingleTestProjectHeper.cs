@@ -14,17 +14,11 @@ using TestCop.Plugin.Extensions;
 namespace TestCop.Plugin.Helper.Mapper
 {
     public class CodeProjectMapsToSingleTestProjectHeper : IProjectMappingHeper
-    {
+    {        
         // http://myregexp.com/
-        string regexTestToAssembly = @"^(.*?)\.?Tests(\..*?)(\..*)*$";
-        string regexTestToAssemblyProjectReplace = "$1$2";
-        private string regexTestToAssemblyProjectSubNamespaceReplace = "$3";
-
-        string regexCodeToTestAssembly = @"^(.*?\..*?)(\..*?)$";
-        string regexCodeToTestReplace = "$2";
-
         public IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string currentTypeNamespace)
         {
+            var settings = TestCopSettingsManager.Instance.Settings;
             const string warningMessage = "Not Supported: More than one code project has a default namespace of ";
           
             if (currentProject.IsTestProject())
@@ -33,12 +27,12 @@ namespace TestCop.Plugin.Helper.Mapper
                 // <MyCorp.App.Tests>.API.ClassA --> <MyCorp.App.API>.ClassA
 
                 string nameSpaceOfAssociateProject;
-                TestProjectsMapToSingCodeProjectHeper.RegexReplace(regexTestToAssembly
-                    , regexTestToAssemblyProjectReplace, currentTypeNamespace,
+                TestProjectsMapToSingCodeProjectHeper.RegexReplace(settings.SingleTestRegexTestToAssembly
+                    , settings.SingleTestRegexTestToAssemblyProjectReplace, currentTypeNamespace,
                     out nameSpaceOfAssociateProject);
 
-                TestProjectsMapToSingCodeProjectHeper.RegexReplace(regexTestToAssembly
-                    , regexTestToAssemblyProjectSubNamespaceReplace, currentTypeNamespace,
+                TestProjectsMapToSingCodeProjectHeper.RegexReplace(settings.SingleTestRegexTestToAssembly
+                    , settings.SingleTestRegexTestToAssemblyProjectSubNamespaceReplace, currentTypeNamespace,
                      out subNameSpace);
 
                 var matchedCodeProjects = currentProject.GetSolution().GetNonTestProjects().Where(
@@ -53,10 +47,9 @@ namespace TestCop.Plugin.Helper.Mapper
             }
 
             string subNameSpaceOfTest;
-            TestProjectsMapToSingCodeProjectHeper.RegexReplace(regexCodeToTestAssembly
-                , regexCodeToTestReplace, currentTypeNamespace,
+            TestProjectsMapToSingCodeProjectHeper.RegexReplace(settings.SingleTestRegexCodeToTestAssembly
+                , settings.SingleTestRegexCodeToTestReplace, currentTypeNamespace,
                 out subNameSpaceOfTest);
-
             
             var matchedTestProjects = currentProject.GetSolution().GetTestProjects().ToList();
             if (matchedTestProjects.Count > 1)
