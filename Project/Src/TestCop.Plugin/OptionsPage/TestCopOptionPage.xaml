@@ -37,7 +37,7 @@
                    
                     <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Left" >
                         <TextBlock TextWrapping="Wrap" Height="auto" ><Run Text="Test Class Suffix:"/></TextBlock>
-                        <TextBox x:Name="testClassSuffixTextBox" Width="127" MaxLength="25" TextChanged="ClassAndNamespaceTextChanged" />
+                        <TextBox x:Name="testClassSuffixTextBox" Width="127" MaxLength="25" TextChanged="MultiTestClassAndNamespaceTextChanged" />
                     </StackPanel>
 
                     <Separator Height="21" Margin="0" HorizontalAlignment="Right" Width="390"/>
@@ -48,7 +48,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="-1,0,1,0" >
                         <CheckBox Content="Show panel when mapping keyboard shortcut" x:Name="OutputPanelOpenOnKeyboardMapping" />
-                    </StackPanel>
+                    </StackPanel>                    
                 </StackPanel>
             </TabItem>
             <TabItem Header="File Templates" VerticalAlignment="Top">
@@ -68,33 +68,36 @@
             </TabItem>
             <TabItem Header="RegEx Patterns" Name="SingleTestRegex" HorizontalAlignment="Left">
                 <StackPanel Height="auto" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,55">
-                    <TextBlock TextWrapping="Wrap" Height="auto" FontWeight="Bold"><Run Text="Test Classes And Test Namespaces"/></TextBlock>
-                    
+                    <TextBlock TextWrapping="Wrap" Height="auto" FontWeight="Bold"><Run Text="Test Classes And Test Namespaces for solutions with a single test project"/></TextBlock>
+                    <TextBlock x:Name="tbSingleTestSuffixGuidanceOne" TextWrapping="Wrap" Height="auto"  HorizontalAlignment="Center" ><Run Text="The configuration"/><Run Language="en-gb" Text=" below"/><Run Text=" means that all Unit Test Classes must end in Tests (e.g. ClassA Tests ) and the namespace of all test assemblies must match the RegEx xxAAxx."/></TextBlock>                    
                     <Separator Height="21" Margin="0" Visibility="Hidden"/>                    
                     <StackPanel Orientation="Horizontal" Margin="-1,0,1,0" >
                         <TextBlock TextWrapping="Wrap" Height="auto" ><Run Text="Test Namespace RegEx:"/></TextBlock>
-                        <TextBox x:Name="SingleTestNamespaceRegExTextBox" Width="220" MaxLength="90" TextChanged="ClassAndNamespaceTextChanged" />
+                        <TextBox x:Name="SingleTestNamespaceRegExTextBox" Width="220" MaxLength="90" TextChanged="SingleTestClassAndNamespaceTextChanged" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="-1,0,1,0" >
                         <TextBlock TextWrapping="Wrap" Height="auto" ><Run Text="Code Assembly Namespace RegEx Replace:"/></TextBlock>
-                        <TextBox x:Name="SingleTestNamespaceToAssemblyRegExReplaceTextBox" Width="100" MaxLength="90" TextChanged="ClassAndNamespaceTextChanged" />
+                        <TextBox x:Name="SingleTestNamespaceToAssemblyRegExReplaceTextBox" Width="100" MaxLength="90" TextChanged="SingleTestClassAndNamespaceTextChanged" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="-1,0,1,0" >
                         <TextBlock TextWrapping="Wrap" Height="auto" ><Run Text="Code Assembly Sub-NameSpace RegEx Replace:"/></TextBlock>
-                        <TextBox x:Name="SingleTestNamespaceToAssemblySubNameSpaceRegExReplaceTextBox" Width="100" MaxLength="90" TextChanged="ClassAndNamespaceTextChanged" />
+                        <TextBox x:Name="SingleTestNamespaceToAssemblySubNameSpaceRegExReplaceTextBox" Width="100" MaxLength="90" TextChanged="SingleTestClassAndNamespaceTextChanged" />
                     </StackPanel>
                     <Separator></Separator>
+                    <TextBlock x:Name="tbSingleTestSuffixGuidanceTwo" TextWrapping="Wrap" Height="auto"  HorizontalAlignment="Center" ><Run Text="The configuration"/><Run Language="en-gb" Text=" below"/><Run Text=" means that all Unit Test Classes must end in Tests (e.g. ClassA Tests ) and the namespace of all test assemblies must match the RegEx xxAAxx."/></TextBlock>
+                    <Separator Height="21" Margin="0" Visibility="Hidden"/>
                     <StackPanel Orientation="Horizontal" Margin="-1,0,1,0" >
                         <TextBlock TextWrapping="Wrap" Height="auto" ><Run Text="Code Namespace RegEx:"/></TextBlock>
-                        <TextBox x:Name="SingleTestCodeNamespaceRegExTextBox" Width="100" MaxLength="90" TextChanged="ClassAndNamespaceTextChanged" />
+                        <TextBox x:Name="SingleTestCodeNamespaceRegExTextBox" Width="100" MaxLength="90" TextChanged="SingleTestClassAndNamespaceTextChanged" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="-1,0,1,0" >
                         <TextBlock TextWrapping="Wrap" Height="auto" ><Run Text="Code To Test Assembly Namespace RegEx:"/></TextBlock>
-                        <TextBox x:Name="SingleTestCodeNamespaceToTestRegExReplaceTextBox" Width="100" MaxLength="90" TextChanged="ClassAndNamespaceTextChanged" />
+                        <TextBox x:Name="SingleTestCodeNamespaceToTestRegExReplaceTextBox" Width="100" MaxLength="90" TextChanged="SingleTestClassAndNamespaceTextChanged" />
                     </StackPanel>
                     <Separator></Separator>
-                    <TextBlock x:Name="XXregExOutcome" TextWrapping="Wrap" Height="auto" Foreground="#FFEC3939" ><Run Text="WARNING WARNING"/></TextBlock>
-
+                    <TextBlock x:Name="SingleTestRegExOutcome" TextWrapping="Wrap" Height="auto" Foreground="#FFEC3939" ><Run Text="WARNING WARNING"/></TextBlock>
+                    <Button Content="reset" Height="20" Width="75" Click="ResetButton_OnClick"/>
+                    <TextBlock TextWrapping="Wrap" Height="auto" ><Run Text="It is recommended that you use an online tool to check your regex patterns against your namespaces. e.g. http://myregexp.com"/></TextBlock>                   
                 </StackPanel>
             </TabItem>
             <TabItem Header="RegEx Patterns" Name="MultiTestRegex" HorizontalAlignment="Left">
@@ -104,11 +107,11 @@
                     <Separator Height="21" Margin="0" Visibility="Hidden"/>                  
                     <StackPanel Orientation="Horizontal" Margin="-1,0,1,0" >
                         <TextBlock TextWrapping="Wrap" Height="auto" ><Run Text="Test Namespace RegEx:"/></TextBlock>
-                        <TextBox x:Name="testNamespaceRegExTextBox" Width="220" MaxLength="90" TextChanged="ClassAndNamespaceTextChanged" />
+                        <TextBox x:Name="testNamespaceRegExTextBox" Width="220" MaxLength="90" TextChanged="MultiTestClassAndNamespaceTextChanged" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="-1,0,1,0" >
                         <TextBlock TextWrapping="Wrap" Height="auto" ><Run Text="Test Namespace RegEx Replace:"/></TextBlock>
-                        <TextBox x:Name="testNamespaceRegExReplaceTextBox" Width="100" MaxLength="90" TextChanged="ClassAndNamespaceTextChanged" />
+                        <TextBox x:Name="testNamespaceRegExReplaceTextBox" Width="100" MaxLength="90" TextChanged="MultiTestClassAndNamespaceTextChanged" />
                     </StackPanel>
                     <TextBlock x:Name="regExOutcome" TextWrapping="Wrap" Height="auto" Foreground="#FFEC3939" ><Run Text="WARNING WARNING"/></TextBlock>
 
