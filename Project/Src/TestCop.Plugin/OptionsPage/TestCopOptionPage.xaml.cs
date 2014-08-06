@@ -31,9 +31,11 @@ using JetBrains.UI.CrossFramework;
 using JetBrains.UI.Icons;
 using JetBrains.UI.Options;
 using JetBrains.Util;
+using JetBrains.Util.Logging;
 using TestCop.Plugin.Extensions;
 using TestCop.Plugin.Helper;
 using Binding = System.Windows.Data.Binding;
+using Control = System.Windows.Controls.Control;
 using ListBox = System.Windows.Controls.ListBox;
 using TextBox = System.Windows.Controls.TextBox;
 
@@ -73,11 +75,11 @@ namespace TestCop.Plugin.OptionsPage
           BindWithRegexMatchesValidation(testFileAnalysisSettings, testNamespaceRegExReplaceTextBox, P(x=>x.TestProjectToCodeProjectNameSpaceRegExReplace), "^[\\$\\.a-zA-Z1-9]*$");
           //
           //Regex Config for Single Test Assemply Logic
-          BindWithRegexMatchesValidation(testFileAnalysisSettings, SingleTestNamespaceRegExTextBox,P(x=>x.SingleTestRegexTestToAssembly) , "^[\\$\\.a-zA-Z1-9]*$");
-          BindWithRegexMatchesValidation(testFileAnalysisSettings, SingleTestNamespaceToAssemblyRegExReplaceTextBox, P(x => x.SingleTestRegexTestToAssemblyProjectReplace), "^[\\$\\.a-zA-Z1-9]*$");
+          BindWithValidationMustBeARegex(testFileAnalysisSettings, SingleTestNamespaceRegExTextBox,                              P(x => x.SingleTestRegexTestToAssembly));
+          BindWithRegexMatchesValidation(testFileAnalysisSettings, SingleTestNamespaceToAssemblyRegExReplaceTextBox,             P(x => x.SingleTestRegexTestToAssemblyProjectReplace), "^[\\$\\.a-zA-Z1-9]*$");
           BindWithRegexMatchesValidation(testFileAnalysisSettings, SingleTestNamespaceToAssemblySubNameSpaceRegExReplaceTextBox, P(x => x.SingleTestRegexTestToAssemblyProjectSubNamespaceReplace), "^[\\$\\.a-zA-Z1-9]*$");
-          BindWithRegexMatchesValidation(testFileAnalysisSettings, SingleTestCodeNamespaceRegExTextBox, P(x => x.SingleTestRegexCodeToTestAssembly), "^[\\$\\.a-zA-Z1-9]*$");
-          BindWithRegexMatchesValidation(testFileAnalysisSettings, SingleTestCodeNamespaceToTestRegExReplaceTextBox, P(x => x.SingleTestRegexCodeToTestReplace), "^[\\$\\.a-zA-Z1-9]*$");
+          BindWithValidationMustBeARegex(testFileAnalysisSettings, SingleTestCodeNamespaceRegExTextBox,                          P(x => x.SingleTestRegexCodeToTestAssembly));
+          BindWithRegexMatchesValidation(testFileAnalysisSettings, SingleTestCodeNamespaceToTestRegExReplaceTextBox,             P(x => x.SingleTestRegexCodeToTestReplace), "^[\\$\\.a-zA-Z1-9]*$");
           //          
           testFileAnalysisSettings.TestingAttributes.ForEach(p => testingAttributesListBox.Items.Add(p));
           testFileAnalysisSettings.BddPrefixes.ForEach(p => contextPrefixesListBox.Items.Add(p));
@@ -112,7 +114,6 @@ namespace TestCop.Plugin.OptionsPage
           binding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
           tb.DataContext = testFileAnalysisSettings;
           tb.SetBinding(TextBox.TextProperty, binding);
-
       }
 
       private string P<T>(Expression<Func<TestFileAnalysisSettings, T>> expression)
@@ -137,7 +138,11 @@ namespace TestCop.Plugin.OptionsPage
           };
 
           binding.ValidationRules.Add(namespaceRule);
+                    
           binding.NotifyOnValidationError = true;
+          binding.ValidatesOnDataErrors = true;
+          binding.ValidatesOnExceptions = true;
+
           binding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
           tb.DataContext = testFileAnalysisSettings;
           tb.SetBinding(TextBox.TextProperty, binding);          
@@ -176,8 +181,14 @@ namespace TestCop.Plugin.OptionsPage
           if (Validation.GetHasError(testNamespaceRegExTextBox))return false;
           if (Validation.GetHasError(testClassSuffixTextBox))return false;
           if (Validation.GetHasError(unitTestTemplateTextBox)) return false;
-          if (Validation.GetHasError(codeTemplateTextBox)) return false;         
+          if (Validation.GetHasError(codeTemplateTextBox)) return false;
 
+          if (Validation.GetHasError(SingleTestNamespaceRegExTextBox)) return false;
+          if (Validation.GetHasError(SingleTestNamespaceToAssemblyRegExReplaceTextBox))return false;
+          if (Validation.GetHasError(SingleTestNamespaceToAssemblySubNameSpaceRegExReplaceTextBox))return false;
+          if (Validation.GetHasError(SingleTestCodeNamespaceRegExTextBox))return false;
+          if (Validation.GetHasError(SingleTestCodeNamespaceToTestRegExReplaceTextBox))return false;
+       
           var attributes = testingAttributesListBox.Items.Cast<string>().ToList().Join(",");
           _settings.SetValue((TestFileAnalysisSettings s) => s.TestingAttributeText, attributes);
 
@@ -272,17 +283,19 @@ namespace TestCop.Plugin.OptionsPage
           }
       }
 
-      private void ClassAndNamespaceTextChanged(object sender, TextChangedEventArgs e)
-      {
+      private void MultiTestClassAndNamespaceTextChanged(object sender, TextChangedEventArgs e)
+      {          
+          var outcomeTexBox = regExOutcome;
+          
             Regex regEx;
           
             tbSuffixGuidance.Text=string.Format("The test class and test namespace configuration below define that all UnitTest Classes " +
                                                 "must end in '{0}' (e.g. ClassA{0}, ClassA.Security{0}, ClassB{0} ) and the namespace of all " +
-                                                "test assemblies must match the RegEx '{1}'. Use brackets to extract the associated project namespace."
+                                                "test assemblies must match the RegEx '{1}'. Use brackets to extract the associated code project namespace."
                                         ,testClassSuffixTextBox.Text,testNamespaceRegExTextBox.Text);
             try
             {
-                regExOutcome.Text = "";
+                outcomeTexBox.Text = "";                
                 regEx = new Regex(testNamespaceRegExTextBox.Text);               
             }
             catch (Exception){return;}
@@ -298,9 +311,51 @@ namespace TestCop.Plugin.OptionsPage
                 ResharperHelper.ProtectActionFromReEntry(_lifetime, "TestcopOptionsPage", () =>
                 { 
                     var testProjects = _solution.GetAllCodeProjects().Select(p=>p).Where(p=>regEx.IsMatch(p.GetDefaultNamespace()??"")).ToList();
-                    regExOutcome.Text = testProjects.Any() ? "" : "Warning: the regex does not match the namespace of any loaded projects.";
+                    outcomeTexBox.Text = testProjects.Any() ? "" : "Warning: the regex does not match the namespace of any loaded projects.";
+
                 }).Invoke();
             }        
+      }
+
+      private void SingleTestClassAndNamespaceTextChanged(object sender, TextChangedEventArgs e)
+      {
+          var outcomeTexBox = SingleTestRegExOutcome;
+
+          Regex regEx;
+
+          tbSingleTestSuffixGuidanceOne.Text = string.Format("The configuration below define that the namespace of test classes " +
+                                              " must match the RegEx '{0}'. Use brackets to extract the associated code project namespace. "+
+                                              " The replace string '{1}' will be used to identify the code project namespace and the replace string '{2}' to build the sub namespace "+
+                                              " within the code project. \n \n"
+                                      , SingleTestNamespaceRegExTextBox.Text, SingleTestNamespaceToAssemblyRegExReplaceTextBox.Text
+                                      , SingleTestNamespaceToAssemblySubNameSpaceRegExReplaceTextBox.Text);
+          
+          tbSingleTestSuffixGuidanceTwo.Text = string.Format("The configuration below defines that code class namespaces will map to the test project namespace by " +
+                                              "extracting '{0}' from the RegEx '{1}' when it is applied to code files namespace.\n \n"                                                                                    
+                                              ,SingleTestCodeNamespaceToTestRegExReplaceTextBox.Text, SingleTestCodeNamespaceRegExTextBox.Text);
+
+          try
+          {
+              outcomeTexBox.Text = "";
+              regEx = new Regex(SingleTestNamespaceRegExTextBox.Text);
+          }
+          catch (Exception) { return; }
+
+          if (regEx.GetGroupNames().Count() < 2)
+          {
+              regExOutcome.Text = "RegEx must contain at least one regex group ().";
+              return;
+          }
+
+          if (_solution != null)
+          {
+              ResharperHelper.ProtectActionFromReEntry(_lifetime, "TestcopOptionsPage", () =>
+              {
+                  var testProjects = _solution.GetAllCodeProjects().Select(p => p).Where(p => regEx.IsMatch((p.GetDefaultNamespace() ?? "NS2")+".NS1")).ToList();
+                  outcomeTexBox.Text = testProjects.Any() ? "" : "Warning: the regex does not match the namespace of any loaded projects.";
+
+              }).Invoke();
+          }
       }
 
       private void DisplayLoadProjectTip()
@@ -385,7 +440,20 @@ namespace TestCop.Plugin.OptionsPage
       private void TestProjectPerCodeProject_Unchecked(object sender, RoutedEventArgs e)
       {
           HideShowTabs();
+      }
 
-      }     
+      private void ResetButton_OnClick(object sender, RoutedEventArgs e)
+      {
+          SingleTestNamespaceRegExTextBox.Text=
+            SettingsEntryAttribute.ReflectionHelpers.GetDefaultValueFromRuntimeType<TestFileAnalysisSettings, string>(l => l.SingleTestRegexTestToAssembly, Logger.Interface);
+          SingleTestNamespaceToAssemblyRegExReplaceTextBox.Text =
+            SettingsEntryAttribute.ReflectionHelpers.GetDefaultValueFromRuntimeType<TestFileAnalysisSettings, string>(l => l.SingleTestRegexTestToAssemblyProjectReplace, Logger.Interface);
+          SingleTestNamespaceToAssemblySubNameSpaceRegExReplaceTextBox.Text =
+            SettingsEntryAttribute.ReflectionHelpers.GetDefaultValueFromRuntimeType<TestFileAnalysisSettings, string>(l => l.SingleTestRegexTestToAssemblyProjectSubNamespaceReplace, Logger.Interface);
+          SingleTestCodeNamespaceRegExTextBox.Text =
+            SettingsEntryAttribute.ReflectionHelpers.GetDefaultValueFromRuntimeType<TestFileAnalysisSettings, string>(l => l.SingleTestRegexCodeToTestAssembly, Logger.Interface);
+          SingleTestCodeNamespaceToTestRegExReplaceTextBox.Text =
+            SettingsEntryAttribute.ReflectionHelpers.GetDefaultValueFromRuntimeType<TestFileAnalysisSettings, string>(l => l.SingleTestRegexCodeToTestReplace, Logger.Interface);
+      }
   }
 }
