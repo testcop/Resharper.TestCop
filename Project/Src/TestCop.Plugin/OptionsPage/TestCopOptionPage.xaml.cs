@@ -329,8 +329,8 @@ namespace TestCop.Plugin.OptionsPage
                                               " within the code project. \n \n"
                                       , SingleTestNamespaceRegExTextBox.Text, SingleTestNamespaceToAssemblyRegExReplaceTextBox.Text
                                       , SingleTestNamespaceToAssemblySubNameSpaceRegExReplaceTextBox.Text);
-          
-          tbSingleTestSuffixGuidanceTwo.Text = string.Format("The configuration below defines that code class namespaces will map to the test project namespace by " +
+
+          tbSingleTestSuffixGuidanceTwo.Text = string.Format("The configuration below defines the sections(s) of the code class namespace that will map to sub-namespace within the test project by " +
                                               "extracting '{0}' from the RegEx '{1}' when it is applied to code files namespace.\n \n"                                                                                    
                                               ,SingleTestCodeNamespaceToTestRegExReplaceTextBox.Text, SingleTestCodeNamespaceRegExTextBox.Text);
 
