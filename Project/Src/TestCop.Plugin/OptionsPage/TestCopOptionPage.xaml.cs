@@ -427,14 +427,13 @@ namespace TestCop.Plugin.OptionsPage
               ? Visibility.Visible 
               : Visibility.Collapsed;
 
-          MultiTestRegexHelp.Visibility = TestProjectPerCodeProject.IsChecked == true
-              ? Visibility.Visible
-              : Visibility.Collapsed;
+          MultiTestRegexHelp.Visibility = MultiTestRegex.Visibility;
 
           SingleTestRegex.Visibility = TestProjectPerCodeProject.IsChecked == false
               ? Visibility.Visible
               : Visibility.Collapsed;
 
+          SingleTestRegexHelp.Visibility = SingleTestRegex.Visibility;
       }
 
       private void TestProjectPerCodeProject_Unchecked(object sender, RoutedEventArgs e)
