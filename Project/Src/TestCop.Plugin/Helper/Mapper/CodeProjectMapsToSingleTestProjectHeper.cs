@@ -3,8 +3,6 @@
 // -- License http://testcop.codeplex.com/license
 // -- Copyright 2014
 // --
-
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.ProjectModel;
@@ -14,23 +12,21 @@ using TestCop.Plugin.Extensions;
 namespace TestCop.Plugin.Helper.Mapper
 {
     public class CodeProjectMapsToSingleTestProjectHeper : IProjectMappingHeper
-    {        
-        // http://myregexp.com/
+    {                
         public IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string currentTypeNamespace)
         {
             var settings = TestCopSettingsManager.Instance.Settings;
             const string warningMessage = "Not Supported: More than one code project has a default namespace of ";
           
             if (currentProject.IsTestProject())
-            {
-                string subNameSpace = currentTypeNamespace.RemoveLeading(currentProject.GetDefaultNamespace());
+            {                
                 // <MyCorp.App.Tests>.API.ClassA --> <MyCorp.App.API>.ClassA
-
                 string nameSpaceOfAssociateProject;
                 TestProjectsMapToSingCodeProjectHeper.RegexReplace(settings.SingleTestRegexTestToAssembly
                     , settings.SingleTestRegexTestToAssemblyProjectReplace, currentTypeNamespace,
                     out nameSpaceOfAssociateProject);
 
+                string subNameSpace;
                 TestProjectsMapToSingCodeProjectHeper.RegexReplace(settings.SingleTestRegexTestToAssembly
                     , settings.SingleTestRegexTestToAssemblyProjectSubNamespaceReplace, currentTypeNamespace,
                      out subNameSpace);
