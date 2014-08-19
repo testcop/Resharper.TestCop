@@ -26,8 +26,12 @@ namespace TestCop.Plugin
         {
             if (process == null)
                 throw new ArgumentNullException("process");
-                       
-            return new[]{new TestFileAnalysisDaemonStageProcess(process,settings)};
+
+            return new IDaemonStageProcess[]
+                   {
+                       new TestFileAnalysisDaemonStageProcess(process,settings)
+                   , new ProjectAnalysisDaemonStageProcess(process,settings)
+                   };
         }
 
         public ErrorStripeRequest NeedsErrorStripe(IPsiSourceFile sourceFile, IContextBoundSettingsStore settings)
