@@ -58,6 +58,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Highlighting\FileNotPartOfProjectWarning.cs" />
     <Compile Include="ProjectAnalysisElementProcessor.cs" />
     <Compile Include="ProjectAnalysisDaemonStageProcess.cs" />
     <Compile Include="Extensions\SolutionExtensions.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="OptionsPage\TestCopOptionPage.xaml.cs">
       <DependentUpon>TestCopOptionPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="QuickFixActions\AddExistingFileToProjectBulbItem.cs" />
     <Compile Include="QuickFixActions\MoveFileBulbItem.cs" />
     <Compile Include="QuickFixActions\MakeItPublicBulbItem.cs" />
     <Compile Include="resources\ThemedIcons.Unnamed.Generated.cs" />

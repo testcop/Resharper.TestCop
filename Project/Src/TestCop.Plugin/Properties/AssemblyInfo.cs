@@ -40,8 +40,8 @@ using TestCop.Plugin.Highlighting;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.8.2.3")]
-[assembly: AssemblyFileVersion("1.8.2.3")]
+[assembly: AssemblyVersion("1.8.2.4")]
+[assembly: AssemblyFileVersion("1.8.2.4")]
 
 // The following information is displayed by ReSharper in the Plugins dialog
 [assembly: PluginTitle("TestCop Resharper Plugin")]
@@ -94,4 +94,11 @@ using TestCop.Plugin.Highlighting;
         Severity.ERROR,
         false)]
 
+[assembly: RegisterConfigurableSeverity(
+        FileNotPartOfProjectWarning.SeverityId,
+        null, "Testing",
+        "Orphaned file not part of project",
+        "TestCop : All code files should be part of project",
+        Severity.ERROR,
+        false)]
     
