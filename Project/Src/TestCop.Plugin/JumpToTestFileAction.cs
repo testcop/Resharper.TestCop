@@ -1,7 +1,7 @@
 ﻿// --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
-// -- Copyright 2013
+// -- Copyright 2014
 // --
 
 using System;
@@ -68,7 +68,8 @@ namespace TestCop.Plugin
             ISolution solution = context.GetData(JetBrains.ProjectModel.DataContext.DataConstants.SOLUTION);
             if (solution == null){return;}
 
-            IClrTypeName clrTypeClassName = ResharperHelper.GetClassNameAppropriateToLocation(solution, textControl);            
+            IClrTypeName clrTypeClassName = ResharperHelper.GetClassNameAppropriateToLocation(solution, textControl);
+            if (clrTypeClassName == null) return;
 
             var currentProject = context.GetData(JetBrains.ProjectModel.DataContext.DataConstants.Project);
             var targetProjects = currentProject.GetAssociatedProjects(clrTypeClassName.GetNamespaceName());     

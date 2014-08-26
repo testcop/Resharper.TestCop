@@ -10,12 +10,9 @@ using System.Linq;
 using JetBrains.Application.Settings;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Daemon;
-using JetBrains.ReSharper.Feature.Services.Bulbs;
-using JetBrains.ReSharper.I18n.Services;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.Util;
 using TestCop.Plugin.Highlighting;
 
 namespace TestCop.Plugin
@@ -47,9 +44,7 @@ namespace TestCop.Plugin
         }
 
         public void ProcessAfterInterior(ITreeNode element)
-        {
-            if (String.Compare(_process.SourceFile.Name, "AssemblyInfo.cs", StringComparison.OrdinalIgnoreCase)!=0) return;
-
+        {            
             var usingBlock = element as IUsingList;
             if (usingBlock != null)
             {

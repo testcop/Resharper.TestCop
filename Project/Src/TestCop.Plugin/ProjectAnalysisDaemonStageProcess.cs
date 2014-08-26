@@ -32,6 +32,12 @@ namespace TestCop.Plugin
             if (file == null)
                 return;
 
+            if (!Settings.SeachForOrphanedProjectFiles) return;
+
+            //Only do the analysis on a 'key' file - as results can't be attached at a project level
+            if (String.Compare(_myDaemonProcess.SourceFile.Name, "AssemblyInfo.cs", StringComparison.OrdinalIgnoreCase) != 0) 
+                return;
+
             // Running visitor against the PSI
             var elementProcessor = new ProjectAnalysisElementProcessor(_myDaemonProcess, _settings);
             file.ProcessDescendants(elementProcessor);
@@ -47,6 +53,15 @@ namespace TestCop.Plugin
         public IDaemonProcess DaemonProcess
         {
             get { return _myDaemonProcess; }
+        }
+
+        private TestFileAnalysisSettings Settings
+        {
+            get
+            {
+                var testFileAnalysisSettings = _settings.GetKey<TestFileAnalysisSettings>(SettingsOptimization.OptimizeDefault);
+                return testFileAnalysisSettings;
+            }
         }
     }
 }

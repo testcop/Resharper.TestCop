@@ -18,7 +18,7 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProject
     {
         protected override bool HighlightingPredicate(IHighlighting highlighting, IContextBoundSettingsStore settingsstore)
         {
-            return highlighting is TestFileNameSpaceWarning;
+            return highlighting.GetType().Namespace.Contains("TestCop");
         }
 
         protected override string RelativeTestDataPath
@@ -38,6 +38,7 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProject
 
         [Test]
         [TestCase(@"<TestApplication2Tests>\NS2\ClassGTests.cs")]
+        [TestCase(@"<TestApplication2Tests>\Properties\AssemblyInfo.cs")]
         public void Test(string testName)
         {
             const string altRegEx = "^(.*?)\\.?(Integration)*Tests$";
@@ -47,6 +48,8 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProject
                 RunGuarded(
                     () =>
                     {
+                        settingsStore.SetValue<TestFileAnalysisSettings, bool>(
+                            s => s.SeachForOrphanedProjectFiles, true);
                         settingsStore.SetValue<TestFileAnalysisSettings, string>(
                             s => s.TestProjectToCodeProjectNameSpaceRegEx, altRegEx);
                         settingsStore.SetValue<TestFileAnalysisSettings, string>(
