@@ -9,7 +9,6 @@ using JetBrains.ActionManagement;
 using JetBrains.Application.Settings;
 using JetBrains.ReSharper.Daemon;
 using NUnit.Framework;
-using TestCop.Plugin.Highlighting;
 
 namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProject
 {    
@@ -18,7 +17,7 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProject
     {
         protected override bool HighlightingPredicate(IHighlighting highlighting, IContextBoundSettingsStore settingsstore)
         {
-            return highlighting is TestFileNameSpaceWarning;
+            return highlighting.GetType().Namespace.Contains("TestCop");
         }
 
         protected override string RelativeTestDataPath
@@ -39,7 +38,8 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProject
         [Test]
         [TestCase(@"<TestApplication>\NG1\ClassWithUnitOnly.cs")]
         [TestCase(@"<TestApplication>\NG1\ClassWithIntegrationOnly.cs")]
-        [TestCase(@"<TestApplication>\NG1\ClassWithBoth.cs")]           
+        [TestCase(@"<TestApplication>\NG1\ClassWithBoth.cs")]
+        [TestCase(@"<TestApplication>\Properties\AssemblyInfo.cs")]     
         public void Test(string testName)
         {
             const string altRegEx = "^(.*?)\\.?(Integration)*Tests$";
@@ -49,6 +49,9 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProject
                 RunGuarded(
                     () =>
                     {
+                        settingsStore.SetValue<TestFileAnalysisSettings, bool>(
+                            s => s.SeachForOrphanedProjectFiles, true);
+
                         settingsStore.SetValue<TestFileAnalysisSettings, string>(
                             s => s.TestProjectToCodeProjectNameSpaceRegEx, altRegEx);
                         settingsStore.SetValue<TestFileAnalysisSettings, string>(
