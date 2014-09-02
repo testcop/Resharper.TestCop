@@ -6,13 +6,17 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using JetBrains.Application.Settings;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Daemon;
+using JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.Implementations;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
+using JetBrains.ReSharper.Psi.Resx.ResourceDefaultLanguage;
 using JetBrains.ReSharper.Psi.Tree;
+using JetBrains.Util;
 using TestCop.Plugin.Highlighting;
 
 namespace TestCop.Plugin
@@ -59,16 +63,20 @@ namespace TestCop.Plugin
 
         private void CheckForProjectFilesNotInProjectAndWarn(ITreeNode element)
         {
+            string[] filesToFind = Settings.OrphanedFilesPatterns.Split('|');
+            if (filesToFind.Length == 0) filesToFind = new []{"*.cs"};
+                        
             var currentProject = element.GetProject();
 
             var allProjectFileLocations = currentProject.GetAllProjectFiles().Select(p => p.Location).ToList();
             var allProjectFiles = allProjectFileLocations.Select(loc => loc.FullPath).ToList();
             var allProjectFolders = allProjectFileLocations.Select(loc => loc.Directory.FullPath).Distinct();
 
-            var filesOnDisk =
+            var filesOnDisk = new List<FileInfo>();            
+            filesToFind.ForEach(regex=>filesOnDisk.AddRange(
                 allProjectFolders.SelectMany(
-                    directory => new System.IO.DirectoryInfo(directory).EnumerateFiles("*.cs",
-                        System.IO.SearchOption.TopDirectoryOnly).Select(f => f));
+                    directory => new System.IO.DirectoryInfo(directory).EnumerateFiles(regex, System.IO.SearchOption.TopDirectoryOnly).Select(f => f))
+                        ));
 
             foreach (var fileOnDisk in filesOnDisk)
             {
@@ -77,6 +85,15 @@ namespace TestCop.Plugin
                 IHighlighting highlighting = new FileNotPartOfProjectWarning(currentProject, fileOnDisk);
                 _myHighlightings.Add(new HighlightingInfo(element.GetDocumentRange(), highlighting));
             }
-        }       
+        }
+
+        private TestFileAnalysisSettings Settings
+        {
+            get
+            {
+                var testFileAnalysisSettings = _settings.GetKey<TestFileAnalysisSettings>(SettingsOptimization.OptimizeDefault);
+                return testFileAnalysisSettings;
+            }
+        }
     }
 }

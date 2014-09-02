@@ -32,7 +32,7 @@ namespace TestCop.Plugin
             if (file == null)
                 return;
 
-            if (!Settings.SeachForOrphanedProjectFiles) return;
+            if (!Settings.FindOrphanedProjectFiles) return;
 
             //Only do the analysis on a 'key' file - as results can't be attached at a project level
             if (String.Compare(_myDaemonProcess.SourceFile.Name, "AssemblyInfo.cs", StringComparison.OrdinalIgnoreCase) != 0) 

@@ -31,8 +31,7 @@
                     <Separator Height="21" Margin="0"/>
                     <TextBlock TextWrapping="Wrap" Height="auto" FontWeight="Bold"><Run Text="Options"/></TextBlock>
                     <CheckBox Content="When switching to test find all usages of class within test assembly" x:Name="ShowAllTestsWithUsageCheckBox" />
-                    <CheckBox Content="Warn if namespace of test doesn't match class under test" x:Name="CheckTestNamespaces" />
-                    <CheckBox Content="Find orphaned code files within project folders (logged against AssemblyInfo)" x:Name="CheckSearchForOrphanedCodeFiles" />
+                    <CheckBox Content="Warn if namespace of test doesn't match class under test" x:Name="CheckTestNamespaces" />                    
                     <CheckBox Content="Use __ as separator within test classes (ClassA__SecurityTests)" x:Name="CheckUseUnderscoreTestSeparator" />
                     <CheckBox Content="Each test project maps to a single code project" x:Name="TestProjectPerCodeProject" Checked="TestProjectPerCodeProject_Checked" Unchecked="TestProjectPerCodeProject_Unchecked" />
                    
@@ -49,7 +48,14 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="-1,0,1,0" >
                         <CheckBox Content="Show panel when mapping keyboard shortcut" x:Name="OutputPanelOpenOnKeyboardMapping" />
-                    </StackPanel>                    
+                    </StackPanel>
+                    <Separator Height="21" Margin="0" HorizontalAlignment="Right" Width="390"/>
+                    <TextBlock TextWrapping="Wrap" Height="auto" FontWeight="Bold"><Run Text="Orphaned Files"/><Run Language="en-gb" Text="s"/></TextBlock>
+                    <CheckBox Content="Find orphaned code files within project folders (logged against AssemblyInfo)" x:Name="CheckSearchForOrphanedCodeFiles" />
+                    <StackPanel Orientation="Horizontal" Margin="-1,0,1,0" >
+                        <TextBlock TextWrapping="Wrap" Height="auto" ><Run Text="Pipe (|) deliminated list of patterns: "/></TextBlock>
+                        <TextBox x:Name="OrphanedFilesPatternsTextBox" Width="150" MaxLength="50" />
+                    </StackPanel>
                 </StackPanel>
             </TabItem>
             <TabItem Header="File Templates" VerticalAlignment="Top">
