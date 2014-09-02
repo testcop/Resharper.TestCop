@@ -90,8 +90,11 @@ namespace TestCop.Plugin
         [SettingsEntry(@"$2", "Regex replace for code namespace within single test assembly solutions to identify namespace of test assembly")]
         public string SingleTestRegexCodeToTestReplace { get; set; }
 
-        [SettingsEntry(false, "Search projects for files not part of the project")]
-        public bool SeachForOrphanedProjectFiles { get; set; }
+        [SettingsEntry(true, "Search project folders for files not part of the project")]
+        public bool FindOrphanedProjectFiles { get; set; }
+
+        [SettingsEntry("*.cs|*.aspx|*.jpg", "Pattern for orphaned files")]
+        public string OrphanedFilesPatterns { get; set; }
     }
 
     [ShellComponent]

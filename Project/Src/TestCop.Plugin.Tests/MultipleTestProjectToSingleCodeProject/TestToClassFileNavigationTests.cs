@@ -49,7 +49,7 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProject
                     () =>
                     {
                         settingsStore.SetValue<TestFileAnalysisSettings, bool>(
-                            s => s.SeachForOrphanedProjectFiles, true);
+                            s => s.FindOrphanedProjectFiles, true);
                         settingsStore.SetValue<TestFileAnalysisSettings, string>(
                             s => s.TestProjectToCodeProjectNameSpaceRegEx, altRegEx);
                         settingsStore.SetValue<TestFileAnalysisSettings, string>(

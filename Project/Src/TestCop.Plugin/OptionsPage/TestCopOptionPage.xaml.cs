@@ -85,13 +85,14 @@ namespace TestCop.Plugin.OptionsPage
           testFileAnalysisSettings.BddPrefixes.ForEach(p => contextPrefixesListBox.Items.Add(p));
 
           SwitchBetweenFilesShortcutTextBox.Text = testFileAnalysisSettings.ShortcutToSwitchBetweenFiles;
+          OrphanedFilesPatternsTextBox.Text = testFileAnalysisSettings.OrphanedFilesPatterns;
 
           BindWithValidationMustBeAFileTemplate(testFileAnalysisSettings, codeTemplateTextBox, P(x=>x.CodeFileTemplateName));
           BindWithValidationMustBeAFileTemplate(testFileAnalysisSettings, unitTestTemplateTextBox, P(x => x.UnitTestFileTemplateName));
 
           ShowAllTestsWithUsageCheckBox.IsChecked = testFileAnalysisSettings.FindAnyUsageInTestAssembly;
           CheckTestNamespaces.IsChecked = testFileAnalysisSettings.CheckTestNamespaces;
-          CheckSearchForOrphanedCodeFiles.IsChecked = testFileAnalysisSettings.SeachForOrphanedProjectFiles;
+          CheckSearchForOrphanedCodeFiles.IsChecked = testFileAnalysisSettings.FindOrphanedProjectFiles;
           CheckUseUnderscoreTestSeparator.IsChecked = testFileAnalysisSettings.SeparatorUsedToBreakUpTestFileNames=='_';
           OutputPanelOpenOnKeyboardMapping.IsChecked = testFileAnalysisSettings.OutputPanelOpenOnKeyboardMapping;
           TestProjectPerCodeProject.IsChecked = !testFileAnalysisSettings.ConfiguredForSingleTestProject;
@@ -198,7 +199,7 @@ namespace TestCop.Plugin.OptionsPage
 
           _settings.SetValue((TestFileAnalysisSettings s) => s.FindAnyUsageInTestAssembly,ShowAllTestsWithUsageCheckBox.IsChecked);
           _settings.SetValue((TestFileAnalysisSettings s) => s.CheckTestNamespaces, CheckTestNamespaces.IsChecked);
-          _settings.SetValue((TestFileAnalysisSettings s) => s.SeachForOrphanedProjectFiles, CheckSearchForOrphanedCodeFiles.IsChecked);
+          _settings.SetValue((TestFileAnalysisSettings s) => s.FindOrphanedProjectFiles, CheckSearchForOrphanedCodeFiles.IsChecked);
           _settings.SetValue((TestFileAnalysisSettings s) => s.SeparatorUsedToBreakUpTestFileNames, CheckUseUnderscoreTestSeparator.IsChecked==true ? '_' : '.');
           _settings.SetValue((TestFileAnalysisSettings s) => s.OutputPanelOpenOnKeyboardMapping, OutputPanelOpenOnKeyboardMapping.IsChecked);
           _settings.SetValue((TestFileAnalysisSettings s) => s.ConfiguredForSingleTestProject, !TestProjectPerCodeProject.IsChecked);
@@ -225,6 +226,9 @@ namespace TestCop.Plugin.OptionsPage
           _settings.SetValue((TestFileAnalysisSettings s) => s.CodeFileTemplateName, codeTemplateTextBox.Text);
           _settings.SetValue((TestFileAnalysisSettings s) => s.UnitTestFileTemplateName, unitTestTemplateTextBox.Text);
 
+
+          _settings.SetValue((TestFileAnalysisSettings s) => s.OrphanedFilesPatterns, OrphanedFilesPatternsTextBox.Text);
+          
           DTEHelper.AssignKeyboardShortcutIfMissing(
               true, 
               ResharperHelper.MacroNameSwitchBetweenFiles, SwitchBetweenFilesShortcutTextBox.Text);
