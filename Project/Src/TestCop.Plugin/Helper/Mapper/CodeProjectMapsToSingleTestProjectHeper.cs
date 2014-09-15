@@ -11,23 +11,23 @@ using TestCop.Plugin.Extensions;
 
 namespace TestCop.Plugin.Helper.Mapper
 {
-    public class CodeProjectMapsToSingleTestProjectHeper : IProjectMappingHeper
+    public class CodeProjectMapsToSingleTestProjectHeper : MappingBase, IProjectMappingHeper
     {                
         public IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string currentTypeNamespace)
         {
-            var settings = TestCopSettingsManager.Instance.Settings;
+            var settings = Settings;
             const string warningMessage = "Not Supported: More than one code project has a default namespace of ";
           
             if (currentProject.IsTestProject())
             {                
                 // <MyCorp.App.Tests>.API.ClassA --> <MyCorp.App.API>.ClassA
                 string nameSpaceOfAssociateProject;
-                TestProjectsMapToSingCodeProjectHeper.RegexReplace(settings.SingleTestRegexTestToAssembly
+                RegexReplace(settings.SingleTestRegexTestToAssembly
                     , settings.SingleTestRegexTestToAssemblyProjectReplace, currentTypeNamespace,
                     out nameSpaceOfAssociateProject);
 
                 string subNameSpace;
-                TestProjectsMapToSingCodeProjectHeper.RegexReplace(settings.SingleTestRegexTestToAssembly
+                RegexReplace(settings.SingleTestRegexTestToAssembly
                     , settings.SingleTestRegexTestToAssemblyProjectSubNamespaceReplace, currentTypeNamespace,
                      out subNameSpace);
 
@@ -43,7 +43,7 @@ namespace TestCop.Plugin.Helper.Mapper
             }
 
             string subNameSpaceOfTest;
-            TestProjectsMapToSingCodeProjectHeper.RegexReplace(settings.SingleTestRegexCodeToTestAssembly
+            RegexReplace(settings.SingleTestRegexCodeToTestAssembly
                 , settings.SingleTestRegexCodeToTestReplace, currentTypeNamespace,
                 out subNameSpaceOfTest);
             
