@@ -58,6 +58,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helper\Mapper\MappingBase.cs" />
     <Compile Include="Highlighting\FileNotPartOfProjectWarning.cs" />
     <Compile Include="ProjectAnalysisElementProcessor.cs" />
     <Compile Include="ProjectAnalysisDaemonStageProcess.cs" />
@@ -70,7 +71,7 @@
     <Compile Include="Helper\Mapper\CodeProjectMapsToSingleTestProjectHeper.cs" />
     <Compile Include="Helper\Mapper\IProjectMappingHeper.cs" />
     <Compile Include="Helper\Mapper\ProjectMappingHelper.cs" />
-    <Compile Include="Helper\Mapper\TestProjectsMapToSingCodeProjectHeper.cs" />
+    <Compile Include="Helper\Mapper\TestProjectsMapToSingleCodeProjectHeperViaNamespace.cs" />
     <Compile Include="Helper\ProjectFileFinder.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />

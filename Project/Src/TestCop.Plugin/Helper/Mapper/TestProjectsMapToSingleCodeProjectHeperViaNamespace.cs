@@ -15,9 +15,9 @@ using TestCop.Plugin.Extensions;
 
 namespace TestCop.Plugin.Helper.Mapper
 {
-    public class TestProjectsMapToSingCodeProjectHeper : IProjectMappingHeper
+    public class TestProjectsMapToSingleCodeProjectHeperViaNamespace : MappingBase, IProjectMappingHeper
     {
-        public IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string currentTypeNamespace)
+        public virtual IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string currentTypeNamespace)
         {
             const string warningMessage = "Not Supported: More than one code project has a default namespace of ";
             string subNameSpace = currentTypeNamespace.RemoveLeading(currentProject.GetDefaultNamespace());
@@ -42,11 +42,11 @@ namespace TestCop.Plugin.Helper.Mapper
 
             return matchedTestProjects.Select(p => new TestCopProjectItem(p, subNameSpace)).ToList();                                        
         }
-
+       
         private static string GetNameSpaceOfAssociateProject(IProject project)
         {
-            var testNameSpacePattern = TestCopSettingsManager.Instance.Settings.TestProjectToCodeProjectNameSpaceRegEx;
-            string replaceText = TestCopSettingsManager.Instance.Settings.TestProjectToCodeProjectNameSpaceRegExReplace;
+            var testNameSpacePattern = Settings.TestProjectToCodeProjectNameSpaceRegEx;
+            string replaceText = Settings.TestProjectToCodeProjectNameSpaceRegExReplace;
 
             string currentProjectNamespace = project.GetDefaultNamespace();
             if (string.IsNullOrEmpty(currentProjectNamespace)) return "";
@@ -56,26 +56,6 @@ namespace TestCop.Plugin.Helper.Mapper
 
             ResharperHelper.AppendLineToOutputWindow("ERROR: Regex pattern matching failed to extract group");
             throw new ApplicationException("Unexpected internal error.");
-        }
-
-        public static bool RegexReplace(string regexPattern, string regexReplaceText, string inputString, out string resultString )
-        {
-            resultString = "";
-            var regex = new Regex(regexPattern);
-            var match = regex.Match(inputString);
-
-            if (match.Success && match.Groups.Count > 1)
-            {
-                if (regexReplaceText.IsNullOrEmpty() || regexReplaceText == "*")
-                {
-                    for (int i = 1; i < match.Groups.Count; i++) resultString += match.Groups[i].Value;
-                    return true;
-                }
-
-                resultString= regex.Replace(inputString, regexReplaceText);
-                return true;
-            }
-            return false;
         }      
     }
 }

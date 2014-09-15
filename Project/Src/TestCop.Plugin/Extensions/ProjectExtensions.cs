@@ -18,23 +18,10 @@ namespace TestCop.Plugin.Extensions
         /// project namespace matches TestCop regex
         /// </summary>        
         public static bool IsTestProject(this IProject project)
-        {            
-            string currentProjectNamespace = project.GetDefaultNamespace();
-            if (string.IsNullOrEmpty(currentProjectNamespace)) return false;
-
-            return TestingRegEx.IsMatch(currentProjectNamespace);
-        }
-     
-        private static Regex TestingRegEx
         {
-            get
-            {
-                var testNameSpacePattern = TestCopSettingsManager.Instance.Settings.TestProjectToCodeProjectNameSpaceRegEx;
-                var regEx = new Regex(testNameSpacePattern);
-                return regEx;
-            }
+            return ProjectMappingHelper.GetProjectMappingHeper().IsTestProject(project);          
         }
-        
+                     
         public static IList<TestCopProjectItem> GetAssociatedProjects(this IProject currentProject, string currentNamespace)
         {
             return ProjectMappingHelper.GetProjectMappingHeper().GetAssociatedProject(currentProject, currentNamespace);

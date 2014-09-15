@@ -13,5 +13,6 @@ namespace TestCop.Plugin.Helper.Mapper
     public interface IProjectMappingHeper
     {
         IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string currentNameSpace);
+        bool IsTestProject(IProject project);
     }
 }

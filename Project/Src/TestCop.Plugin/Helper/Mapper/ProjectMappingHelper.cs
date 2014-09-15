@@ -15,7 +15,7 @@ namespace TestCop.Plugin.Helper.Mapper
             if (settings.ConfiguredForSingleTestProject)
                 return new CodeProjectMapsToSingleTestProjectHeper();
 
-            return new TestProjectsMapToSingCodeProjectHeper();
+            return new TestProjectsMapToSingleCodeProjectHeperViaNamespace();
         } 
     }
 }
