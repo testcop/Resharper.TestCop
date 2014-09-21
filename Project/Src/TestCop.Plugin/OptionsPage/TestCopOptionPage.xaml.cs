@@ -71,7 +71,7 @@ namespace TestCop.Plugin.OptionsPage
 
           //Regex Config for Multiple Test Assemply Logic
           BindWithValidationMustBeARegex(testFileAnalysisSettings, testNamespaceRegExTextBox, P(x=>x.TestProjectToCodeProjectNameSpaceRegEx));
-          BindWithRegexMatchesValidation(testFileAnalysisSettings, testClassSuffixTextBox, P(x=>x.TestClassSuffix), "^[_a-zA-Z]*$");
+          BindWithRegexMatchesValidation(testFileAnalysisSettings, testClassSuffixTextBox, P(x=>x.TestClassSuffix), "^[_a-zA-Z,]*$");
           BindWithRegexMatchesValidation(testFileAnalysisSettings, testNamespaceRegExReplaceTextBox, P(x=>x.TestProjectToCodeProjectNameSpaceRegExReplace), "^[\\$\\.a-zA-Z1-9]*$");
           //
           //Regex Config for Single Test Assemply Logic
@@ -81,8 +81,8 @@ namespace TestCop.Plugin.OptionsPage
           BindWithValidationMustBeARegex(testFileAnalysisSettings, SingleTestCodeNamespaceRegExTextBox,                          P(x => x.SingleTestRegexCodeToTestAssembly));
           BindWithRegexMatchesValidation(testFileAnalysisSettings, SingleTestCodeNamespaceToTestRegExReplaceTextBox,             P(x => x.SingleTestRegexCodeToTestReplace), "^[\\$\\.a-zA-Z1-9]*$");
           //          
-          testFileAnalysisSettings.TestingAttributes.ForEach(p => testingAttributesListBox.Items.Add(p));
-          testFileAnalysisSettings.BddPrefixes.ForEach(p => contextPrefixesListBox.Items.Add(p));
+          testFileAnalysisSettings.TestingAttributes().ForEach(p => testingAttributesListBox.Items.Add(p));
+          testFileAnalysisSettings.BddPrefixes().ForEach(p => contextPrefixesListBox.Items.Add(p));
 
           SwitchBetweenFilesShortcutTextBox.Text = testFileAnalysisSettings.ShortcutToSwitchBetweenFiles;
           OrphanedFilesPatternsTextBox.Text = testFileAnalysisSettings.OrphanedFilesPatterns;

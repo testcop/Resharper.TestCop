@@ -48,7 +48,7 @@ namespace TestCop.Plugin
             get
             {
                 var testFileAnalysisSettings = _settings.GetKey<TestFileAnalysisSettings>(SettingsOptimization.OptimizeDefault);
-                var testingAttributes = testFileAnalysisSettings.TestingAttributes;
+                var testingAttributes = testFileAnalysisSettings.TestingAttributes();
                 if (testingAttributes.Count == 0)
                 {
                     testingAttributes.Add("TestFixture");
@@ -58,20 +58,7 @@ namespace TestCop.Plugin
                 return testingAttributes;
             }
         }
-
-        private string TestClassSuffix
-        {
-            get
-            {                
-                var suffix = Settings.TestClassSuffix;
-                if (string.IsNullOrEmpty(suffix))
-                {
-                    return "Tests";
-                }
-                return suffix;
-            }
-        }
-
+      
         private TestFileAnalysisSettings Settings
         {
             get { return _settings.GetKey<TestFileAnalysisSettings>(SettingsOptimization.OptimizeDefault); }
@@ -81,7 +68,7 @@ namespace TestCop.Plugin
         {
             get
             {
-                var prefix = Settings.BddPrefixes;               
+                var prefix = Settings.BddPrefixes();               
                 return prefix;
             }
         }
@@ -183,9 +170,9 @@ namespace TestCop.Plugin
             var declaredClassName = declaration.DeclaredName;
             if (!declaredClassName.StartsWith(Enumerable.ToArray(BDDPrefixes)))
             {
-                if (!declaredClassName.EndsWith(TestClassSuffix))
-                {                    
-                    var testingWarning = new TestClassNameSuffixWarning(TestClassSuffix, declaration);
+                if (!declaredClassName.EndsWith(Settings.TestClassSuffixes()))
+                {
+                    var testingWarning = new TestClassNameSuffixWarning(Settings.TestClassSuffix, declaration);
                     _myHighlightings.Add(new HighlightingInfo(declaration.GetNameDocumentRange(), testingWarning));
                     return false;
 
@@ -247,52 +234,70 @@ namespace TestCop.Plugin
                 return;
             }
         }
-
+  
         private void CheckClassnameInFileNameActuallyExistsAndCreateWarningIfNot(ICSharpTypeDeclaration thisDeclaration)
-        {
+        {            
             if (thisDeclaration.IsAbstract) return;
             
-            var currentFileName = CurrentSourceFile.GetLocation().NameWithoutExtension;            
-            var className = currentFileName.Split(new[] { Settings.SeparatorUsedToBreakUpTestFileNames }, 2)[0].RemoveTrailing(TestClassSuffix);
-            
-            var declaredElements = ResharperHelper.FindClass(Solution,className);
+            var currentFileName = CurrentSourceFile.GetLocation().NameWithoutExtension;
 
-            var currentProject = thisDeclaration.GetProject();
-            var currentDeclarationNamespace = thisDeclaration.OwnerNamespaceDeclaration!=null ? thisDeclaration.OwnerNamespaceDeclaration.DeclaredName : "";
-            
-            var associatedProjects = currentProject.GetAssociatedProjects(currentDeclarationNamespace);
-            if (associatedProjects == null || associatedProjects.Count==0)
+            var appropriateTestClassSuffixes = TestCopSettingsManager.Instance.Settings.GetAppropriateTestClassSuffixes(currentFileName);
+
+            foreach (var testClassSuffix in appropriateTestClassSuffixes)
             {
-                var highlight = new TestFileNameWarning("Project for this test assembly was not found - check namespace of projects", thisDeclaration);
-                _myHighlightings.Add(new HighlightingInfo(thisDeclaration.GetNameDocumentRange(), highlight));
-                return;
-            }
+                var className =
+                    currentFileName.Split(new[] {Settings.SeparatorUsedToBreakUpTestFileNames}, 2)[0].RemoveTrailing(
+                        testClassSuffix);
 
-            var filteredDeclaredElements = new List<IClrDeclaredElement>(declaredElements);
-            ResharperHelper.RemoveElementsNotInProjects(filteredDeclaredElements, associatedProjects.Select(p=>p.Project).ToList());
-            
-            if (filteredDeclaredElements.Count == 0)
-            {
-                string message = string.Format("The file name begins with {0} but no matching class exists in associated project", className);
+                var declaredElements = ResharperHelper.FindClass(Solution, className);
 
-                foreach (var declaredElement in declaredElements)
+                var currentProject = thisDeclaration.GetProject();
+                var currentDeclarationNamespace = thisDeclaration.OwnerNamespaceDeclaration != null
+                    ? thisDeclaration.OwnerNamespaceDeclaration.DeclaredName
+                    : "";
+
+                var associatedProjects = currentProject.GetAssociatedProjects(currentDeclarationNamespace);
+                if (associatedProjects == null || associatedProjects.Count == 0)
                 {
-                    var cls = declaredElement as TypeElement;
-                    if (cls != null)
-                    {
-                         message += string.Format("\nHas it moved to {0}.{1} ?", cls.OwnerNamespaceDeclaration(),cls.GetClrName() );
-                    }
+                    var highlight =
+                        new TestFileNameWarning(
+                            "Project for this test assembly was not found - check namespace of projects",
+                            thisDeclaration);
+                    _myHighlightings.Add(new HighlightingInfo(thisDeclaration.GetNameDocumentRange(), highlight));
+                    return;
                 }
-                
-                var highlight = new TestFileNameWarning(message, thisDeclaration);
-                _myHighlightings.Add(new HighlightingInfo(thisDeclaration.GetNameDocumentRange(), highlight));
 
-                return;
-            }
-            
-            if (Settings.CheckTestNamespaces)
-            {
-                CheckClassNamespaceOfTestMatchesClassUnderTest(thisDeclaration, declaredElements);
+                var filteredDeclaredElements = new List<IClrDeclaredElement>(declaredElements);
+                ResharperHelper.RemoveElementsNotInProjects(filteredDeclaredElements,
+                    associatedProjects.Select(p => p.Project).ToList());
+
+                if (filteredDeclaredElements.Count == 0)
+                {
+                    string message =
+                        string.Format(
+                            "The file name begins with {0} but no matching class exists in associated project",
+                            className);
+
+                    foreach (var declaredElement in declaredElements)
+                    {
+                        var cls = declaredElement as TypeElement;
+                        if (cls != null)
+                        {
+                            message += string.Format("\nHas it moved to {0}.{1} ?", cls.OwnerNamespaceDeclaration(),
+                                cls.GetClrName());
+                        }
+                    }
+
+                    var highlight = new TestFileNameWarning(message, thisDeclaration);
+                    _myHighlightings.Add(new HighlightingInfo(thisDeclaration.GetNameDocumentRange(), highlight));
+
+                    return;
+                }
+
+                if (Settings.CheckTestNamespaces)
+                {
+                    CheckClassNamespaceOfTestMatchesClassUnderTest(thisDeclaration, declaredElements);
+                }
             }
         }
 

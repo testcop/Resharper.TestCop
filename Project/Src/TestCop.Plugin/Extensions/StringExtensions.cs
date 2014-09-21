@@ -1,10 +1,11 @@
 // --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
-// -- Copyright 2013
+// -- Copyright 2014
 // --
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace TestCop.Plugin.Extensions
@@ -16,7 +17,12 @@ namespace TestCop.Plugin.Extensions
             return values.Contains(refString);
         }
 
-        public static bool StartsWith(this String refString, string[] values)
+        public static bool EndsWith(this String refString, IEnumerable<string> values)
+        {
+            return values.Any(refString.EndsWith);
+        }
+
+        public static bool StartsWith(this String refString, IEnumerable<string> values)
         {
             return values.Any(refString.StartsWith);
         }

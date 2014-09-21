@@ -37,6 +37,9 @@ namespace TestCop.Plugin
     {
         private readonly Action<JetPopupMenu, JetPopupMenu.ShowWhen> _menuDisplayer = (menu, showWhen) => menu.Show(showWhen);
 
+        readonly Func<IClrDeclaredElement, IClrDeclaredElement, bool> _declElementMatcher =
+                    (element, declaredElement) => element.ToString() == declaredElement.ToString();
+
         public JumpToTestFileAction(Action<JetPopupMenu, JetPopupMenu.ShowWhen> overrideMenuDisplay): this()
         {
             _menuDisplayer = overrideMenuDisplay;
@@ -56,6 +59,8 @@ namespace TestCop.Plugin
             // enable this action if we are in text editor, disable otherwise            
             return textControl != null;
         }
+
+   
      
         void IActionHandler.Execute(IDataContext context, DelegateExecute nextExecute)
         {            
@@ -86,35 +91,46 @@ namespace TestCop.Plugin
             var classNamesToFind = new List<string>();
 
             var baseFileName = ResharperHelper.GetBaseFileName(context, solution);
-            bool isTestFile = baseFileName.EndsWith(settings.TestClassSuffix);
-            var classNameFromFileName = ResharperHelper.UsingFileNameGetClassName(baseFileName).Flip(isTestFile, settings.TestClassSuffix);            
-
-            Func<IClrDeclaredElement, IClrDeclaredElement, bool> declElementMatcher = (element, declaredElement) => element.ToString() == declaredElement.ToString();
+            bool isTestFile = baseFileName.EndsWith(settings.TestClassSuffixes());
+           
             var elementsFoundInTarget = new List<IClrDeclaredElement>();
             var elementsFoundInSolution = new List<IClrDeclaredElement>();
-                       
-            if(clrTypeClassName!=null)
+
+            foreach (var testClassSuffix in settings.GetAppropriateTestClassSuffixes(baseFileName))
             {
-                string className = clrTypeClassName.ShortName.Flip(isTestFile, settings.TestClassSuffix);                
-                elementsFoundInTarget.AddRangeIfMissing(ResharperHelper.FindClass(solution, className, targetProjects), declElementMatcher );
-                
-                classNamesToFind.Add(className);               
-                elementsFoundInSolution.AddRangeIfMissing(ResharperHelper.FindClass(solution, className), declElementMatcher );
-            }
-            
-            classNamesToFind.Add(classNameFromFileName);
-            elementsFoundInTarget.AddRangeIfMissing(ResharperHelper.FindClass(solution, classNameFromFileName, targetProjects), declElementMatcher);
-            elementsFoundInSolution.AddRangeIfMissing(ResharperHelper.FindClass(solution, classNameFromFileName), declElementMatcher); 
-            
-            if (!isTestFile)
-            {                       
-                var references = FindReferencesWithinAssociatedAssembly(context, solution, textControl, clrTypeClassName);
-                elementsFoundInTarget.AddRangeIfMissing(references, declElementMatcher);                
+                //change flip to create list of possible names..
+                var classNameFromFileName = ResharperHelper.UsingFileNameGetClassName(baseFileName)
+                    .Flip(isTestFile, testClassSuffix);                
+
+                if (clrTypeClassName != null)
+                {
+                    string className = clrTypeClassName.ShortName.Flip(isTestFile, testClassSuffix);
+                    elementsFoundInTarget.AddRangeIfMissing(
+                        ResharperHelper.FindClass(solution, className, targetProjects), _declElementMatcher);
+
+                    classNamesToFind.Add(className);
+                    elementsFoundInSolution.AddRangeIfMissing(ResharperHelper.FindClass(solution, className),
+                        _declElementMatcher);
+                }
+
+                classNamesToFind.Add(classNameFromFileName);
+                elementsFoundInTarget.AddRangeIfMissing(
+                    ResharperHelper.FindClass(solution, classNameFromFileName, targetProjects), _declElementMatcher);
+                elementsFoundInSolution.AddRangeIfMissing(ResharperHelper.FindClass(solution, classNameFromFileName),
+                    _declElementMatcher);
+
+                if (!isTestFile)
+                {
+                    var references = FindReferencesWithinAssociatedAssembly(context, solution, textControl,
+                        clrTypeClassName, testClassSuffix);
+                    elementsFoundInTarget.AddRangeIfMissing(references, _declElementMatcher);
+                }             
             }
 
-            JumpToTestMenuHelper.PromptToOpenOrCreateClassFiles(_menuDisplayer, textControl.Lifetime, context, solution
-                    ,currentProject, clrTypeClassName,targetProjects
-                    ,elementsFoundInTarget, elementsFoundInSolution);            
+            JumpToTestMenuHelper.PromptToOpenOrCreateClassFiles(_menuDisplayer, textControl.Lifetime, context,
+                solution
+                , currentProject, clrTypeClassName, targetProjects
+                , elementsFoundInTarget, elementsFoundInSolution);
         }
         
         private TestFileAnalysisSettings Settings { 
@@ -128,8 +144,7 @@ namespace TestCop.Plugin
 
         }
 
-        private IList<IClrDeclaredElement> FindReferencesWithinAssociatedAssembly(IDataContext context
-            , ISolution solution, ITextControl textControl, IClrTypeName clrTypeClassName)
+        private IList<IClrDeclaredElement> FindReferencesWithinAssociatedAssembly(IDataContext context, ISolution solution, ITextControl textControl, IClrTypeName clrTypeClassName, string testClassSuffix)
         {
             if (clrTypeClassName == null)
             {
@@ -152,7 +167,7 @@ namespace TestCop.Plugin
             {
                 //look for similar named files that also have references to this code            
                 var items = new List<IProjectFile>();
-                var pattern = string.Format("{0}.*{1}", clrTypeClassName.ShortName, Settings.TestClassSuffix);
+                var pattern = string.Format("{0}.*{1}", clrTypeClassName.ShortName, testClassSuffix);
                 var finder = new ProjectFileFinder(items, new Regex(pattern));
                 targetProjects.ForEach(p=>p.Project.Accept(finder));
                 searchDomain = PsiShared.GetComponent<SearchDomainFactory>().CreateSearchDomain(items.Select(p => p.ToSourceFile()));

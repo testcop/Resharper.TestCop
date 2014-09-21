@@ -48,8 +48,8 @@ namespace TestCop.Plugin.Helper
             MoveBestMatchesToTopWhenSwitchingFromTestToCode(menuItems, project, targetProjects, clrTypeClassName);
 
             if (clrTypeClassName != null)
-            {                
-                if(DeriveRelatedFileNameAndAddCreateMenus(context, lifetime, project, targetProjects,menuItems, clrTypeClassName))
+            {
+                if (DeriveRelatedFileNameAndAddCreateMenus(context, lifetime, project, targetProjects, menuItems, clrTypeClassName))
                 {
                     autoExecuteIfSingleEnabledItem = JetPopupMenu.ShowWhen.NoItemsBannerIfNoItems;
                 }
@@ -127,64 +127,76 @@ namespace TestCop.Plugin.Helper
             if (clrTypeClassName == null) return;
 //            if (!project.IsTestProject()) return;
 
-            string testSuffix = TestCopSettingsManager.Instance.Settings.TestClassSuffix;
-            bool currentFileisTestFile = clrTypeClassName.ShortName.EndsWith(testSuffix);
-            string targetFileName = clrTypeClassName.ShortName.Flip(currentFileisTestFile, testSuffix);
-            
-            foreach (var associatedTargetProject in associatedTargetProjects)
+            foreach (string testSuffix in TestCopSettingsManager.Instance.Settings.TestClassSuffixes())
             {
-                var targetFilePathName = FileSystemPath.Parse(associatedTargetProject.SubNamespaceFolder + "\\" + targetFileName);
-                
-                for (int i = 0; i < currentMenus.Count; i++)
-                {
-                    var menuItem = currentMenus[i];
-                    if (menuItem.Tag == null) continue;
+                bool currentFileisTestFile = clrTypeClassName.ShortName.EndsWith(testSuffix);
+                string targetFileName = clrTypeClassName.ShortName.Flip(currentFileisTestFile, testSuffix);
 
-                    if (menuItem.Tag.ToString().StartsWith(targetFilePathName.FullPath, StringComparison.CurrentCultureIgnoreCase))
-                    {                        
-                        currentMenus.RemoveAt(i);
-                        currentMenus.Insert(0, menuItem);
+                foreach (var associatedTargetProject in associatedTargetProjects)
+                {
+                    var targetFilePathName =
+                        FileSystemPath.Parse(associatedTargetProject.SubNamespaceFolder + "\\" + targetFileName);
+
+                    for (int i = 0; i < currentMenus.Count; i++)
+                    {
+                        var menuItem = currentMenus[i];
+                        if (menuItem.Tag == null) continue;
+
+                        if (menuItem.Tag.ToString()
+                            .StartsWith(targetFilePathName.FullPath, StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            currentMenus.RemoveAt(i);
+                            currentMenus.Insert(0, menuItem);
+                        }
                     }
                 }
             }
         }
 
+   
         //------------------------------------------------------------------------------------------------------------------------
-        static public bool DeriveRelatedFileNameAndAddCreateMenus(IDataContext context, Lifetime lifetime, IProject project, IList<TestCopProjectItem> associatedTargetProjects,IList<SimpleMenuItem> currentMenus, IClrTypeName clrTypeClassName)
+        public static bool DeriveRelatedFileNameAndAddCreateMenus(IDataContext context, Lifetime lifetime,
+            IProject project, IList<TestCopProjectItem> associatedTargetProjects, IList<SimpleMenuItem> currentMenus,
+            IClrTypeName clrTypeClassName)
         {
-            string testSuffix = TestCopSettingsManager.Instance.Settings.TestClassSuffix;
-            if (clrTypeClassName == null) return false;                        
-            var baseFileName = ResharperHelper.GetBaseFileName(context, project.GetSolution());
-            
-            var targetFile = ResharperHelper.UsingFileNameGetClassName(baseFileName).RemoveTrailing(testSuffix);
-            bool currentFileisTestFile = baseFileName.EndsWith(testSuffix);
-
-            if (!currentFileisTestFile)         
-            {
-                targetFile += testSuffix;
-            }
-            
             bool addedCreateMenuItem = false;
 
-            foreach (var associatedTargetProject in associatedTargetProjects)
-            {
-                if (currentFileisTestFile == associatedTargetProject.Project.IsTestProject())
+            if (clrTypeClassName == null) return false;
+            var baseFileName = ResharperHelper.GetBaseFileName(context, project.GetSolution());
+
+            var settings = TestCopSettingsManager.Instance.Settings;
+            bool currentFileisTestFile = baseFileName.EndsWith(settings.TestClassSuffixes());
+
+            foreach (var testClassSuffix in settings.GetAppropriateTestClassSuffixes(baseFileName))
+            {                
+                var targetFile = ResharperHelper.UsingFileNameGetClassName(baseFileName).RemoveTrailing(testClassSuffix);
+                
+                if (!currentFileisTestFile)
                 {
-                    ResharperHelper.AppendLineToOutputWindow(
-                        string.Format("Internal Error: Attempted to create '{0}' within project '{1}'"
-                        , targetFile, associatedTargetProject.Project.Name) );
-                    continue;
+                    targetFile += testClassSuffix;
                 }
 
-                string targetFileLocation = associatedTargetProject.SubNamespaceFolder.FullPath + "\\" + targetFile;
-
-                if (!IsMenuItemPresentForFile(currentMenus, targetFileLocation))
+                foreach (var associatedTargetProject in associatedTargetProjects)
                 {
-                    currentMenus.AddRange(AddCreateFileMenuItem(lifetime, associatedTargetProject.Project,
-                        associatedTargetProject.SubNamespaceFolder, targetFile));
-                    addedCreateMenuItem = true;
+                    if (currentFileisTestFile == associatedTargetProject.Project.IsTestProject())
+                    {
+                        ResharperHelper.AppendLineToOutputWindow(
+                            string.Format("Internal Error: Attempted to create '{0}' within project '{1}'"
+                                , targetFile, associatedTargetProject.Project.Name));
+                        continue;
+                    }
+
+                    string targetFileLocation = associatedTargetProject.SubNamespaceFolder.FullPath + "\\" + targetFile;
+
+                    if (!IsMenuItemPresentForFile(currentMenus, targetFileLocation))
+                    {
+                        currentMenus.AddRange(AddCreateFileMenuItem(lifetime, associatedTargetProject.Project,
+                            associatedTargetProject.SubNamespaceFolder, targetFile));
+                        addedCreateMenuItem = true;
+                    }
                 }
             }
+
             return addedCreateMenuItem;
         }
 
