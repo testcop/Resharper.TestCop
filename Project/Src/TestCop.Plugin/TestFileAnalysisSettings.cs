@@ -14,27 +14,7 @@ namespace TestCop.Plugin
 {    
     [SettingsKey(typeof (CodeInspectionSettings), "Testing Attributes")]
     public class TestFileAnalysisSettings
-    {     
-        public IList<string> TestingAttributes 
-        { 
-            get
-            {
-                List<string> list = (TestingAttributeText ?? "").Split(',').ToList();
-                list.RemoveAll(string.IsNullOrEmpty);
-                return list;
-            }
-        }
-
-        public IList<string> BddPrefixes
-        {
-            get
-            {
-                List<string> list = (BddPrefix ?? "").Split(',').ToList();
-                list.RemoveAll(string.IsNullOrEmpty);
-                return list;
-            }
-        }
-        
+    {        
         [SettingsEntry("TestClass,TestMethod,TestFixture,Test,Fact", "Testing Attributes to detect")]
         public string TestingAttributeText { get; set; }
 

@@ -20,6 +20,13 @@ namespace TestCop.Plugin.Tests.Extensions
         }
 
         [Test]
+        public void StringEndsWithTests()
+        {
+            Assert.IsTrue("ABC".EndsWith( new[] {"C", "X", "Y"}));
+            Assert.IsFalse("ABC".EndsWith( new[] {"A", "B", "Y"}));            
+        }
+
+        [Test]
         public void StartsWithTests()
         {
             Assert.IsTrue("ABC".StartsWith(new[]{"C", "B", "A"}));
