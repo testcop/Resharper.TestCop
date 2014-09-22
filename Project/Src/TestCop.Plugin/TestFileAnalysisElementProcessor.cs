@@ -96,9 +96,7 @@ namespace TestCop.Plugin
                 ProcessTypeDeclaration(typeDeclaration);                           
             }             
         }
-
-
-
+        
         private void ProcessTypeDeclaration(ICSharpTypeDeclaration declaration)
         {
             if (declaration.GetContainingNode<ICSharpTypeDeclaration>() != null)

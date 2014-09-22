@@ -7,7 +7,7 @@
 		<authors>Alcaeus</authors>     
 		<description>Easily switch between unit tests and code. Create missing associated files. Includes highlightings and test templates to keep test projects neat and tidy. Works with NUnit, MSTest, xUnit ...</description>
 		<releaseNotes>
-      1.8.2.5 BETA Support for multiple test class suffix (comma separated)
+      1.8.2.5 Support for multiple test class suffix (comma separated)
       1.8.2.4 Adding support to find orphaned project files
       1.8.2.3 Support added for solutions with a single test project for all code projects.
       1.8.2.2 Beta. Refactor of code. Supported added for single test project for all code projects within solution
