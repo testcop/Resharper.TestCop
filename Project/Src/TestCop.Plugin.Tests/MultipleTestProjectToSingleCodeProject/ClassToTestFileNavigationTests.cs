@@ -53,6 +53,9 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProject
                             s => s.FindOrphanedProjectFiles, true);
 
                         settingsStore.SetValue<TestFileAnalysisSettings, string>(
+                            s => s.TestClassSuffix, "Tests,IntegrationTests");
+
+                        settingsStore.SetValue<TestFileAnalysisSettings, string>(
                             s => s.TestProjectToCodeProjectNameSpaceRegEx, altRegEx);
                         settingsStore.SetValue<TestFileAnalysisSettings, string>(
                             s => s.TestProjectToCodeProjectNameSpaceRegExReplace, "$1");
