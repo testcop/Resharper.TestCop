@@ -94,6 +94,7 @@
       <DependentUpon>TestCopOptionPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="QuickFixActions\AddExistingFileToProjectBulbItem.cs" />
+    <Compile Include="QuickFixActions\DeleteFileBulbItem.cs" />
     <Compile Include="QuickFixActions\MoveFileBulbItem.cs" />
     <Compile Include="QuickFixActions\MakeItPublicBulbItem.cs" />
     <Compile Include="resources\ThemedIcons.Unnamed.Generated.cs" />
