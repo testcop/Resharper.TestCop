@@ -1,11 +1,28 @@
 // --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
-// -- Copyright 2013
+// -- Copyright 2014
 // --
-namespace TestCop.QuickFixActions
-{
-    /*
+
+using System;
+using System.Collections.Generic;
+using JetBrains.Application.DataContext;
+using JetBrains.Application.Progress;
+using JetBrains.DataFlow;
+using JetBrains.ProjectModel;
+using JetBrains.ReSharper.Feature.Services.Bulbs;
+using JetBrains.ReSharper.Feature.Services.Util;
+using JetBrains.ReSharper.Intentions.Extensibility;
+using JetBrains.ReSharper.Intentions.Extensibility.Menu;
+using JetBrains.ReSharper.Refactorings.Move.MoveToFolder;
+using JetBrains.ReSharper.Refactorings.Move.MoveToFolder.Impl;
+using JetBrains.ReSharper.Refactorings.WorkflowNew;
+using JetBrains.TextControl;
+using JetBrains.Util;
+using TestCop.Plugin.Highlighting;
+
+namespace TestCop.Plugin.QuickFixActions
+{    
     [QuickFix]
     public class MoveFileBulbItem : BulbActionBase, IQuickFix
     {
@@ -17,30 +34,51 @@ namespace TestCop.QuickFixActions
         }
 
         protected override Action<ITextControl> ExecutePsiTransaction(ISolution solution, IProgressIndicator progress)
-        {
-            //Need to read more on MoveToFolderQuickFix()
-            Template classTemplate = FileTemplatesManager.Instance.GetFileTemplatesForActions(context).Where(c => c.Shortcut == "Class").SingleOrDefault();
-            IProjectFolder folder = (IProjectFolder) associatedProject.FindProjectItemByLocation(fileSystemPath)
-                                    ?? AddNewItemUtil.GetOrCreateProjectFolder(associatedProject, fileSystemPath);
+        {             
+            var projectFile = (IProjectFile) _highlight.OffendingProjectItem;
+       
+            using (var cookie = solution.CreateTransactionCookie(DefaultAction.Rollback, this.GetType().Name, progress))
+            {
+                IProjectFolder newFolder = (IProjectFolder)_highlight.TargetProject.FindProjectItemByLocation(_highlight.TargetFolder)
+                    ?? AddNewItemUtil.GetOrCreateProjectFolder(_highlight.TargetProject, _highlight.TargetFolder, cookie); 
 
-             
+                var workflow = new MoveToFolderWorkflow(solution, "ManualMoveToFolderQuickFix");
+                IProjectFolder targetFolder = newFolder ?? _highlight.TargetProject;
+
+                var dataProvider = new MoveToFolderDataProvider(true, true, targetFolder, new List<string>(), new List<string>());
+                workflow.SetDataProvider(dataProvider);
+              
+                Lifetimes.Using(
+                    (lifetime => WorkflowExecuter.ExecuteWithCustomHost(
+                        JetBrains.ActionManagement.ShellComponentsEx.ActionManager(JetBrains.Application.Shell.Instance.Components)
+                        .DataContexts.CreateWithoutDataRules(lifetime
+                        , DataRules.AddRule(DataRules.AddRule("ManualMoveToFolderQuickFix"
+                        , JetBrains.ProjectModel.DataContext.DataConstants.PROJECT_MODEL_ELEMENTS, new IProjectModelElement[]{projectFile})
+                        , "ManualMoveToFolderQuickFix"
+                        , JetBrains.ProjectModel.DataContext.DataConstants.SOLUTION, solution))
+                        , workflow, new SimpleWorkflowHost())));
+                                            
+                cookie.Commit(progress);
+            }
+
             return null;
         }
 
         public override string Text
         {
-            get { return String.Format("#Move It#"); }
+            get { return String.Format("Move file file to : " + _highlight.ExpectedNameSpace); }
         }
 
-        public void CreateBulbItems(BulbMenu menu, Severity severity)
+        public IEnumerable<IntentionAction> CreateBulbItems()
         {
-            menu.ArrangeQuickFix(this,Severity.ERROR);;
+          foreach (IntentionAction intentionAction in BulbActionExtensions.ToQuickFixAction(this))
+              yield return intentionAction;
         }
 
         public bool IsAvailable(IUserDataHolder cache)
         {
             return _highlight.IsValid();
-        }
+        }      
     }
-    */
+    
 }

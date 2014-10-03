@@ -15,6 +15,7 @@ using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Caches2;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Psi.VB.Util;
+using JetBrains.Util;
 using TestCop.Plugin.Extensions;
 using TestCop.Plugin.Helper;
 using TestCop.Plugin.Highlighting;
@@ -132,7 +133,7 @@ namespace TestCop.Plugin
             if (declaration.DeclaredElement == null) return false;
             foreach (var m in declaration.DeclaredElement.Methods.SelectMany(m => m.GetDeclarationsIn(sourceFile)).OfType<IAttributesOwnerDeclaration>())
             {
-                if (FindTestingAttributes(m, testAttributes).Any()) return true;                
+                if (Enumerable.Any(FindTestingAttributes(m, testAttributes))) return true;                
             }
             return false;
         }
@@ -302,6 +303,8 @@ namespace TestCop.Plugin
         private void CheckClassNamespaceOfTestMatchesClassUnderTest(ICSharpTypeDeclaration thisDeclaration, List<IClrDeclaredElement> declaredElements)
         {            
             var thisProject = thisDeclaration.GetProject();
+            if (thisProject == null) return;
+
             var associatedProject = thisProject.GetAssociatedProjects(thisDeclaration.GetContainingNamespaceDeclaration().DeclaredName).FirstOrDefault();
             if (associatedProject == null) return;
             ResharperHelper.RemoveElementsNotInProjects(declaredElements,new []{associatedProject.Project});   
@@ -317,7 +320,7 @@ namespace TestCop.Plugin
             //Lookup the namespaces of the declaredElements we've found that possibly match this test             
             IList<string> foundNameSpaces = new List<string>();
             foreach (var declaredTestElement in declaredElements)
-            {
+            {                
                 var cls = declaredTestElement as TypeElement;
                 if (cls == null) continue;
                 var ns = cls.OwnerNamespaceDeclaration();
@@ -332,11 +335,15 @@ namespace TestCop.Plugin
             foreach (var ns in foundNameSpaces)
             {
                 if (ns.StartsWith(associatedProjectsDefaultNameSpace))
-                {                    
-                    string suggestedNameSpace =
-                        thisProjectsDefaultNamespace.AppendIfNotNull(".", ns.Substring(associatedProjectsDefaultNameSpace.Length).TrimStart(new [] {'.'}) );
-                    
-                    var highlight = new TestFileNameSpaceWarning(thisDeclaration, suggestedNameSpace);
+                {
+                    var targetsubNameSpace = ns.Substring(associatedProjectsDefaultNameSpace.Length).TrimStart(new[] { '.' });
+                    string suggestedNameSpace = thisProjectsDefaultNamespace.AppendIfNotNull(".", targetsubNameSpace );
+
+                    var targetFolder = thisProject.Location.Combine(targetsubNameSpace.Replace(".", @"\"));
+                                        
+                    var highlight = new TestFileNameSpaceWarning(CurrentSourceFile.ToProjectFile(), thisDeclaration, suggestedNameSpace
+                        , thisProject, targetFolder);
+                                                
                     _myHighlightings.Add(new HighlightingInfo(thisDeclaration.GetNameDocumentRange(), highlight));                   
                 }
             }            

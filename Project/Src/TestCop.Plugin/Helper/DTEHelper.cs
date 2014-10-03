@@ -17,6 +17,12 @@ namespace TestCop.Plugin.Helper
             return Shell.Instance.HasComponent<DTE>();
         }
 
+        public static void RefreshSolutionExplorerWindow()
+        {
+            var dte = Shell.Instance.GetComponent<DTE>();            
+            dte.Commands.Raise("{1496A755-94DE-11D0-8C3F-00C04FC2AAE2}", 222, null, null);
+        }
+   
         /// <summary>
         /// Must run on main UI thread
         /// </summary>

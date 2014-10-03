@@ -67,7 +67,7 @@ namespace TestCop.Plugin
             if (filesToFind.Length == 0) filesToFind = new []{"*.cs"};
                         
             var currentProject = element.GetProject();
-
+            
             var allProjectFileLocations = currentProject.GetAllProjectFiles().Select(p => p.Location).ToList();
             var allProjectFiles = allProjectFileLocations.Select(loc => loc.FullPath).ToList();
             var allProjectFolders = allProjectFileLocations.Select(loc => loc.Directory.FullPath).Distinct();
