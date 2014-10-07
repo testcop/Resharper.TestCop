@@ -3,58 +3,86 @@
 // -- License http://testcop.codeplex.com/license
 // -- Copyright 2014
 // --
- 
-using System;
+
 using System.Collections.Generic;
-using JetBrains.Application.Progress;
+using System.IO;
+using JetBrains;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Bulbs;
 using JetBrains.ReSharper.Intentions.Extensibility;
 using JetBrains.ReSharper.Intentions.Extensibility.Menu;
 using JetBrains.TextControl;
+using JetBrains.UI.BulbMenu;
 using JetBrains.Util;
+using TestCop.Plugin.Extensions;
 using TestCop.Plugin.Helper;
 using TestCop.Plugin.Highlighting;
 
 namespace TestCop.Plugin.QuickFixActions
 {
     [QuickFix]
-    public class DeleteFileBulbItem : BulbActionBase, IQuickFix
+    public class DeleteFileBulbItem : IQuickFix
     {
-        private readonly FileNotPartOfProjectWarning _highlight;
+        private readonly FilesNotPartOfProjectWarning _highlight;
 
-        public DeleteFileBulbItem(FileNotPartOfProjectWarning highlight)
+        public DeleteFileBulbItem(FilesNotPartOfProjectWarning highlight)
         {
             _highlight = highlight;
         }
-        
-        protected override Action<ITextControl> ExecutePsiTransaction(ISolution solution, IProgressIndicator progress)
-        { 
-            using (var notusedCookie = solution.CreateTransactionCookie(DefaultAction.Rollback, this.GetType().Name, progress))
-            {
-                _highlight.FileOnDisk.Delete();
-                DTEHelper.RefreshSolutionExplorerWindow();
-            }
-            return null;
-        }
-
-        public override string Text
-        {
-            get
-            {
-                return String.Format("Delete file [{0}]", _highlight.OffendingFileDisplayableName);
-            }
-        }
-
+             
         public IEnumerable<IntentionAction> CreateBulbItems()
-        {
-            foreach (IntentionAction intentionAction in  this.ToQuickFixAction())
-                yield return intentionAction;
+        {            
+            var list = new List<IntentionAction>();                                   
+
+            var anchor=  _highlight.FileOnDisk.Count==1 ? new InvisibleAnchor(IntentionsAnchors.ContextActionsAnchorPosition, IntentionsAnchors.ContextActionsAnchor, false)
+            : (IAnchor) new ExecutableGroupAnchor(IntentionsAnchors.ContextActionsAnchor, IntentionsAnchors.ContextActionsAnchorPosition, null, false);
+
+
+            if (_highlight.FileOnDisk.Count > 1)
+            {
+                list.AddRange(BulbActionExtensions.ToQuickFixAction(new RemoveFileBulb(_highlight.CurrentProject, _highlight.FileOnDisk.ToArray()), anchor));
+            }
+
+            _highlight.FileOnDisk.ForEach(f=>
+                list.AddRange(BulbActionExtensions.ToQuickFixAction(new RemoveFileBulb(_highlight.CurrentProject, new[] { f }), anchor))
+            );
+       
+            return list;    
         }
 
         public bool IsAvailable(IUserDataHolder cache)
         {
             return _highlight.IsValid();
         }
+    }
+
+    class RemoveFileBulb : IBulbAction
+    {
+        private readonly FileInfo[] _files;
+
+        public RemoveFileBulb(IProject currentProject, FileInfo[] files)
+        {
+            _files = files;
+
+            if (_files.Length > 1)
+            {
+                Text = "Delete orphaned files from project [{0} files]".FormatEx(_files.Length);
+            }
+            else
+            {
+                Text = "Delete orphaned file [{0}]".FormatEx(_files[0].FullName.RemoveLeading(currentProject.Location.FullPath));
+            }
+        }
+
+        public void Execute(ISolution solution, ITextControl textControl)
+        {
+            foreach (var file in _files)
+            {
+                file.Delete();   
+            }            
+            DTEHelper.RefreshSolutionExplorerWindow();
+        }
+
+        public string Text { get; private set; }
     }
 }

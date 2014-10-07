@@ -78,11 +78,18 @@ namespace TestCop.Plugin
                     directory => new System.IO.DirectoryInfo(directory).EnumerateFiles(regex, System.IO.SearchOption.TopDirectoryOnly).Select(f => f))
                         ));
 
+
+            var orphanedFiles = new List<FileInfo>();
+
             foreach (var fileOnDisk in filesOnDisk)
             {
                 if (allProjectFiles.Any(x => String.Compare(x, fileOnDisk.FullName,  StringComparison.OrdinalIgnoreCase) == 0)) continue;
+                orphanedFiles.Add(fileOnDisk);               
+            }
 
-                IHighlighting highlighting = new FileNotPartOfProjectWarning(currentProject, fileOnDisk);
+            if (orphanedFiles.Count > 0)
+            {
+                IHighlighting highlighting = new FilesNotPartOfProjectWarning(currentProject, orphanedFiles);
                 _myHighlightings.Add(new HighlightingInfo(element.GetDocumentRange(), highlighting));
             }
         }
