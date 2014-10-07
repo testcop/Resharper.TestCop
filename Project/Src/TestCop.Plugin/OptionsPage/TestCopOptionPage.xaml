@@ -37,7 +37,7 @@
                    
                     <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Left" >
                         <TextBlock TextWrapping="Wrap" Height="auto" ><Run Text="Test Class Suffix:"/></TextBlock>
-                        <TextBox x:Name="testClassSuffixTextBox" Width="127" MaxLength="25" TextChanged="MultiTestClassAndNamespaceTextChanged" />
+                        <TextBox x:Name="testClassSuffixTextBox" Width="127" MaxLength="255" TextChanged="MultiTestClassAndNamespaceTextChanged" />
                     </StackPanel>
 
                     <Separator Height="21" Margin="0" HorizontalAlignment="Right" Width="390"/>

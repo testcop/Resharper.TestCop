@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.CSharp.Errors;
@@ -7,27 +8,19 @@ using TestCop.Plugin.Extensions;
 namespace TestCop.Plugin.Highlighting
 {
     [StaticSeverityHighlighting(Severity.WARNING, Highlighter.HighlightingGroup)]
-    public class FileNotPartOfProjectWarning : CSharpHighlightingBase, IHighlighting
+    public class FilesNotPartOfProjectWarning : CSharpHighlightingBase, IHighlighting
     {
         private readonly IProject _currentProject;
-        private readonly FileInfo _fileOnDisk;
-        internal const string SeverityId = "FileNotPartOfProjectWarning";
+        private readonly IList<FileInfo> _fileOnDisk;
+        internal const string SeverityId = "FilesNotPartOfProjectWarning";
 
     
-        public FileNotPartOfProjectWarning(IProject currentProject, FileInfo fileOnDisk)
+        public FilesNotPartOfProjectWarning(IProject currentProject, IList<FileInfo> fileOnDisk)
         {
             _currentProject = currentProject;
             _fileOnDisk = fileOnDisk;
         }
-
-        public string OffendingFileDisplayableName
-        {
-            get
-            {
-                 return FileOnDisk.FullName.RemoveLeading(CurrentProject.Location.FullPath);
-            }
-        }
-
+        
         public override bool IsValid()
         {
             return true;
@@ -35,7 +28,12 @@ namespace TestCop.Plugin.Highlighting
 
         public string ToolTip
         {
-            get { return string.Format("File not part of project: [{0}]", OffendingFileDisplayableName);  }
+            get
+            {
+                if(_fileOnDisk.Count==1)
+                    return string.Format("File not part of project: [{0}]", _fileOnDisk[0].FullName.RemoveLeading(_currentProject.Location.FullPath));
+                return string.Format("Files not part of project [{0} Files]", _fileOnDisk.Count);                   
+            }
         }
 
         public string ErrorStripeToolTip
@@ -59,7 +57,7 @@ namespace TestCop.Plugin.Highlighting
             get { return _currentProject; }
         }
 
-        public FileInfo FileOnDisk
+        public IList<FileInfo> FileOnDisk
         {
             get { return _fileOnDisk; }
         }

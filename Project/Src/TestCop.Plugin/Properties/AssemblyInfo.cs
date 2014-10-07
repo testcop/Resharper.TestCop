@@ -95,7 +95,7 @@ using TestCop.Plugin.Highlighting;
         false)]
 
 [assembly: RegisterConfigurableSeverity(
-        FileNotPartOfProjectWarning.SeverityId,
+        FilesNotPartOfProjectWarning.SeverityId,
         null, "Testing",
         "Orphaned file not part of project",
         "TestCop : All code files should be part of project",

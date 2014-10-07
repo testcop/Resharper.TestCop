@@ -60,7 +60,7 @@
   <ItemGroup>
     <Compile Include="Extensions\TestCopSettingsExtensions.cs" />
     <Compile Include="Helper\Mapper\MappingBase.cs" />
-    <Compile Include="Highlighting\FileNotPartOfProjectWarning.cs" />
+    <Compile Include="Highlighting\FilesNotPartOfProjectWarning.cs" />
     <Compile Include="ProjectAnalysisElementProcessor.cs" />
     <Compile Include="ProjectAnalysisDaemonStageProcess.cs" />
     <Compile Include="Extensions\SolutionExtensions.cs" />
