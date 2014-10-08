@@ -109,15 +109,15 @@ namespace TestCop.Plugin
                         ResharperHelper.FindClass(solution, className, targetProjects), _declElementMatcher);
 
                     classNamesToFind.Add(className);
-                    elementsFoundInSolution.AddRangeIfMissing(ResharperHelper.FindClass(solution, className),
-                        _declElementMatcher);
+                    elementsFoundInSolution.AddRangeIfMissing(
+                        ResharperHelper.FindClass(solution, className),_declElementMatcher);
                 }
 
                 classNamesToFind.Add(classNameFromFileName);
                 elementsFoundInTarget.AddRangeIfMissing(
                     ResharperHelper.FindClass(solution, classNameFromFileName, targetProjects), _declElementMatcher);
-                elementsFoundInSolution.AddRangeIfMissing(ResharperHelper.FindClass(solution, classNameFromFileName),
-                    _declElementMatcher);
+                elementsFoundInSolution.AddRangeIfMissing(
+                    ResharperHelper.FindClass(solution, classNameFromFileName),_declElementMatcher);
 
                 if (!isTestFile)
                 {
@@ -167,7 +167,7 @@ namespace TestCop.Plugin
             {
                 //look for similar named files that also have references to this code            
                 var items = new List<IProjectFile>();
-                var pattern = string.Format("{0}.*{1}", clrTypeClassName.ShortName, testClassSuffix);
+                var pattern = string.Format(@"{0}\..*{1}", clrTypeClassName.ShortName, testClassSuffix);
                 var finder = new ProjectFileFinder(items, new Regex(pattern));
                 targetProjects.ForEach(p=>p.Project.Accept(finder));
                 searchDomain = PsiShared.GetComponent<SearchDomainFactory>().CreateSearchDomain(items.Select(p => p.ToSourceFile()));
