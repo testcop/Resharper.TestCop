@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using JetBrains;
+using JetBrains.IDE;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Modules;
@@ -21,7 +22,7 @@ namespace TestCop.Plugin
     public class RenameTestFilesTooRefactoring : IFileRenameProvider 
     {
         public IEnumerable<FileRename> GetFileRenames(IDeclaredElement declaredElement, string newName)
-        {            
+        {      
             var typeElement = declaredElement as ITypeElement;                                 
 
             var clrDeclaredElement = declaredElement as IClrDeclaredElement;
@@ -33,6 +34,7 @@ namespace TestCop.Plugin
             {
                 var classNameBeingRenamed = typeElement.GetClrName().ShortName; 
                 var project = psiModule.Project;
+                var solution = project.GetSolution();
 
                 if (!project.IsTestProject())
                 {
@@ -60,8 +62,10 @@ namespace TestCop.Plugin
                             {
                                 if (projectFile.Name.StartsWith(classNameBeingRenamed))//just to be sure
                                 {
-                                    ResharperHelper.AppendLineToOutputWindow("Renaming {0}".FormatEx(projectFile));
-                                    var newTestClassName=newName+projectFile.Location.NameWithoutExtension.Substring(classNameBeingRenamed.Length);                                    
+                                    var newTestClassName = newName + projectFile.Location.NameWithoutExtension.Substring(classNameBeingRenamed.Length);
+                                    ResharperHelper.AppendLineToOutputWindow("Renaming {0} to {1}".FormatEx(projectFile.Name, newTestClassName));                                    
+                                    EditorManager.GetInstance(solution).OpenProjectFile(projectFile, false);//need to ensure class within file is renamed tooo
+                                    
                                     yield return new FileRename(psiModule.GetPsiServices(), projectFile, newTestClassName);
                                 }
                             }  
