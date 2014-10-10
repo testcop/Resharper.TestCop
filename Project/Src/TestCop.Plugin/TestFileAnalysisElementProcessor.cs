@@ -187,7 +187,7 @@ namespace TestCop.Plugin
 
             var currentFileName = CurrentSourceFile.GetLocation().NameWithoutExtension;
             
-            var testClassNameFromFileName = currentFileName.Replace(new string(Settings.SeparatorUsedToBreakUpTestFileNames,1), "");
+            var testClassNameFromFileName = currentFileName.Replace(".", "");
             
             if (testClassNameFromFileName != declaredClassName)
             {                
@@ -245,8 +245,7 @@ namespace TestCop.Plugin
             foreach (var testClassSuffix in appropriateTestClassSuffixes)
             {
                 var className =
-                    currentFileName.Split(new[] {Settings.SeparatorUsedToBreakUpTestFileNames}, 2)[0].RemoveTrailing(
-                        testClassSuffix);
+                    currentFileName.Split(new[] {'.'}, 2)[0].RemoveTrailing(testClassSuffix);
 
                 var declaredElements = ResharperHelper.FindClass(Solution, className);
 

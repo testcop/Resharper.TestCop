@@ -93,7 +93,8 @@ namespace TestCop.Plugin.OptionsPage
           ShowAllTestsWithUsageCheckBox.IsChecked = testFileAnalysisSettings.FindAnyUsageInTestAssembly;
           CheckTestNamespaces.IsChecked = testFileAnalysisSettings.CheckTestNamespaces;
           CheckSearchForOrphanedCodeFiles.IsChecked = testFileAnalysisSettings.FindOrphanedProjectFiles;
-          CheckUseUnderscoreTestSeparator.IsChecked = testFileAnalysisSettings.SeparatorUsedToBreakUpTestFileNames=='_';
+          SupportRenameRefactor.IsChecked = testFileAnalysisSettings.SupportRenameRefactorBeta;
+          
           OutputPanelOpenOnKeyboardMapping.IsChecked = testFileAnalysisSettings.OutputPanelOpenOnKeyboardMapping;
           TestProjectPerCodeProject.IsChecked = !testFileAnalysisSettings.ConfiguredForSingleTestProject;
 
@@ -200,7 +201,7 @@ namespace TestCop.Plugin.OptionsPage
           _settings.SetValue((TestFileAnalysisSettings s) => s.FindAnyUsageInTestAssembly,ShowAllTestsWithUsageCheckBox.IsChecked);
           _settings.SetValue((TestFileAnalysisSettings s) => s.CheckTestNamespaces, CheckTestNamespaces.IsChecked);
           _settings.SetValue((TestFileAnalysisSettings s) => s.FindOrphanedProjectFiles, CheckSearchForOrphanedCodeFiles.IsChecked);
-          _settings.SetValue((TestFileAnalysisSettings s) => s.SeparatorUsedToBreakUpTestFileNames, CheckUseUnderscoreTestSeparator.IsChecked==true ? '_' : '.');
+          
           _settings.SetValue((TestFileAnalysisSettings s) => s.OutputPanelOpenOnKeyboardMapping, OutputPanelOpenOnKeyboardMapping.IsChecked);
           _settings.SetValue((TestFileAnalysisSettings s) => s.ConfiguredForSingleTestProject, !TestProjectPerCodeProject.IsChecked);
 
@@ -226,7 +227,7 @@ namespace TestCop.Plugin.OptionsPage
           _settings.SetValue((TestFileAnalysisSettings s) => s.CodeFileTemplateName, codeTemplateTextBox.Text);
           _settings.SetValue((TestFileAnalysisSettings s) => s.UnitTestFileTemplateName, unitTestTemplateTextBox.Text);
 
-
+          _settings.SetValue((TestFileAnalysisSettings s) => s.SupportRenameRefactorBeta, SupportRenameRefactor.IsChecked);
           _settings.SetValue((TestFileAnalysisSettings s) => s.OrphanedFilesPatterns, OrphanedFilesPatternsTextBox.Text);
           
           DTEHelper.AssignKeyboardShortcutIfMissing(

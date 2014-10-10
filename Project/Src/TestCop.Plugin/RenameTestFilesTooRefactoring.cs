@@ -20,9 +20,11 @@ namespace TestCop.Plugin
 {
     [FileRenameProvider]
     public class RenameTestFilesTooRefactoring : IFileRenameProvider 
-    {
+    {        
         public IEnumerable<FileRename> GetFileRenames(IDeclaredElement declaredElement, string newName)
-        {      
+        {
+            if (!Settings.SupportRenameRefactorBeta) yield break;
+
             var typeElement = declaredElement as ITypeElement;                                 
 
             var clrDeclaredElement = declaredElement as IClrDeclaredElement;
@@ -51,7 +53,7 @@ namespace TestCop.Plugin
                     {
                         var projectFilesWithMatchingName = new List<IProjectFile>();
                         
-                        var pattern = string.Format(@"{0}\..*{1}", classNameBeingRenamed, testClassSuffix);
+                        var pattern = string.Format(@"{0}\..*{1}", classNameBeingRenamed, testClassSuffix);//e.g. Class1.SecurityTests
                         targetProjects.ForEach(p => p.Project.Accept(new ProjectFileFinder(projectFilesWithMatchingName
                             , new Regex(pattern)
                             , new Regex(classNameBeingRenamed + testClassSuffix))));
@@ -73,6 +75,11 @@ namespace TestCop.Plugin
                     }
                 }                
             }                
-        }             
+        }
+
+        private TestFileAnalysisSettings Settings
+        {
+            get { return TestCopSettingsManager.Instance.Settings; }
+        }
     }
 }

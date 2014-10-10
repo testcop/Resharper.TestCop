@@ -42,9 +42,6 @@ namespace TestCop.Plugin
         [SettingsEntry(@"true", "Should the TestCop output panel be opened on startup")]
         public bool OutputPanelOpenOnKeyboardMapping { get; set; }
 
-        [SettingsEntry('.', "The char separator be used when naming test files to separate class from description e.g. ClassA_SecurityTests")]
-        public char SeparatorUsedToBreakUpTestFileNames { get; set; }
-
         [SettingsEntry(@"^(.*?)\.?Tests$", "Regex to identify tests project by their namespace")]
         public string TestProjectToCodeProjectNameSpaceRegEx { get; set; }
 
@@ -75,6 +72,9 @@ namespace TestCop.Plugin
 
         [SettingsEntry("*.cs|*.aspx|*.jpg", "Pattern for orphaned files")]
         public string OrphanedFilesPatterns { get; set; }
+
+        [SettingsEntry(false, "Rename test files when renaming code file")]
+        public bool SupportRenameRefactorBeta { get; set; }
     }
 
     [ShellComponent]

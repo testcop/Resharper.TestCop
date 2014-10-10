@@ -62,7 +62,7 @@ namespace TestCop.Plugin.Helper
 
         public static string UsingFileNameGetClassName(string baseFileName)
         {
-            char splitChar = TestCopSettingsManager.Instance.Settings.SeparatorUsedToBreakUpTestFileNames;
+            const char splitChar = '.';
             
             if (baseFileName.Contains(splitChar))
             {
