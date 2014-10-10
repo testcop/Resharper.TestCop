@@ -11,6 +11,7 @@ namespace $NAMESPACE$&#xD;
 		[Fact]&#xD;
 		public void Test()&#xD;
 		{&#xD;
+			//TestCop
 			Assert.True(false,"WriteMe");&#xD;
 		}&#xD;
 		$END$&#xD;
@@ -48,6 +49,7 @@ namespace $NAMESPACE$&#xD;
 		[Test]&#xD;
 		public void Test()&#xD;
 		{&#xD;
+			//TestCop		
 			Assert.Fail("WriteMe");&#xD;
 		}&#xD;
 		$END$&#xD;
@@ -87,6 +89,7 @@ namespace $NAMESPACE$&#xD;
 		[TestMethod]&#xD;
 		public void Test()&#xD;
 		{&#xD;
+			//TestCop				
 			Assert.Fail("WriteMe");&#xD;
 		}&#xD;
 		$END$&#xD;
