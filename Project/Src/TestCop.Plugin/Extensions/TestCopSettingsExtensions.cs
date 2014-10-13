@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace TestCop.Plugin.Extensions
 {
-    internal static class TestCopSettingsExtensions
+    public static class TestCopSettingsExtensions
     {
         public static IEnumerable<string> GetAppropriateTestClassSuffixes(this TestFileAnalysisSettings settings,
             string baseFileName)
