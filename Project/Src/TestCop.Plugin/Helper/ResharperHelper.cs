@@ -28,7 +28,7 @@ using TestCop.Plugin.Extensions;
 
 namespace TestCop.Plugin.Helper
 {
-    static class ResharperHelper
+    public static class ResharperHelper
     {
         public const string MacroNameSwitchBetweenFiles = "Resharper_TestCop_JumpToTest";
 
@@ -98,15 +98,26 @@ namespace TestCop.Plugin.Helper
         }
        
         public static IClrTypeName FindFirstTypeInFile(ISolution solution, IDocument document)
-        {           
+        {
+            var firstTypeInFile = FindFirstDeclaredElementInFile(solution, document) as ITypeElement;
+                         
+            if (firstTypeInFile != null)
+            {
+                AppendLineToOutputWindow("Hunted and found first name in file to be " + firstTypeInFile.GetClrName());
+                return firstTypeInFile.GetClrName();
+            }
+            return null;
+        }
+
+        public static IDeclaredElement FindFirstDeclaredElementInFile(ISolution solution, IDocument document)
+        {
             for (int i = document.DocumentRange.StartOffset; i < document.DocumentRange.EndOffset; i++)
             {
-                var firstTypeInFile = TextControlToPsi.GetContainingTypeOrTypeMember(solution, document, i) as ITypeElement;
-                
+                var firstTypeInFile = TextControlToPsi.GetContainingTypeOrTypeMember(solution, document, i);
+
                 if (firstTypeInFile != null)
-                {
-                    AppendLineToOutputWindow("Hunted and found first name in file to be " + firstTypeInFile.GetClrName());
-                    return firstTypeInFile.GetClrName();
+                {                    
+                    return firstTypeInFile;
                 }
             }
             return null;

@@ -57,7 +57,9 @@
   <ItemGroup>
     <Compile Include="Extensions\ListExtensionsTests.cs" />
     <Compile Include="Extensions\StringExtensionsTests.cs" />
+    <Compile Include="Extensions\TestCopSettingsExtensionsTests.cs" />
     <Compile Include="Extensions\TypeElementExtensionsTests.cs" />
+    <Compile Include="RenameTestFilesTooRefactoringTests.cs" />
     <Compile Include="SingleTestProjectToMultipleCodeProject\ClassToTestFileNavigationTests.cs" />
     <Compile Include="SingleTestProjectToMultipleCodeProject\TestToClassFileNavigationTests.cs" />
     <Compile Include="Highlighting\TestFileNameSpaceWarningTests.cs.cs" />
