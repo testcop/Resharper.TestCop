@@ -1,12 +1,16 @@
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.Util;
+using TestCop.Plugin.Extensions;
 
 namespace TestCop.Plugin.Helper.Mapper
 {
-    public class MappingBase
+    public abstract class MappingBase : IProjectMappingHeper
     {
+        public abstract IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string currentNameSpace);
+
         public virtual bool IsTestProject(IProject project)
         {
             string currentProjectNamespace = project.GetDefaultNamespace();

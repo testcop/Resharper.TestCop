@@ -7,17 +7,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Util;
-using JetBrains.Util;
 using TestCop.Plugin.Extensions;
 
 namespace TestCop.Plugin.Helper.Mapper
 {
-    public class TestProjectsMapToSingleCodeProjectHeperViaNamespace : MappingBase, IProjectMappingHeper
+    public class TestProjectsMapToSingleCodeProjectHeperViaNamespace : MappingBase
     {
-        public virtual IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string currentTypeNamespace)
+        public override IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string currentTypeNamespace)
         {
             const string warningMessage = "Not Supported: More than one code project has a default namespace of ";
             string subNameSpace = currentTypeNamespace.RemoveLeading(currentProject.GetDefaultNamespace());
