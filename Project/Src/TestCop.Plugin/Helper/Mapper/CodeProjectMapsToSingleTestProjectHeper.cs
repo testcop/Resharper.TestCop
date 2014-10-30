@@ -11,9 +11,9 @@ using TestCop.Plugin.Extensions;
 
 namespace TestCop.Plugin.Helper.Mapper
 {
-    public class CodeProjectMapsToSingleTestProjectHeper : MappingBase, IProjectMappingHeper
+    public class CodeProjectMapsToSingleTestProjectHeper : MappingBase
     {                
-        public IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string currentTypeNamespace)
+        public override IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string currentTypeNamespace)
         {
             var settings = Settings;
             const string warningMessage = "Not Supported: More than one code project has a default namespace of ";
