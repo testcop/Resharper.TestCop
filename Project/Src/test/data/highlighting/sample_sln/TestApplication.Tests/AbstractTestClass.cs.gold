@@ -4,7 +4,8 @@ using TestCop.TestApplication.NS1;
 namespace TestCop.TestApplication.Tests
 {
     /* USE CASE: 
-     * TestCop does not enforce rules on abstract test classes  
+     * TestCop does not enforce rules on abstract test classes 
+     * so it shouldn't highlight any issues in this file
      */
     [TestClass]
     abstract public class AbstractTestClass
