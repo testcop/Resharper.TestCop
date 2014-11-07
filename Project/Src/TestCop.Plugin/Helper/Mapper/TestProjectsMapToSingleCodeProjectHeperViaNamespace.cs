@@ -22,7 +22,7 @@ namespace TestCop.Plugin.Helper.Mapper
 
             if (currentProject.IsTestProject())
             {
-                var nameSpaceOfAssociateProject = GetNameSpaceOfAssociateProject(currentProject);
+                var nameSpaceOfAssociateProject = GetNameSpaceOfAssociatedCodeProject(currentProject);
 
                 var matchedCodeProjects = currentProject.GetSolution().GetNonTestProjects().Where(
                     p => p.GetDefaultNamespace()  == nameSpaceOfAssociateProject).ToList();
@@ -36,17 +36,17 @@ namespace TestCop.Plugin.Helper.Mapper
             }
 
             var matchedTestProjects = currentProject.GetSolution().GetTestProjects().Where(
-                p => GetNameSpaceOfAssociateProject(p) == currentProject.GetDefaultNamespace()).ToList();
+                p => GetNameSpaceOfAssociatedCodeProject(p) == currentProject.GetDefaultNamespace()).ToList();
 
             return matchedTestProjects.Select(p => new TestCopProjectItem(p, subNameSpace)).ToList();                                        
         }
        
-        private static string GetNameSpaceOfAssociateProject(IProject project)
+        private static string GetNameSpaceOfAssociatedCodeProject(IProject testProject)
         {
             var testNameSpacePattern = Settings.TestProjectToCodeProjectNameSpaceRegEx;
             string replaceText = Settings.TestProjectToCodeProjectNameSpaceRegExReplace;
 
-            string currentProjectNamespace = project.GetDefaultNamespace();
+            string currentProjectNamespace = testProject.GetDefaultNamespace();
             if (string.IsNullOrEmpty(currentProjectNamespace)) return "";
 
             string result;

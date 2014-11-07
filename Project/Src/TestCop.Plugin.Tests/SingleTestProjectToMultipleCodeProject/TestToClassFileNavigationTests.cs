@@ -56,8 +56,8 @@ namespace TestCop.Plugin.Tests.SingleTestProjectToMultipleCodeProject
                 RunGuarded(
                     () =>
                     {
-                        settingsStore.SetValue<TestFileAnalysisSettings, bool>(
-                            s => s.ConfiguredForSingleTestProject, true);
+                        settingsStore.SetValue<TestFileAnalysisSettings, TestProjectStrategy>(
+                            s => s.TestCopStrategy, TestProjectStrategy.SingleTestProjectPerSolution );
 
                         settingsStore.SetValue<TestFileAnalysisSettings, string>(
                             s => s.SingleTestRegexTestToAssembly, @"^(.*?)\.?Tests(\..*?)(\..*)*$");
