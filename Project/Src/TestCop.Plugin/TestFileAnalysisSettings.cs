@@ -4,14 +4,19 @@
 // -- Copyright 2013
 // --
 
-using System.Collections.Generic;
-using System.Linq;
 using JetBrains.Application;
 using JetBrains.Application.Settings;
 using JetBrains.ReSharper.Settings;
 
 namespace TestCop.Plugin
-{    
+{
+    public enum TestProjectStrategy
+    {
+        TestProjectPerCodeProject=1,
+        SingleTestProjectPerSolution=2,
+        TestProjectHasSameNamespaceAsCodeProject=3
+    }
+
     [SettingsKey(typeof (CodeInspectionSettings), "Testing Attributes")]
     public class TestFileAnalysisSettings
     {        
@@ -47,10 +52,9 @@ namespace TestCop.Plugin
 
         [SettingsEntry(@"", "RegEx replacement text")]
         public string TestProjectToCodeProjectNameSpaceRegExReplace { get; set; }
-
-
-        [SettingsEntry(@"false", "Should the TestCop be configured for a single test project per solution")]
-        public bool ConfiguredForSingleTestProject { get; set; }
+  
+        [SettingsEntry(@TestProjectStrategy.TestProjectPerCodeProject, "Which strategy should testcop use for mapping tests to code")]
+        public TestProjectStrategy TestCopStrategy { get; set; }
         
         [SettingsEntry(@"^(.*?)\.?Tests(\..*?)(\..*)*$", "Regex for test namespace within single test assembly solutions")]
         public string SingleTestRegexTestToAssembly { get; set; }

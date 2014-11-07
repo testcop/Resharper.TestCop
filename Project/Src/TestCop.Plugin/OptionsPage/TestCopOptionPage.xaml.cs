@@ -96,7 +96,8 @@ namespace TestCop.Plugin.OptionsPage
           SupportRenameRefactor.IsChecked = testFileAnalysisSettings.SupportRenameRefactorBeta;
           
           OutputPanelOpenOnKeyboardMapping.IsChecked = testFileAnalysisSettings.OutputPanelOpenOnKeyboardMapping;
-          TestProjectPerCodeProject.IsChecked = !testFileAnalysisSettings.ConfiguredForSingleTestProject;
+          TestProjectPerCodeProject.IsChecked = 
+              testFileAnalysisSettings.TestCopStrategy==TestProjectStrategy.TestProjectPerCodeProject;
 
           TestCopLogoImage.Source =
           (ImageSource) new BitmapToImageSourceConverter().Convert(
@@ -203,7 +204,7 @@ namespace TestCop.Plugin.OptionsPage
           _settings.SetValue((TestFileAnalysisSettings s) => s.FindOrphanedProjectFiles, CheckSearchForOrphanedCodeFiles.IsChecked);
           
           _settings.SetValue((TestFileAnalysisSettings s) => s.OutputPanelOpenOnKeyboardMapping, OutputPanelOpenOnKeyboardMapping.IsChecked);
-          _settings.SetValue((TestFileAnalysisSettings s) => s.ConfiguredForSingleTestProject, !TestProjectPerCodeProject.IsChecked);
+          _settings.SetValue((TestFileAnalysisSettings s) => s.TestCopStrategy, TestProjectPerCodeProject.IsChecked==true ? TestProjectStrategy.TestProjectPerCodeProject : TestProjectStrategy.SingleTestProjectPerSolution);
 
           //Regex Config for Multi Test Assemply Logic
           _settings.SetValue((TestFileAnalysisSettings s) => s.TestClassSuffix,

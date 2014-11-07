@@ -12,10 +12,16 @@ namespace TestCop.Plugin.Helper.Mapper
         {
             var settings = TestCopSettingsManager.Instance.Settings;
 
-            if (settings.ConfiguredForSingleTestProject)
-                return new CodeProjectMapsToSingleTestProjectHeper();
-
-            return new TestProjectsMapToSingleCodeProjectHeperViaNamespace();
+            switch (settings.TestCopStrategy)
+            {
+                case TestProjectStrategy.SingleTestProjectPerSolution:
+                    return new CodeProjectMapsToSingleTestProjectHeper();
+                case TestProjectStrategy.TestProjectHasSameNamespaceAsCodeProject:
+                    return new AllProjectsHaveSameNamespaceProjectHelper();
+                
+                default:
+                    return new TestProjectsMapToSingleCodeProjectHeperViaNamespace();
+            }          
         } 
     }
 }

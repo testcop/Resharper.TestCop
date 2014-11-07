@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\TestCopSettingsExtensions.cs" />
+    <Compile Include="Helper\Mapper\AllProjectsHaveSameNamespaceProjectHelper.cs" />
     <Compile Include="Helper\Mapper\MappingBase.cs" />
     <Compile Include="Highlighting\FilesNotPartOfProjectWarning.cs" />
     <Compile Include="ProjectAnalysisElementProcessor.cs" />
