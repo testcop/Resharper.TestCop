@@ -27,7 +27,9 @@ namespace TestCop.Plugin.Helper.Mapper
         public override IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string currentTypeNamespace)
         {
             const string warningMessage = "Not Supported: More than one  project has a name of ";
-           
+
+            string subNameSpace = currentTypeNamespace.RemoveLeading(currentProject.GetDefaultNamespace());
+
             if (currentProject.IsTestProject())
             {
                 var nameOfAssociateProject = GetNameOfAssociateCodeProject(currentProject);
@@ -45,14 +47,17 @@ namespace TestCop.Plugin.Helper.Mapper
                     ResharperHelper.AppendLineToOutputWindow(warningMessage + nameOfAssociateProject);
                 }
 
-                return matchedCodeProjects.Select(p => new TestCopProjectItem(p, "")).ToList();
+                return matchedCodeProjects.Select(p => new TestCopProjectItem(p, subNameSpace)).ToList();
             }
 
             var matchedTestProjects = currentProject.GetSolution().GetTestProjects().Where(
-                p => GetNameOfAssociateCodeProject(p) == currentProject.Name
-                    && p.GetDefaultNamespace() == currentProject.GetDefaultNamespace()).ToList();
+                p => GetNameOfAssociateCodeProject(p) == currentProject.Name).ToList();
 
-            return matchedTestProjects.Select(p => new TestCopProjectItem(p, "")).ToList();                                        
+            var badTestProjects=matchedTestProjects.Where(p => p.GetDefaultNamespace() != currentProject.GetDefaultNamespace()).ToList();
+            matchedTestProjects.RemoveAll(badTestProjects.Contains);
+            badTestProjects.ForEach(p => ResharperHelper.AppendLineToOutputWindow("Project {0} should have namespace of {1}".FormatEx(p.Name, currentProject.GetDefaultNamespace())));
+            
+            return matchedTestProjects.Select(p => new TestCopProjectItem(p, subNameSpace)).ToList();                                        
         }
 
         private static string GetNameOfAssociateCodeProject(IProject testProject)

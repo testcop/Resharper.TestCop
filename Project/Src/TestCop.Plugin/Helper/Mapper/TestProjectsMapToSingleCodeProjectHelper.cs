@@ -13,7 +13,7 @@ using TestCop.Plugin.Extensions;
 
 namespace TestCop.Plugin.Helper.Mapper
 {
-    public class TestProjectsMapToSingleCodeProjectHeperViaNamespace : MappingBase
+    public class TestProjectsMapToSingleCodeProjectHelper : MappingBase
     {
         public override IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string currentTypeNamespace)
         {
