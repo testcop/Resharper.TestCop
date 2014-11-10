@@ -73,7 +73,7 @@
     <Compile Include="Helper\Mapper\CodeProjectMapsToSingleTestProjectHeper.cs" />
     <Compile Include="Helper\Mapper\IProjectMappingHeper.cs" />
     <Compile Include="Helper\Mapper\ProjectMappingHelper.cs" />
-    <Compile Include="Helper\Mapper\TestProjectsMapToSingleCodeProjectHeperViaNamespace.cs" />
+    <Compile Include="Helper\Mapper\TestProjectsMapToSingleCodeProjectHelper.cs" />
     <Compile Include="Helper\ProjectFileFinder.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />

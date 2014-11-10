@@ -11,7 +11,7 @@ namespace TestCop.Plugin.Helper.Mapper
         public static IProjectMappingHeper GetProjectMappingHeper()
         {
             var settings = TestCopSettingsManager.Instance.Settings;
-
+            
             switch (settings.TestCopStrategy)
             {
                 case TestProjectStrategy.SingleTestProjectPerSolution:
@@ -20,7 +20,7 @@ namespace TestCop.Plugin.Helper.Mapper
                     return new AllProjectsHaveSameNamespaceProjectHelper();
                 
                 default:
-                    return new TestProjectsMapToSingleCodeProjectHeperViaNamespace();
+                    return new TestProjectsMapToSingleCodeProjectHelper();
             }          
         } 
     }
