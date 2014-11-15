@@ -13,7 +13,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using System.Windows.Media;
+using JetBrains;
 using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
 using JetBrains.ProjectModel;
@@ -64,12 +66,16 @@ namespace TestCop.Plugin.OptionsPage
           _storedTemplatesProvider = storedTemplatesProvider;
 
           InitializeComponent();
-         
           var testFileAnalysisSettings = settings.GetKey<TestFileAnalysisSettings>(SettingsOptimization.DoMeSlowly);
-
+          
           InitializeComponent();
+          BuildTestStrategyCombo(testFileAnalysisSettings);
 
-          //Regex Config for Multiple Test Assemply Logic
+          //Regex Config for Multiple Test Assemply Logic via project naming
+          BindWithValidationMustBeARegex(testFileAnalysisSettings, testProjectNameRegExTextBox, P(x => x.TestProjectNameToCodeProjectNameRegEx));
+          BindWithRegexMatchesValidation(testFileAnalysisSettings, testProjectNameRegExReplaceTextBox, P(x => x.TestProjectNameToCodeProjectNameRegExReplace), "^[\\$\\.a-zA-Z1-9]*$");
+
+          //Regex Config for Multiple Test Assemply Logic via namespace naming
           BindWithValidationMustBeARegex(testFileAnalysisSettings, testNamespaceRegExTextBox, P(x=>x.TestProjectToCodeProjectNameSpaceRegEx));
           BindWithRegexMatchesValidation(testFileAnalysisSettings, testClassSuffixTextBox, P(x=>x.TestClassSuffix), "^[_a-zA-Z,]*$");
           BindWithRegexMatchesValidation(testFileAnalysisSettings, testNamespaceRegExReplaceTextBox, P(x=>x.TestProjectToCodeProjectNameSpaceRegExReplace), "^[\\$\\.a-zA-Z1-9]*$");
@@ -96,14 +102,30 @@ namespace TestCop.Plugin.OptionsPage
           SupportRenameRefactor.IsChecked = testFileAnalysisSettings.SupportRenameRefactorBeta;
           
           OutputPanelOpenOnKeyboardMapping.IsChecked = testFileAnalysisSettings.OutputPanelOpenOnKeyboardMapping;
-          TestProjectPerCodeProject.IsChecked = 
-              testFileAnalysisSettings.TestCopStrategy==TestProjectStrategy.TestProjectPerCodeProject;
 
           TestCopLogoImage.Source =
           (ImageSource) new BitmapToImageSourceConverter().Convert(
-              iconManager.Icons[UnnamedThemedIcons.Agent64x64.Id].CurrentGdipBitmap96, null, null, null);
+              iconManager.Icons[UnnamedThemedIcons.Agent64x64.Id].CurrentGdipBitmap96, null, null, null);          
+      }
 
-          HideShowTabs();
+      private void BuildTestStrategyCombo(TestFileAnalysisSettings testFileAnalysisSettings)
+      {
+          MultiTestRegex.Tag = MultiTestRegexHelp.Tag = TestProjectStrategy.TestProjectPerCodeProject;
+          SingleTestRegex.Tag = SingleTestRegexHelp.Tag = TestProjectStrategy.SingleTestProjectPerSolution;
+          MultiTestSameNamespaceRegex.Tag = TestProjectStrategy.TestProjectHasSameNamespaceAsCodeProject;
+
+          TestCopStrategyCombo.Items.Clear();
+
+          foreach (var value in Enum.GetValues(typeof (TestProjectStrategy)).Cast<TestProjectStrategy>())
+          {
+              var item = new ListBoxItem() {Content = value.GetDescription(), Tag = value};
+              TestCopStrategyCombo.Items.Add(item);
+
+              if (value == testFileAnalysisSettings.TestCopProjectStrategy)
+              {
+                  TestCopStrategyCombo.SelectedItem = item;
+              }
+          }
       }
 
       private void BindWithValidationMustBeAFileTemplate(TestFileAnalysisSettings testFileAnalysisSettings, TextBox tb, string property)
@@ -120,7 +142,7 @@ namespace TestCop.Plugin.OptionsPage
           tb.SetBinding(TextBox.TextProperty, binding);
       }
 
-      private string P<T>(Expression<Func<TestFileAnalysisSettings, T>> expression)
+      private static string P<T>(Expression<Func<TestFileAnalysisSettings, T>> expression)
       {
           var member = expression.Body as MemberExpression;
 
@@ -130,7 +152,7 @@ namespace TestCop.Plugin.OptionsPage
           throw new ArgumentException("Expression is not a member access", "expression");
       }
 
-      private void BindWithRegexMatchesValidation(TestFileAnalysisSettings testFileAnalysisSettings,TextBox tb, string property, string regexString)
+      private static void BindWithRegexMatchesValidation(TestFileAnalysisSettings testFileAnalysisSettings, TextBox tb, string property, string regexString)
       {         
           var binding = new Binding { Path = new PropertyPath(property) };
           var namespaceRule = new RegexValidationRule
@@ -152,7 +174,7 @@ namespace TestCop.Plugin.OptionsPage
           tb.SetBinding(TextBox.TextProperty, binding);          
       }
 
-      private void BindWithValidationMustBeARegex(TestFileAnalysisSettings testFileAnalysisSettings, TextBox tb, string property)
+      private static void BindWithValidationMustBeARegex(TestFileAnalysisSettings testFileAnalysisSettings, TextBox tb, string property)
       {
           var binding = new Binding { Path = new PropertyPath(property)};
           var namespaceRule = new IsARegexValidationRule
@@ -204,9 +226,17 @@ namespace TestCop.Plugin.OptionsPage
           _settings.SetValue((TestFileAnalysisSettings s) => s.FindOrphanedProjectFiles, CheckSearchForOrphanedCodeFiles.IsChecked);
           
           _settings.SetValue((TestFileAnalysisSettings s) => s.OutputPanelOpenOnKeyboardMapping, OutputPanelOpenOnKeyboardMapping.IsChecked);
-          _settings.SetValue((TestFileAnalysisSettings s) => s.TestCopStrategy, TestProjectPerCodeProject.IsChecked==true ? TestProjectStrategy.TestProjectPerCodeProject : TestProjectStrategy.SingleTestProjectPerSolution);
 
-          //Regex Config for Multi Test Assemply Logic
+          var selectedItem = TestCopStrategyCombo.SelectedItem as ListBoxItem ?? new ListBoxItem() { Tag = TestProjectStrategy.TestProjectPerCodeProject };
+          _settings.SetValue((TestFileAnalysisSettings s) => s.TestCopProjectStrategy, selectedItem.Tag);
+
+          
+          //RegEx Config for Multi Test via project naming
+          _settings.SetValue((TestFileAnalysisSettings s) => s.TestProjectNameToCodeProjectNameRegEx,
+                testProjectNameRegExTextBox.Text.Replace(" ", "")); 
+          _settings.SetValue((TestFileAnalysisSettings s) => s.TestProjectNameToCodeProjectNameRegExReplace,
+                testProjectNameRegExReplaceTextBox.Text.Replace(" ", ""));                    
+          //Regex Config for Multi Test Assemply Logic via project namespace
           _settings.SetValue((TestFileAnalysisSettings s) => s.TestClassSuffix,
                              testClassSuffixTextBox.Text.Replace(" ", ""));
           _settings.SetValue((TestFileAnalysisSettings s) => s.TestProjectToCodeProjectNameSpaceRegEx,
@@ -291,16 +321,53 @@ namespace TestCop.Plugin.OptionsPage
           }
       }
 
+      private void ProjectNameRegexTextChanged(object sender, TextChangedEventArgs e)
+      {
+          var outcomeTexBox = regExProjectOutcome;
+
+          Regex regEx;
+
+          tbSuffixGuidance.Text = string.Format("The configuration below define that all UnitTest Classes " +
+                                              "must end in {0} (e.g. {1} ) and the project name of all " +
+                                              "test assemblies must match the RegEx '{2}'. Use brackets to extract the associated code project name. "+
+                                              "The namespace of the project and associated test project must be the same. "
+                                      , testClassSuffixTextBox.Text.Replace(",", " or "), GetSampleClassNames()
+                                      , testProjectNameRegExTextBox.Text);
+          try
+          {
+              outcomeTexBox.Text = "";
+              regEx = new Regex(testProjectNameRegExTextBox.Text);
+          }
+          catch (Exception) { return; }
+
+          if (regEx.GetGroupNames().Count() < 2)
+          {
+              outcomeTexBox.Text = "RegEx must contain at least one regex group ().";
+              return;
+          }
+
+          if (_solution != null)
+          {
+              ResharperHelper.ProtectActionFromReEntry(_lifetime, "TestcopOptionsPage", () =>
+              {
+                  var testProjects = _solution.GetAllCodeProjects().Select(p => p).Where(p => regEx.IsMatch(p.Name ?? "")).ToList();
+                  outcomeTexBox.Text = testProjects.Any() ? "" : "Warning: the regex does not match the name of any loaded projects.";
+
+              }).Invoke();
+          }  
+      }
+
       private void MultiTestClassAndNamespaceTextChanged(object sender, TextChangedEventArgs e)
       {          
           var outcomeTexBox = regExOutcome;
           
             Regex regEx;
-          
+            
             tbSuffixGuidance.Text=string.Format("The test class and test namespace configuration below define that all UnitTest Classes " +
-                                                "must end in '{0}' (e.g. ClassA{0}, ClassA.Security{0}, ClassB{0} ) and the namespace of all " +
-                                                "test assemblies must match the RegEx '{1}'. Use brackets to extract the associated code project namespace."
-                                        ,testClassSuffixTextBox.Text,testNamespaceRegExTextBox.Text);
+                                                "must end in {0} (e.g. {1} ) and the namespace of all " +
+                                                "test assemblies must match the RegEx '{2}'. Use brackets to extract the associated code project namespace."
+                                        ,testClassSuffixTextBox.Text.Replace(","," or "), GetSampleClassNames()
+                                        ,testNamespaceRegExTextBox.Text);
             try
             {
                 outcomeTexBox.Text = "";                
@@ -323,6 +390,14 @@ namespace TestCop.Plugin.OptionsPage
 
                 }).Invoke();
             }        
+      }
+
+      private string GetSampleClassNames()
+      {
+          string sampleFileNames = "";
+          testClassSuffixTextBox.Text.Split(',').ForEach(s =>
+              sampleFileNames=sampleFileNames.AppendIfNotNull(" ,", "ClassA{0}, ClassA.Security{0}".FormatEx(s)));
+          return sampleFileNames;
       }
 
       private void SingleTestClassAndNamespaceTextChanged(object sender, TextChangedEventArgs e)
@@ -423,32 +498,7 @@ namespace TestCop.Plugin.OptionsPage
               ((TextBox) sender).Text = template.Description;
           }          
       }
-
-      private void TestProjectPerCodeProject_Checked(object sender, RoutedEventArgs e)
-      {
-          HideShowTabs();
-      }
-
-      private void HideShowTabs()
-      {
-          MultiTestRegex.Visibility = TestProjectPerCodeProject.IsChecked == true 
-              ? Visibility.Visible 
-              : Visibility.Collapsed;
-
-          MultiTestRegexHelp.Visibility = MultiTestRegex.Visibility;
-
-          SingleTestRegex.Visibility = TestProjectPerCodeProject.IsChecked == false
-              ? Visibility.Visible
-              : Visibility.Collapsed;
-
-          SingleTestRegexHelp.Visibility = SingleTestRegex.Visibility;
-      }
-
-      private void TestProjectPerCodeProject_Unchecked(object sender, RoutedEventArgs e)
-      {
-          HideShowTabs();
-      }
-
+      
       private void ResetButton_OnClick(object sender, RoutedEventArgs e)
       {
           SingleTestNamespaceRegExTextBox.Text=
@@ -462,5 +512,47 @@ namespace TestCop.Plugin.OptionsPage
           SingleTestCodeNamespaceToTestRegExReplaceTextBox.Text =
             SettingsEntryAttribute.ReflectionHelpers.GetDefaultValueFromRuntimeType<TestFileAnalysisSettings, string>(l => l.SingleTestRegexCodeToTestReplace, Logger.Interface);
       }
+
+      private void TestCopStrategyCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+      {
+          var selectedItem = TestCopStrategyCombo.SelectedItem as ListBoxItem ?? new ListBoxItem(){Tag = TestProjectStrategy.TestProjectPerCodeProject};
+
+          foreach (var item in tabControl.Items.Cast<TabItem>().Where(i=>i.Tag!=null).Where(i=>(int)i.Tag>0))
+          {
+              item.Visibility = ((int)item.Tag) == ((int)selectedItem.Tag)? Visibility.Visible: Visibility.Collapsed;
+          }
+
+          switch ((TestProjectStrategy)selectedItem.Tag)
+          {
+              case TestProjectStrategy.SingleTestProjectPerSolution:
+                  tbStrategyOverview.Text 
+                    = "Each Visual Studio solution has only one test project for all code projects within it. "+
+                    "You will need to define regular expressions (RegEx) to desribe how the namespace of your code namespace " +
+                    "maps to the namespace of the test within the single test project.";
+                  break;
+
+              case TestProjectStrategy.TestProjectHasSameNamespaceAsCodeProject:
+                  tbStrategyOverview.Text
+                    = "Each test project maps to a single code project through its project name." +
+                    "To use this option the namespace of the code and test assembly must be the same. " +
+                    "You will need to define regular expressions (RegEx) to desribe how the project name of each Test project " +
+                    "maps to the name of the code project.  For example : DalTests => Dal";
+                  break;
+
+              case TestProjectStrategy.TestProjectPerCodeProject:
+                  tbStrategyOverview.Text
+                    = "Each test project maps to a single code project through its namespace." +
+                    "You will need to define regular expressions (RegEx) to desribe how the namespace of each Test namespace " +
+                    "maps to the namespace of the code project. For example : mycorp.myapp.tests.dal => mycorp.myapp.dal";
+                  break;
+
+              default:
+                  tbStrategyOverview.Text = ".";
+                  break;
+          }
+          
+      }
+
+    
   }
 }

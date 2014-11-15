@@ -56,7 +56,9 @@ namespace TestCop.Plugin.Extensions
 
         public static string AppendIfNotNull(this String refString, string separator, string value)        
         {            
-            return string.IsNullOrEmpty(value) ? refString : refString+separator+value;
+            return string.IsNullOrEmpty(value) 
+                ? refString
+                : refString + (refString.Length>0 ? separator :"") + value;
         }
     
         public static string AppendIfMissing(this String refString, string value)

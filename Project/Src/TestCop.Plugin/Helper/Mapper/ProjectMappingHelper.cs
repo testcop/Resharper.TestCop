@@ -12,7 +12,7 @@ namespace TestCop.Plugin.Helper.Mapper
         {
             var settings = TestCopSettingsManager.Instance.Settings;
             
-            switch (settings.TestCopStrategy)
+            switch (settings.TestCopProjectStrategy)
             {
                 case TestProjectStrategy.SingleTestProjectPerSolution:
                     return new CodeProjectMapsToSingleTestProjectHeper();
