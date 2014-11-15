@@ -71,13 +71,15 @@ namespace TestCop.Plugin.OptionsPage
           InitializeComponent();
           BuildTestStrategyCombo(testFileAnalysisSettings);
 
+          //Do this first as it is reference by other display fields
+          BindWithRegexMatchesValidation(testFileAnalysisSettings, testClassSuffixTextBox, P(x => x.TestClassSuffix), "^[_a-zA-Z,]*$");
+
           //Regex Config for Multiple Test Assemply Logic via project naming
           BindWithValidationMustBeARegex(testFileAnalysisSettings, testProjectNameRegExTextBox, P(x => x.TestProjectNameToCodeProjectNameRegEx));
           BindWithRegexMatchesValidation(testFileAnalysisSettings, testProjectNameRegExReplaceTextBox, P(x => x.TestProjectNameToCodeProjectNameRegExReplace), "^[\\$\\.a-zA-Z1-9]*$");
-
+          
           //Regex Config for Multiple Test Assemply Logic via namespace naming
-          BindWithValidationMustBeARegex(testFileAnalysisSettings, testNamespaceRegExTextBox, P(x=>x.TestProjectToCodeProjectNameSpaceRegEx));
-          BindWithRegexMatchesValidation(testFileAnalysisSettings, testClassSuffixTextBox, P(x=>x.TestClassSuffix), "^[_a-zA-Z,]*$");
+          BindWithValidationMustBeARegex(testFileAnalysisSettings, testNamespaceRegExTextBox, P(x=>x.TestProjectToCodeProjectNameSpaceRegEx));          
           BindWithRegexMatchesValidation(testFileAnalysisSettings, testNamespaceRegExReplaceTextBox, P(x=>x.TestProjectToCodeProjectNameSpaceRegExReplace), "^[\\$\\.a-zA-Z1-9]*$");
           //
           //Regex Config for Single Test Assemply Logic
@@ -106,6 +108,8 @@ namespace TestCop.Plugin.OptionsPage
           TestCopLogoImage.Source =
           (ImageSource) new BitmapToImageSourceConverter().Convert(
               iconManager.Icons[UnnamedThemedIcons.Agent64x64.Id].CurrentGdipBitmap96, null, null, null);          
+
+
       }
 
       private void BuildTestStrategyCombo(TestFileAnalysisSettings testFileAnalysisSettings)
@@ -113,7 +117,7 @@ namespace TestCop.Plugin.OptionsPage
           MultiTestRegex.Tag = MultiTestRegexHelp.Tag = TestProjectStrategy.TestProjectPerCodeProject;
           SingleTestRegex.Tag = SingleTestRegexHelp.Tag = TestProjectStrategy.SingleTestProjectPerSolution;
           MultiTestSameNamespaceRegex.Tag = TestProjectStrategy.TestProjectHasSameNamespaceAsCodeProject;
-
+          
           TestCopStrategyCombo.Items.Clear();
 
           foreach (var value in Enum.GetValues(typeof (TestProjectStrategy)).Cast<TestProjectStrategy>())
@@ -327,7 +331,7 @@ namespace TestCop.Plugin.OptionsPage
 
           Regex regEx;
 
-          tbSuffixGuidance.Text = string.Format("The configuration below define that all UnitTest Classes " +
+          tbProjectSuffixGuidance.Text = string.Format("The configuration below define that all UnitTest Classes " +
                                               "must end in {0} (e.g. {1} ) and the project name of all " +
                                               "test assemblies must match the RegEx '{2}'. Use brackets to extract the associated code project name. "+
                                               "The namespace of the project and associated test project must be the same. "
@@ -351,7 +355,7 @@ namespace TestCop.Plugin.OptionsPage
               ResharperHelper.ProtectActionFromReEntry(_lifetime, "TestcopOptionsPage", () =>
               {
                   var testProjects = _solution.GetAllCodeProjects().Select(p => p).Where(p => regEx.IsMatch(p.Name ?? "")).ToList();
-                  outcomeTexBox.Text = testProjects.Any() ? "" : "Warning: the regex does not match the name of any loaded projects.";
+                  outcomeTexBox.Text = testProjects.Any() ? "" : "Warning: the regex does not match the NAME of any loaded projects.";
 
               }).Invoke();
           }  
@@ -386,7 +390,7 @@ namespace TestCop.Plugin.OptionsPage
                 ResharperHelper.ProtectActionFromReEntry(_lifetime, "TestcopOptionsPage", () =>
                 { 
                     var testProjects = _solution.GetAllCodeProjects().Select(p=>p).Where(p=>regEx.IsMatch(p.GetDefaultNamespace()??"")).ToList();
-                    outcomeTexBox.Text = testProjects.Any() ? "" : "Warning: the regex does not match the namespace of any loaded projects.";
+                    outcomeTexBox.Text = testProjects.Any() ? "" : "Warning: the regex does not match the NAMESPACE of any loaded projects.";
 
                 }).Invoke();
             }        
