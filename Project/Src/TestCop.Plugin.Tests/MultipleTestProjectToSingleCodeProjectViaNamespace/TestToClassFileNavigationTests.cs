@@ -1,4 +1,4 @@
-// --
+﻿// --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
 // -- Copyright 2014
@@ -10,10 +10,10 @@ using JetBrains.Application.Settings;
 using JetBrains.ReSharper.Daemon;
 using NUnit.Framework;
 
-namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProject
-{    
+namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProjectViaNamespace
+{
     [TestFixture]
-    public class ClassToTestFileNavigationTests : CSharpHighlightingWithinSolutionTestBase
+    public class TestToClassFileNavigationTests : CSharpHighlightingWithinSolutionTestBase
     {
         protected override bool HighlightingPredicate(IHighlighting highlighting, IContextBoundSettingsStore settingsstore)
         {
@@ -22,7 +22,7 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProject
 
         protected override string RelativeTestDataPath
         {
-            get { return @"MultipleTestProjectToSingleCodeProject\ClassToTestNavigation"; }
+            get { return @"MultipleTestProjectToSingleCodeProject\TestToClassNavigation"; }
         }
 
         protected override IActionHandler GetShortcutAction(TextWriter textwriter)
@@ -36,10 +36,8 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProject
         }
 
         [Test]
-        [TestCase(@"<TestApplication>\NG1\ClassWithUnitOnly.cs")]
-        [TestCase(@"<TestApplication>\NG1\ClassWithIntegrationOnly.cs")]
-        [TestCase(@"<TestApplication>\NG1\ClassWithBoth.cs")]
-        [TestCase(@"<TestApplication>\Properties\AssemblyInfo.cs")]     
+        [TestCase(@"<TestApplication2Tests>\NS2\ClassGTests.cs")]
+        [TestCase(@"<TestApplication2Tests>\Properties\AssemblyInfo.cs")]
         public void Test(string testName)
         {
             const string altRegEx = "^(.*?)\\.?(Integration)*Tests$";
@@ -51,16 +49,12 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProject
                     {
                         settingsStore.SetValue<TestFileAnalysisSettings, bool>(
                             s => s.FindOrphanedProjectFiles, true);
-
-                        settingsStore.SetValue<TestFileAnalysisSettings, string>(
-                            s => s.TestClassSuffix, "Tests,IntegrationTests");
-
                         settingsStore.SetValue<TestFileAnalysisSettings, string>(
                             s => s.TestProjectToCodeProjectNameSpaceRegEx, altRegEx);
                         settingsStore.SetValue<TestFileAnalysisSettings, string>(
                             s => s.TestProjectToCodeProjectNameSpaceRegExReplace, "$1");
                     }
-                    
+
                     );
                 DoTestFiles(testName);
             }));

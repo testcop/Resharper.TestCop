@@ -1,4 +1,4 @@
-﻿// --
+// --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
 // -- Copyright 2014
@@ -9,12 +9,11 @@ using JetBrains.ActionManagement;
 using JetBrains.Application.Settings;
 using JetBrains.ReSharper.Daemon;
 using NUnit.Framework;
-using TestCop.Plugin.Highlighting;
 
-namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProject
-{
+namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProjectViaProjectName
+{    
     [TestFixture]
-    public class TestToClassFileNavigationTests : CSharpHighlightingWithinSolutionTestBase
+    public class ClassToTestFileNavigationTests : CSharpHighlightingWithinSolutionTestBase
     {
         protected override bool HighlightingPredicate(IHighlighting highlighting, IContextBoundSettingsStore settingsstore)
         {
@@ -23,7 +22,7 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProject
 
         protected override string RelativeTestDataPath
         {
-            get { return @"MultipleTestProjectToSingleCodeProject\TestToClassNavigation"; }
+            get { return @"MultipleTestProjectToSingleCodeProjectViaName\ClassToTestNavigation"; }
         }
 
         protected override IActionHandler GetShortcutAction(TextWriter textwriter)
@@ -33,12 +32,14 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProject
         }
         protected override string SolutionName
         {
-            get { return @"TestApplication.sln"; }
+            get { return @"MyCorp.TestApplication4.sln"; }
         }
 
         [Test]
-        [TestCase(@"<TestApplication2Tests>\NS2\ClassGTests.cs")]
-        [TestCase(@"<TestApplication2Tests>\Properties\AssemblyInfo.cs")]
+        [TestCase(@"<API>\ClassA.cs")]
+        [TestCase(@"<API>\NS1\APIClassBWithNoTest.cs")]
+        [TestCase(@"<API>\NS1\ClassA.cs")]
+        [TestCase(@"<API>\Properties\AssemblyInfo.cs")]     
         public void Test(string testName)
         {
             const string altRegEx = "^(.*?)\\.?(Integration)*Tests$";
@@ -48,14 +49,19 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProject
                 RunGuarded(
                     () =>
                     {
+                        settingsStore.SetValue<TestFileAnalysisSettings, TestProjectStrategy>(
+                            s => s.TestCopProjectStrategy, TestProjectStrategy.TestProjectHasSameNamespaceAsCodeProject);
                         settingsStore.SetValue<TestFileAnalysisSettings, bool>(
                             s => s.FindOrphanedProjectFiles, true);
                         settingsStore.SetValue<TestFileAnalysisSettings, string>(
+                            s => s.TestClassSuffix, "Tests,IntegrationTests");
+
+                        settingsStore.SetValue<TestFileAnalysisSettings, string>(
                             s => s.TestProjectToCodeProjectNameSpaceRegEx, altRegEx);
                         settingsStore.SetValue<TestFileAnalysisSettings, string>(
-                            s => s.TestProjectToCodeProjectNameSpaceRegExReplace, "$1");
+                            s => s.TestProjectToCodeProjectNameSpaceRegExReplace, "");
                     }
-
+                    
                     );
                 DoTestFiles(testName);
             }));

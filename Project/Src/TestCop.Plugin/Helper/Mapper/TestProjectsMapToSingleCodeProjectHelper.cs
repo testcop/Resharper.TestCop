@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Util;
 using TestCop.Plugin.Extensions;
@@ -52,8 +53,8 @@ namespace TestCop.Plugin.Helper.Mapper
             string result;
             if (RegexReplace(testNameSpacePattern, replaceText, currentProjectNamespace, out result)) return result;
 
-            ResharperHelper.AppendLineToOutputWindow("ERROR: Regex pattern matching failed to extract group");
-            throw new ApplicationException("Unexpected internal error.");
+            ResharperHelper.AppendLineToOutputWindow("ERROR: Regex pattern matching failed to extract group - check your regex replace string of " + replaceText);
+            throw new ApplicationException("Unexpected internal error -regex error in testcop - {0} - {1}".FormatEx(testNameSpacePattern, replaceText));
         }      
     }
 }
