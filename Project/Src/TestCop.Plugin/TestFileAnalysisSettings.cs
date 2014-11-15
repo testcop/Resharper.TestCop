@@ -54,7 +54,7 @@ namespace TestCop.Plugin
         [SettingsEntry(@"^(.*?)\.?Tests$", "Regex to identify tests project by their name")]
         public string TestProjectNameToCodeProjectNameRegEx { get; set; }
 
-        [SettingsEntry(@"$1", "RegEx replacement text")]
+        [SettingsEntry(@"", "RegEx replacement text")]
         public string TestProjectNameToCodeProjectNameRegExReplace { get; set; }
         //**
         [SettingsEntry(@"^(.*?)\.?Tests$", "Regex to identify tests project by their namespace")]

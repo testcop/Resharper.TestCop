@@ -71,8 +71,8 @@ namespace TestCop.Plugin.Helper.Mapper
             string result;
             if (RegexReplace(testNamePattern, replaceText, currentProjectName, out result)) return result;
 
-            ResharperHelper.AppendLineToOutputWindow("ERROR: Regex pattern matching failed to extract group");
-            throw new ApplicationException("Unexpected internal error.");
+            ResharperHelper.AppendLineToOutputWindow("ERROR: Regex pattern matching failed to extract group - check your regex replace string of " + replaceText);
+            throw new ApplicationException("Unexpected internal error -regex error in testcop - {0} - {1}".FormatEx(testNamePattern, replaceText));
         }      
     }
 }

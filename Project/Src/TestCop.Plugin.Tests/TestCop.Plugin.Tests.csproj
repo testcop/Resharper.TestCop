@@ -55,6 +55,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MultipleTestProjectToSingleCodeProjectViaProjectName\ClassToTestFileNavigationTests.cs" />
+    <Compile Include="MultipleTestProjectToSingleCodeProjectViaProjectName\TestToClassFileNavigationTests.cs" />
     <Compile Include="Extensions\ListExtensionsTests.cs" />
     <Compile Include="Extensions\StringExtensionsTests.cs" />
     <Compile Include="Extensions\TestCopSettingsExtensionsTests.cs" />
@@ -66,8 +68,8 @@
     <Compile Include="Highlighting\TestFileNameWarningTests.cs.cs" />
     <Compile Include="Highlighting\ShouldBePublicWarningTests.cs" />
     <Compile Include="Highlighting\TestClassNameWarningTests.cs" />
-    <Compile Include="MultipleTestProjectToSingleCodeProject\ClassToTestFileNavigationTests.cs" />
-    <Compile Include="MultipleTestProjectToSingleCodeProject\TestToClassFileNavigationTests.cs" />
+    <Compile Include="MultipleTestProjectToSingleCodeProjectViaNamespace\ClassToTestFileNavigationTests.cs" />
+    <Compile Include="MultipleTestProjectToSingleCodeProjectViaNamespace\TestToClassFileNavigationTests.cs" />
     <Compile Include="OptionsPage\IsARegexValidationRuleTests.cs" />
     <Compile Include="OptionsPage\RegexValidationRuleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
