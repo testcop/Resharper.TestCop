@@ -4,6 +4,7 @@
 // -- Copyright 2013
 // --
 
+using System.ComponentModel;
 using JetBrains.Application;
 using JetBrains.Application.Settings;
 using JetBrains.ReSharper.Settings;
@@ -11,10 +12,12 @@ using JetBrains.ReSharper.Settings;
 namespace TestCop.Plugin
 {
     public enum TestProjectStrategy
-    {
-        TestProjectPerCodeProject=1,
-        SingleTestProjectPerSolution=2,
-        TestProjectHasSameNamespaceAsCodeProject=3
+    {        
+        [Description("Test Project Per Code Project linked by namespace")]TestProjectPerCodeProject=10,
+        [Description("Single Test Project Per Solution")]
+        SingleTestProjectPerSolution = 20,
+        [Description("Test Project Per Code Project linked by project name (namespace is the same)")]
+        TestProjectHasSameNamespaceAsCodeProject = 30
     }
 
     [SettingsKey(typeof (CodeInspectionSettings), "Testing Attributes")]
@@ -47,15 +50,22 @@ namespace TestCop.Plugin
         [SettingsEntry(@"true", "Should the TestCop output panel be opened on startup")]
         public bool OutputPanelOpenOnKeyboardMapping { get; set; }
 
+        //**
+        [SettingsEntry(@"^(.*?)\.?Tests$", "Regex to identify tests project by their name")]
+        public string TestProjectNameToCodeProjectNameRegEx { get; set; }
+
+        [SettingsEntry(@"$1", "RegEx replacement text")]
+        public string TestProjectNameToCodeProjectNameRegExReplace { get; set; }
+        //**
         [SettingsEntry(@"^(.*?)\.?Tests$", "Regex to identify tests project by their namespace")]
         public string TestProjectToCodeProjectNameSpaceRegEx { get; set; }
-
+        
         [SettingsEntry(@"", "RegEx replacement text")]
         public string TestProjectToCodeProjectNameSpaceRegExReplace { get; set; }
   
         [SettingsEntry(@TestProjectStrategy.TestProjectPerCodeProject, "Which strategy should testcop use for mapping tests to code")]
-        public TestProjectStrategy TestCopStrategy { get; set; }
-        
+        public TestProjectStrategy TestCopProjectStrategy { get; set; }
+        //**        
         [SettingsEntry(@"^(.*?)\.?Tests(\..*?)(\..*)*$", "Regex for test namespace within single test assembly solutions")]
         public string SingleTestRegexTestToAssembly { get; set; }
 

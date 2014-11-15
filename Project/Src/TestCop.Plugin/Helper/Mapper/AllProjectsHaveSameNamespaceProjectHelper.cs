@@ -62,8 +62,8 @@ namespace TestCop.Plugin.Helper.Mapper
 
         private static string GetNameOfAssociateCodeProject(IProject testProject)
         {            
-            var testNamePattern = Settings.TestProjectToCodeProjectNameSpaceRegEx;
-            string replaceText = Settings.TestProjectToCodeProjectNameSpaceRegExReplace;
+            var testNamePattern = Settings.TestProjectNameToCodeProjectNameRegEx;
+            string replaceText = Settings.TestProjectNameToCodeProjectNameRegExReplace;
 
             string currentProjectName = testProject.Name;
             if (string.IsNullOrEmpty(currentProjectName)) return "";
