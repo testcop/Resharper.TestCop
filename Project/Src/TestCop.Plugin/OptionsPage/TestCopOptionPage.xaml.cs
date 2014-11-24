@@ -101,7 +101,7 @@ namespace TestCop.Plugin.OptionsPage
           ShowAllTestsWithUsageCheckBox.IsChecked = testFileAnalysisSettings.FindAnyUsageInTestAssembly;
           CheckTestNamespaces.IsChecked = testFileAnalysisSettings.CheckTestNamespaces;
           CheckSearchForOrphanedCodeFiles.IsChecked = testFileAnalysisSettings.FindOrphanedProjectFiles;
-          SupportRenameRefactor.IsChecked = testFileAnalysisSettings.SupportRenameRefactorBeta;
+          SupportRenameRefactor.IsChecked = testFileAnalysisSettings.SupportRenameRefactor;
           
           OutputPanelOpenOnKeyboardMapping.IsChecked = testFileAnalysisSettings.OutputPanelOpenOnKeyboardMapping;
 
@@ -262,7 +262,7 @@ namespace TestCop.Plugin.OptionsPage
           _settings.SetValue((TestFileAnalysisSettings s) => s.CodeFileTemplateName, codeTemplateTextBox.Text);
           _settings.SetValue((TestFileAnalysisSettings s) => s.UnitTestFileTemplateName, unitTestTemplateTextBox.Text);
 
-          _settings.SetValue((TestFileAnalysisSettings s) => s.SupportRenameRefactorBeta, SupportRenameRefactor.IsChecked);
+          _settings.SetValue((TestFileAnalysisSettings s) => s.SupportRenameRefactor, SupportRenameRefactor.IsChecked);
           _settings.SetValue((TestFileAnalysisSettings s) => s.OrphanedFilesPatterns, OrphanedFilesPatternsTextBox.Text);
           
           DTEHelper.AssignKeyboardShortcutIfMissing(

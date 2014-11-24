@@ -23,7 +23,7 @@ namespace TestCop.Plugin
     {        
         public IEnumerable<FileRename> GetFileRenames(IDeclaredElement declaredElement, string newName)
         {
-            if (!Settings.SupportRenameRefactorBeta) yield break;
+            if (!Settings.SupportRenameRefactor) yield break;
 
             var typeElement = declaredElement as ITypeElement;                                 
 

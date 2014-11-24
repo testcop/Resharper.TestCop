@@ -87,8 +87,8 @@ namespace TestCop.Plugin
         [SettingsEntry("*.cs|*.aspx|*.jpg", "Pattern for orphaned files")]
         public string OrphanedFilesPatterns { get; set; }
 
-        [SettingsEntry(false, "Rename test files when renaming code file")]
-        public bool SupportRenameRefactorBeta { get; set; }
+        [SettingsEntry(true, "Rename test files when renaming code file")]
+        public bool SupportRenameRefactor { get; set; }
     }
 
     [ShellComponent]
