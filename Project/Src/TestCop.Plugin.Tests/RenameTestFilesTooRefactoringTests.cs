@@ -55,7 +55,7 @@ namespace TestCop.Plugin.Tests
             this.RunGuarded((Action)(() => Lifetimes.Using((Action<Lifetime>)(lifetime =>
             {
                 settingsStore.SetValue<TestFileAnalysisSettings, bool>(
-                            s => s.SupportRenameRefactorBeta, true);
+                            s => s.SupportRenameRefactor, true);
 
                 settingsStore.SetValue<TestFileAnalysisSettings, string>(
                     s => s.TestClassSuffix, "Tests,IntegrationTests");
