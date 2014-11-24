@@ -10,19 +10,24 @@
         <TabControl x:Name="tabControl" HorizontalAlignment="Left" Margin="0" VerticalAlignment="Top" MinHeight="400" Width="410">
             <TabItem Header="Strategy">
                 <StackPanel Margin="0,0,0,0">
-                    
                     <Grid Background="#FFE5E5E5"/>
                     <TextBlock TextWrapping="Wrap" Height="auto" FontWeight="Bold"><Run Text="Strategy"/></TextBlock>
                     <TextBlock TextWrapping="Wrap" Height="auto"  HorizontalAlignment="Left" ><Run Text="Select the strategy that matches how you map between test and code projects within a solution."/></TextBlock>
                     <ComboBox x:Name="TestCopStrategyCombo" Margin="0" SelectionChanged="TestCopStrategyCombo_SelectionChanged">
                         <ListBoxItem Content="Populated By Code"/>
                     </ComboBox>
-                    <TextBlock x:Name="tbStrategyOverview" TextWrapping="Wrap" Height="auto"  HorizontalAlignment="Left" ><Run Text="Strategy...strategy...strategy..."/></TextBlock>
-                    </StackPanel>
-                </TabItem>
-                <TabItem Header="Options">
+                    <TextBlock  Height="10px" FontWeight="Bold"><Run Text=""/></TextBlock>
+                    <Border BorderThickness="1,1,1,1" CornerRadius="8,8,8,8" Background="#FF6FAEAE">
+                        <Border BorderThickness="8,5,8,5" >
+                        <TextBlock x:Name="tbStrategyOverview" TextWrapping="Wrap" Height="auto"  HorizontalAlignment="Left" ><Run Text="Strategy...strategy...strategy..."/><LineBreak/><Run Language="en-gb" Text="Strategy..."/><LineBreak/><Run Language="en-gb"/></TextBlock>
+                        </Border>
+                    </Border>
+                </StackPanel>
+
+            </TabItem>
+            <TabItem Header="Options">
                 <StackPanel Margin="0,0,0,0">
-                    <Grid Background="#FFE5E5E5"/>                    
+                    <Grid Background="#FFE5E5E5"/>
                     <TextBlock TextWrapping="Wrap" Height="auto" FontWeight="Bold"><Run Text="Testing Attributes"/></TextBlock>
                     <TextBlock TextWrapping="Wrap" Height="auto"><Run Text="Enter C# attributes that identify a class or method is test related (e.g. TestClass)."/></TextBlock>
                     <StackPanel Orientation="Horizontal" >
