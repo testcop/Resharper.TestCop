@@ -6,14 +6,14 @@
 
 using System;
 using EnvDTE;
-using JetBrains.Application;
+using JetBrains.ReSharper.Resources.Shell;
 
 namespace TestCop.Plugin.Helper
 {
     static public class DTEHelper
     {
         public static bool VisualStudioIsPresent()
-        {            
+        {                      
             return Shell.Instance.HasComponent<DTE>();
         }
 
@@ -26,8 +26,10 @@ namespace TestCop.Plugin.Helper
         /// <summary>
         /// Must run on main UI thread
         /// </summary>
+        [Obsolete("Fixed in R#9 - remove logic")]
         public static void AssignKeyboardShortcutIfMissing(bool showOutputPane, string macroName, string keyboardShortcut)
         {            
+            /*
             var dte = Shell.Instance.GetComponent<DTE>();
             
             var command = dte.Commands.Item(macroName);
@@ -53,6 +55,7 @@ namespace TestCop.Plugin.Helper
                     string.Format("Setting keyboard shortcut for '{0}' to '{1}'\n", macroName, keyboardShortcut)
                     );      
             }
+             */
         }
         
         public static OutputWindowPane GetOutputWindowPane(string name, bool show)

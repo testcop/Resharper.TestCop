@@ -12,12 +12,16 @@ using JetBrains.Application.DataContext;
 using JetBrains.DataFlow;
 using JetBrains.DocumentModel;
 using JetBrains.IDE;
+using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.Services;
+using JetBrains.ReSharper.Psi.Util;
+using JetBrains.ReSharper.Resources.Shell;
 using JetBrains.TextControl;
+using JetBrains.TextControl.Layout;
 using JetBrains.Threading;
 using JetBrains.UI;
 using JetBrains.UI.PopupWindowManager;
@@ -45,12 +49,22 @@ namespace TestCop.Plugin.Helper
         }
 
         public static void AppendLineToOutputWindow(string msg)
-        {
+        { 
+            /*
             if (DTEHelper.VisualStudioIsPresent())
             {
                 ExecuteActionOnUiThread("testCop append text to output pane",
                                         () => DTEHelper.GetOutputWindowPane("TestCop", false).OutputString(msg + "\n"));
-            }
+            } 
+             */
+
+            ExecuteActionOnUiThread("testCop append text to output pane",
+                () =>
+                {
+                    if (DTEHelper.VisualStudioIsPresent())
+                        DTEHelper.GetOutputWindowPane("TestCop", false).OutputString(msg + "\n");
+                });
+
         }
 
         public static Action ProtectActionFromReEntry(Lifetime lifetime, string name, Action fOnExecute)
@@ -65,8 +79,7 @@ namespace TestCop.Plugin.Helper
             const char splitChar = '.';
             
             if (baseFileName.Contains(splitChar))
-            {
-                //handles ClassA.DataAccessTests or ClassA_DataAccessTests
+            {                
                 string className = baseFileName.Split(new[] { splitChar })[0];
                 return className;
             }          

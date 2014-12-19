@@ -10,30 +10,33 @@ using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using JetBrains.ActionManagement;
-using JetBrains.Application;
 using JetBrains.Application.DataContext;
 using JetBrains.Application.Progress;
 using JetBrains.Application.Settings;
+using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
+using JetBrains.ReSharper.Feature.Services.Navigation;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.Search;
+using JetBrains.ReSharper.Resources.Shell;
 using JetBrains.TextControl;
 using JetBrains.TextControl.DataConstants;
+using JetBrains.UI.ActionsRevised;
 using JetBrains.UI.PopupMenu;
 using JetBrains.Util;
 using TestCop.Plugin.Extensions;
 using TestCop.Plugin.Helper;
 using DataConstants = JetBrains.TextControl.DataContext.DataConstants;
-#if !R7
 using JetBrains.ReSharper.Psi.Modules;
-#endif
+
+
 
 namespace TestCop.Plugin
 {
-    [ActionHandler("TestCop.JumpToTest")]
-    public class JumpToTestFileAction : IActionHandler
+    [Action("TestCop.JumpToTest", Id = 92407, VsShortcuts = new []{"Control+G Control+T"})]
+    public class JumpToTestFileAction : IExecutableAction
     {
         private readonly Action<JetPopupMenu, JetPopupMenu.ShowWhen> _menuDisplayer = (menu, showWhen) => menu.Show(showWhen);
 
@@ -51,7 +54,7 @@ namespace TestCop.Plugin
             ResharperHelper.ForceKeyboardBindings();
         }
 
-        bool IActionHandler.Update(IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
+        bool IExecutableAction.Update(IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
         {
             // fetch focused text editor control
             ITextControl textControl = context.GetData(DataConstants.TEXT_CONTROL);
@@ -60,9 +63,7 @@ namespace TestCop.Plugin
             return textControl != null;
         }
 
-   
-     
-        void IActionHandler.Execute(IDataContext context, DelegateExecute nextExecute)
+        void IExecutableAction.Execute(IDataContext context, DelegateExecute nextExecute)
         {            
             ITextControl textControl = context.GetData(DataConstants.TEXT_CONTROL);
             if (textControl == null)

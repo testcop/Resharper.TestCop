@@ -1,5 +1,7 @@
 ﻿using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.CSharp.Errors;
+using JetBrains.ReSharper.Feature.Services.CSharp.Daemon;
+using JetBrains.ReSharper.Feature.Services.Daemon;
 
 namespace TestCop.Plugin.Highlighting
 {

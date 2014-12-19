@@ -9,17 +9,19 @@ using System.Collections.Generic;
 using JetBrains.Application.DataContext;
 using JetBrains.Application.Progress;
 using JetBrains.DataFlow;
+using JetBrains.DocumentManagers.Transactions;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Bulbs;
+using JetBrains.ReSharper.Feature.Services.Intentions;
+using JetBrains.ReSharper.Feature.Services.QuickFixes;
+using JetBrains.ReSharper.Feature.Services.Refactorings;
 using JetBrains.ReSharper.Feature.Services.Util;
-using JetBrains.ReSharper.Intentions.Extensibility;
-using JetBrains.ReSharper.Intentions.Extensibility.Menu;
 using JetBrains.ReSharper.Refactorings.Move.MoveToFolder;
 using JetBrains.ReSharper.Refactorings.Move.MoveToFolder.Impl;
-using JetBrains.ReSharper.Refactorings.WorkflowNew;
 using JetBrains.TextControl;
 using JetBrains.Util;
 using TestCop.Plugin.Highlighting;
+using JetBrains.ReSharper.Resources.Shell;
 
 namespace TestCop.Plugin.QuickFixActions
 {    
@@ -50,7 +52,7 @@ namespace TestCop.Plugin.QuickFixActions
               
                 Lifetimes.Using(
                     (lifetime => WorkflowExecuter.ExecuteWithCustomHost(
-                        JetBrains.ActionManagement.ShellComponentsEx.ActionManager(JetBrains.Application.Shell.Instance.Components)
+                        JetBrains.ActionManagement.ShellComponentsEx.ActionManager(Shell.Instance.Components)
                         .DataContexts.CreateWithoutDataRules(lifetime
                         , DataRules.AddRule(DataRules.AddRule("ManualMoveToFolderQuickFix"
                         , JetBrains.ProjectModel.DataContext.DataConstants.PROJECT_MODEL_ELEMENTS, new IProjectModelElement[]{projectFile})
