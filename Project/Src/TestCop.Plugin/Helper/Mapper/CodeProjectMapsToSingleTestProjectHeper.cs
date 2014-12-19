@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Util;
+using JetBrains.ReSharper.Psi.Util;
 using TestCop.Plugin.Extensions;
 
 namespace TestCop.Plugin.Helper.Mapper

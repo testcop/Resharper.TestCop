@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{528B0AD5-37AF-4D3A-B623-6F0F4CE52DC8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCop.Plugin82", "Src\TestCop.Plugin\TestCop.Plugin82.csproj", "{67FDD024-6A0F-4979-839D-2B3FA8C89D20}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCop.Plugin", "Src\TestCop.Plugin\TestCop.Plugin.csproj", "{67FDD024-6A0F-4979-839D-2B3FA8C89D20}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCop.Plugin.Tests", "Src\TestCop.Plugin.Tests\TestCop.Plugin.Tests.csproj", "{CC636705-99CB-4774-832C-4C759FEA03D5}"
 EndProject
@@ -23,7 +23,7 @@ Global
 		SccProjectTopLevelParentUniqueName1 = TestCop\u0020For\u0020Resharper.sln
 		SccProjectName1 = Src/TestCop.Plugin.Tests
 		SccLocalPath1 = Src\\TestCop.Plugin.Tests
-		SccProjectUniqueName2 = Src\\TestCop.Plugin\\TestCop.Plugin82.csproj
+		SccProjectUniqueName2 = Src\\TestCop.Plugin\\TestCop.Plugin.csproj
 		SccProjectTopLevelParentUniqueName2 = TestCop\u0020For\u0020Resharper.sln
 		SccProjectName2 = Src/TestCop.Plugin
 		SccLocalPath2 = Src\\TestCop.Plugin

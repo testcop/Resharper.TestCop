@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Util;
+using JetBrains.ReSharper.Psi.Util;
 using JetBrains.Util;
 using TestCop.Plugin.Extensions;
 

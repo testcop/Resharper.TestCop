@@ -7,7 +7,8 @@
 using System.ComponentModel;
 using JetBrains.Application;
 using JetBrains.Application.Settings;
-using JetBrains.ReSharper.Settings;
+using JetBrains.ReSharper.Resources.Settings;
+using JetBrains.ReSharper.Resources.Shell;
 
 namespace TestCop.Plugin
 {

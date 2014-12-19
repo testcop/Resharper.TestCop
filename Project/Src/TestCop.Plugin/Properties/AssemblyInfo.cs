@@ -7,8 +7,7 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 using JetBrains.ActionManagement;
-using JetBrains.Application.PluginSupport;
-using JetBrains.ReSharper.Daemon;
+using JetBrains.ReSharper.Feature.Services.Daemon;
 using TestCop.Plugin.Highlighting;
 
 // General Information about an assembly is controlled through the following 
@@ -40,19 +39,14 @@ using TestCop.Plugin.Highlighting;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.8.2.7")]
-[assembly: AssemblyFileVersion("1.8.2.7")]
-
-// The following information is displayed by ReSharper in the Plugins dialog
-[assembly: PluginTitle("TestCop Resharper Plugin")]
-[assembly: PluginDescription("Helps jump between test and code with some useful naming conformance checks")]
-[assembly: PluginVendor("")]
+[assembly: AssemblyVersion("1.9.0.0")]
+[assembly: AssemblyFileVersion("1.9.0.0")]
 
 //http://confluence.jetbrains.net/display/ReSharper/2.3+Actions+and+Menu+Items+%28R7%29
 [assembly: ActionsXml("TestCop.Plugin.Resources.Actions.xml")]
 
 [assembly: RegisterStaticHighlightingsGroup(Highlighter.HighlightingGroup, "Testing", true)]
-[assembly: RegisterConfigurableHighlightingsGroupAttribute("Testing", "Testing")]
+[assembly: RegisterConfigurableHighlightingsGroup("Testing", "Testing")]
 
 [assembly: RegisterConfigurableSeverity(
         MethodShouldBePublicWarning.SeverityId,

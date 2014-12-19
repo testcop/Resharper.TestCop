@@ -13,8 +13,8 @@ using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Scope;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Settings;
+using JetBrains.ReSharper.Feature.Services.LiveTemplates.Templates;
 using JetBrains.ReSharper.LiveTemplates.CSharp.Scope;
-using JetBrains.ReSharper.LiveTemplates.Templates;
 using JetBrains.ReSharper.LiveTemplates.VB.Scope;
 using TestCop.Plugin.Helper;
 

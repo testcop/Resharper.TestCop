@@ -9,8 +9,8 @@ using System.IO;
 using JetBrains;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Bulbs;
-using JetBrains.ReSharper.Intentions.Extensibility;
-using JetBrains.ReSharper.Intentions.Extensibility.Menu;
+using JetBrains.ReSharper.Feature.Services.Intentions;
+using JetBrains.ReSharper.Feature.Services.QuickFixes;
 using JetBrains.TextControl;
 using JetBrains.UI.BulbMenu;
 using JetBrains.Util;
@@ -35,7 +35,7 @@ namespace TestCop.Plugin.QuickFixActions
             var list = new List<IntentionAction>();                                   
 
             var anchor=  _highlight.FileOnDisk.Count==1 ? new InvisibleAnchor(IntentionsAnchors.ContextActionsAnchorPosition, IntentionsAnchors.ContextActionsAnchor, false)
-            : (IAnchor) new ExecutableGroupAnchor(IntentionsAnchors.ContextActionsAnchor, IntentionsAnchors.ContextActionsAnchorPosition, null, false);
+            : (IAnchor) new ExecutableGroupAnchor(IntentionsAnchors.ContextActionsAnchor, null, false);
 
 
             if (_highlight.FileOnDisk.Count > 1)
