@@ -31,29 +31,28 @@ using TestCop.Plugin.Helper;
 using DataConstants = JetBrains.TextControl.DataContext.DataConstants;
 using JetBrains.ReSharper.Psi.Modules;
 
-
-
 namespace TestCop.Plugin
 {
-    [Action("TestCop.JumpToTest", Id = 92407, VsShortcuts = new []{"Control+G Control+T"})]
+    [Action("TestCop.JumpToTest", Id = 92407, ShortcutScope = ShortcutScope.TextEditor
+        , Icon = typeof(UnnamedThemedIcons.Agent16x16)
+    //    , IdeaShortcuts = new []{"Control+G Control+T"}
+    //    , VsShortcuts = new []{"Control+G Control+T"}
+    )]
     public class JumpToTestFileAction : IExecutableAction
     {
-        private readonly Action<JetPopupMenu, JetPopupMenu.ShowWhen> _menuDisplayer = (menu, showWhen) => menu.Show(showWhen);
+        private Action<JetPopupMenu, JetPopupMenu.ShowWhen> _menuDisplayer = (menu, showWhen) => menu.Show(showWhen);
 
         readonly Func<IClrDeclaredElement, IClrDeclaredElement, bool> _declElementMatcher =
                     (element, declaredElement) => element.ToString() == declaredElement.ToString();
 
-        public JumpToTestFileAction(Action<JetPopupMenu, JetPopupMenu.ShowWhen> overrideMenuDisplay): this()
+        /// <summary>
+        /// For tesing 
+        /// </summary>
+        static public JumpToTestFileAction CreateWith(Action<JetPopupMenu, JetPopupMenu.ShowWhen> overrideMenuDisplay)
         {
-            _menuDisplayer = overrideMenuDisplay;
+            return new JumpToTestFileAction{_menuDisplayer = overrideMenuDisplay};
         }
         
-        public JumpToTestFileAction()
-        {
-            ResharperHelper.AppendLineToOutputWindow(Assembly.GetExecutingAssembly().GetName().ToString());            
-            ResharperHelper.ForceKeyboardBindings();
-        }
-
         bool IExecutableAction.Update(IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
         {
             // fetch focused text editor control
@@ -98,8 +97,7 @@ namespace TestCop.Plugin
             var elementsFoundInSolution = new List<IClrDeclaredElement>();
 
             foreach (var testClassSuffix in settings.GetAppropriateTestClassSuffixes(baseFileName))
-            {
-                //change flip to create list of possible names..
+            {                
                 var classNameFromFileName = ResharperHelper.UsingFileNameGetClassName(baseFileName)
                     .Flip(isTestFile, testClassSuffix);                
 
