@@ -1,18 +1,17 @@
 ﻿// --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
-// -- Copyright 2013
+// -- Copyright 2014
 // --
 
 using System;
-using System.Collections.Generic;
 using JetBrains.Application.Progress;
 using JetBrains.Application.Settings;
-using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
+using TestCop.Plugin.Helper;
 
 namespace TestCop.Plugin
 {
@@ -27,8 +26,16 @@ namespace TestCop.Plugin
             _settings = settings;            
         }
 
+        private static bool _mappedOnceThisSession;
+
         public void Execute(Action<DaemonStageResult> commiter)
-        {            
+        {
+            if (!_mappedOnceThisSession)
+            {
+                //not a nice solution but I needed a way to ensure the testcop key mappings are put in place
+                _mappedOnceThisSession = true;
+                ResharperHelper.ForceKeyboardBindings();
+            }
             // Getting PSI (AST) for the file being highlighted            
             var file = _myDaemonProcess.SourceFile.GetTheOnlyPsiFile(CSharpLanguage.Instance) as ICSharpFile;
             if (file == null)

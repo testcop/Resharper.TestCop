@@ -11,13 +11,11 @@ using JetBrains.Application;
 using JetBrains.Application.DataContext;
 using JetBrains.DataFlow;
 using JetBrains.DocumentModel;
-using JetBrains.IDE;
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
-using JetBrains.ReSharper.Psi.Services;
 using JetBrains.ReSharper.Psi.Util;
 using JetBrains.ReSharper.Resources.Shell;
 using JetBrains.TextControl;
@@ -29,35 +27,33 @@ using JetBrains.UI.RichText;
 using JetBrains.UI.Tooltips;
 using JetBrains.Util;
 using TestCop.Plugin.Extensions;
+using DataConstants = JetBrains.ProjectModel.DataContext.DataConstants;
 
 namespace TestCop.Plugin.Helper
 {
     public static class ResharperHelper
     {
-        public const string MacroNameSwitchBetweenFiles = "Resharper_TestCop_JumpToTest";
+        public static string MacroNameSwitchBetweenFiles
+        {
+            get { return "ReSharper_"+typeof (JumpToTestFileAction).Name.RemoveTrailing("Action"); }
+        }
 
         public static void ForceKeyboardBindings()
-        {                                    
-            if (DTEHelper.VisualStudioIsPresent())
-            {
-                ExecuteActionOnUiThread("force TestCop keyboard shortcut hack on every startup",
-                                        () => DTEHelper.AssignKeyboardShortcutIfMissing(
-                                            TestCopSettingsManager.Instance.Settings.OutputPanelOpenOnKeyboardMapping
-                                            , MacroNameSwitchBetweenFiles
-                                            , TestCopSettingsManager.Instance.Settings.ShortcutToSwitchBetweenFiles));
-            }
+        {                                                      
+            ExecuteActionOnUiThread("force TestCop keyboard shortcut hack on every startup",
+                () =>{
+                    if (DTEHelper.VisualStudioIsPresent())
+                    {
+                        DTEHelper.AssignKeyboardShortcutIfMissing(
+                            TestCopSettingsManager.Instance.Settings.OutputPanelOpenOnKeyboardMapping
+                            , MacroNameSwitchBetweenFiles
+                            , TestCopSettingsManager.Instance.Settings.ShortcutToSwitchBetweenFiles);
+                    }
+                });
         }
 
         public static void AppendLineToOutputWindow(string msg)
         { 
-            /*
-            if (DTEHelper.VisualStudioIsPresent())
-            {
-                ExecuteActionOnUiThread("testCop append text to output pane",
-                                        () => DTEHelper.GetOutputWindowPane("TestCop", false).OutputString(msg + "\n"));
-            } 
-             */
-
             ExecuteActionOnUiThread("testCop append text to output pane",
                 () =>
                 {
@@ -69,7 +65,7 @@ namespace TestCop.Plugin.Helper
 
         public static Action ProtectActionFromReEntry(Lifetime lifetime, string name, Action fOnExecute)
         {
-            System.Action fOnExecute2 = () => IThreadingEx.ExecuteOrQueue(
+            Action fOnExecute2 = () => IThreadingEx.ExecuteOrQueue(
                 Shell.Instance.Locks, lifetime, name,()=> ReadLockCookie.Execute(fOnExecute) );
             return fOnExecute2;
         }
@@ -98,7 +94,7 @@ namespace TestCop.Plugin.Helper
         public static string GetBaseFileName(IDataContext context, ISolution solution)
         {            
             IProjectModelElement projectModelElement =
-                context.GetData(JetBrains.ProjectModel.DataContext.DataConstants.PROJECT_MODEL_ELEMENT);
+                context.GetData(DataConstants.PROJECT_MODEL_ELEMENT);
 
             var projectItem = projectModelElement as IProjectItem;
             if (projectItem == null) return null;
