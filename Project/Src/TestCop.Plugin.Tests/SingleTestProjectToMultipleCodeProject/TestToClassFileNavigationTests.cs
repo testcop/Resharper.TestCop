@@ -5,9 +5,10 @@
 // --
 
 using System.IO;
-using JetBrains.ActionManagement;
 using JetBrains.Application.Settings;
-using JetBrains.ReSharper.Daemon;
+using JetBrains.ReSharper.Feature.Services.Daemon;
+using JetBrains.ReSharper.Psi;
+using JetBrains.UI.ActionsRevised;
 using NUnit.Framework;
 using TestCop.Plugin.Highlighting;
 
@@ -16,7 +17,7 @@ namespace TestCop.Plugin.Tests.SingleTestProjectToMultipleCodeProject
     [TestFixture]
     public class TestToClassFileNavigationTests : CSharpHighlightingWithinSolutionTestBase
     {
-        protected override bool HighlightingPredicate(IHighlighting highlighting, IContextBoundSettingsStore settingsstore)
+        protected override bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile)
         {
             return highlighting is TestFileNameSpaceWarning;
         }
@@ -26,9 +27,9 @@ namespace TestCop.Plugin.Tests.SingleTestProjectToMultipleCodeProject
             get { return @"SingleTestProjectForManyCodeProject\TestToClassNavigation"; }
         }
 
-        protected override IActionHandler GetShortcutAction(TextWriter textwriter)
+        protected override IExecutableAction GetShortcutAction(TextWriter textwriter)
         {
-            IActionHandler jumpToTestFileAction = new JumpToTestFileAction(CreateJetPopMenuShowToWriterAction(textwriter));
+            var jumpToTestFileAction = JumpToTestFileAction.CreateWith(CreateJetPopMenuShowToWriterAction(textwriter));
             return jumpToTestFileAction;
         }
         protected override string SolutionName

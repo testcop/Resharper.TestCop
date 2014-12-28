@@ -6,26 +6,27 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using JetBrains.ActionManagement;
 using JetBrains.Annotations;
 using JetBrains.Application.Components;
 using JetBrains.Application.DataContext;
-using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
 using JetBrains.IDE;
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.Impl;
-using JetBrains.ReSharper.Daemon.Test;
+using JetBrains.ReSharper.Feature.Services.Daemon;
+using JetBrains.ReSharper.FeaturesTestFramework.Daemon;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
-using JetBrains.ReSharper.Psi.Services.ValueTracking;
 using JetBrains.ReSharper.TestFramework;
-using JetBrains.TestFramework.ProjectModel;
-using JetBrains.TestShell.Infra;
+using JetBrains.TestFramework;
+using JetBrains.TestFramework.Projects;
 using JetBrains.TextControl;
+using JetBrains.TextControl.DataConstants;
+using JetBrains.UI.ActionsRevised;
 using JetBrains.UI.PopupMenu;
 using JetBrains.Util;
 using NUnit.Framework;
@@ -99,7 +100,7 @@ namespace TestCop.Plugin.Tests
             return DaemonStageManager.GetInstance(solution).Stages;
         }
            
-        protected virtual bool HighlightingPredicate(IHighlighting highlighting, IContextBoundSettingsStore settingsstore)
+        protected virtual bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile)
         {
             return true;
         }
@@ -152,13 +153,15 @@ namespace TestCop.Plugin.Tests
                                 });
             if (!processedFile)
             {
-                listOfProjectPaths.ForEach(f => System.Diagnostics.Trace.WriteLine("Located Item:" + f));
+                listOfProjectPaths.ForEach(f => Trace.WriteLine("Located Item:" + f));
                 Assert.Fail("Failed to project file by project path " + fullProjectPathToTestFile);
             }
         }
 
         protected virtual void DumperShortCutAction(IProjectFile projectFile, TextWriter textwriter)
-        {            
+        {
+            Trace.WriteLine("DISABLED: DumperShortCutAction");//TODO
+            
             Lifetimes.Using((lifetime =>
                 {                                    
                     using (ITextControl textControl = OpenTextControl(projectFile))
@@ -168,15 +171,18 @@ namespace TestCop.Plugin.Tests
 
                         IDataContext context = DataContextOfTestTextControl.Create(lifetime,textControl, _loadedTestSolution);
                         
+                        Func<Lifetime, DataContexts, IDataContext> dataContext = textControl.ToDataContext();
+
                         if ((jumpToTestFileAction).Update(context, new ActionPresentation(), null))
                         {                            
                             (jumpToTestFileAction).Execute(context, null);                                    
                         }                        
                     }
-                }));
+                }));             
+             
         }
 
-        protected virtual IActionHandler GetShortcutAction(TextWriter textwriter)
+        protected virtual IExecutableAction GetShortcutAction(TextWriter textwriter)
         {
             return null;
         }
