@@ -7,9 +7,10 @@
 using System;
 using JetBrains.Application.Components;
 using JetBrains.Application.Settings;
-using JetBrains.ReSharper.Daemon;
-using JetBrains.ReSharper.Daemon.CSharp;
-using JetBrains.TestFramework.ProjectModel;
+using JetBrains.ReSharper.Feature.Services.Daemon;
+using JetBrains.ReSharper.FeaturesTestFramework.Daemon;
+using JetBrains.ReSharper.Psi;
+using JetBrains.TestFramework.Projects;
 using NUnit.Framework;
 using TestCop.Plugin.Highlighting;
 
@@ -18,7 +19,7 @@ namespace TestCop.Plugin.Tests.Highlighting
     [TestFixture]
     public class TestClassNameWarningTests : CSharpHighlightingTestBase
     {
-        protected override bool HighlightingPredicate(IHighlighting highlighting, IContextBoundSettingsStore settingsstore)
+   protected override bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile)        
         {
             return highlighting is AbstractTestClassNameWarning;
         }
@@ -36,7 +37,8 @@ namespace TestCop.Plugin.Tests.Highlighting
             base.TestFixtureTearDown();
 
             RunGuarded(
-              () => ShellInstance.GetComponent<ReuseSolutionInTestsComponent>().CloseSolution());            
+              () => ShellInstance.GetComponent<TestSolutionManager>().CloseSolution());            
+//              () => ShellInstance.GetComponent<ReuseSolutionInTestsComponent>().CloseSolution());            
         }
         #endif
 
