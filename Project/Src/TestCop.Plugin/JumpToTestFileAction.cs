@@ -15,7 +15,10 @@ using JetBrains.Application.Progress;
 using JetBrains.Application.Settings;
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
+using JetBrains.ReSharper.Feature.Services.Menu;
 using JetBrains.ReSharper.Feature.Services.Navigation;
+using JetBrains.ReSharper.Features.Navigation.Features.Goto.GoToMember;
+using JetBrains.ReSharper.Features.Navigation.Features.NavigateFromHere;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
@@ -33,12 +36,12 @@ using JetBrains.ReSharper.Psi.Modules;
 
 namespace TestCop.Plugin
 {
-    [Action("TestCop.JumpToTest", Id = 92407, ShortcutScope = ShortcutScope.TextEditor
+    [Action("Jump to and from test file", Id = 92407, ShortcutScope = ShortcutScope.TextEditor
         , Icon = typeof(UnnamedThemedIcons.Agent16x16)
     //    , IdeaShortcuts = new []{"Control+G Control+T"}
     //    , VsShortcuts = new []{"Control+G Control+T"}
     )]
-    public class JumpToTestFileAction : IExecutableAction
+    public class JumpToTestFileAction : IExecutableAction, IInsertLast<NavigateGlobalGroup>
     {
         private Action<JetPopupMenu, JetPopupMenu.ShowWhen> _menuDisplayer = (menu, showWhen) => menu.Show(showWhen);
 
