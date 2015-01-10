@@ -40,11 +40,11 @@ namespace TestCop.Plugin.QuickFixActions
 
             if (_highlight.FileOnDisk.Count > 1)
             {
-                list.AddRange(BulbActionExtensions.ToQuickFixAction(new RemoveFileBulb(_highlight.CurrentProject, _highlight.FileOnDisk.ToArray()), anchor));
+                list.AddRange(BulbActionExtensions.ToQuickFixAction(new RemoveFileBulb(_highlight.CurrentProject, _highlight.FileOnDisk.ToArray()), anchor, UnnamedThemedIcons.Agent16x16.Id));
             }
 
             _highlight.FileOnDisk.ForEach(f=>
-                list.AddRange(BulbActionExtensions.ToQuickFixAction(new RemoveFileBulb(_highlight.CurrentProject, new[] { f }), anchor))
+                list.AddRange(BulbActionExtensions.ToQuickFixAction(new RemoveFileBulb(_highlight.CurrentProject, new[] { f }), anchor, UnnamedThemedIcons.Agent16x16.Id))
             );
        
             return list;    
