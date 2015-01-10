@@ -42,12 +42,12 @@ namespace TestCop.Plugin.QuickFixActions
             
             if (_highlight.FileOnDisk.Count > 1)
             {
-                list.AddRange(BulbActionExtensions.ToQuickFixAction(new AddFileBulb(_highlight.CurrentProject, _highlight.FileOnDisk.ToArray()), anchor));
+                list.AddRange(BulbActionExtensions.ToQuickFixAction(new AddFileBulb(_highlight.CurrentProject, _highlight.FileOnDisk.ToArray()), anchor, UnnamedThemedIcons.Agent16x16.Id ));
             }
 
             foreach (var fileInfo in _highlight.FileOnDisk)
             {
-                list.AddRange(BulbActionExtensions.ToQuickFixAction(new AddFileBulb(_highlight.CurrentProject, new[] { fileInfo }), anchor));
+                list.AddRange(BulbActionExtensions.ToQuickFixAction(new AddFileBulb(_highlight.CurrentProject, new[] { fileInfo }), anchor, UnnamedThemedIcons.Agent16x16.Id ));
             }
 
             return list;
