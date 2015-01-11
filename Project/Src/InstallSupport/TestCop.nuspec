@@ -7,7 +7,7 @@
 		<authors>Alcaeus</authors>     
 		<description>Easily switch between unit tests and code. Create missing associated files. Includes highlightings and test templates to keep test projects neat and tidy. Works with NUnit, MSTest, xUnit ...</description>
 		<releaseNotes>
-      1.9.0.0-EAP Rebuilt with R#9.0 - BETA
+      1.9.0.0 Rebuilt with R#9.0 - BETA
       1.8.2.7 Added support for multiple test project mapping to a single code project by using project name.
       1.8.2.6 Quickfixes added to move test class to correct folder and delete orphaned files.
       Test file rename refactor support added (off by default).
