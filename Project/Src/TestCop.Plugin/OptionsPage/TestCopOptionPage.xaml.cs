@@ -13,7 +13,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Forms;
-using System.Windows.Forms.VisualStyles;
 using System.Windows.Media;
 using JetBrains;
 using JetBrains.Application.Settings;
@@ -37,7 +36,6 @@ using JetBrains.Util.Logging;
 using TestCop.Plugin.Extensions;
 using TestCop.Plugin.Helper;
 using Binding = System.Windows.Data.Binding;
-using Control = System.Windows.Controls.Control;
 using ListBox = System.Windows.Controls.ListBox;
 using TextBox = System.Windows.Controls.TextBox;
 
@@ -72,22 +70,22 @@ namespace TestCop.Plugin.OptionsPage
           BuildTestStrategyCombo(testFileAnalysisSettings);
 
           //Do this first as it is reference by other display fields
-          BindWithRegexMatchesValidation(testFileAnalysisSettings, testClassSuffixTextBox, P(x => x.TestClassSuffix), "^[_a-zA-Z,]*$");
+          testClassSuffixTextBox.BindWithRegexMatchesValidation(testFileAnalysisSettings, P(x => x.TestClassSuffix), "^[_a-zA-Z,]*$");
 
           //Regex Config for Multiple Test Assemply Logic via project naming
-          BindWithValidationMustBeARegex(testFileAnalysisSettings, testProjectNameRegExTextBox, P(x => x.TestProjectNameToCodeProjectNameRegEx));
-          BindWithRegexMatchesValidation(testFileAnalysisSettings, testProjectNameRegExReplaceTextBox, P(x => x.TestProjectNameToCodeProjectNameRegExReplace), "^[\\$\\.a-zA-Z1-9]*$");
+          testProjectNameRegExTextBox.BindWithValidationMustBeARegex(testFileAnalysisSettings, P(x => x.TestProjectNameToCodeProjectNameRegEx));
+          testProjectNameRegExReplaceTextBox.BindWithRegexMatchesValidation(testFileAnalysisSettings, P(x => x.TestProjectNameToCodeProjectNameRegExReplace), "^[\\$\\.a-zA-Z1-9]*$");
           
           //Regex Config for Multiple Test Assemply Logic via namespace naming
-          BindWithValidationMustBeARegex(testFileAnalysisSettings, testNamespaceRegExTextBox, P(x=>x.TestProjectToCodeProjectNameSpaceRegEx));          
-          BindWithRegexMatchesValidation(testFileAnalysisSettings, testNamespaceRegExReplaceTextBox, P(x=>x.TestProjectToCodeProjectNameSpaceRegExReplace), "^[\\$\\.a-zA-Z1-9]*$");
+          testNamespaceRegExTextBox.BindWithValidationMustBeARegex(testFileAnalysisSettings, P(x => x.TestProjectToCodeProjectNameSpaceRegEx));
+          testNamespaceRegExReplaceTextBox.BindWithRegexMatchesValidation(testFileAnalysisSettings, P(x => x.TestProjectToCodeProjectNameSpaceRegExReplace), "^[\\$\\.a-zA-Z1-9]*$");
           //
           //Regex Config for Single Test Assemply Logic
-          BindWithValidationMustBeARegex(testFileAnalysisSettings, SingleTestNamespaceRegExTextBox,                              P(x => x.SingleTestRegexTestToAssembly));
-          BindWithRegexMatchesValidation(testFileAnalysisSettings, SingleTestNamespaceToAssemblyRegExReplaceTextBox,             P(x => x.SingleTestRegexTestToAssemblyProjectReplace), "^[\\$\\.a-zA-Z1-9]*$");
-          BindWithRegexMatchesValidation(testFileAnalysisSettings, SingleTestNamespaceToAssemblySubNameSpaceRegExReplaceTextBox, P(x => x.SingleTestRegexTestToAssemblyProjectSubNamespaceReplace), "^[\\$\\.a-zA-Z1-9]*$");
-          BindWithValidationMustBeARegex(testFileAnalysisSettings, SingleTestCodeNamespaceRegExTextBox,                          P(x => x.SingleTestRegexCodeToTestAssembly));
-          BindWithRegexMatchesValidation(testFileAnalysisSettings, SingleTestCodeNamespaceToTestRegExReplaceTextBox,             P(x => x.SingleTestRegexCodeToTestReplace), "^[\\$\\.a-zA-Z1-9]*$");
+          SingleTestNamespaceRegExTextBox.BindWithValidationMustBeARegex(testFileAnalysisSettings, P(x => x.SingleTestRegexTestToAssembly));
+          SingleTestNamespaceToAssemblyRegExReplaceTextBox.BindWithRegexMatchesValidation(testFileAnalysisSettings, P(x => x.SingleTestRegexTestToAssemblyProjectReplace), "^[\\$\\.a-zA-Z1-9]*$");
+          SingleTestNamespaceToAssemblySubNameSpaceRegExReplaceTextBox.BindWithRegexMatchesValidation(testFileAnalysisSettings, P(x => x.SingleTestRegexTestToAssemblyProjectSubNamespaceReplace), "^[\\$\\.a-zA-Z1-9]*$");
+          SingleTestCodeNamespaceRegExTextBox.BindWithValidationMustBeARegex(testFileAnalysisSettings, P(x => x.SingleTestRegexCodeToTestAssembly));
+          SingleTestCodeNamespaceToTestRegExReplaceTextBox.BindWithRegexMatchesValidation(testFileAnalysisSettings, P(x => x.SingleTestRegexCodeToTestReplace), "^[\\$\\.a-zA-Z1-9]*$");
           //          
           testFileAnalysisSettings.TestingAttributes().ForEach(p => testingAttributesListBox.Items.Add(p));
           testFileAnalysisSettings.BddPrefixes().ForEach(p => contextPrefixesListBox.Items.Add(p));
@@ -107,9 +105,7 @@ namespace TestCop.Plugin.OptionsPage
 
           TestCopLogoImage.Source =
           (ImageSource) new BitmapToImageSourceConverter().Convert(
-              iconManager.Icons[UnnamedThemedIcons.Agent64x64.Id].CurrentGdipBitmap96, null, null, null);          
-
-
+              iconManager.Icons[UnnamedThemedIcons.Agent64x64.Id].CurrentGdipBitmap96, null, null, null);                    
       }
 
       private void BuildTestStrategyCombo(TestFileAnalysisSettings testFileAnalysisSettings)
@@ -155,47 +151,7 @@ namespace TestCop.Plugin.OptionsPage
 
           throw new ArgumentException("Expression is not a member access", "expression");
       }
-
-      private static void BindWithRegexMatchesValidation(TestFileAnalysisSettings testFileAnalysisSettings, TextBox tb, string property, string regexString)
-      {         
-          var binding = new Binding { Path = new PropertyPath(property) };
-          var namespaceRule = new RegexValidationRule
-          {
-              RegexText = regexString,
-              ErrorMessage = "Invalid suffix.",
-              RegexOptions = RegexOptions.IgnoreCase,
-              ValidatesOnTargetUpdated = true
-          };
-
-          binding.ValidationRules.Add(namespaceRule);
-                    
-          binding.NotifyOnValidationError = true;
-          binding.ValidatesOnDataErrors = true;
-          binding.ValidatesOnExceptions = true;
-
-          binding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
-          tb.DataContext = testFileAnalysisSettings;
-          tb.SetBinding(TextBox.TextProperty, binding);          
-      }
-
-      private static void BindWithValidationMustBeARegex(TestFileAnalysisSettings testFileAnalysisSettings, TextBox tb, string property)
-      {
-          var binding = new Binding { Path = new PropertyPath(property)};
-          var namespaceRule = new IsARegexValidationRule
-          {              
-              ErrorMessage = "Invalid Regex",
-              RegexOptions = RegexOptions.IgnoreCase,
-              MinimumGroupsInRegex = 2,
-              ValidatesOnTargetUpdated = true              
-          };
-
-          binding.ValidationRules.Add(namespaceRule);
-          binding.NotifyOnValidationError = true;
-          binding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
-          tb.DataContext = testFileAnalysisSettings;
-          tb.SetBinding(TextBox.TextProperty, binding);
-      }
-
+      
       public EitherControl Control
       {
           get { return this; }

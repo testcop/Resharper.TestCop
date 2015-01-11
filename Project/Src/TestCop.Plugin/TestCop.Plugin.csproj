@@ -177,6 +177,7 @@
     <Compile Include="Helper\Mapper\AllProjectsHaveSameNamespaceProjectHelper.cs" />
     <Compile Include="Helper\Mapper\MappingBase.cs" />
     <Compile Include="Highlighting\FilesNotPartOfProjectWarning.cs" />
+    <Compile Include="OptionsPage\TextBoxExtensions.cs" />
     <Compile Include="ProjectAnalysisElementProcessor.cs" />
     <Compile Include="ProjectAnalysisDaemonStageProcess.cs" />
     <Compile Include="Extensions\SolutionExtensions.cs" />
