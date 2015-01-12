@@ -35,7 +35,7 @@ namespace TestCop.Plugin.Helper
     {
         public static string MacroNameSwitchBetweenFiles
         {
-            get { return "ReSharper_"+typeof (JumpToTestFileAction).Name.RemoveTrailing("Action"); }
+            get { return "Resharper.ReSharper_"+typeof (JumpToTestFileAction).Name.RemoveTrailing("Action"); }
         }
 
         public static void ForceKeyboardBindings()
