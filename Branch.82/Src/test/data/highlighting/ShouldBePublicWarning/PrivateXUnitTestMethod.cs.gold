@@ -1,0 +1,10 @@
+﻿
+public class PrivateNUnitTestClass
+{
+	[Fact]
+	private |PrivateMethod|(0)()
+	{
+	}
+}
+---------------------------------------------------------
+(0): ReSharper Underlined Error Highlighting: Methods with [Fact] must be public.

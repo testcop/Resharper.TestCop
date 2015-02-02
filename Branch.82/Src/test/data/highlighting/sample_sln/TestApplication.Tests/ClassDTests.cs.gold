@@ -1,0 +1,26 @@
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TestCop.TestApplication.NS1;
+
+namespace TestCop.TestApplication.Tests
+{
+    /* USE CASE: 
+     * Test file has the wrong namespace for the code under test
+     * and testcop should offer to create in correct location 
+     * or open the code file in the wrong location
+     * 
+     */
+    [TestClass]
+    public class |ClassDTests|(0)
+    {
+        [TestMethod]
+        public void ReturnsTrueMethodTest()
+        {
+            Assert.IsTrue(new ClassD().ReturnsTrue());
+        }
+    }
+}
+
+---------------------------------------------------------
+(0): ReSharper Warning: Namespace of test expected to be TestCop.TestApplication.Tests.NS1
+[Switch to:] ClassD.cs|(in <TestApplication>\NS1)
+[Switch to:] Create |ClassD|(<TestApplication>)

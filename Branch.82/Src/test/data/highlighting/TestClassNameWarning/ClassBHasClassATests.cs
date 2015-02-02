@@ -1,0 +1,4 @@
+[TestFixture]
+public class ClassANotClassATests
+{
+}

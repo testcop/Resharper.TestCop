@@ -1,0 +1,16 @@
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace TestCop.TestApplication2Tests.Samples
+{
+    /* USE CASE
+     * Class under test (ClassB) doesn't exist within associated code assembly
+     */
+    [TestClass]
+    public class |ClassBSecurityTests|(0)
+    {
+    }
+}
+
+---------------------------------------------------------
+(0): ReSharper Warning: The file name begins with ClassB but no matching class exists in associated project
+[Switch to:] Create |ClassB|(<TestApplication2>\Samples)

@@ -1,0 +1,6 @@
+[TestFixture]
+public class |ClassANotClassATests|(0)
+{
+}
+---------------------------------------------------------
+(0): ReSharper Underlined Error Highlighting: Test classname and filename are not in sync ClassANotClassATests<>ClassBHasClassATests.

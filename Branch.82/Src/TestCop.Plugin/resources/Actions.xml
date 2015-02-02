@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<actions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="urn:shemas-jetbrains-com:actions-xml">
+  <action id="TestCop.JumpToTest" text="Jump to and from test file" >
+    <shortcut>Control+G Control+T</shortcut>
+    <vs-shortcut>Control+G Control+T</vs-shortcut>
+  </action>  
+  <insert group-id="ReSharper" position="last">        
+      <action-ref id="TestCop.JumpToTest" />    
+  </insert>
+</actions>

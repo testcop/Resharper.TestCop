@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>     
+		<id>Resharper.TestCop</id>     
+		<version>0.0.0-internal</version>
+		<title>TestCop</title>     
+		<authors>Alcaeus</authors>     
+		<description>Easily switch between unit tests and code. Create missing associated files. Includes highlightings and test templates to keep test projects neat and tidy. Works with NUnit, MSTest, xUnit ...</description>
+		<releaseNotes>
+      1.8.2.8 Strategies now use the correct RegEx defined within the UI.
+      1.8.2.7 Added support for multiple test project mapping to a single code project by using project name.
+      1.8.2.6 Quickfixes added to move test class to correct folder and delete orphaned files.
+      Test file rename refactor support added (off by default).
+      1.8.2.5 Support for multiple test class suffix (comma separated)
+      1.8.2.4 Adding support to find orphaned project files
+      1.8.2.3 Support added for solutions with a single test project for all code projects.
+      1.8.2.2 Beta. Refactor of code. Supported added for single test project for all code projects within solution
+      1.8.2.1 -
+      1.8.2.0 Rebuilt with R#8.2
+      1.8.2.0-EAP Puts exact match first in list when switching from test to code
+      1.8.1.9 Minor bug fix to file template selection within settings dialog
+      1.8.1.8 Now ignores nested test classes
+      1.8.1.7 Fixed Memory Leak
+      1.8.1.6 Added support for multiple test project mapping to a single code project. Can now turn off 'must be public' warnings.
+    </releaseNotes>
+    <projectUrl>https://testcop.codeplex.com/</projectUrl>
+    <licenseUrl>https://testcop.codeplex.com/license</licenseUrl>
+    <iconUrl>https://testcop.svn.codeplex.com/svn/Project/Src/TestCop.Plugin/resources/agent48x48.png</iconUrl>
+    <copyright>Copyright &#x00A9; 2014</copyright>
+    <dependencies>
+      <dependency id="ReSharper" version="[8.2,8.3)" />
+    </dependencies>
+    <tags>resharper unittest xunit nunit mstest tdd c# template</tags>
+  </metadata>   
+	<files>     
+		<file src="TestCopForResharper.dll" target="ReSharper\v8.2\plugins" />
+    		<file src="TestCopForResharper.pdb" target="ReSharper\v8.2\plugins" />
+   <file src="..\..\..\ResharperTemplates\templates.DotSettings"
+          target="ReSharper\v8.2\settings" />
+  </files> 
+</package>
