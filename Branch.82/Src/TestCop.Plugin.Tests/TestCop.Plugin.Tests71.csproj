@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CC636705-99CB-4774-832C-4C759FEA03D5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TestCop.Plugin.Tests</RootNamespace>
+    <AssemblyName>TestCop.Plugin.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;JET_MODE_ASSERT R7</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;R7</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\..\packages\RhinoMocks.3.6.1\lib\net\Rhino.Mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Extensions\ListExtensionsTests.cs" />
+    <Compile Include="Extensions\StringExtensionsTests.cs" />
+    <Compile Include="Extensions\TypeElementExtensionsTests.cs" />
+    <Compile Include="Highlighting\TestFileNameWarningWithDifferentAssemblySuffixTests.cs" />
+    <Compile Include="Highlighting\TestFileNameSpaceWarningTests.cs.cs" />
+    <Compile Include="Highlighting\TestFileNameWarningTests.cs.cs" />
+    <Compile Include="Highlighting\ShouldBePublicWarningTests.cs" />
+    <Compile Include="Highlighting\TestClassNameWarningTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CSharpHighlightingWithinSolutionTestBase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TestCop.Plugin\TestCop.Plugin71.csproj">
+      <Project>{67fdd024-6a0f-4979-839d-2b3fa8c89d20}</Project>
+      <Name>TestCop.Plugin71</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <ReSharperSdkTargets Condition=" '$(ReSharperSdkTargets)' == '' ">$(MSBuildExtensionsPath)\JetBrains\ReSharper.SDK\v7.1</ReSharperSdkTargets>
+  </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(ReSharperSdkTargets)\Plugin.Tests.Targets" />
+</Project>

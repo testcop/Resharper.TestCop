@@ -1,0 +1,10 @@
+﻿[TestFixture]
+public class PrivateNUnitTestMethod
+{
+	[Test]
+	private |PrivateMethod|(0)()
+	{
+	}
+}
+---------------------------------------------------------
+(0): ReSharper Underlined Error Highlighting: Methods with [Test] must be public.

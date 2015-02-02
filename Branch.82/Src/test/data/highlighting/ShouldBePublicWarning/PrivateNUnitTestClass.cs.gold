@@ -1,0 +1,6 @@
+[TestFixture]
+class |PrivateNUnitTestClass|(0)
+{
+}
+---------------------------------------------------------
+(0): ReSharper Underlined Error Highlighting: Types with [TestFixture] must be public.

@@ -1,0 +1,13 @@
+﻿namespace TestApplication.NG1
+{
+    class ClassWithIntegrationOnly
+    {
+        //This class has only 'integration' test
+    }
+}
+
+---------------------------------------------------------
+[Switch to:] ClassWithIntegrationOnlyTests.cs|(in <TestApplication.IntegrationTests>\NG1)
+[Switch to:] ClassWithIntegrationOnlyIntegrationTests.cs|(in <TestApplication.IntegrationTests>\NG1)
+[Switch to:] Create |ClassWithIntegrationOnlyIntegrationTests|(<TestApplication.Tests>\NG1)
+[Switch to:] Create |ClassWithIntegrationOnlyTests|(<TestApplication.Tests>\NG1)

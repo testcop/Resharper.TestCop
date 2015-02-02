@@ -1,0 +1,9 @@
+﻿namespace MyCorp.TestApplication3.API.NS1
+{
+    class APIClassBWithNoTest
+    {
+    }
+}
+
+---------------------------------------------------------
+[Switch to:] Create |APIClassBWithNoTestTests|(<MyCorp.TestApplication3.Tests>\API\NS1)

@@ -1,0 +1,4 @@
+[TestFixture]
+class PrivateNUnitTestClass
+{
+}

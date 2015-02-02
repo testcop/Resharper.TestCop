@@ -1,0 +1,10 @@
+﻿[TestClass]
+public class PrivateMSTestTestMethod
+{
+	[TestMethod]
+	private |PrivateMethod|(0)()
+	{
+	}
+}
+---------------------------------------------------------
+(0): ReSharper Underlined Error Highlighting: Methods with [TestMethod] must be public.
