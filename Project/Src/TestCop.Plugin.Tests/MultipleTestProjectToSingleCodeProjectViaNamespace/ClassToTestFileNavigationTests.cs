@@ -4,6 +4,7 @@
 // -- Copyright 2014
 // --
 
+using System.Configuration;
 using System.IO;
 using JetBrains.ActionManagement;
 using JetBrains.Application.Settings;
@@ -52,6 +53,8 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProjectViaNamespac
                 RunGuarded(
                     () =>
                     {
+                        ClearRegExSettingsPriorToRun(settingsStore);
+
                         settingsStore.SetValue<TestFileAnalysisSettings, bool>(
                             s => s.FindOrphanedProjectFiles, true);
 
@@ -68,5 +71,7 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProjectViaNamespac
                 DoTestFiles(testName);
             }));
         }
+
+ 
     }
 }

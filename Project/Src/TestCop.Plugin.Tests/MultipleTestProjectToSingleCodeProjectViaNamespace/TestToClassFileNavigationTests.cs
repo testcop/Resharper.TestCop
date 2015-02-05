@@ -50,6 +50,8 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProjectViaNamespac
                 RunGuarded(
                     () =>
                     {
+                        ClearRegExSettingsPriorToRun(settingsStore);
+
                         settingsStore.SetValue<TestFileAnalysisSettings, bool>(
                             s => s.FindOrphanedProjectFiles, true);
                         settingsStore.SetValue<TestFileAnalysisSettings, string>(

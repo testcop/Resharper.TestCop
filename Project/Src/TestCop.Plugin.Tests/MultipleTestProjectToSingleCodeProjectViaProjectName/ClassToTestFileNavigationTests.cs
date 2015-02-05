@@ -52,6 +52,8 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProjectViaProjectN
                 RunGuarded(
                     () =>
                     {
+                        ClearRegExSettingsPriorToRun(settingsStore);
+
                         settingsStore.SetValue<TestFileAnalysisSettings, TestProjectStrategy>(
                             s => s.TestCopProjectStrategy, TestProjectStrategy.TestProjectHasSameNamespaceAsCodeProject);
                         settingsStore.SetValue<TestFileAnalysisSettings, bool>(
@@ -60,9 +62,9 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProjectViaProjectN
                             s => s.TestClassSuffix, "Tests,IntegrationTests");
 
                         settingsStore.SetValue<TestFileAnalysisSettings, string>(
-                            s => s.TestProjectToCodeProjectNameSpaceRegEx, altRegEx);
+                            s => s.TestProjectNameToCodeProjectNameRegEx, altRegEx);
                         settingsStore.SetValue<TestFileAnalysisSettings, string>(
-                            s => s.TestProjectToCodeProjectNameSpaceRegExReplace, "");
+                            s => s.TestProjectNameToCodeProjectNameRegExReplace, "");
                     }
                     
                     );

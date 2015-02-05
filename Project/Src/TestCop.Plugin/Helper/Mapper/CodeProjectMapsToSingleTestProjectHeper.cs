@@ -5,6 +5,7 @@
 // --
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.ReSharper.Psi.Util;
@@ -13,7 +14,17 @@ using TestCop.Plugin.Extensions;
 namespace TestCop.Plugin.Helper.Mapper
 {
     public class CodeProjectMapsToSingleTestProjectHeper : MappingBase
-    {                
+    {
+        protected override Regex TestingRegEx
+        {
+            get
+            {
+                var testNameSpacePattern = Settings.SingleTestRegexTestToAssembly;
+                var regEx = new Regex(testNameSpacePattern);
+                return regEx;
+            }
+        }
+
         public override IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string currentTypeNamespace)
         {
             var settings = Settings;

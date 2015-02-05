@@ -13,6 +13,7 @@ using JetBrains.ActionManagement;
 using JetBrains.Annotations;
 using JetBrains.Application.Components;
 using JetBrains.Application.DataContext;
+using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
 using JetBrains.IDE;
 using JetBrains.ProjectModel;
@@ -88,6 +89,20 @@ namespace TestCop.Plugin.Tests
                            });
            
             base.TestFixtureTearDown();
+        }
+
+        protected void ClearRegExSettingsPriorToRun(IContextBoundSettingsStore settingsStore)
+        {
+            settingsStore.SetValue<TestFileAnalysisSettings, string>(
+                s => s.TestProjectToCodeProjectNameSpaceRegEx, "NOT SET BY TEST");
+            settingsStore.SetValue<TestFileAnalysisSettings, string>(
+                s => s.TestProjectToCodeProjectNameSpaceRegExReplace, "NOT SET BY TEST");
+            settingsStore.SetValue<TestFileAnalysisSettings, string>(
+                s => s.TestProjectNameToCodeProjectNameRegEx, "NOT SET BY TEST");
+
+            settingsStore.SetValue<TestFileAnalysisSettings, string>(
+                s => s.SingleTestRegexTestToAssembly, "NOT SET BY TEST");
+        
         }
 
         protected virtual TestHighlightingDumper CreateHighlightDumper(IPsiSourceFile sourceFile, TextWriter writer)

@@ -20,7 +20,7 @@ namespace TestCop.Plugin.Helper.Mapper
             return TestingRegEx.IsMatch(currentProjectNamespace);
         }
 
-        protected static Regex TestingRegEx
+        protected virtual Regex TestingRegEx
         {
             get
             {
@@ -28,6 +28,18 @@ namespace TestCop.Plugin.Helper.Mapper
                 var regEx = new Regex(testNameSpacePattern);
                 return regEx;
             }
+        }
+
+        public void DumpDebug(ISolution solution)
+        {
+            var rx = TestingRegEx;
+            solution.GetAllCodeProjects().ForEach(
+                p => ResharperHelper.AppendLineToOutputWindow("\tProject Namespace:" + p.GetDefaultNamespace()
+                                                              +
+                                                              (rx.IsMatch(p.GetDefaultNamespace() ?? "")
+                                                                  ? " matches "
+                                                                  : " does not match ")
+                                                              + rx));
         }
 
         protected static TestFileAnalysisSettings Settings

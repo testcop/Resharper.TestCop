@@ -4,6 +4,7 @@
 // -- Copyright 2013
 // --
 
+using System.Text.RegularExpressions;
 using NUnit.Framework;
 using TestCop.Plugin.Extensions;
 

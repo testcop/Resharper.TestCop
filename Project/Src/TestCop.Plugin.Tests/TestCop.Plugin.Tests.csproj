@@ -161,6 +161,7 @@
     <Compile Include="Extensions\TypeElementExtensionsTests.cs" />
     <Compile Include="RenameTestFilesTooRefactoringTests.cs" />
     <Compile Include="SingleTestProjectToMultipleCodeProject\ClassToTestFileNavigationTests.cs" />
+    <Compile Include="SingleTestProjectToMultipleCodeProject\RegExTests.cs" />
     <Compile Include="SingleTestProjectToMultipleCodeProject\TestToClassFileNavigationTests.cs" />
     <Compile Include="Highlighting\TestFileNameSpaceWarningTests.cs" />
     <Compile Include="Highlighting\TestFileNameWarningTests.cs.cs" />

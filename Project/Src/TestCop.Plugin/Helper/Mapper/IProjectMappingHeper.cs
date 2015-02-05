@@ -14,5 +14,6 @@ namespace TestCop.Plugin.Helper.Mapper
     {
         IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string currentNameSpace);
         bool IsTestProject(IProject project);
+        void DumpDebug(ISolution solution);
     }
 }

@@ -31,6 +31,7 @@ using JetBrains.UI.PopupMenu;
 using JetBrains.Util;
 using TestCop.Plugin.Extensions;
 using TestCop.Plugin.Helper;
+using TestCop.Plugin.Helper.Mapper;
 using DataConstants = JetBrains.TextControl.DataContext.DataConstants;
 using JetBrains.ReSharper.Psi.Modules;
 
@@ -84,6 +85,7 @@ namespace TestCop.Plugin
             if(targetProjects.IsEmpty())
             {
                 ResharperHelper.AppendLineToOutputWindow("Unable to locate associated assembly - check project namespaces and testcop Regex");
+                //ProjectMappingHelper.GetProjectMappingHeper().DumpDebug(solution);
                 return;
             }
                        
