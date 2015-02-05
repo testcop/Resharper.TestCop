@@ -51,6 +51,8 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProjectViaProjectN
                 RunGuarded(
                     () =>
                     {
+                        ClearRegExSettingsPriorToRun(settingsStore);
+
                         settingsStore.SetValue<TestFileAnalysisSettings, TestProjectStrategy>(
                             s => s.TestCopProjectStrategy, TestProjectStrategy.TestProjectHasSameNamespaceAsCodeProject);
                         settingsStore.SetValue<TestFileAnalysisSettings, bool>(

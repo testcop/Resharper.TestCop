@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using JetBrains;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Util;
@@ -24,6 +25,17 @@ namespace TestCop.Plugin.Helper.Mapper
 
             return TestingRegEx.IsMatch(currentProjectName);
         }
+
+        protected override Regex TestingRegEx
+        {
+            get
+            {
+                var testNameSpacePattern = Settings.TestProjectNameToCodeProjectNameRegEx;
+                var regEx = new Regex(testNameSpacePattern);
+                return regEx;
+            }
+        }
+
 
         public override IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string currentTypeNamespace)
         {

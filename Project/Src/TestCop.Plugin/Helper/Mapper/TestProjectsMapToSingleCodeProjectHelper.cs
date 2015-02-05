@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using JetBrains;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Util;
@@ -16,7 +17,7 @@ using TestCop.Plugin.Extensions;
 namespace TestCop.Plugin.Helper.Mapper
 {
     public class TestProjectsMapToSingleCodeProjectHelper : MappingBase
-    {
+    {                
         public override IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string currentTypeNamespace)
         {
             const string warningMessage = "Not Supported: More than one code project has a default namespace of ";

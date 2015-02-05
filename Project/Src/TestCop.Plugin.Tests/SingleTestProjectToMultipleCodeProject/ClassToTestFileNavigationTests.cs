@@ -56,12 +56,14 @@ namespace TestCop.Plugin.Tests.SingleTestProjectToMultipleCodeProject
             {
                 RunGuarded(
                     () =>
-                    {        
+                    {
+                        ClearRegExSettingsPriorToRun(settingsStore);
+
                         settingsStore.SetValue<TestFileAnalysisSettings, TestProjectStrategy>(
                           s => s.TestCopProjectStrategy, TestProjectStrategy.SingleTestProjectPerSolution);
 
                         settingsStore.SetValue<TestFileAnalysisSettings, string>(
-                            s => s.SingleTestRegexTestToAssembly, @"^(.*?)\.?Tests(\..*?)(\..*)*$");
+                            s => s.SingleTestRegexTestToAssembly, RegExTests.RegexForSingleTestProjectStrategy);
                         settingsStore.SetValue<TestFileAnalysisSettings, string>(
                             s => s.SingleTestRegexTestToAssemblyProjectReplace, @"$1$2");
                         settingsStore.SetValue<TestFileAnalysisSettings, string>(

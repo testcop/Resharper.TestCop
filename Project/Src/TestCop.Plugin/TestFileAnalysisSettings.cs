@@ -67,7 +67,8 @@ namespace TestCop.Plugin
         [SettingsEntry(@TestProjectStrategy.TestProjectPerCodeProject, "Which strategy should testcop use for mapping tests to code")]
         public TestProjectStrategy TestCopProjectStrategy { get; set; }
         //**        
-        [SettingsEntry(@"^(.*?)\.?Tests(\..*?)(\..*)*$", "Regex for test namespace within single test assembly solutions")]
+      //[SettingsEntry(@"^(.*?)\.?Tests(\..*?)(\..*)*$", "Regex for test namespace within single test assembly solutions")]
+        [SettingsEntry(@"^(.*)\.Tests(\..*?)?(\..*)*$", "Regex for test namespace within single test assembly solutions")]
         public string SingleTestRegexTestToAssembly { get; set; }
 
         [SettingsEntry(@"$1$2", "Regex replace for test namespace within single test assembly solutions to identify namespace of code assembly")]

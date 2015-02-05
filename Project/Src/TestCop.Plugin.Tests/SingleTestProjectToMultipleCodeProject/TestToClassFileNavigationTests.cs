@@ -5,6 +5,8 @@
 // --
 
 using System.IO;
+using System.Text.RegularExpressions;
+using JetBrains.ActionManagement;
 using JetBrains.Application.Settings;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi;
@@ -37,6 +39,7 @@ namespace TestCop.Plugin.Tests.SingleTestProjectToMultipleCodeProject
             get { return @"TestApplication3.sln"; }
         }
 
+
         [Test]
         [TestCase(@"<MyCorp.TestApplication3.Tests>\API\ClassATests.cs")]
         [TestCase(@"<MyCorp.TestApplication3.Tests>\API\NS1\ClassATests.cs")]
@@ -51,25 +54,26 @@ namespace TestCop.Plugin.Tests.SingleTestProjectToMultipleCodeProject
         {   
              // http://myregexp.com/
         
-
             ExecuteWithinSettingsTransaction((settingsStore =>
             {
                 RunGuarded(
                     () =>
                     {
+                        ClearRegExSettingsPriorToRun(settingsStore);
+
                         settingsStore.SetValue<TestFileAnalysisSettings, TestProjectStrategy>(
                             s => s.TestCopProjectStrategy, TestProjectStrategy.SingleTestProjectPerSolution );
 
                         settingsStore.SetValue<TestFileAnalysisSettings, string>(
-                            s => s.SingleTestRegexTestToAssembly, @"^(.*?)\.?Tests(\..*?)(\..*)*$");
+                            s => s.SingleTestRegexTestToAssembly, RegExTests.RegexForSingleTestProjectStrategy);
                         settingsStore.SetValue<TestFileAnalysisSettings, string>(
                             s => s.SingleTestRegexTestToAssemblyProjectReplace, @"$1$2");
                         settingsStore.SetValue<TestFileAnalysisSettings, string>(
                             s => s.SingleTestRegexTestToAssemblyProjectSubNamespaceReplace, @"$3");
                         settingsStore.SetValue<TestFileAnalysisSettings, string>(
-                            s => s.SingleTestRegexCodeToTestAssembly, @"^(.*?\..*?)(\..*?)$");
+                            s => s.SingleTestRegexCodeToTestAssembly, @"NOT REQ FOR TEST");
                         settingsStore.SetValue<TestFileAnalysisSettings, string>(
-                            s => s.SingleTestRegexCodeToTestReplace, @"$2"); 
+                            s => s.SingleTestRegexCodeToTestReplace, @"NOT REQ FOR TEST"); 
                     }
 
                     );
