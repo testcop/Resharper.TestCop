@@ -67,9 +67,14 @@ namespace TestCop.Plugin
                                 if (projectFile.Name.StartsWith(classNameBeingRenamed))//just to be sure
                                 {
                                     var newTestClassName = newName + projectFile.Location.NameWithoutExtension.Substring(classNameBeingRenamed.Length);
-                                    ResharperHelper.AppendLineToOutputWindow("Renaming {0} to {1}".FormatEx(projectFile.Name, newTestClassName));                                    
-                                    EditorManager.GetInstance(solution).OpenProjectFile(projectFile, false);//need to ensure class within file is renamed tooo
-                                    
+                                    ResharperHelper.AppendLineToOutputWindow("Renaming {0} to {1}".FormatEx(projectFile.Name, newTestClassName));
+                                    if (projectFile.Location.NameWithoutExtension == newTestClassName)
+                                    {
+                                        ResharperHelper.AppendLineToOutputWindow("# skip as same name");
+                                        continue;
+                                    }
+
+                                    EditorManager.GetInstance(solution).OpenProjectFile(projectFile, false);//need to ensure class within file is renamed tooo                                    
                                     yield return new FileRename(psiModule.GetPsiServices(), projectFile, newTestClassName);
                                 }
                             }  

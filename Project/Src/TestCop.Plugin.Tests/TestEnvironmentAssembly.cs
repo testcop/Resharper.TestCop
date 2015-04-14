@@ -21,11 +21,11 @@ using NUnit.Framework;
 namespace TestCop.Plugin.Tests
 {
     [ZoneDefinition]
-    public interface IXunitTestZone : ITestsZone, IRequire<PsiFeatureTestZone>
+    public interface ITestCopTestZone : ITestsZone, IRequire<PsiFeatureTestZone>
     {}
 
     [SetUpFixture]
-    public class TestEnvironmentAssembly : ExtensionTestEnvironmentAssembly<IXunitTestZone>
+    public class TestEnvironmentAssembly : ExtensionTestEnvironmentAssembly<ITestCopTestZone>
     {
         // The default implementation of ExtensionTestEnvironmentAssembly breaks with multiple assemblies
         protected override JetHostItems.Packages CreateJetHostPackages(JetHostItems.Engine engine)
