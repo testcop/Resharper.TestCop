@@ -174,9 +174,7 @@ namespace TestCop.Plugin.Tests
         }
 
         protected virtual void DumperShortCutAction(IProjectFile projectFile, TextWriter textwriter)
-        {
-            Trace.WriteLine("DISABLED: DumperShortCutAction");//TODO
-            
+        {            
             Lifetimes.Using((lifetime =>
                 {                                    
                     using (ITextControl textControl = OpenTextControl(projectFile))
