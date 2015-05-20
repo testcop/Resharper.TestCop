@@ -27,6 +27,7 @@ using JetBrains.ReSharper.Feature.Services.LiveTemplates.Templates;
 using JetBrains.ReSharper.LiveTemplates.UI;
 using JetBrains.ReSharper.Psi.Util;
 using JetBrains.UI.Application;
+using JetBrains.UI.Avalon;
 using JetBrains.UI.CrossFramework;
 using JetBrains.UI.Icons;
 using JetBrains.UI.Options;
@@ -489,6 +490,10 @@ namespace TestCop.Plugin.OptionsPage
                     = "Each Visual Studio solution has only one test project for all code projects within it. "+
                     "You will need to define regular expressions (RegEx) to desribe how the namespace of your code namespace " +
                     "maps to the namespace of the test within the single test project.";
+
+                  AppendMoreInfoHyperLink(tbStrategyOverview
+                      , "http://testcop.codeplex.com/wikipage?title=Single%20Test%20Project%20Within%20Solution");
+                      
                   break;
 
               case TestProjectStrategy.TestProjectHasSameNamespaceAsCodeProject:
@@ -497,6 +502,10 @@ namespace TestCop.Plugin.OptionsPage
                     "To use this option the namespace of the code and test assembly must be the same. " +
                     "You will need to define regular expressions (RegEx) to desribe how the project name of each Test project " +
                     "maps to the name of the code project.  For example : DalTests => Dal";
+
+                  AppendMoreInfoHyperLink(tbStrategyOverview
+                    ,"http://testcop.codeplex.com/wikipage?title=Each%20test%20project%20maps%20to%20a%20code%20project%20via%20project%20name");
+
                   break;
 
               case TestProjectStrategy.TestProjectPerCodeProject:
@@ -504,6 +513,10 @@ namespace TestCop.Plugin.OptionsPage
                     = "Each test project maps to a single code project through its namespace." +
                     "You will need to define regular expressions (RegEx) to desribe how the namespace of each Test namespace " +
                     "maps to the namespace of the code project. For example : mycorp.myapp.tests.dal => mycorp.myapp.dal";
+
+                  AppendMoreInfoHyperLink(tbStrategyOverview
+                          ,"http://testcop.codeplex.com/wikipage?title=Each%20test%20project%20maps%20to%20a%20code%20project%20via%20namespace");
+                      
                   break;
 
               default:
@@ -513,6 +526,16 @@ namespace TestCop.Plugin.OptionsPage
           
       }
 
-    
+      private void AppendMoreInfoHyperLink(TextBlock tb, string hlink)
+      {
+          tb.Append(new System.Windows.Documents.LineBreak());
+
+          System.Windows.Documents.Hyperlink hyperl =
+              new System.Windows.Documents.Hyperlink(new System.Windows.Documents.Run("More information..."));
+          hyperl.NavigateUri = new Uri(hlink);
+          
+          tb.Append(hyperl);
+          hyperl.RequestNavigate += (sender, args) => System.Diagnostics.Process.Start(args.Uri.AbsoluteUri);    
+      }
   }
 }
