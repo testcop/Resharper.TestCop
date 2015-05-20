@@ -7,6 +7,7 @@
 		<authors>Alcaeus</authors>     
 		<description>Easily switch between unit tests and code. Create missing associated files. Includes highlightings and test templates to keep test projects neat and tidy. Works with NUnit, MSTest, xUnit ...</description>
 		<releaseNotes>
+      1.9.1.2 Added document links to dialog
       1.9.1.1 Adding unit test file templates
       1.9.1.0 Rebuilt with R#9.1
       1.9.0.2 Bug fixes for strategy using the regex from default strategy for test assembly identification.
