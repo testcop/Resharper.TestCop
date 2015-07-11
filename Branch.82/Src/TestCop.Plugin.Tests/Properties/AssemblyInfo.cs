@@ -7,6 +7,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using JetBrains.Application;
+using JetBrains.ReSharper.UnitTestExplorer;
 using JetBrains.Threading;
 using NUnit.Framework;
 using TestCop.Plugin.Highlighting;
@@ -23,6 +24,8 @@ public class TestEnvironmentAssembly : ReSharperTestEnvironmentAssembly
   /// </summary>
   private static IEnumerable<Assembly> GetAssembliesToLoad()
   {
+     Assert.IsNotNull(typeof(UnitTestRunContextActionBase));// make sure we have reference to type so below works for our code
+
     // Test assembly
     yield return Assembly.GetExecutingAssembly();    
     yield return typeof(AbstractShouldBePublicWarning).Assembly;

@@ -109,6 +109,8 @@
     <Compile Include="QuickFixActions\MakeItPublicBulbItem.cs" />
     <Compile Include="resources\ThemedIcons.Unnamed.Generated.cs" />
     <Compile Include="Extensions\ProjectExtensions.cs" />
+    <Compile Include="RunTestAction.cs" />
+    <Compile Include="SimpleMenuItemForProjectItem.cs" />
     <Compile Include="TestFileAnalysisSettings.cs" />
     <Compile Include="TestAnalysisDaemonStage.cs" />
     <Compile Include="TestFileAnalysisDaemonStageProcess.cs" />
