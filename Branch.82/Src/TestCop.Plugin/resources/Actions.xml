@@ -3,8 +3,18 @@
   <action id="TestCop.JumpToTest" text="Jump to and from test file" >
     <shortcut>Control+G Control+T</shortcut>
     <vs-shortcut>Control+G Control+T</vs-shortcut>
-  </action>  
+  </action>
+  <action id="Testcop.UnitTestRunForContext" text="Testcop Run Unit Tests" >
+    <shortcut>Control+U Control+T</shortcut>
+    <vs-shortcut>Control+G Control+X</vs-shortcut>
+  </action>
+  
   <insert group-id="ReSharper" position="last">        
       <action-ref id="TestCop.JumpToTest" />    
   </insert>
+ <!--
+ <insert group-id="ReSharper.UnitTests" position="last">
+    <action-ref id="Testcop.UnitTestRunForContext" />
+  </insert>
+-->
 </actions>

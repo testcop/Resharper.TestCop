@@ -107,12 +107,14 @@ namespace TestCop.Plugin.Helper
                 IProjectFile currentProjectFile = projectFile;
                 var np = new ProjectFileNavigationPoint(currentProjectFile);
 
-                var result = new SimpleMenuItem(np.GetPresentationText(), np.GetPresentationImage()
-                                                , ResharperHelper.ProtectActionFromReEntry(lifetime,"TestingMenuNavigation", clickAction.Invoke(projectFile)));
-
-                result.ShortcutText = np.GetSecondaryPresentationText();
-                result.Style = MenuItemStyle.Enabled;
-                result.Tag = projectFile.Location.FullPath;
+                var result = new SimpleMenuItemForProjectItem(np.GetPresentationText(), np.GetPresentationImage()
+                                                , ResharperHelper.ProtectActionFromReEntry(lifetime,"TestingMenuNavigation", clickAction.Invoke(projectFile))
+                                                ,projectFile)
+                {
+                    ShortcutText = np.GetSecondaryPresentationText(),
+                    Style = MenuItemStyle.Enabled,
+                    Tag = projectFile.Location.FullPath
+                };
 
                 menuItems.Add(result);
             }

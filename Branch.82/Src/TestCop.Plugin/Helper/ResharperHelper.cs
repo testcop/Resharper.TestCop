@@ -31,6 +31,7 @@ namespace TestCop.Plugin.Helper
     public static class ResharperHelper
     {
         public const string MacroNameSwitchBetweenFiles = "Resharper_TestCop_JumpToTest";
+        public const string MacroNameRunTests = "Resharper_Testcop_UnitTestRunForContext";
 
         public static void ForceKeyboardBindings()
         {                                    
@@ -40,7 +41,13 @@ namespace TestCop.Plugin.Helper
                                         () => DTEHelper.AssignKeyboardShortcutIfMissing(
                                             TestCopSettingsManager.Instance.Settings.OutputPanelOpenOnKeyboardMapping
                                             , MacroNameSwitchBetweenFiles
-                                            , TestCopSettingsManager.Instance.Settings.ShortcutToSwitchBetweenFiles));
+                                            , TestCopSettingsManager.Instance.Settings.ShortcutToSwitchBetweenFiles));     
+      
+                ExecuteActionOnUiThread("force TestCop keyboard shortcut hack on every startup",
+                                        () => DTEHelper.AssignKeyboardShortcutIfMissing(
+                                            TestCopSettingsManager.Instance.Settings.OutputPanelOpenOnKeyboardMapping
+                                            , MacroNameRunTests
+                                            , "Global::Ctrl+G, Ctrl+X"));
             }
         }
 
