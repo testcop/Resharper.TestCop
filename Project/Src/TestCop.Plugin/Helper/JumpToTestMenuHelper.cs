@@ -7,8 +7,6 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using JetBrains.Application;
 using JetBrains.Application.DataContext;
 using JetBrains.CommonControls;
 using JetBrains.DataFlow;
@@ -109,8 +107,10 @@ namespace TestCop.Plugin.Helper
                 IProjectFile currentProjectFile = projectFile;
                 var np = new ProjectFileNavigationPoint(currentProjectFile);
 
-                var result = new SimpleMenuItem(np.GetPresentationText(), np.GetPresentationImage()
-                                                , ResharperHelper.ProtectActionFromReEntry(lifetime,"TestingMenuNavigation", clickAction.Invoke(projectFile)));
+                var result = new SimpleMenuItemForProjectItem(np.GetPresentationText()
+                                                , np.GetPresentationImage()
+                                                , ResharperHelper.ProtectActionFromReEntry(lifetime,"TestingMenuNavigation", clickAction.Invoke(projectFile))
+                                                , currentProjectFile);
 
                 result.ShortcutText = np.GetSecondaryPresentationText();
                 result.Style = MenuItemStyle.Enabled;

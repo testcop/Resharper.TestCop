@@ -51,6 +51,11 @@ namespace TestCop.Plugin.Helper.Mapper
                     ResharperHelper.AppendLineToOutputWindow(warningMessage + nameSpaceOfAssociateProject);
                 }
 
+                if (matchedCodeProjects.Count == 0)
+                {
+                    ResharperHelper.AppendLineToOutputWindow("Didn't find project with namespace of: " + nameSpaceOfAssociateProject + " to match " + currentTypeNamespace);                    
+                }
+
                 return matchedCodeProjects.Select(p => new TestCopProjectItem(p, subNameSpace)).ToList();
             }
 

@@ -31,17 +31,15 @@ using JetBrains.UI.PopupMenu;
 using JetBrains.Util;
 using TestCop.Plugin.Extensions;
 using TestCop.Plugin.Helper;
-using TestCop.Plugin.Helper.Mapper;
 using DataConstants = JetBrains.TextControl.DataContext.DataConstants;
 using JetBrains.ReSharper.Psi.Modules;
 
 namespace TestCop.Plugin
 {
-    [Action("Jump to and from test file", Id = 92407, ShortcutScope = ShortcutScope.TextEditor
-        , Icon = typeof(UnnamedThemedIcons.Agent16x16)
-    //    , IdeaShortcuts = new []{"Control+G Control+T"}
-    //    , VsShortcuts = new []{"Control+G Control+T"}
-    )]
+    [Action("Jump to and from test file", Id = 92407, ShortcutScope = ShortcutScope.TextEditor, Icon = typeof(UnnamedThemedIcons.Agent16x16)
+        //    , IdeaShortcuts = new []{"Control+G Control+T"}
+        //    , VsShortcuts = new []{"Control+G Control+T"}
+        )]
     public class JumpToTestFileAction : IExecutableAction, IInsertLast<NavigateGlobalGroup>
     {
         private Action<JetPopupMenu, JetPopupMenu.ShowWhen> _menuDisplayer = (menu, showWhen) => menu.Show(showWhen);
