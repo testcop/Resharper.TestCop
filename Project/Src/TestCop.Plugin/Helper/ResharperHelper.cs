@@ -1,7 +1,7 @@
 ﻿// --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
-// -- Copyright 2014
+// -- Copyright 2015
 // --
 
 using System;
@@ -38,18 +38,29 @@ namespace TestCop.Plugin.Helper
             get { return "Resharper.ReSharper_"+typeof (JumpToTestFileAction).Name.RemoveTrailing("Action"); }
         }
 
+        public static string MacroNameRunTests
+        {
+            get { return "ReSharper_" + typeof(TestCopUnitTestRunContextAction).Name.RemoveTrailing("Action"); }
+        }
+
         public static void ForceKeyboardBindings()
-        {                                                      
+        {
             ExecuteActionOnUiThread("force TestCop keyboard shortcut hack on every startup",
-                () =>{
-                    if (DTEHelper.VisualStudioIsPresent())
-                    {
+              () =>
+              {
+                  if (DTEHelper.VisualStudioIsPresent())
+                  {          
                         DTEHelper.AssignKeyboardShortcutIfMissing(
                             TestCopSettingsManager.Instance.Settings.OutputPanelOpenOnKeyboardMapping
                             , MacroNameSwitchBetweenFiles
                             , TestCopSettingsManager.Instance.Settings.ShortcutToSwitchBetweenFiles);
+
+                        DTEHelper.AssignKeyboardShortcutIfMissing(
+                            TestCopSettingsManager.Instance.Settings.OutputPanelOpenOnKeyboardMapping
+                            , MacroNameRunTests
+                            , "Global::Ctrl+G, Ctrl+X");
                     }
-                });
+                });          
         }
 
         public static void AppendLineToOutputWindow(string msg)
@@ -140,7 +151,7 @@ namespace TestCop.Plugin.Helper
                 return FindFirstTypeInFile(solution, textControl.Document);
             }
 
-            AppendLineToOutputWindow("Element at cursor is of type " + documentElement.GetType().Name);
+            //AppendLineToOutputWindow("Element at cursor is of type " + documentElement.GetType().Name);
 
             IClrTypeName clrTypeName = null;
 

@@ -6,6 +6,7 @@
 
 using System;
 using EnvDTE;
+using JetBrains;
 using JetBrains.ReSharper.Resources.Shell;
 
 namespace TestCop.Plugin.Helper
@@ -27,32 +28,40 @@ namespace TestCop.Plugin.Helper
         /// Must run on main UI thread
         /// </summary>        
         public static void AssignKeyboardShortcutIfMissing(bool showOutputPane, string macroName, string keyboardShortcut)
-        {                        
+        {                   
             var dte = Shell.Instance.GetComponent<DTE>();
-            
-            var command = dte.Commands.Item(macroName);
 
-            if (command != null)
+            try
             {
-                var currentBindings = (System.Object[]) command.Bindings;
-             
-                if (currentBindings.Length == 1)
-                {
-                    if (currentBindings[0].ToString() == keyboardShortcut)
-                    {
-                        GetOutputWindowPane(dte, "TestCop", showOutputPane).OutputString(
-                            string.Format("Keyboard shortcut for '{0}' is '{1}'\n", macroName, keyboardShortcut));
-                        return;
-                    }
-                }
+                var command = dte.Commands.Item(macroName);
 
-                command.Bindings = string.IsNullOrEmpty(keyboardShortcut)
-                                        ? new Object[] {}
-                                        : new Object[] {keyboardShortcut};
+                if (command != null)
+                {
+                    var currentBindings = (System.Object[]) command.Bindings;
+
+                    if (currentBindings.Length == 1)
+                    {
+                        if (currentBindings[0].ToString() == keyboardShortcut)
+                        {
+                            GetOutputWindowPane(dte, "TestCop", showOutputPane).OutputString(
+                                string.Format("Keyboard shortcut for '{0}' is '{1}'\n", macroName, keyboardShortcut));
+                            return;
+                        }
+                    }
+
+                    command.Bindings = string.IsNullOrEmpty(keyboardShortcut)
+                        ? new Object[] {}
+                        : new Object[] {keyboardShortcut};
+                    GetOutputWindowPane(dte, "TestCop", showOutputPane).OutputString(
+                        string.Format("Setting keyboard shortcut for '{0}' to '{1}'\n", macroName, keyboardShortcut)
+                        );
+                }
+            }
+            catch (Exception e)
+            {
                 GetOutputWindowPane(dte, "TestCop", showOutputPane).OutputString(
-                    string.Format("Setting keyboard shortcut for '{0}' to '{1}'\n", macroName, keyboardShortcut)
-                    );      
-            }             
+                    "Error on setting '{0}' to '{1}. Ex={2}'\n".FormatEx(macroName, keyboardShortcut, e.ToString()));
+            }
         }
         
         public static OutputWindowPane GetOutputWindowPane(string name, bool show)
