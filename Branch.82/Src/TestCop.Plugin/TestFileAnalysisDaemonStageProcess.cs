@@ -46,8 +46,8 @@ namespace TestCop.Plugin
         }
 
         public IDaemonProcess DaemonProcess
-        {
-            get { return _myDaemonProcess; }
+        {       
+            get { return _myDaemonProcess; }    
         }
     }
 }

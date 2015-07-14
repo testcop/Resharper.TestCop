@@ -45,11 +45,17 @@ namespace TestCop.Plugin
         {
             _menuDisplayer = overrideMenuDisplay;
         }
-        
+
+        private static bool _alreadyMappedKeyboardHack = false;
+
         public JumpToTestFileAction()
         {
-            ResharperHelper.AppendLineToOutputWindow(Assembly.GetExecutingAssembly().GetName().ToString());            
-            ResharperHelper.ForceKeyboardBindings();
+            if (!_alreadyMappedKeyboardHack)
+            {
+                _alreadyMappedKeyboardHack = true;
+                ResharperHelper.AppendLineToOutputWindow(Assembly.GetExecutingAssembly().GetName().ToString());
+                ResharperHelper.ForceKeyboardBindings();
+            }
         }
 
         bool IActionHandler.Update(IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
