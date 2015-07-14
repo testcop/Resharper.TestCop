@@ -138,7 +138,7 @@ namespace TestCop.Plugin.Helper
                 return FindFirstTypeInFile(solution, textControl.Document);
             }
 
-            AppendLineToOutputWindow("Element at cursor is of type " + documentElement.GetType().Name);
+            //AppendLineToOutputWindow("Element at cursor is of type " + documentElement.GetType().Name);
 
             IClrTypeName clrTypeName = null;
 
