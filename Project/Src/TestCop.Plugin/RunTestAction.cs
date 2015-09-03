@@ -9,7 +9,9 @@ using JetBrains.ActionManagement;
 using JetBrains.Application.DataContext;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.UnitTestExplorer.Actions;
+using JetBrains.ReSharper.UnitTestExplorer.Session;
 using JetBrains.ReSharper.UnitTestFramework;
+using JetBrains.ReSharper.UnitTestFramework.Criteria;
 using JetBrains.UI.ActionsRevised;
 using JetBrains.UI.PopupMenu;
 using TestCop.Plugin.Extensions;
@@ -24,19 +26,14 @@ namespace TestCop.Plugin
         {
             return UnitTestHost.Instance.GetProvider("Process");
         }
-
-        protected override bool Update(ActionPresentation presentation, bool hasAnyTests, IUnitTestSessionView session, ISolution solution)        
+      
+        //protected override void Execute(IUnitTestElements elements, UnitTestSessionView session, ISolution solution, IDataContext context)
+        protected override void Execute(UnitTestElements elements, UnitTestSessionDescriptor sessionDescriptor, ISolution solution, IDataContext context)
         {
-            var resut=base.Update(presentation, hasAnyTests, session, solution);
-            return resut;
-        }
-
-        protected override void Execute(IUnitTestElements elements, IUnitTestSessionView session, ISolution solution, IDataContext context)
-        {
-            if (elements != null && elements.Elements.Count != 0)
+            if (elements != null && elements.Explicit.Count != 0)
             {
                 //default behaviour if tests are present
-                base.Execute(elements, session, solution, context);
+                base.Execute(elements, sessionDescriptor, solution, context);
                 return;
             }
 
@@ -64,7 +61,9 @@ namespace TestCop.Plugin
 
             unitTestElements.AddRange(mgr.GetElements(itms));
 
-            base.Execute(new UnitTestElements(unitTestElements, null), session, solution, context);
+            base.Execute(
+                new UnitTestElements(new TestAncestorCriterion(unitTestElements), unitTestElements.ToArray())
+                , sessionDescriptor, solution, context);
         }
     }
 }

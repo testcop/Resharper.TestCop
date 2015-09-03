@@ -11,6 +11,7 @@ using System.IO;
 using System.Linq;
 using JetBrains.ActionManagement;
 using JetBrains.Annotations;
+using JetBrains.Application;
 using JetBrains.Application.Components;
 using JetBrains.Application.DataContext;
 using JetBrains.Application.Settings;

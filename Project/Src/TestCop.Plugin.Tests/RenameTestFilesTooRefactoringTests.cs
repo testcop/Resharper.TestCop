@@ -6,6 +6,7 @@
 
 using System;
 using System.Linq;
+using JetBrains.Application;
 using JetBrains.Application.Components;
 using JetBrains.Application.Progress;
 using JetBrains.Application.Settings;
