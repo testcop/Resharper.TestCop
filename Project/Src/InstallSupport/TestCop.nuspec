@@ -7,6 +7,7 @@
 		<authors>Alcaeus</authors>     
 		<description>Easily switch between unit tests and code. Create missing associated files. Includes highlightings and test templates to keep test projects neat and tidy. Works with NUnit, MSTest, xUnit ...</description>
 		<releaseNotes>
+      1.9.2.0 Recompiled with R#9.2 
       1.9.2.0-Beta Recompiled with R#9.2 - however tests need rework
       1.9.1.3 Added ability to run associated unit tests
       1.9.1.2 Added document links to dialog
