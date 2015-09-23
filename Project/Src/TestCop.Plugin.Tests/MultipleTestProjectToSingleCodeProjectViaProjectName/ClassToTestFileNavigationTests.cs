@@ -44,32 +44,35 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProjectViaProjectN
         [TestCase(@"<API>\NS1\ClassA.cs")]
         [TestCase(@"<API>\Properties\AssemblyInfo.cs")]     
         public void Test(string testName)
-        {
-            const string altRegEx = "^(.*?)\\.?(Integration)*Tests$";
-
+        {            
             ExecuteWithinSettingsTransaction((settingsStore =>
             {
                 RunGuarded(
                     () =>
-                    {
-                        ClearRegExSettingsPriorToRun(settingsStore);
-
-                        settingsStore.SetValue<TestFileAnalysisSettings, TestProjectStrategy>(
-                            s => s.TestCopProjectStrategy, TestProjectStrategy.TestProjectHasSameNamespaceAsCodeProject);
-                        settingsStore.SetValue<TestFileAnalysisSettings, bool>(
-                            s => s.FindOrphanedProjectFiles, true);
-                        settingsStore.SetValue<TestFileAnalysisSettings, string>(
-                            s => s.TestClassSuffix, "Tests,IntegrationTests");
-
-                        settingsStore.SetValue<TestFileAnalysisSettings, string>(
-                            s => s.TestProjectNameToCodeProjectNameRegEx, altRegEx);
-                        settingsStore.SetValue<TestFileAnalysisSettings, string>(
-                            s => s.TestProjectNameToCodeProjectNameRegExReplace, "");
+                    {                        
+                        SetupTestCopSettings(settingsStore);
                     }
-                    
                     );
                 DoTestFiles(testName);
             }));
+        }
+
+        internal static void SetupTestCopSettings(IContextBoundSettingsStore settingsStore)
+        {
+            ClearRegExSettingsPriorToRun(settingsStore);
+
+            const string altRegEx = "^(.*?)\\.?(Integration)*Tests$";
+            settingsStore.SetValue<TestFileAnalysisSettings, TestProjectStrategy>(
+                s => s.TestCopProjectStrategy, TestProjectStrategy.TestProjectHasSameNamespaceAsCodeProject);
+            settingsStore.SetValue<TestFileAnalysisSettings, bool>(
+                s => s.FindOrphanedProjectFiles, true);
+            settingsStore.SetValue<TestFileAnalysisSettings, string>(
+                s => s.TestClassSuffix, "Tests,IntegrationTests");
+
+            settingsStore.SetValue<TestFileAnalysisSettings, string>(
+                s => s.TestProjectNameToCodeProjectNameRegEx, altRegEx);
+            settingsStore.SetValue<TestFileAnalysisSettings, string>(
+                s => s.TestProjectNameToCodeProjectNameRegExReplace, "");
         }
     }
 }

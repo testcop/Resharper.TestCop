@@ -168,6 +168,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RenameRefactoring\RenameTestFilesTooRefactoring.TestProjectHasSameNamespaceAsCodeProjectTests.cs" />
+    <Compile Include="RenameRefactoring\RenameTestFilesTooRefactoringTestBase.cs" />
+    <Compile Include="RenameRefactoring\RenameTestFilesTooRefactoring.SingleTestProjectPerSolutionTests.cs" />
     <Compile Include="DataContextOfTestTextControl.cs" />
     <Compile Include="MultipleTestProjectToSingleCodeProjectViaProjectName\ClassToTestFileNavigationTests.cs" />
     <Compile Include="MultipleTestProjectToSingleCodeProjectViaProjectName\TestToClassFileNavigationTests.cs" />
@@ -175,7 +178,7 @@
     <Compile Include="Extensions\StringExtensionsTests.cs" />
     <Compile Include="Extensions\TestCopSettingsExtensionsTests.cs" />
     <Compile Include="Extensions\TypeElementExtensionsTests.cs" />
-    <Compile Include="RenameTestFilesTooRefactoringTests.cs" />
+    <Compile Include="RenameRefactoring\RenameTestFilesTooRefactoring.TestProjectPerCodeProjectStrategyTests.cs" />
     <Compile Include="SingleTestProjectToMultipleCodeProject\ClassToTestFileNavigationTests.cs" />
     <Compile Include="SingleTestProjectToMultipleCodeProject\RegExTests.cs" />
     <Compile Include="SingleTestProjectToMultipleCodeProject\TestToClassFileNavigationTests.cs" />

@@ -92,7 +92,7 @@ namespace TestCop.Plugin.Tests
             base.TestFixtureTearDown();
         }
 
-        protected void ClearRegExSettingsPriorToRun(IContextBoundSettingsStore settingsStore)
+        protected static void ClearRegExSettingsPriorToRun(IContextBoundSettingsStore settingsStore)
         {
             settingsStore.SetValue<TestFileAnalysisSettings, string>(
                 s => s.TestProjectToCodeProjectNameSpaceRegEx, "NOT SET BY TEST");

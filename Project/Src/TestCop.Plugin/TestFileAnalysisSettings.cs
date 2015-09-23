@@ -1,7 +1,7 @@
 ﻿// --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
-// -- Copyright 2013
+// -- Copyright 2015
 // --
 
 using System.ComponentModel;
@@ -14,7 +14,8 @@ namespace TestCop.Plugin
 {
     public enum TestProjectStrategy
     {        
-        [Description("Test Project Per Code Project linked by namespace")]TestProjectPerCodeProject=10,
+        [Description("Test Project Per Code Project linked by namespace")]
+        TestProjectPerCodeProject=10,
         [Description("Single Test Project Per Solution")]
         SingleTestProjectPerSolution = 20,
         [Description("Test Project Per Code Project linked by project name (namespace is the same)")]
