@@ -56,27 +56,31 @@ namespace TestCop.Plugin.Tests.SingleTestProjectToMultipleCodeProject
             {
                 RunGuarded(
                     () =>
-                    {
-                        ClearRegExSettingsPriorToRun(settingsStore);
-
-                        settingsStore.SetValue<TestFileAnalysisSettings, TestProjectStrategy>(
-                          s => s.TestCopProjectStrategy, TestProjectStrategy.SingleTestProjectPerSolution);
-
-                        settingsStore.SetValue<TestFileAnalysisSettings, string>(
-                            s => s.SingleTestRegexTestToAssembly, RegExTests.RegexForSingleTestProjectStrategy);
-                        settingsStore.SetValue<TestFileAnalysisSettings, string>(
-                            s => s.SingleTestRegexTestToAssemblyProjectReplace, @"$1$2");
-                        settingsStore.SetValue<TestFileAnalysisSettings, string>(
-                            s => s.SingleTestRegexTestToAssemblyProjectSubNamespaceReplace, @"$3");
-                        settingsStore.SetValue<TestFileAnalysisSettings, string>(
-                            s => s.SingleTestRegexCodeToTestAssembly, @"^(.*?\..*?)(\..*?)$");
-                        settingsStore.SetValue<TestFileAnalysisSettings, string>(
-                            s => s.SingleTestRegexCodeToTestReplace, @"$2"); 
+                    {                        
+                        SetupTestCopSettings(settingsStore);
                     }
-                    
                     );
                 DoTestFiles(testName);
             }));
+        }
+
+        internal static void SetupTestCopSettings(IContextBoundSettingsStore settingsStore)
+        {
+            ClearRegExSettingsPriorToRun(settingsStore);
+
+            settingsStore.SetValue<TestFileAnalysisSettings, TestProjectStrategy>(
+                s => s.TestCopProjectStrategy, TestProjectStrategy.SingleTestProjectPerSolution);
+
+            settingsStore.SetValue<TestFileAnalysisSettings, string>(
+                s => s.SingleTestRegexTestToAssembly, RegExTests.RegexForSingleTestProjectStrategy);
+            settingsStore.SetValue<TestFileAnalysisSettings, string>(
+                s => s.SingleTestRegexTestToAssemblyProjectReplace, @"$1$2");
+            settingsStore.SetValue<TestFileAnalysisSettings, string>(
+                s => s.SingleTestRegexTestToAssemblyProjectSubNamespaceReplace, @"$3");
+            settingsStore.SetValue<TestFileAnalysisSettings, string>(
+                s => s.SingleTestRegexCodeToTestAssembly, @"^(.*?\..*?)(\..*?)$");
+            settingsStore.SetValue<TestFileAnalysisSettings, string>(
+                s => s.SingleTestRegexCodeToTestReplace, @"$2");
         }
     }
 }

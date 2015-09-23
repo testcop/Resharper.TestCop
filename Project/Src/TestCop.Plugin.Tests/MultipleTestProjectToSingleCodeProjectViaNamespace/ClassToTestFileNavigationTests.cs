@@ -46,25 +46,14 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProjectViaNamespac
         [TestCase(@"<TestApplication>\Properties\AssemblyInfo.cs")]     
         public void Test(string testName)
         {
-            const string altRegEx = "^(.*?)\\.?(Integration)*Tests$";
+            
 
             ExecuteWithinSettingsTransaction((settingsStore =>
             {
                 RunGuarded(
                     () =>
-                    {
-                        ClearRegExSettingsPriorToRun(settingsStore);
-
-                        settingsStore.SetValue<TestFileAnalysisSettings, bool>(
-                            s => s.FindOrphanedProjectFiles, true);
-
-                        settingsStore.SetValue<TestFileAnalysisSettings, string>(
-                            s => s.TestClassSuffix, "Tests,IntegrationTests");
-
-                        settingsStore.SetValue<TestFileAnalysisSettings, string>(
-                            s => s.TestProjectToCodeProjectNameSpaceRegEx, altRegEx);
-                        settingsStore.SetValue<TestFileAnalysisSettings, string>(
-                            s => s.TestProjectToCodeProjectNameSpaceRegExReplace, "$1");
+                    {                        
+                        SetupTestCopSettings(settingsStore);
                     }
                     
                     );
@@ -72,6 +61,22 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProjectViaNamespac
             }));
         }
 
- 
+        internal static void SetupTestCopSettings(IContextBoundSettingsStore settingsStore)
+        {
+            const string altRegEx = "^(.*?)\\.?(Integration)*Tests$";
+
+            ClearRegExSettingsPriorToRun(settingsStore);
+
+            settingsStore.SetValue<TestFileAnalysisSettings, bool>(
+                s => s.FindOrphanedProjectFiles, true);
+
+            settingsStore.SetValue<TestFileAnalysisSettings, string>(
+                s => s.TestClassSuffix, "Tests,IntegrationTests");
+
+            settingsStore.SetValue<TestFileAnalysisSettings, string>(
+                s => s.TestProjectToCodeProjectNameSpaceRegEx, altRegEx);
+            settingsStore.SetValue<TestFileAnalysisSettings, string>(
+                s => s.TestProjectToCodeProjectNameSpaceRegExReplace, "$1");
+        }
     }
 }

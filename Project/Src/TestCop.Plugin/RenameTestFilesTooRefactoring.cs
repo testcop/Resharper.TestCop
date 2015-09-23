@@ -1,7 +1,7 @@
 ﻿// --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
-// -- Copyright 2014
+// -- Copyright 2015
 // --
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +13,12 @@ using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Refactorings.Specific.Rename;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Modules;
+using JetBrains.ReSharper.Psi.Util;
 using JetBrains.ReSharper.Refactorings.Rename;
 using JetBrains.Util;
 using TestCop.Plugin.Extensions;
 using TestCop.Plugin.Helper;
+using TestCop.Plugin.Helper.Mapper;
 
 namespace TestCop.Plugin
 {
@@ -35,7 +37,7 @@ namespace TestCop.Plugin
             if (psiModule == null) yield break;
 
             if (typeElement != null)
-            {
+            {                
                 var classNameBeingRenamed = typeElement.GetClrName().ShortName; 
                 var project = psiModule.Project;
                 var solution = project.GetSolution();
@@ -53,31 +55,50 @@ namespace TestCop.Plugin
                   
                     foreach (var testClassSuffix in settings.GetAppropriateTestClassSuffixes(psiModule.SourceFiles.First().Name))
                     {
-                        var projectFilesWithMatchingName = new List<IProjectFile>();
+                        var projectTestFilesWithMatchingName = new List<IProjectFile>();
                         
                         var pattern = string.Format(@"{0}\..*{1}", classNameBeingRenamed, testClassSuffix);//e.g. Class1.SecurityTests
-                        targetProjects.ForEach(p => p.Project.Accept(new ProjectFileFinder(projectFilesWithMatchingName
+                        targetProjects.ForEach(p => p.Project.Accept(new ProjectFileFinder(projectTestFilesWithMatchingName
                             , new Regex(pattern)
                             , new Regex(classNameBeingRenamed + testClassSuffix))));
 
-                        foreach (var projectFile in projectFilesWithMatchingName)
+                        foreach (var projectTestFile in projectTestFilesWithMatchingName)
                         {
-                            if (targetProjects.Any(p => p.SubNamespaceFolder.FullPath == projectFile.Location.Directory.FullPath))
+                            //for the test files that match we reverse lookup to see if they map to code file location
+                            var codeProject=ProjectMappingHelper.GetProjectMappingHeper()
+                                .GetAssociatedProject(projectTestFile.GetProject(), projectTestFile.CalculateExpectedNamespace(projectTestFile.GetPrimaryPsiFile().Language));
+
+                            if (codeProject.Any(codefile => codefile.SubNamespaceFolder == declaredElement.GetSourceFiles().First().GetLocation().Directory))
                             {
-                                if (projectFile.Name.StartsWith(classNameBeingRenamed))//just to be sure
+                                if (projectTestFile.Name.StartsWith(classNameBeingRenamed)) //just to be sure
                                 {
-                                    var newTestClassName = newName + projectFile.Location.NameWithoutExtension.Substring(classNameBeingRenamed.Length);
-                                    ResharperHelper.AppendLineToOutputWindow("Renaming {0} to {1}".FormatEx(projectFile.Name, newTestClassName));
-                                    if (projectFile.Location.NameWithoutExtension == newTestClassName)
+                                    var newTestClassName = newName +
+                                                           projectTestFile.Location.NameWithoutExtension.Substring(
+                                                               classNameBeingRenamed.Length);
+                                    ResharperHelper.AppendLineToOutputWindow(
+                                        "Renaming {0} to {1}".FormatEx(projectTestFile.Location.FullPath, newTestClassName));
+                                    if (projectTestFile.Location.NameWithoutExtension == newTestClassName)
                                     {
                                         ResharperHelper.AppendLineToOutputWindow("# skip as same name");
                                         continue;
                                     }
 
-                                    EditorManager.GetInstance(solution).OpenProjectFile(projectFile, false);//need to ensure class within file is renamed tooo                                    
-                                    yield return new FileRename(psiModule.GetPsiServices(), projectFile, newTestClassName);
+                                    EditorManager.GetInstance(solution).OpenProjectFile(projectTestFile, false);
+                                        //need to ensure class within file is renamed tooo                                    
+                                    yield return
+                                        new FileRename(psiModule.GetPsiServices(), projectTestFile, newTestClassName);
                                 }
-                            }  
+                            }                            
+                            else
+                            {
+                                 codeProject.ForEach(p=>
+                                ResharperHelper.AppendLineToOutputWindow(
+                                "Skipped {0} as it's associated code folder {1}<>{2}".FormatEx(
+                                    projectTestFile.Location.FullPath,
+                                    p.SubNamespaceFolder.FullPath
+                                    ,declaredElement.GetSourceFiles().First().GetLocation().Directory.FullPath)));
+                             }
+                            
                         }                   
                     }
                 }                
