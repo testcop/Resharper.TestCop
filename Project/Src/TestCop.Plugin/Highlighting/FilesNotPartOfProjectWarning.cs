@@ -1,30 +1,41 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Daemon;
-using JetBrains.ReSharper.Daemon.CSharp.Errors;
 using JetBrains.ReSharper.Feature.Services.CSharp.Daemon;
 using JetBrains.ReSharper.Feature.Services.Daemon;
+using JetBrains.ReSharper.Psi.CSharp;
 using TestCop.Plugin.Extensions;
+using TestCop.Plugin.Highlighting;
+
+[assembly: RegisterConfigurableSeverity(
+        FilesNotPartOfProjectWarning.SeverityId,
+        null, Highlighter.HighlightingGroup,
+        "Orphaned file not part of project",
+        "TestCop : All code files should be part of project",
+        Severity.WARNING,
+        false)]
 
 namespace TestCop.Plugin.Highlighting
-{
-    [StaticSeverityHighlighting(Severity.WARNING, Highlighter.HighlightingGroup)]
+{    
+    [ConfigurableSeverityHighlighting(SeverityId, CSharpLanguage.Name)]
     public class FilesNotPartOfProjectWarning : CSharpHighlightingBase, IHighlighting
     {
         private readonly IProject _currentProject;
         private readonly IList<FileInfo> _fileOnDisk;
         internal const string SeverityId = "FilesNotPartOfProjectWarning";
-
-    
+        
         public FilesNotPartOfProjectWarning(IProject currentProject, IList<FileInfo> fileOnDisk)
         {
             _currentProject = currentProject;
             _fileOnDisk = fileOnDisk;
         }
+
         
         public override bool IsValid()
         {
+            if (HighlightingSettingsManager.Instance.GetConfigurableSeverity(SeverityId, _currentProject.GetSolution())
+                == Severity.DO_NOT_SHOW) return false;
+            
             return true;
         }
 

@@ -207,7 +207,7 @@ namespace TestCop.Plugin
             
             if (!statements.Any())
             {
-                IHighlighting highlighting = new TestMethodMissingCodeWarning("Test method is empty");
+                IHighlighting highlighting = new TestMethodMissingCodeWarning(declaration, "Test method is empty");
                 _myHighlightings.Add(new HighlightingInfo(declaration.GetNameDocumentRange(), highlighting));
             }
             //declaration.Body.Accept(TreeNodeVisitor) -- extend to look at code for at least one IExpressionStatement
@@ -256,7 +256,7 @@ namespace TestCop.Plugin
                     ? thisDeclaration.OwnerNamespaceDeclaration.DeclaredName
                     : "";
 
-                var associatedProjects = currentProject.GetAssociatedProjects(currentDeclarationNamespace);
+                var associatedProjects = currentProject.GetAssociatedProjects(CurrentSourceFile.ToProjectFile());
                 if (associatedProjects == null || associatedProjects.Count == 0)
                 {
                     var highlight =
@@ -306,7 +306,8 @@ namespace TestCop.Plugin
             var thisProject = thisDeclaration.GetProject();
             if (thisProject == null) return;
 
-            var associatedProject = thisProject.GetAssociatedProjects(thisDeclaration.GetContainingNamespaceDeclaration().DeclaredName).FirstOrDefault();
+            var associatedProject = thisProject.GetAssociatedProjects(CurrentSourceFile.ToProjectFile()).FirstOrDefault();
+
             if (associatedProject == null) return;
             ResharperHelper.RemoveElementsNotInProjects(declaredElements,new []{associatedProject.Project});   
 
@@ -316,8 +317,9 @@ namespace TestCop.Plugin
             var associatedProjectsDefaultNameSpace = associatedProject.Project.GetDefaultNamespace();
             if (string.IsNullOrEmpty(associatedProjectsDefaultNameSpace)) return;
 
-            var nsToBeFoundShouldBe = associatedProject.Project.GetDefaultNamespace()+associatedProject.SubNamespace;
-                       
+            //var nsToBeFoundShouldBe = associatedProject.Project.GetDefaultNamespace()+associatedProject.SubNamespace;
+            var nsToBeFoundShouldBe = associatedProject.FullNamespace();
+            
             //Lookup the namespaces of the declaredElements we've found that possibly match this test             
             IList<string> foundNameSpaces = new List<string>();
             foreach (var declaredTestElement in declaredElements)
@@ -337,6 +339,7 @@ namespace TestCop.Plugin
             {
                 if (ns.StartsWith(associatedProjectsDefaultNameSpace))
                 {
+                    ///TODO: Review this can be probably be replaced with associatedProject method calls
                     var targetsubNameSpace = ns.Substring(associatedProjectsDefaultNameSpace.Length).TrimStart(new[] { '.' });
                     string suggestedNameSpace = thisProjectsDefaultNamespace.AppendIfNotNull(".", targetsubNameSpace );
 

@@ -17,6 +17,7 @@ using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Menu;
 using JetBrains.ReSharper.Feature.Services.Navigation;
+using JetBrains.ReSharper.Features.Inspections.Bookmarks.NumberedBookmarks;
 using JetBrains.ReSharper.Features.Navigation.Features.Goto.GoToMember;
 using JetBrains.ReSharper.Features.Navigation.Features.NavigateFromHere;
 using JetBrains.ReSharper.Psi;
@@ -74,12 +75,12 @@ namespace TestCop.Plugin
             }
             ISolution solution = context.GetData(JetBrains.ProjectModel.DataContext.DataConstants.SOLUTION);
             if (solution == null){return;}
-
+            
             IClrTypeName clrTypeClassName = ResharperHelper.GetClassNameAppropriateToLocation(solution, textControl);
             if (clrTypeClassName == null) return;
-
+            
             var currentProject = context.GetData(JetBrains.ProjectModel.DataContext.DataConstants.Project);
-            var targetProjects = currentProject.GetAssociatedProjects(clrTypeClassName.GetNamespaceName());     
+            var targetProjects = currentProject.GetAssociatedProjects(textControl.ToProjectFile(solution));     
             if(targetProjects.IsEmpty())
             {
                 ResharperHelper.AppendLineToOutputWindow("Unable to locate associated assembly - check project namespaces and testcop Regex");
@@ -157,7 +158,7 @@ namespace TestCop.Plugin
             IPsiServices services = solution.GetPsiServices();
             IProject currentProject = context.GetData(JetBrains.ProjectModel.DataContext.DataConstants.Project);
 
-            var targetProjects = currentProject.GetAssociatedProjects(clrTypeClassName.GetNamespaceName() );
+            var targetProjects = currentProject.GetAssociatedProjects(textControl.ToProjectFile(solution));
             ISearchDomain searchDomain;
 
             if (Settings.FindAnyUsageInTestAssembly)
@@ -167,6 +168,7 @@ namespace TestCop.Plugin
             }
             else
             {
+                ///TODO: take the regex out of targetProjects..
                 //look for similar named files that also have references to this code            
                 var items = new List<IProjectFile>();
                 var pattern = string.Format(@"{0}\..*{1}", clrTypeClassName.ShortName, testClassSuffix);

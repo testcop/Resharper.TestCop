@@ -25,10 +25,12 @@ namespace TestCop.Plugin.Helper.Mapper
             }
         }
 
-        public override IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string currentTypeNamespace)
+        public override IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, IProjectFile projectFile, string currentTypeNamespace)
         {
             var settings = Settings;
             const string warningMessage = "Not Supported: More than one code project has a default namespace of ";
+
+            var filePatterns = AssociatedFileNames(Settings, projectFile);
           
             if (currentProject.IsTestProject())
             {                
@@ -56,7 +58,7 @@ namespace TestCop.Plugin.Helper.Mapper
                     ResharperHelper.AppendLineToOutputWindow("Didn't find project with namespace of: " + nameSpaceOfAssociateProject + " to match " + currentTypeNamespace);                    
                 }
 
-                return matchedCodeProjects.Select(p => new TestCopProjectItem(p, subNameSpace)).ToList();
+                return matchedCodeProjects.Select(p => new TestCopProjectItem(p, TestCopProjectItem.ProjectItemTypeEnum.Code, subNameSpace, filePatterns)).ToList();
             }
 
             string subNameSpaceOfTest;
@@ -70,7 +72,7 @@ namespace TestCop.Plugin.Helper.Mapper
                 ResharperHelper.AppendLineToOutputWindow("Not Supported: Expected only one test project for all code projects to use");                
             }
 
-            return matchedTestProjects.Select(p => new TestCopProjectItem(p, subNameSpaceOfTest)).Take(1).ToList();                                        
+            return matchedTestProjects.Select(p => new TestCopProjectItem(p, TestCopProjectItem.ProjectItemTypeEnum.Tests, subNameSpaceOfTest, filePatterns)).Take(1).ToList();                                        
         }
     }
 }
