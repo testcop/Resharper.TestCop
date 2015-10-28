@@ -9,14 +9,27 @@ using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.CSharp.Errors;
 using JetBrains.ReSharper.Feature.Services.CSharp.Daemon;
 using JetBrains.ReSharper.Feature.Services.Daemon;
+using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.Util;
+using TestCop.Plugin.Highlighting;
+
+[assembly: RegisterConfigurableSeverity(
+    TestFileNameSpaceWarning.SeverityId,
+    null, Highlighter.HighlightingGroup,
+    "Namespace of file doesn't match its location",
+    "Namespace of file doesn't match its location",
+    Severity.WARNING,
+    false)]
 
 namespace TestCop.Plugin.Highlighting
 {
-    [StaticSeverityHighlighting(Severity.WARNING, Highlighter.HighlightingGroup)]
+    
+    [ConfigurableSeverityHighlighting(SeverityId, CSharpLanguage.Name)]
     public class TestFileNameSpaceWarning : CSharpHighlightingBase, IHighlighting
     {
+        internal const string SeverityId = "TestFileNameSpaceWarning";
+
         private readonly IProjectItem _offendingProjectItem;
 
         public IProjectItem OffendingProjectItem
@@ -53,6 +66,9 @@ namespace TestCop.Plugin.Highlighting
 
         public override bool IsValid()
         {
+            if (HighlightingSettingsManager.Instance.GetConfigurableSeverity(SeverityId, _declaration.GetSolution())
+                == Severity.DO_NOT_SHOW) return false;
+
             return true;
         }
 

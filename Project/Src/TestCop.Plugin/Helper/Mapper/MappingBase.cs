@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.ReSharper.Psi.Util;
+using JetBrains.UI.Avalon.TreeListView;
 using JetBrains.Util;
 using TestCop.Plugin.Extensions;
 
@@ -10,7 +12,7 @@ namespace TestCop.Plugin.Helper.Mapper
 {
     public abstract class MappingBase : IProjectMappingHeper
     {
-        public abstract IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string currentNameSpace);
+        public abstract IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, IProjectFile projectFile, string currentNameSpace);
 
         public virtual bool IsTestProject(IProject project)
         {
@@ -65,6 +67,38 @@ namespace TestCop.Plugin.Helper.Mapper
                 return true;
             }
             return false;
-        } 
+        }
+
+        protected static IEnumerable<String> AssociatedFileNames(TestFileAnalysisSettings settings, IProjectFile projectFile)
+        {
+            return AssociatedFileNames(settings,projectFile.Location.NameWithoutExtension);
+        }
+
+        private static IEnumerable<String> AssociatedFileNames(TestFileAnalysisSettings settings, string baseFileNameWithoutExt)
+        {        
+            string classNameFromFileName = baseFileNameWithoutExt;
+
+            foreach (var suffix in settings.TestClassSuffixes())
+            {
+                if (baseFileNameWithoutExt.EndsWith(suffix))
+                {
+                    classNameFromFileName = baseFileNameWithoutExt.Split(new[] { '.' }, 2)[0].RemoveTrailing(suffix);
+                    break;
+                }
+            }
+
+            if (baseFileNameWithoutExt != classNameFromFileName)
+            {
+                yield return classNameFromFileName;
+            }
+            else
+            {
+                foreach (var suffix in settings.TestClassSuffixes())
+                {
+                    yield return string.Format(@"{0}{1}", classNameFromFileName, suffix);//e.g. Class1Tests
+                    yield return string.Format(@"{0}\..*{1}", classNameFromFileName, suffix);  //e.g. Class1.SecurityTests                  
+                }
+            }
+        }
     }
 }

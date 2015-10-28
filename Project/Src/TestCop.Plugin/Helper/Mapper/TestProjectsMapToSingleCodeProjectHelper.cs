@@ -18,10 +18,12 @@ namespace TestCop.Plugin.Helper.Mapper
 {
     public class TestProjectsMapToSingleCodeProjectHelper : MappingBase
     {                
-        public override IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string currentTypeNamespace)
+        public override IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, IProjectFile projectFile, string currentTypeNamespace)
         {
             const string warningMessage = "Not Supported: More than one code project has a default namespace of ";
             string subNameSpace = currentTypeNamespace.RemoveLeading(currentProject.GetDefaultNamespace());
+            
+            var filePatterns=AssociatedFileNames(Settings, projectFile);
 
             if (currentProject.IsTestProject())
             {
@@ -35,13 +37,15 @@ namespace TestCop.Plugin.Helper.Mapper
                     ResharperHelper.AppendLineToOutputWindow(warningMessage + nameSpaceOfAssociateProject);
                 }
 
-                return matchedCodeProjects.Select(p => new TestCopProjectItem(p, subNameSpace)).ToList();
+
+
+                return matchedCodeProjects.Select(p => new TestCopProjectItem(p, TestCopProjectItem.ProjectItemTypeEnum.Code, subNameSpace, filePatterns)).ToList();
             }
 
             var matchedTestProjects = currentProject.GetSolution().GetTestProjects().Where(
                 p => GetNameSpaceOfAssociatedCodeProject(p) == currentProject.GetDefaultNamespace()).ToList();
 
-            return matchedTestProjects.Select(p => new TestCopProjectItem(p, subNameSpace)).ToList();                                        
+            return matchedTestProjects.Select(p => new TestCopProjectItem(p, TestCopProjectItem.ProjectItemTypeEnum.Tests, subNameSpace, filePatterns)).ToList();                                        
         }
        
         private static string GetNameSpaceOfAssociatedCodeProject(IProject testProject)

@@ -39,57 +39,9 @@ using TestCop.Plugin.Highlighting;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.9.2.1")]
-[assembly: AssemblyFileVersion("1.9.2.1")]
+[assembly: AssemblyVersion("1.9.2.2")]
+[assembly: AssemblyFileVersion("1.9.2.2")]
 
 [assembly: RegisterStaticHighlightingsGroup(Highlighter.HighlightingGroup, "Testing", true)]
 [assembly: RegisterConfigurableHighlightingsGroup("Testing", "Testing")]
-
-[assembly: RegisterConfigurableSeverity(
-        MethodShouldBePublicWarning.SeverityId,
-        null, "Testing",
-        "Test method should be public",
-        "TestCop : Method with testing attributes should be public",
-        Severity.ERROR,
-        false)]
-
-[assembly: RegisterConfigurableSeverity(
-        ClassShouldBePublicWarning.SeverityId,
-        null, "Testing",
-        "Test class should be public",
-        "TestCop : Class with testing attributes should be public",
-        Severity.ERROR,
-        false)]
-
-[assembly: RegisterConfigurableSeverity(
-        TestClassNameDoesNotMatchFileNameWarning.SeverityId,
-        null, "Testing",
-        "Test class name should match file name",
-        "TestCop : The name of the test file should match the test class name it contains",
-        Severity.ERROR,
-        false)]
-
-[assembly: RegisterConfigurableSeverity(
-        TestClassNameSuffixWarning.SeverityId,
-        null, "Testing",
-        "All test classes should have the same suffix",
-        "TestCop : To easily identify a test class by its name it must have the configured suffix",
-        Severity.ERROR,
-        false)]
-
-[assembly: RegisterConfigurableSeverity(
-        TestMethodMissingCodeWarning.SeverityId,
-        null, "Testing",
-        "Test methods should contain code",
-        "TestCop : All tests methods should test something",
-        Severity.ERROR,
-        false)]
-
-[assembly: RegisterConfigurableSeverity(
-        FilesNotPartOfProjectWarning.SeverityId,
-        null, "Testing",
-        "Orphaned file not part of project",
-        "TestCop : All code files should be part of project",
-        Severity.ERROR,
-        false)]
     

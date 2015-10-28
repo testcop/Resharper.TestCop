@@ -4,17 +4,26 @@
 // -- Copyright 2013
 // --
 
-using JetBrains.ReSharper.Daemon;
-using JetBrains.ReSharper.Daemon.CSharp.Errors;
 using JetBrains.ReSharper.Feature.Services.CSharp.Daemon;
 using JetBrains.ReSharper.Feature.Services.Daemon;
+using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.Tree;
+using TestCop.Plugin.Highlighting;
+
+[assembly: RegisterConfigurableSeverity(
+    TestFileNameWarning.SeverityId,
+    null, Highlighter.HighlightingGroup,
+    "The file name for the test does not match testcop rules would be ClassATests.cs or ClassA.SecurityTests.cs or ClassA.SecurityIntegrationTests.cs",
+    "Consistent naming aids code navigation and refactorings",
+    Severity.WARNING,
+    false)]
 
 namespace TestCop.Plugin.Highlighting
 {
-    [StaticSeverityHighlighting(Severity.WARNING, Highlighter.HighlightingGroup)]
+    [ConfigurableSeverityHighlighting(SeverityId, CSharpLanguage.Name)]
     public class TestFileNameWarning : CSharpHighlightingBase, IHighlighting
     {
+        internal const string SeverityId = "TestFileNameWarning";
         private readonly string _tooltipString;
         private readonly IAccessRightsOwnerDeclaration _declaration;
 
@@ -31,6 +40,9 @@ namespace TestCop.Plugin.Highlighting
 
         public override bool IsValid()
         {
+            if (HighlightingSettingsManager.Instance.GetConfigurableSeverity(SeverityId, _declaration.GetSolution())
+                == Severity.DO_NOT_SHOW) return false;
+
             return true;
         }
 
