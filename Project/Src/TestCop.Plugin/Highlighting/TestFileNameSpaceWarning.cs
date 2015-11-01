@@ -5,8 +5,6 @@
 // --
 
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Daemon;
-using JetBrains.ReSharper.Daemon.CSharp.Errors;
 using JetBrains.ReSharper.Feature.Services.CSharp.Daemon;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi.CSharp;

@@ -26,16 +26,8 @@ namespace TestCop.Plugin.Highlighting
         internal const string SeverityId = "ClassShouldBePublic";
 
         public ClassShouldBePublicWarning(string attributeName, IAccessRightsOwnerDeclaration declaration)
-            : base(string.Format("Types with [{0}] must be public.", attributeName), declaration)
+            : base(SeverityId, string.Format("Types with [{0}] must be public.", attributeName), declaration)
         {
-        }
-
-        public override bool IsValid()
-        {
-            if (HighlightingSettingsManager.Instance.GetConfigurableSeverity(SeverityId, base.Declaration.GetSolution())
-                == Severity.DO_NOT_SHOW) return false;
-
-            return true;
-        }
+        }      
     }
 }

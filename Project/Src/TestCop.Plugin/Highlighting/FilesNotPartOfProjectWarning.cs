@@ -24,7 +24,7 @@ namespace TestCop.Plugin.Highlighting
         private readonly IList<FileInfo> _fileOnDisk;
         internal const string SeverityId = "FilesNotPartOfProjectWarning";
         
-        public FilesNotPartOfProjectWarning(IProject currentProject, IList<FileInfo> fileOnDisk)
+        public FilesNotPartOfProjectWarning(IProject currentProject, IList<FileInfo> fileOnDisk)            
         {
             _currentProject = currentProject;
             _fileOnDisk = fileOnDisk;

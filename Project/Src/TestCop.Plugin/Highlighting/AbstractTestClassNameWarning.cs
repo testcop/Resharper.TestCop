@@ -14,6 +14,7 @@ namespace TestCop.Plugin.Highlighting
 {
     public abstract class AbstractTestClassNameWarning : CSharpHighlightingBase, IHighlighting
     {
+        private readonly string _severityId;
         private readonly string _tooltipString;
         private readonly IAccessRightsOwnerDeclaration _declaration;
 
@@ -22,17 +23,21 @@ namespace TestCop.Plugin.Highlighting
             get { return _declaration; }
         }
 
-        protected AbstractTestClassNameWarning(string toolTip, IAccessRightsOwnerDeclaration declaration)
+        protected AbstractTestClassNameWarning(string severityId, string toolTip, IAccessRightsOwnerDeclaration declaration)
         {
+            _severityId = severityId;
             _tooltipString = toolTip;
             _declaration = declaration;
         }
 
         public override bool IsValid()
         {
+            if (HighlightingSettingsManager.Instance.GetConfigurableSeverity(_severityId, Declaration.GetSolution())
+                == Severity.DO_NOT_SHOW) return false;
+
             return true;
         }
-
+   
         public string ToolTip
         {
             get { return _tooltipString; }
