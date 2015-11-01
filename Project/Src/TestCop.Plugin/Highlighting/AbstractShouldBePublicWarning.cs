@@ -12,8 +12,9 @@ using JetBrains.ReSharper.Psi.Tree;
 
 namespace TestCop.Plugin.Highlighting
 {
-    public abstract class AbstractShouldBePublicWarning :CSharpHighlightingBase,IHighlighting
-    {       
+    public abstract class AbstractShouldBePublicWarning : CSharpHighlightingBase, IHighlighting
+    {
+        private readonly string _severityId;
         private readonly string _tooltipString;
         private readonly IAccessRightsOwnerDeclaration _declaration;
 
@@ -22,17 +23,21 @@ namespace TestCop.Plugin.Highlighting
             get { return _declaration; }
         }
 
-        protected AbstractShouldBePublicWarning(string toolTip, IAccessRightsOwnerDeclaration declaration)
+        protected AbstractShouldBePublicWarning(string severityId, string toolTip, IAccessRightsOwnerDeclaration declaration)            
         {
+            _severityId = severityId;
             _tooltipString = toolTip;
             _declaration = declaration;
         }
 
         public override bool IsValid()
-        {            
+        {
+            if (HighlightingSettingsManager.Instance.GetConfigurableSeverity(_severityId, Declaration.GetSolution())
+                == Severity.DO_NOT_SHOW) return false;
+
             return true;
         }
-
+     
         public string ToolTip
         {
             get { return _tooltipString; }

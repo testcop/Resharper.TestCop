@@ -24,17 +24,9 @@ namespace TestCop.Plugin.Highlighting
     {
         internal const string SeverityId = "MethodShouldBePublic";
 
-        public MethodShouldBePublicWarning(string attributeName, IAccessRightsOwnerDeclaration declaration)             
-            : base(string.Format("Methods with [{0}] must be public.", attributeName), declaration)
+        public MethodShouldBePublicWarning(string attributeName, IAccessRightsOwnerDeclaration declaration)
+            : base(SeverityId, string.Format("Methods with [{0}] must be public.", attributeName), declaration)
         {
-        }
-
-        public override bool IsValid()
-        {
-            if (HighlightingSettingsManager.Instance.GetConfigurableSeverity(SeverityId, base.Declaration.GetSolution())
-                == Severity.DO_NOT_SHOW) return false;
-
-            return true;
-        }
+        }       
     }
 }

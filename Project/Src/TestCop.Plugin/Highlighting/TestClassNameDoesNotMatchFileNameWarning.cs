@@ -24,16 +24,8 @@ namespace TestCop.Plugin.Highlighting
         internal const string SeverityId = "TestClassNameDoesNotMatchFileNameWarning";
 
         public TestClassNameDoesNotMatchFileNameWarning(string declaredClassName, string testClassNameFromFileName, IAccessRightsOwnerDeclaration declaration)
-            : base(string.Format("Test classname and filename are not in sync {0}<>{1}.", declaredClassName, testClassNameFromFileName), declaration)
+            : base(SeverityId, string.Format("Test classname and filename are not in sync {0}<>{1}.", declaredClassName, testClassNameFromFileName), declaration)
         {            
-        }
-
-        public override bool IsValid()
-        {
-            if (HighlightingSettingsManager.Instance.GetConfigurableSeverity(SeverityId, base.Declaration.GetSolution())
-                == Severity.DO_NOT_SHOW) return false;
-
-            return true;
         }
     }
 }

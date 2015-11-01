@@ -125,7 +125,7 @@
             </TabItem>
             <TabItem Header="RegEx Patterns" Name="MultiTestRegex" HorizontalAlignment="Left">
                 <StackPanel Height="auto" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,55">
-                    <TextBlock TextWrapping="Wrap" Height="auto" FontWeight="Bold"><Run Text="Test Classes And Test Namespaces"/></TextBlock>
+                    <TextBlock TextWrapping="Wrap" Height="auto" FontWeight="Bold"><Run Text="Test Namespaces"/></TextBlock>
                     <TextBlock x:Name="tbSuffixGuidance" TextWrapping="Wrap" Height="auto"  HorizontalAlignment="Center" ><Run Text="The configuration"/><Run Language="en-gb" Text=" below"/><Run Text=" means that all Unit Test Classes must end in Tests (e.g. ClassA Tests ) and the namespace of all test assemblies must match the RegEx xxAAxx."/></TextBlock>
                     <Separator Height="21" Margin="0" Visibility="Hidden"/>
                     <StackPanel Orientation="Horizontal" Margin="-1,0,1,0" >
@@ -142,7 +142,7 @@
             </TabItem>
             <TabItem Header="RegEx Patterns" Name="MultiTestSameNamespaceRegex" HorizontalAlignment="Left">
                 <StackPanel Height="auto" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,55">
-                    <TextBlock TextWrapping="Wrap" Height="auto" FontWeight="Bold"><Run Text="Test Classes And Test Project Naming"/></TextBlock>
+                    <TextBlock TextWrapping="Wrap" Height="auto" FontWeight="Bold"><Run Text="Test Project Naming"/></TextBlock>
                     <TextBlock x:Name="tbProjectSuffixGuidance" TextWrapping="Wrap" Height="auto"  HorizontalAlignment="Center" ><Run Text="The configuration below means that all Unit Test Classes must end in Tests (e.g. ClassA Tests ) and the project name of all test assemblies must match the RegEx xxAAxx."/></TextBlock>
                     <Separator Height="21" Margin="0" Visibility="Hidden"/>
                     <StackPanel Orientation="Horizontal" Margin="-1,0,1,0" >
