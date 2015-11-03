@@ -56,6 +56,7 @@ namespace TestCop.Plugin.Tests.Highlighting
         [TestCase("TestClassWithDifferentRandomExt.cs")]
         [TestCase("ClassA.SomeCategoryWithDifferentRandomExt.cs")]
         [TestCase("ClassAMissingSuffix.cs")]
+        [TestCase("ClassAMissingSuffixDisabled.cs")]
         public void TestsWithClassSuffixDifferentToDefault(string testName)
         {
             // the default suffix is 'Tests' - we test that this can be overidden 

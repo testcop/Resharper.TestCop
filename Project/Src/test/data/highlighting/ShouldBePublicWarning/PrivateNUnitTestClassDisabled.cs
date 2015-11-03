@@ -1,0 +1,5 @@
+[TestFixture]
+// ReSharper disable once ClassShouldBePublic
+internal class PrivateNUnitTestClassDisabled
+{
+}

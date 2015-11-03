@@ -1,44 +1,48 @@
 ﻿// --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
-// -- Copyright 2013
+// -- Copyright 2015
 // --
 
 using System;
-using System.Collections.Generic;
 using JetBrains.Application.Settings;
-using JetBrains.ReSharper.Daemon;
+using JetBrains.ReSharper.Feature.Services.CSharp.Daemon;
 using JetBrains.ReSharper.Feature.Services.Daemon;
-using JetBrains.ReSharper.Psi;
+using JetBrains.ReSharper.Psi.CSharp.Tree;
 
 namespace TestCop.Plugin
 {
-    /// <summary>
-    /// Daemon stage for analysis. This class is automatically loaded by ReSharper daemon 
-    /// because it's marked with the attribute.
-    /// </summary>
     [DaemonStage]
-    public class TestAnalysisDaemonStage : IDaemonStage
-    {        
+    public class TestAnalysisDaemonStage : CSharpDaemonStageBase
+    {
         /// <summary>
-        /// This method provides a <see cref="IDaemonStageProcess"/> instance which is assigned to highlighting a single document
+        /// Daemon stage for analysis. This class is automatically loaded by ReSharper daemon 
+        /// because it's marked with the attribute.
         /// </summary>
-        public IEnumerable<IDaemonStageProcess> CreateProcess(IDaemonProcess process, IContextBoundSettingsStore settings, DaemonProcessKind kind)
+        protected override IDaemonStageProcess CreateProcess(IDaemonProcess process, IContextBoundSettingsStore settings,
+            DaemonProcessKind processKind, ICSharpFile file)
         {
             if (process == null)
                 throw new ArgumentNullException("process");
 
-            return new IDaemonStageProcess[]
-                   {
-                       new TestFileAnalysisDaemonStageProcess(process,settings)
-                   , new ProjectAnalysisDaemonStageProcess(process,settings)
-                   };
-        }
+            return new TestFileAnalysisDaemonStageProcess(process,settings, file);
+        }             
+    }
 
-        public ErrorStripeRequest NeedsErrorStripe(IPsiSourceFile sourceFile, IContextBoundSettingsStore settings)
+    [DaemonStage]
+    public class TestAnalysisProjectDaemonStage : CSharpDaemonStageBase
+    {
+        /// <summary>
+        /// Daemon stage for analysis. This class is automatically loaded by ReSharper daemon 
+        /// because it's marked with the attribute.
+        /// </summary>
+        protected override IDaemonStageProcess CreateProcess(IDaemonProcess process, IContextBoundSettingsStore settings,
+            DaemonProcessKind processKind, ICSharpFile file)
         {
-            // We want to add markers to the right-side stripe as well as contribute to document errors
-            return ErrorStripeRequest.STRIPE_AND_ERRORS;
+            if (process == null)
+                throw new ArgumentNullException("process");
+
+            return new ProjectAnalysisDaemonStageProcess(process, settings, file);        
         }
     }
 }

@@ -7,8 +7,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Application.Settings;
+using JetBrains.DocumentModel;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Daemon;
+using JetBrains.ReSharper.Daemon.CSharp.Stages;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.ReSharper.Psi;
@@ -29,16 +31,22 @@ namespace TestCop.Plugin
     public class TestFileAnalysisElementProcessor : IRecursiveElementProcessor
     {
         private readonly IDaemonProcess _process;
-        private readonly IContextBoundSettingsStore _settings;        
-        private readonly List<HighlightingInfo> _myHighlightings = new List<HighlightingInfo>();
+        private readonly IContextBoundSettingsStore _settings;
+        private readonly DefaultHighlightingConsumer _highlightingConsumer;
 
-        public List<HighlightingInfo> Highlightings
+        public IList<HighlightingInfo> Highlightings
         {
-            get { return _myHighlightings; }
+            get { return _highlightingConsumer.Highlightings; }
         }
 
-        public TestFileAnalysisElementProcessor(IDaemonProcess process, IContextBoundSettingsStore settings)
+        protected void AddHighlighting(DocumentRange range, IHighlighting highlighting)
         {
+            _highlightingConsumer.AddHighlighting(highlighting, range);
+        }
+
+        public TestFileAnalysisElementProcessor(TestFileAnalysisDaemonStageProcess stageProcess, IDaemonProcess process, IContextBoundSettingsStore settings)
+        {
+            _highlightingConsumer = new DefaultHighlightingConsumer(stageProcess, settings);
             _process = process;
             _settings = settings;            
         }
@@ -174,7 +182,7 @@ namespace TestCop.Plugin
                 if (!declaredClassName.EndsWith(Settings.TestClassSuffixes()))
                 {
                     var testingWarning = new TestClassNameSuffixWarning(Settings.TestClassSuffix, declaration);
-                    _myHighlightings.Add(new HighlightingInfo(declaration.GetNameDocumentRange(), testingWarning));
+                    AddHighlighting(declaration.GetNameDocumentRange(), testingWarning);
                     return false;
 
                 }
@@ -193,8 +201,8 @@ namespace TestCop.Plugin
             
             if (testClassNameFromFileName != declaredClassName)
             {                
-                var testingWarning = new TestClassNameDoesNotMatchFileNameWarning(declaredClassName, testClassNameFromFileName, declaration);                                
-                _myHighlightings.Add(new HighlightingInfo(declaration.GetNameDocumentRange(), testingWarning));
+                var testingWarning = new TestClassNameDoesNotMatchFileNameWarning(declaredClassName, testClassNameFromFileName, declaration);
+                AddHighlighting(declaration.GetNameDocumentRange(), testingWarning);
                 return false;
             }
 
@@ -208,7 +216,7 @@ namespace TestCop.Plugin
             if (!statements.Any())
             {
                 IHighlighting highlighting = new TestMethodMissingCodeWarning(declaration, "Test method is empty");
-                _myHighlightings.Add(new HighlightingInfo(declaration.GetNameDocumentRange(), highlighting));
+                AddHighlighting(declaration.GetNameDocumentRange(), highlighting);
             }
             //declaration.Body.Accept(TreeNodeVisitor) -- extend to look at code for at least one IExpressionStatement
         }
@@ -231,7 +239,7 @@ namespace TestCop.Plugin
                     highlighting = new MethodShouldBePublicWarning(attribute.Name.QualifiedName, declaration);
                 }
 
-                _myHighlightings.Add(new HighlightingInfo(declaration.GetNameDocumentRange(), highlighting));
+                AddHighlighting(declaration.GetNameDocumentRange(), highlighting);
                 return;
             }
         }
@@ -263,7 +271,7 @@ namespace TestCop.Plugin
                         new TestFileNameWarning(
                             "Project for this test assembly was not found - check namespace of projects",
                             thisDeclaration);
-                    _myHighlightings.Add(new HighlightingInfo(thisDeclaration.GetNameDocumentRange(), highlight));
+                    AddHighlighting(thisDeclaration.GetNameDocumentRange(), highlight);
                     return;
                 }
 
@@ -289,7 +297,7 @@ namespace TestCop.Plugin
                     }
 
                     var highlight = new TestFileNameWarning(message, thisDeclaration);
-                    _myHighlightings.Add(new HighlightingInfo(thisDeclaration.GetNameDocumentRange(), highlight));
+                    AddHighlighting(thisDeclaration.GetNameDocumentRange(), highlight);
 
                     return;
                 }
@@ -348,7 +356,7 @@ namespace TestCop.Plugin
                     var highlight = new TestFileNameSpaceWarning(CurrentSourceFile.ToProjectFile(), thisDeclaration, suggestedNameSpace
                         , thisProject, targetFolder);
                                                 
-                    _myHighlightings.Add(new HighlightingInfo(thisDeclaration.GetNameDocumentRange(), highlight));                   
+                    AddHighlighting(thisDeclaration.GetNameDocumentRange(), highlight);                   
                 }
             }            
         }         

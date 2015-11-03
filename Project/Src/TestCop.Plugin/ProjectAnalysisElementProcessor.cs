@@ -9,13 +9,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using JetBrains.Application.Settings;
+using JetBrains.DocumentModel;
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Daemon;
+using JetBrains.ReSharper.Daemon.CSharp.Stages;
 using JetBrains.ReSharper.Feature.Services.Daemon;
-using JetBrains.ReSharper.Feature.Services.LiveTemplates.Macros.Implementations;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
-using JetBrains.ReSharper.Psi.Resx.ResourceDefaultLanguage;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.Util;
 using TestCop.Plugin.Highlighting;
@@ -26,15 +25,22 @@ namespace TestCop.Plugin
     {
         private readonly IDaemonProcess _process;
         private readonly IContextBoundSettingsStore _settings;        
-        private readonly List<HighlightingInfo> _myHighlightings = new List<HighlightingInfo>();
-
-        public List<HighlightingInfo> Highlightings
+        
+        private readonly DefaultHighlightingConsumer _highlightingConsumer;
+        
+        protected void AddHighlighting(DocumentRange range, IHighlighting highlighting)
         {
-            get { return _myHighlightings; }
+            _highlightingConsumer.AddHighlighting(highlighting, range);
         }
 
-        public ProjectAnalysisElementProcessor(IDaemonProcess process, IContextBoundSettingsStore settings)
+        public IList<HighlightingInfo> Highlightings
         {
+            get { return _highlightingConsumer.Highlightings; }
+        }
+
+        public ProjectAnalysisElementProcessor(ProjectAnalysisDaemonStageProcess stageProcess, IDaemonProcess process, IContextBoundSettingsStore settings)
+        {
+            _highlightingConsumer = new DefaultHighlightingConsumer(stageProcess, settings);
             _process = process;
             _settings = settings;            
         }
@@ -91,7 +97,7 @@ namespace TestCop.Plugin
             if (orphanedFiles.Count > 0)
             {
                 IHighlighting highlighting = new FilesNotPartOfProjectWarning(currentProject, orphanedFiles);
-                _myHighlightings.Add(new HighlightingInfo(element.GetDocumentRange(), highlighting));
+                AddHighlighting(element.GetDocumentRange(), highlighting);                                 
             }
         }
 
