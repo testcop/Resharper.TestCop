@@ -32,10 +32,7 @@ namespace TestCop.Plugin.Highlighting
 
         
         public override bool IsValid()
-        {
-            if (HighlightingSettingsManager.Instance.GetConfigurableSeverity(SeverityId, _currentProject.GetSolution())
-                == Severity.DO_NOT_SHOW) return false;
-            
+        {      
             return true;
         }
 
