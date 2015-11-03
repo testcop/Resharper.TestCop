@@ -12,6 +12,8 @@ using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
+using JetBrains.ReSharper.Psi.Tree;
+using TestCop.Plugin.Extensions;
 using TestCop.Plugin.Helper;
 
 namespace TestCop.Plugin
@@ -43,6 +45,9 @@ namespace TestCop.Plugin
             if (file == null)
                 return;
 
+            if (file.GetProject().IsTestProject() == false) 
+                return;//only apply rules with projects we recognise as test projects
+
             // Running visitor against the PSI
             var elementProcessor = new TestFileAnalysisElementProcessor(this, _myDaemonProcess, _settings);
             file.ProcessDescendants(elementProcessor);
@@ -53,11 +58,6 @@ namespace TestCop.Plugin
 
             // Commit the result into document
             commiter(new DaemonStageResult(elementProcessor.Highlightings));
-        }
-
-        public IDaemonProcess DaemonProcess
-        {
-            get { return _myDaemonProcess; }
         }
     }
 }

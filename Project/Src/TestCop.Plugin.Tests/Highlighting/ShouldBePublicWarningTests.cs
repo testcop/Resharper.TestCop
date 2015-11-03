@@ -5,6 +5,7 @@
 // --
 
 using JetBrains.Application.Components;
+using JetBrains.Application.Settings;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.FeaturesTestFramework.Daemon;
 using JetBrains.ReSharper.Psi;
@@ -21,7 +22,7 @@ namespace TestCop.Plugin.Tests.Highlighting
         {
             return highlighting is AbstractShouldBePublicWarning;
         }
-
+       
         protected override string RelativeTestDataPath
         {
             get { return @"highlighting\ShouldBePublicWarning"; }
@@ -39,6 +40,14 @@ namespace TestCop.Plugin.Tests.Highlighting
         }
         #endif
 
+        override protected string ProjectName
+        {
+            get
+            {
+                return "MyCorp.Project.Tests";
+            }
+        }
+
         [Test]
         [TestCase("PrivateNUnitTestClass.cs")]
         [TestCase("PrivateNUnitTestClassDisabled.cs")]
@@ -46,8 +55,17 @@ namespace TestCop.Plugin.Tests.Highlighting
         [TestCase("PrivateNUnitTestMethod.cs")]
         [TestCase("PrivateXUnitTestMethod.cs")]
         public void Test(string testName)
-        {
-            DoTestFiles(testName);
+        {            
+            ExecuteWithinSettingsTransaction((settingsStore =>
+            {
+                RunGuarded(
+                    () =>{
+                        settingsStore.SetValue<TestFileAnalysisSettings, TestProjectStrategy>(
+                            s => s.TestCopProjectStrategy, TestProjectStrategy.TestProjectHasSameNamespaceAsCodeProject);
+                    }
+                    );
+                DoTestFiles(testName);
+            }));
         }
     }
 }

@@ -1,7 +1,7 @@
 // --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
-// -- Copyright 2013
+// -- Copyright 2015
 // --
 
 using System;
@@ -42,6 +42,14 @@ namespace TestCop.Plugin.Tests.Highlighting
         }
         #endif
 
+        override protected string ProjectName
+        {
+            get
+            {
+                return "MyCorp.Project.Tests";
+            }
+        }
+
         [Test]
         [TestCase("ClassA.SomeCategoryTests.cs")]
         [TestCase("ClassA_SomeCategoryTests.cs")]
@@ -50,7 +58,17 @@ namespace TestCop.Plugin.Tests.Highlighting
         [TestCase("ClassBHasClassATests.cs")]        
         public void TestsWithClassSuffixOfTests(string testName)
         {
-            DoTestFiles(testName);
+            ExecuteWithinSettingsTransaction((settingsStore =>
+            {
+                RunGuarded(
+                    () =>
+                    {
+                        settingsStore.SetValue<TestFileAnalysisSettings, TestProjectStrategy>(
+                            s => s.TestCopProjectStrategy, TestProjectStrategy.TestProjectHasSameNamespaceAsCodeProject);
+                    }
+                    );
+                DoTestFiles(testName);
+            }));
         }
 
         [TestCase("TestClassWithDifferentRandomExt.cs")]
@@ -60,32 +78,20 @@ namespace TestCop.Plugin.Tests.Highlighting
         public void TestsWithClassSuffixDifferentToDefault(string testName)
         {
             // the default suffix is 'Tests' - we test that this can be overidden 
-#if R7
-            this.ExecuteWithinSettingsTransaction(
-                (settingsStore =>
-                     {
-                         this.RunGuarded((() =>
-                                              {
-                                                  IContextBoundSettingsStore
-                                                      settings = settingsStore.BindToContextTransient
-                                                          (ContextRange.ManuallyRestrictWritesToOneContext
-                                                               (((lifetime, contexts) => contexts.Empty)));
 
-                                                  settings.SetValue<TestFileAnalysisSettings, string>(
-                                                      s => s.TestClassSuffix, "RandomExt");
-
-                                              }));
-                         DoTestFiles(testName);
-                     }));
-#else
-            this.ExecuteWithinSettingsTransaction((Action<IContextBoundSettingsStore>)(settingsStore =>
+            ExecuteWithinSettingsTransaction((settingsStore =>
             {
-                RunGuarded((() => settingsStore.SetValue<TestFileAnalysisSettings, string>(s => s.TestClassSuffix, "RandomExt")));
+                RunGuarded(
+                    () =>
+                    {
+                        settingsStore.SetValue<TestFileAnalysisSettings, TestProjectStrategy>(
+                            s => s.TestCopProjectStrategy, TestProjectStrategy.TestProjectHasSameNamespaceAsCodeProject);
+                        settingsStore.SetValue<TestFileAnalysisSettings, string>(s => s.TestClassSuffix,
+                            "RandomExt");                                               
+                    }
+                    );
                 DoTestFiles(testName);
-            }));
-        
-        
-#endif
+            }));  
         }
     }
 }
