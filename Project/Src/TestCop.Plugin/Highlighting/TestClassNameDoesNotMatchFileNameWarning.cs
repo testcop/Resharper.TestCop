@@ -3,6 +3,8 @@
 // -- License http://testcop.codeplex.com/license
 // -- Copyright 2014
 // --
+
+using JetBrains.ReSharper.Daemon.CSharp.Stages;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.Tree;
@@ -25,7 +27,7 @@ namespace TestCop.Plugin.Highlighting
 
         public TestClassNameDoesNotMatchFileNameWarning(string declaredClassName, string testClassNameFromFileName, IAccessRightsOwnerDeclaration declaration)
             : base(SeverityId, string.Format("Test classname and filename are not in sync {0}<>{1}.", declaredClassName, testClassNameFromFileName), declaration)
-        {            
+        {              
         }
     }
 }

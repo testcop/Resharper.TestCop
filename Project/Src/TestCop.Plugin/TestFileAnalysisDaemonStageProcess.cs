@@ -7,6 +7,7 @@
 using System;
 using JetBrains.Application.Progress;
 using JetBrains.Application.Settings;
+using JetBrains.ReSharper.Daemon.CSharp.Stages;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
@@ -15,12 +16,13 @@ using TestCop.Plugin.Helper;
 
 namespace TestCop.Plugin
 {
-    public class TestFileAnalysisDaemonStageProcess : IDaemonStageProcess
+    public class TestFileAnalysisDaemonStageProcess : CSharpDaemonStageProcessBase
     {
         private readonly IDaemonProcess _myDaemonProcess;
         private readonly IContextBoundSettingsStore _settings;
 
-        public TestFileAnalysisDaemonStageProcess(IDaemonProcess daemonProcess, IContextBoundSettingsStore settings)
+        public TestFileAnalysisDaemonStageProcess(IDaemonProcess daemonProcess, IContextBoundSettingsStore settings, ICSharpFile file)
+            : base(daemonProcess, file)
         {
             _myDaemonProcess = daemonProcess;            
             _settings = settings;            
@@ -28,7 +30,7 @@ namespace TestCop.Plugin
 
         private static bool _mappedOnceThisSession;
 
-        public void Execute(Action<DaemonStageResult> commiter)
+        public override void Execute(Action<DaemonStageResult> commiter)
         {
             if (!_mappedOnceThisSession)
             {
@@ -42,7 +44,7 @@ namespace TestCop.Plugin
                 return;
 
             // Running visitor against the PSI
-            var elementProcessor = new TestFileAnalysisElementProcessor(_myDaemonProcess, _settings);
+            var elementProcessor = new TestFileAnalysisElementProcessor(this, _myDaemonProcess, _settings);
             file.ProcessDescendants(elementProcessor);
 
             // Checking if the daemon is interrupted by user activity

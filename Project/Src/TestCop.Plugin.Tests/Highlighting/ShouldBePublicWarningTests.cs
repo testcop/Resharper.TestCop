@@ -1,11 +1,10 @@
 // --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
-// -- Copyright 2013
+// -- Copyright 2015
 // --
 
 using JetBrains.Application.Components;
-using JetBrains.Application.Settings;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.FeaturesTestFramework.Daemon;
 using JetBrains.ReSharper.Psi;
@@ -36,13 +35,13 @@ namespace TestCop.Plugin.Tests.Highlighting
             base.TestFixtureTearDown();
 
             RunGuarded(
-              () => ShellInstance.GetComponent<TestSolutionManager>().CloseSolution());
-              //() => ShellInstance.GetComponent<ReuseSolutionInTestsComponent>().CloseSolution());
+              () => ShellInstance.GetComponent<TestSolutionManager>().CloseSolution());              
         }
         #endif
 
         [Test]
         [TestCase("PrivateNUnitTestClass.cs")]
+        [TestCase("PrivateNUnitTestClassDisabled.cs")]
         [TestCase("PrivateMSTestTestMethod.cs")]
         [TestCase("PrivateNUnitTestMethod.cs")]
         [TestCase("PrivateXUnitTestMethod.cs")]

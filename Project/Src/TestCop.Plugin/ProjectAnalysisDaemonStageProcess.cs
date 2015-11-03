@@ -7,7 +7,7 @@
 using System;
 using JetBrains.Application.Progress;
 using JetBrains.Application.Settings;
-using JetBrains.ReSharper.Daemon;
+using JetBrains.ReSharper.Daemon.CSharp.Stages;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
@@ -15,18 +15,19 @@ using JetBrains.ReSharper.Psi.CSharp.Tree;
 
 namespace TestCop.Plugin
 {
-    public class ProjectAnalysisDaemonStageProcess : IDaemonStageProcess
+    public class ProjectAnalysisDaemonStageProcess :  CSharpDaemonStageProcessBase
     {
         private readonly IDaemonProcess _myDaemonProcess;
         private readonly IContextBoundSettingsStore _settings;
 
-        public ProjectAnalysisDaemonStageProcess(IDaemonProcess daemonProcess, IContextBoundSettingsStore settings)
+        public ProjectAnalysisDaemonStageProcess(IDaemonProcess daemonProcess, IContextBoundSettingsStore settings, ICSharpFile csharpFile)
+            : base(daemonProcess, csharpFile )
         {
             _myDaemonProcess = daemonProcess;            
             _settings = settings;            
         }
 
-        public void Execute(Action<DaemonStageResult> commiter)
+        public override void Execute(Action<DaemonStageResult> commiter)
         {
             // Getting PSI (AST) for the file being highlighted            
             var file = _myDaemonProcess.SourceFile.GetTheOnlyPsiFile(CSharpLanguage.Instance) as ICSharpFile;
@@ -40,7 +41,7 @@ namespace TestCop.Plugin
                 return;
 
             // Running visitor against the PSI
-            var elementProcessor = new ProjectAnalysisElementProcessor(_myDaemonProcess, _settings);
+            var elementProcessor = new ProjectAnalysisElementProcessor(this, _myDaemonProcess, _settings);
             file.ProcessDescendants(elementProcessor);
 
             // Checking if the daemon is interrupted by user activity
@@ -48,7 +49,7 @@ namespace TestCop.Plugin
                 throw new ProcessCancelledException();
 
             // Commit the result into document
-            commiter(new DaemonStageResult(elementProcessor.Highlightings));
+            commiter(new DaemonStageResult(elementProcessor.Highlightings));            
         }
 
         public IDaemonProcess DaemonProcess
