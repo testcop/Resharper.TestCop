@@ -1,7 +1,7 @@
 ﻿// --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
-// -- Copyright 2013
+// -- Copyright 2015
 // --
 
 using System;
@@ -51,12 +51,7 @@ namespace TestCop.Plugin
             // Commit the result into document
             commiter(new DaemonStageResult(elementProcessor.Highlightings));            
         }
-
-        public IDaemonProcess DaemonProcess
-        {
-            get { return _myDaemonProcess; }
-        }
-
+   
         private TestFileAnalysisSettings Settings
         {
             get
