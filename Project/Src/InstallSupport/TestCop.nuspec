@@ -7,6 +7,7 @@
 		<authors>Alcaeus</authors>     
 		<description>Easily switch between unit tests and code. Create missing associated files. Includes highlightings and test templates to keep test projects neat and tidy. Works with NUnit, MSTest, xUnit ...</description>
 		<releaseNotes>
+      1.9.2.3 Added support for // Resharper Disable 
       1.9.2.2 Internal code cleanup  
       1.9.2.1 Rename refactor bug fix for associated test files 
       1.9.2.0 Recompiled with R#9.2 
