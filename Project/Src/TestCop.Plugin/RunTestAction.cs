@@ -19,21 +19,28 @@ using TestCop.Plugin.Helper;
 
 namespace TestCop.Plugin
 {
+    /*
     [Action("Testcop Run Unit Tests", Id = 92407+1, ShortcutScope = ShortcutScope.TextEditor, Icon = typeof(UnnamedThemedIcons.Agent16x16))]
-    public class TestCopUnitTestRunContextAction : UnitTestExplorerContextBaseAction
+    public class TestCopUnitTestRunContextAction : TestCopUnitTestRunContextActionBase
     {
-        protected override IHostProvider GetHostProvider()
+        protected override IHostProviderDescriptor GetHostProviderDescriptor()
         {
-            return UnitTestHost.Instance.GetProvider("Process");
+            return UnitTestHost.Instance.GetProviderDescriptor("Process");
         }
-      
-        //protected override void Execute(IUnitTestElements elements, UnitTestSessionView session, ISolution solution, IDataContext context)
-        protected override void Execute(UnitTestElements elements, UnitTestSessionDescriptor sessionDescriptor, ISolution solution, IDataContext context)
+
+        public override void Execute(IDataContext context, DelegateExecute nextExecute)
         {
+            IUnitTestSession session = this.GetSession(context);
+            if (session == null || !session.IsIdle.Value)
+                return;
+            IHostProvider provider = this.GetHostProviderDescriptor().Provider;
+
+            UnitTestElements elements = this.GetElementsToRun(session, context);
+
             if (elements != null && elements.Explicit.Count != 0)
             {
                 //default behaviour if tests are present
-                base.Execute(elements, sessionDescriptor, solution, context);
+                base.Execute(context, nextExecute);
                 return;
             }
 
@@ -66,4 +73,5 @@ namespace TestCop.Plugin
                 , sessionDescriptor, solution, context);
         }
     }
+     */
 }

@@ -23,6 +23,7 @@ using JetBrains.ReSharper.Features.Navigation.Features.NavigateFromHere;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
+using JetBrains.ReSharper.Psi.Impl;
 using JetBrains.ReSharper.Psi.Search;
 using JetBrains.ReSharper.Resources.Shell;
 using JetBrains.TextControl;
@@ -177,13 +178,9 @@ namespace TestCop.Plugin
                 searchDomain = PsiShared.GetComponent<SearchDomainFactory>().CreateSearchDomain(items.Select(p => p.ToSourceFile()));
             }
 
-#if R7
-            var declarationsCache = solution.GetPsiServices().CacheManager.GetDeclarationsCache(DeclarationCacheLibraryScope.REFERENCED, true);
-#else            
             var declarationsCache = solution.GetPsiServices().Symbols
-                    .GetSymbolScope(LibrarySymbolScope.FULL, false, currentProject.GetResolveContext());
-#endif
-
+                    .GetSymbolScope(LibrarySymbolScope.FULL, false);//, currentProject.GetResolveContext());                    
+            
             ITypeElement declaredElement = declarationsCache.GetTypeElementByCLRName(clrTypeClassName);
                  
             var findReferences = services.Finder.FindReferences(

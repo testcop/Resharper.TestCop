@@ -6,6 +6,7 @@ using JetBrains.DataFlow;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.ExpressionSelection;
 using JetBrains.ReSharper.Feature.Services.Util;
+using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Services;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.TextControl;
