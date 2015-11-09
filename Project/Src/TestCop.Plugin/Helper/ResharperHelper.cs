@@ -37,12 +37,12 @@ namespace TestCop.Plugin.Helper
         {
             get { return "Resharper.ReSharper_"+typeof (JumpToTestFileAction).Name.RemoveTrailing("Action"); }
         }
-
+/*
         public static string MacroNameRunTests
         {
             get { return "ReSharper_" + typeof(TestCopUnitTestRunContextAction).Name.RemoveTrailing("Action"); }
         }
-
+*/
         public static void ForceKeyboardBindings()
         {
             ExecuteActionOnUiThread("force TestCop keyboard shortcut hack on every startup",
@@ -54,11 +54,12 @@ namespace TestCop.Plugin.Helper
                             TestCopSettingsManager.Instance.Settings.OutputPanelOpenOnKeyboardMapping
                             , MacroNameSwitchBetweenFiles
                             , TestCopSettingsManager.Instance.Settings.ShortcutToSwitchBetweenFiles);
-
+/*
                         DTEHelper.AssignKeyboardShortcutIfMissing(
                             TestCopSettingsManager.Instance.Settings.OutputPanelOpenOnKeyboardMapping
                             , MacroNameRunTests
                             , "Global::Ctrl+G, Ctrl+X");
+ */
                     }
                 });          
         }
@@ -223,14 +224,10 @@ namespace TestCop.Plugin.Helper
 
         public static List<IClrDeclaredElement> FindClass(ISolution solution, string classNameToFind, IList<IProject> restrictToTheseProjects)
         {
-            #if R7
-                        var declarationsCache = solution.GetPsiServices().CacheManager.GetDeclarationsCache(DeclarationCacheLibraryScope.NONE, false);
-            #else     
+           
                         var declarationsCache = solution.GetPsiServices().Symbols
-                                            .GetSymbolScope(LibrarySymbolScope.FULL, false
-                                            , solution.GetAllCodeProjects().First().GetResolveContext());
-            #endif
-
+                                            .GetSymbolScope(LibrarySymbolScope.FULL, false);//, currentProject.GetResolveContext());                    
+            
             var results = declarationsCache.GetElementsByShortName(classNameToFind).ToList();
 
             RemoveElementsNotInProjects(results, restrictToTheseProjects);    

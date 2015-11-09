@@ -1,12 +1,13 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>     
-		<id>Resharper.TestCop.R9</id>     
+		<id>Resharper.TestCop.R10</id>     
 		<version>0.0.0-internal</version>
-		<title>TestCop for ReSharper 9</title>     
+		<title>TestCop for ReSharper 10</title>     
 		<authors>Alcaeus</authors>     
 		<description>Easily switch between unit tests and code. Create missing associated files. Includes highlightings and test templates to keep test projects neat and tidy. Works with NUnit, MSTest, xUnit ...</description>
 		<releaseNotes>
+      1.10.0.0 Recompiled with R#10
       1.9.2.4 Only checks test files within recognised Test projects
       1.9.2.3 Added support for // Resharper Disable
       1.9.2.2 Internal code cleanup
@@ -39,7 +40,7 @@
     <iconUrl>https://testcop.svn.codeplex.com/svn/Project/Src/TestCop.Plugin/resources/agent48x48.png</iconUrl>
     <copyright>Copyright &#x00A9; 2013, 2014, 2015</copyright>
     <dependencies>      
-      <dependency id="Wave" version="[3.0]"/>      
+      <dependency id="Wave" version="[4.0]"/>      
     </dependencies>
     <tags>resharper unittest xunit nunit mstest tdd c# template</tags>
   </metadata>   
@@ -47,6 +48,6 @@
 		<file src="Resharper.Testcop.dll" target="dotFiles" />
     <file src="Resharper.TestCop.pdb" target="dotFiles\" />
     <file src="..\..\..\ResharperTemplates\templates.DotSettings"
-          target="dotFiles\Extensions\Resharper.TestCop.R9\settings\" />
+          target="dotFiles\Extensions\Resharper.TestCop.R10\settings\" />
   </files> 
 </package>
