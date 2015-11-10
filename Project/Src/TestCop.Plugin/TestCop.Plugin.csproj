@@ -214,7 +214,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="SimpleMenuItemForProjectItem.cs" />
-    <Compile Include="TestCopUnitTestRunContextActionBase.cs" />
     <Compile Include="TestFileAnalysisSettings.cs" />
     <Compile Include="TestAnalysisDaemonStage.cs" />
     <Compile Include="TestFileAnalysisDaemonStageProcess.cs" />

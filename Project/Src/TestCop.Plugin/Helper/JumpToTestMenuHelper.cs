@@ -110,7 +110,8 @@ namespace TestCop.Plugin.Helper
                 var result = new SimpleMenuItemForProjectItem(np.GetPresentationText()
                                                 , np.GetPresentationImage()
                                                 , ResharperHelper.ProtectActionFromReEntry(lifetime,"TestingMenuNavigation", clickAction.Invoke(projectFile))
-                                                , currentProjectFile);
+                                                , projectFile, declaredElement
+                                                );
 
                 result.ShortcutText = np.GetSecondaryPresentationText();
                 result.Style = MenuItemStyle.Enabled;
@@ -121,7 +122,7 @@ namespace TestCop.Plugin.Helper
             return menuItems;
         }
 
-        static public void MoveBestMatchesToTopWhenSwitchingFromTestToCode(IList<SimpleMenuItem> currentMenus
+        public static void MoveBestMatchesToTopWhenSwitchingFromTestToCode(IList<SimpleMenuItem> currentMenus
             , IProject project
             , IList<TestCopProjectItem> associatedTargetProjects
             , IClrTypeName clrTypeClassName)
