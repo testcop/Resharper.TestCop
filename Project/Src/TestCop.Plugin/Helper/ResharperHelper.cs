@@ -37,12 +37,12 @@ namespace TestCop.Plugin.Helper
         {
             get { return "Resharper.ReSharper_"+typeof (JumpToTestFileAction).Name.RemoveTrailing("Action"); }
         }
-/*
+
         public static string MacroNameRunTests
         {
             get { return "ReSharper_" + typeof(TestCopUnitTestRunContextAction).Name.RemoveTrailing("Action"); }
         }
-*/
+
         public static void ForceKeyboardBindings()
         {
             ExecuteActionOnUiThread("force TestCop keyboard shortcut hack on every startup",
@@ -54,12 +54,12 @@ namespace TestCop.Plugin.Helper
                             TestCopSettingsManager.Instance.Settings.OutputPanelOpenOnKeyboardMapping
                             , MacroNameSwitchBetweenFiles
                             , TestCopSettingsManager.Instance.Settings.ShortcutToSwitchBetweenFiles);
-/*
+
                         DTEHelper.AssignKeyboardShortcutIfMissing(
                             TestCopSettingsManager.Instance.Settings.OutputPanelOpenOnKeyboardMapping
                             , MacroNameRunTests
                             , "Global::Ctrl+G, Ctrl+X");
- */
+
                     }
                 });          
         }

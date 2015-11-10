@@ -52,7 +52,7 @@ namespace TestCop.Plugin
         /// <summary>
         /// For tesing 
         /// </summary>
-        static public JumpToTestFileAction CreateWith(Action<JetPopupMenu, JetPopupMenu.ShowWhen> overrideMenuDisplay)
+        public static JumpToTestFileAction CreateWith(Action<JetPopupMenu, JetPopupMenu.ShowWhen> overrideMenuDisplay)
         {
             return new JumpToTestFileAction{_menuDisplayer = overrideMenuDisplay};
         }
@@ -92,9 +92,7 @@ namespace TestCop.Plugin
             var settings = solution.GetPsiServices().SettingsStore
                 .BindToContextTransient(ContextRange.Smart(textControl.ToDataContext()))                
                 .GetKey<TestFileAnalysisSettings>(SettingsOptimization.OptimizeDefault);
-                                                
-            var classNamesToFind = new List<string>();
-
+                                                            
             var baseFileName = ResharperHelper.GetBaseFileName(context, solution);
             bool isTestFile = baseFileName.EndsWith(settings.TestClassSuffixes());
            
@@ -111,13 +109,11 @@ namespace TestCop.Plugin
                     string className = clrTypeClassName.ShortName.Flip(isTestFile, testClassSuffix);
                     elementsFoundInTarget.AddRangeIfMissing(
                         ResharperHelper.FindClass(solution, className, targetProjects), _declElementMatcher);
-
-                    classNamesToFind.Add(className);
+                    
                     elementsFoundInSolution.AddRangeIfMissing(
                         ResharperHelper.FindClass(solution, className),_declElementMatcher);
                 }
-
-                classNamesToFind.Add(classNameFromFileName);
+                
                 elementsFoundInTarget.AddRangeIfMissing(
                     ResharperHelper.FindClass(solution, classNameFromFileName, targetProjects), _declElementMatcher);
                 elementsFoundInSolution.AddRangeIfMissing(

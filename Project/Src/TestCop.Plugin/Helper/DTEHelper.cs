@@ -11,7 +11,7 @@ using JetBrains.ReSharper.Resources.Shell;
 
 namespace TestCop.Plugin.Helper
 {
-    static public class DTEHelper
+    public static class DTEHelper
     {
         public static bool VisualStudioIsPresent()
         {                      
