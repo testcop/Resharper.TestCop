@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>     
-		<id>Resharper.TestCop.R10</id>     
+		<id>Resharper.TestCop.R9</id>     
 		<version>0.0.0-internal</version>
 		<title>TestCop for ReSharper 10</title>     
 		<authors>Alcaeus</authors>     
