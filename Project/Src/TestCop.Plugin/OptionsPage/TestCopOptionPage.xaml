@@ -52,7 +52,7 @@
                     <CheckBox Content="Rename test file(s) when using rename refactor on code [BETA]" x:Name="SupportRenameRefactor" />
                     <StackPanel Orientation="Horizontal" Margin="0" HorizontalAlignment="Left" >
                         <TextBlock TextWrapping="Wrap" Height="auto" ><Run Text="Test Class Suffix(s):"/></TextBlock>
-                        <TextBox x:Name="testClassSuffixTextBox" Width="127" MaxLength="255" TextChanged="MultiTestClassAndNamespaceTextChanged" />
+                        <TextBox x:Name="testClassSuffixTextBox" Width="127" MaxLength="255" TextChanged="TestClassSuffixTextChanged" />
                     </StackPanel>
 
                     <Separator Height="21" Margin="0" HorizontalAlignment="Right" Width="390"/>

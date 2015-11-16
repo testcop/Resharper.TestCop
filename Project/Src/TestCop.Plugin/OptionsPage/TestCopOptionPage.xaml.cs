@@ -288,11 +288,9 @@ namespace TestCop.Plugin.OptionsPage
 
           Regex regEx;
 
-          tbProjectSuffixGuidance.Text = string.Format("The configuration below define that all UnitTest Classes " +
-                                              "must end in {0} (e.g. {1} ) and the project name of all " +
-                                              "test assemblies must match the RegEx '{2}'. Use brackets to extract the associated code project name. "+
-                                              "The namespace of the project and associated test project must be the same. "
-                                      , testClassSuffixTextBox.Text.Replace(",", " or "), GetSampleClassNames()
+          tbProjectSuffixGuidance.Text = string.Format("The configuration below defines that the project name of all " +
+                                              "test assemblies must match the RegEx '{0}'. Use brackets to extract the associated code project name. "+
+                                              "The namespace of the project and associated test project must be the same. "                                      
                                       , testProjectNameRegExTextBox.Text);
           try
           {
@@ -318,16 +316,19 @@ namespace TestCop.Plugin.OptionsPage
           }  
       }
 
+      private void TestClassSuffixTextChanged(object sender, TextChangedEventArgs e)
+      {
+          testClassSuffixTextBox.ToolTip = "Valid class names for your config : {0}".FormatEx(GetSampleClassNames());
+      }
+
       private void MultiTestClassAndNamespaceTextChanged(object sender, TextChangedEventArgs e)
       {          
           var outcomeTexBox = regExOutcome;
           
             Regex regEx;
             
-            tbSuffixGuidance.Text=string.Format("The test class and test namespace configuration below define that all UnitTest Classes " +
-                                                "must end in {0} (e.g. {1} ) and the namespace of all " +
-                                                "test assemblies must match the RegEx '{2}'. Use brackets to extract the associated code project namespace."
-                                        ,testClassSuffixTextBox.Text.Replace(","," or "), GetSampleClassNames()
+            tbSuffixGuidance.Text=string.Format("The configuration below defines that the namespace of all " +
+                                                "test assemblies must match the RegEx '{0}'. Use brackets to extract the associated code project namespace."                                        
                                         ,testNamespaceRegExTextBox.Text);
             try
             {
@@ -367,7 +368,7 @@ namespace TestCop.Plugin.OptionsPage
 
           Regex regEx;
 
-          tbSingleTestSuffixGuidanceOne.Text = string.Format("The configuration below define that the namespace of test classes " +
+          tbSingleTestSuffixGuidanceOne.Text = string.Format("The configuration below defines that the namespace of test classes " +
                                               " must match the RegEx '{0}'. Use brackets to extract the associated code project namespace. "+
                                               " The replace string '{1}' will be used to identify the code project namespace and the replace string '{2}' to build the sub namespace "+
                                               " within the code project. \n \n"
