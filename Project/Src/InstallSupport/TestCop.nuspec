@@ -7,6 +7,7 @@
 		<authors>Alcaeus</authors>     
 		<description>Easily switch between unit tests and code. Create missing associated files. Includes highlightings and test templates to keep test projects neat and tidy. Works with NUnit, MSTest, xUnit ...</description>
 		<releaseNotes>
+      1.10.0.3 Added the test templates back into the build (template for when testcop creates the test class)
       1.10.0.1 Added ability to run associated unit tests
       1.10.0.0 Recompiled with R#10
       1.9.2.4 Only checks test files within recognised Test projects
@@ -49,6 +50,6 @@
 		<file src="Resharper.Testcop.dll" target="dotFiles" />
     <file src="Resharper.TestCop.pdb" target="dotFiles\" />
     <file src="..\..\..\ResharperTemplates\templates.DotSettings"
-          target="dotFiles\Extensions\Resharper.TestCop.R10\settings\" />
+          target="dotFiles\Extensions\Resharper.TestCop.R9\settings\" />
   </files> 
 </package>
