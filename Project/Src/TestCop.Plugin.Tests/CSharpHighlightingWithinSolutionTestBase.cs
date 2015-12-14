@@ -42,6 +42,11 @@ namespace TestCop.Plugin.Tests
     {
         private ISolution _loadedTestSolution;
 
+        protected ISolution LoadedTestSolution
+        {
+            get { return _loadedTestSolution; }            
+        }
+
         protected abstract string SolutionName { get; }
 
         [CanBeNull]

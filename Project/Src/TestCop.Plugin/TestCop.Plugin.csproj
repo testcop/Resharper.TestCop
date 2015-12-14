@@ -168,6 +168,7 @@
   <ItemGroup>
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\TestCopSettingsExtensions.cs" />
+    <Compile Include="GenerateTestStubs.cs" />
     <Compile Include="Helper\Mapper\AllProjectsHaveSameNamespaceProjectHelper.cs" />
     <Compile Include="Helper\Mapper\MappingBase.cs" />
     <Compile Include="Highlighting\FilesNotPartOfProjectWarning.cs" />
