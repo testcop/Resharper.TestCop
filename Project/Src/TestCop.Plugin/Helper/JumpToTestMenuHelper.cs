@@ -98,8 +98,7 @@ namespace TestCop.Plugin.Helper
         private static IList<SimpleMenuItem> DescribeFilesAssociatedWithDeclaredElement(Lifetime lifetime, DocumentManager documentManager, IClrDeclaredElement declaredElement, Func<IProjectFile, Action> clickAction)
         {
             IList<SimpleMenuItem> menuItems = new List<SimpleMenuItem>();            
-            //var iconManager = SolutionEx.GetComponent<PsiIconManager>(solution);
-            //, iconManager.GetImage(declaredElement.GetElementType())
+      
             var projectFiles = GetProjectFiles(documentManager, declaredElement);
 
             foreach (var projectFile in projectFiles)
@@ -128,7 +127,6 @@ namespace TestCop.Plugin.Helper
             , IClrTypeName clrTypeClassName)
         {
             if (clrTypeClassName == null) return;
-//            if (!project.IsTestProject()) return;
 
             foreach (string testSuffix in TestCopSettingsManager.Instance.Settings.TestClassSuffixes())
             {

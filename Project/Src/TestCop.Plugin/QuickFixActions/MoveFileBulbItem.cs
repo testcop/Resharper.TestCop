@@ -47,7 +47,7 @@ namespace TestCop.Plugin.QuickFixActions
                 var workflow = new MoveToFolderWorkflow(solution, "ManualMoveToFolderQuickFix");
                 IProjectFolder targetFolder = newFolder ?? _highlight.TargetProject;
 
-                var dataProvider = new MoveToFolderDataProvider(true, true, targetFolder, new List<string>(), new List<string>());
+                var dataProvider = new MoveToFolderDataProvider(true, false, targetFolder, new List<string>(), new List<string>());
                 workflow.SetDataProvider(dataProvider);
               
                 Lifetimes.Using(

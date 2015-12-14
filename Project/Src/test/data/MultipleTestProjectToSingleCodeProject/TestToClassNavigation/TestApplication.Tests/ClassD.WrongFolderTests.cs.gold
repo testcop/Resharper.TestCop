@@ -1,0 +1,19 @@
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace TestCop.TestApplication2Tests.NS1
+{
+    [TestClass]
+    public class |ClassDWrongFolderTests|(0)
+    {
+        /* ClassG test should be within the sub folder NS2*/
+        [TestMethod]
+        public void ReturnsTrueMethodTest()
+        {            
+        }
+    }
+}
+
+---------------------------------------------------------
+(0): ReSharper Warning: Namespace of test expected to be TestCop.TestApplication2Tests.NS1
+[Switch to:] ClassD.cs|(in <TestApplication2>\NS1)
+[Switch to:] Create |ClassD|(<TestApplication2>)

@@ -40,9 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClassATests.cs" />    
+    <Compile Include="ClassATests.cs" /> 
+    <Compile Include="ClassD.WrongFolderTests.cs"/>
     <Compile Include="ClassDTests.cs" />
-    <Compile Include="NS2\ClassGTests.cs" />
+    <Compile Include="NS2\ClassGTests.cs" />    
     <Compile Include="Samples\ClassCTests.cs" />
     <Compile Include="Samples\ClassB.SecurityTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
