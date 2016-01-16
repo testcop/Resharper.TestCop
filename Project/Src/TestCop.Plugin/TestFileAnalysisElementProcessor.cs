@@ -137,7 +137,7 @@ namespace TestCop.Plugin
 
     
 
-        static private bool CheckMethodsForTestingAttributes(ICSharpTypeDeclaration declaration, IList<string> testAttributes )
+        private static bool CheckMethodsForTestingAttributes(ICSharpTypeDeclaration declaration, IList<string> testAttributes )
         {
             var sourceFile = declaration.GetSourceFile();
             if (declaration.DeclaredElement == null) return false;
@@ -191,13 +191,19 @@ namespace TestCop.Plugin
         }
 
         private bool CheckNamingOfFileAgainstTypeAndCreateWarningIfNot(ICSharpTypeDeclaration declaration)
-        {
+        {            
             var declaredClassName = declaration.DeclaredName;
             if (declaredClassName.StartsWith(Enumerable.ToArray(BDDPrefixes))) return false;
 
             var currentFileName = CurrentSourceFile.GetLocation().NameWithoutExtension;
-            
+
+            if (declaration.IsPartial && currentFileName.Contains("."))
+            {
+                currentFileName = currentFileName.Substring(0, currentFileName.LastIndexOf('.'));
+            }
+
             var testClassNameFromFileName = currentFileName.Replace(".", "");
+
             
             if (testClassNameFromFileName != declaredClassName)
             {                
