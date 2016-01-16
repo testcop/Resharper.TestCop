@@ -51,6 +51,9 @@ namespace TestCop.Plugin.Tests.Highlighting
         }
 
         [Test]
+        [TestCase("ClassAIsPartialTests.SomeText.cs")]
+        [TestCase("ClassAIsPartialTests.cs")]
+        [TestCase("ClassAIsPartial.SecurityTests.SomeText.cs")]
         [TestCase("ClassA.SomeCategoryTests.cs")]
         [TestCase("ClassA_SomeCategoryTests.cs")]
         [TestCase("ClassA.WithBDDTests.cs")]

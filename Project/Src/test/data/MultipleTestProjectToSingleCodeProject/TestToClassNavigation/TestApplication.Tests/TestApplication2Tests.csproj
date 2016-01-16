@@ -43,6 +43,10 @@
     <Compile Include="ClassATests.cs" /> 
     <Compile Include="ClassD.WrongFolderTests.cs"/>
     <Compile Include="ClassDTests.cs" />
+    <Compile Include="NS1\ClassForTestingPartialTests.cs" />    
+    <Compile Include="NS1\ClassForTestingPartialTests.partial.cs" />  
+    <Compile Include="NS1\ClassForTestingPartial.SecurityTests.partial.cs" />  
+    
     <Compile Include="NS2\ClassGTests.cs" />    
     <Compile Include="Samples\ClassCTests.cs" />
     <Compile Include="Samples\ClassB.SecurityTests.cs" />

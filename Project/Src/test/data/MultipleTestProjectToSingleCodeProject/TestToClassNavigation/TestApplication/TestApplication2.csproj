@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="ClassA.cs" />
     <Compile Include="ClassC.cs" />
+    <Compile Include="NS1\ClassForTestingPartial.cs" />
     <Compile Include="NS1\ClassD.cs" />
     <Compile Include="NS1\ClassG.cs" />
     <Compile Include="NS2\ClassG.cs" />

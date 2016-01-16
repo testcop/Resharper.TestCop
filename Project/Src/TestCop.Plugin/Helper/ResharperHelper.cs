@@ -16,6 +16,7 @@ using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
+using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.Util;
 using JetBrains.ReSharper.Resources.Shell;
 using JetBrains.TextControl;
@@ -139,6 +140,20 @@ namespace TestCop.Plugin.Helper
                 if (firstTypeInFile != null)
                 {                    
                     return firstTypeInFile;
+                }
+            }
+            return null;
+        }
+
+        public static ICSharpTypeDeclaration FindFirstCharpTypeDeclarationInDocument(ISolution solution, IDocument document)
+        {
+            for (int i = document.DocumentRange.StartOffset; i < document.DocumentRange.EndOffset; i++)
+            {                
+                var declaration = TextControlToPsi.GetElements<ICSharpTypeDeclaration>(solution, document, i).FirstOrDefault();
+
+                if (declaration != null)
+                {
+                    return declaration;
                 }
             }
             return null;

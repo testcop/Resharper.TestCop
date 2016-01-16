@@ -17,6 +17,7 @@ using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Menu;
 using JetBrains.ReSharper.Feature.Services.Navigation;
+using JetBrains.ReSharper.Feature.Services.Resources;
 using JetBrains.ReSharper.Features.Inspections.Bookmarks.NumberedBookmarks;
 using JetBrains.ReSharper.Features.Navigation.Features.Goto.GoToMember;
 using JetBrains.ReSharper.Features.Navigation.Features.NavigateFromHere;
@@ -79,6 +80,10 @@ namespace TestCop.Plugin
             
             IClrTypeName clrTypeClassName = ResharperHelper.GetClassNameAppropriateToLocation(solution, textControl);
             if (clrTypeClassName == null) return;
+
+            var typeDeclaration = ResharperHelper.FindFirstCharpTypeDeclarationInDocument(solution, textControl.Document);
+            if (typeDeclaration == null) return;
+
             
             var currentProject = context.GetData(JetBrains.ProjectModel.DataContext.DataConstants.Project);
             var targetProjects = currentProject.GetAssociatedProjects(textControl.ToProjectFile(solution));     
@@ -94,13 +99,19 @@ namespace TestCop.Plugin
                 .GetKey<TestFileAnalysisSettings>(SettingsOptimization.OptimizeDefault);
                                                             
             var baseFileName = ResharperHelper.GetBaseFileName(context, solution);
+
+            if (typeDeclaration.IsPartial && baseFileName.Contains("."))
+            {
+                baseFileName = baseFileName.Substring(0, baseFileName.LastIndexOf('.') );
+            }
+
             bool isTestFile = baseFileName.EndsWith(settings.TestClassSuffixes());
            
             var elementsFoundInTarget = new List<IClrDeclaredElement>();
             var elementsFoundInSolution = new List<IClrDeclaredElement>();
 
             foreach (var testClassSuffix in settings.GetAppropriateTestClassSuffixes(baseFileName))
-            {                
+            {
                 var classNameFromFileName = ResharperHelper.UsingFileNameGetClassName(baseFileName)
                     .Flip(isTestFile, testClassSuffix);                
 

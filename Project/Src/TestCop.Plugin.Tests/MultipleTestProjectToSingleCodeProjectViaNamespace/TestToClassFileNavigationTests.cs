@@ -40,6 +40,9 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProjectViaNamespac
 
         [Test]
         [TestCase(@"<TestApplication2Tests>\ClassATests.cs")]
+        [TestCase(@"<TestApplication2Tests>\NS1\ClassForTestingPartialTests.cs")]
+        [TestCase(@"<TestApplication2Tests>\NS1\ClassForTestingPartialTests.partial.cs")]
+        [TestCase(@"<TestApplication2Tests>\NS1\ClassForTestingPartial.SecurityTests.partial.cs")]
         [TestCase(@"<TestApplication2Tests>\NS2\ClassGTests.cs")]
         [TestCase(@"<TestApplication2Tests>\Properties\AssemblyInfo.cs")]        
         public void Test(string testName)
