@@ -59,7 +59,7 @@ namespace TestCop.Plugin.Helper
                         DTEHelper.AssignKeyboardShortcutIfMissing(
                             TestCopSettingsManager.Instance.Settings.OutputPanelOpenOnKeyboardMapping
                             , MacroNameRunTests
-                            , "Global::Ctrl+G, Ctrl+X");
+                            , TestCopSettingsManager.Instance.Settings.ShortcutToRunTests);                            
 
                     }
                 });          

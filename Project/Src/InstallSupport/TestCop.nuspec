@@ -7,6 +7,8 @@
 		<authors>Alcaeus</authors>     
 		<description>Easily switch between unit tests and code. Create missing associated files. Includes highlightings and test templates to keep test projects neat and tidy. Works with NUnit, MSTest, xUnit ...</description>
 		<releaseNotes>
+      1.10.0.7 Able to override keyboard shortcut for running tests
+      1.10.0.6 Support partial test classes. Trailing .* is ignored for partial class files e.g. MyClassTests.partial.cs or MyClass.SecurityTests.fixture.cs
       1.10.0.5 Move test file now preserves file name in all cases
       1.10.0.3 Added the test templates back into the build (template for when testcop creates the test class)
       1.10.0.1 Added ability to run associated unit tests
