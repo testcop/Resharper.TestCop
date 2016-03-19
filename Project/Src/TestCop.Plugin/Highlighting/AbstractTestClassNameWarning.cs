@@ -4,17 +4,14 @@
 // -- Copyright 2013
 // --
 
-using JetBrains.ReSharper.Daemon;
-using JetBrains.ReSharper.Daemon.CSharp.Errors;
-using JetBrains.ReSharper.Feature.Services.CSharp.Daemon;
+using JetBrains.DocumentModel;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi.Tree;
 
 namespace TestCop.Plugin.Highlighting
 {
-    public abstract class AbstractTestClassNameWarning : CSharpHighlightingBase, IHighlighting
-    {
-        private readonly string _severityId;
+    public abstract class AbstractTestClassNameWarning : IHighlighting
+    {        
         private readonly string _tooltipString;
         private readonly IAccessRightsOwnerDeclaration _declaration;
 
@@ -23,18 +20,26 @@ namespace TestCop.Plugin.Highlighting
             get { return _declaration; }
         }
 
-        protected AbstractTestClassNameWarning(string severityId, string toolTip, IAccessRightsOwnerDeclaration declaration)
-        {
-            _severityId = severityId;
+        protected AbstractTestClassNameWarning(string toolTip, IAccessRightsOwnerDeclaration declaration)
+        {            
             _tooltipString = toolTip;
             _declaration = declaration;
         }
 
-        public override bool IsValid()
+        public bool IsValid()
         {
+            if (Declaration != null)
+                return Declaration.IsValid();
             return true;
         }
-   
+
+        public DocumentRange CalculateRange()
+        {
+            if (Declaration == null)
+                return Declaration.GetNameDocumentRange();
+            return Declaration.GetHighlightingRange();
+        }
+
         public string ToolTip
         {
             get { return _tooltipString; }
@@ -49,7 +54,5 @@ namespace TestCop.Plugin.Highlighting
         {
             get { return 0; }
         }
-
-
     }
 }

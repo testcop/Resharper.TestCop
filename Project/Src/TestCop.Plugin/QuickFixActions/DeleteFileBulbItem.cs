@@ -32,19 +32,19 @@ namespace TestCop.Plugin.QuickFixActions
              
         public IEnumerable<IntentionAction> CreateBulbItems()
         {            
-            var list = new List<IntentionAction>();                                   
+            var list = new List<IntentionAction>();
 
-            var anchor=  _highlight.FileOnDisk.Count==1 ? new InvisibleAnchor(IntentionsAnchors.ContextActionsAnchorPosition, IntentionsAnchors.ContextActionsAnchor, false)
+            var anchor = _highlight.FileOnDisk.Count == 1 ? new InvisibleAnchor(AnchorPosition.NewBasePosition(), IntentionsAnchors.ContextActionsAnchor, false)
             : (IAnchor) new ExecutableGroupAnchor(IntentionsAnchors.ContextActionsAnchor, null, false);
 
 
             if (_highlight.FileOnDisk.Count > 1)
-            {
-                list.AddRange(BulbActionExtensions.ToQuickFixAction(new RemoveFileBulb(_highlight.CurrentProject, _highlight.FileOnDisk.ToArray()), anchor, UnnamedThemedIcons.Agent16x16.Id));
+            {                
+                list.Add(BulbActionExtensions.ToQuickFixIntention(new RemoveFileBulb(_highlight.CurrentProject, _highlight.FileOnDisk.ToArray()), anchor, UnnamedThemedIcons.Agent16x16.Id));
             }
 
             _highlight.FileOnDisk.ForEach(f=>
-                list.AddRange(BulbActionExtensions.ToQuickFixAction(new RemoveFileBulb(_highlight.CurrentProject, new[] { f }), anchor, UnnamedThemedIcons.Agent16x16.Id))
+                list.Add(BulbActionExtensions.ToQuickFixIntention(new RemoveFileBulb(_highlight.CurrentProject, new[] { f }), anchor, UnnamedThemedIcons.Agent16x16.Id))
             );
        
             return list;    

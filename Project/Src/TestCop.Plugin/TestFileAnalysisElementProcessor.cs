@@ -13,6 +13,7 @@ using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Daemon.CSharp.Stages;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Feature.Services.Util;
+using JetBrains.ReSharper.I18n.Services;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Caches2;
@@ -96,6 +97,7 @@ namespace TestCop.Plugin
         public void ProcessAfterInterior(ITreeNode element)
         {                                     
             var functionDeclaration = element as ICSharpFunctionDeclaration;
+            
             if (functionDeclaration != null)
             {
                 ProcessFunctionDeclaration(functionDeclaration);                
@@ -105,7 +107,7 @@ namespace TestCop.Plugin
             if (typeDeclaration != null)
             {
                 ProcessTypeDeclaration(typeDeclaration);                           
-            }             
+            }
         }
         
         private void ProcessTypeDeclaration(ICSharpTypeDeclaration declaration)
@@ -134,9 +136,7 @@ namespace TestCop.Plugin
             }
 
         }
-
-    
-
+        
         private static bool CheckMethodsForTestingAttributes(ICSharpTypeDeclaration declaration, IList<string> testAttributes )
         {
             var sourceFile = declaration.GetSourceFile();
@@ -175,7 +175,7 @@ namespace TestCop.Plugin
         private bool CheckNamingOfTypeEndsWithTestSuffix(ICSharpTypeDeclaration declaration)
         {
             if (declaration.IsAbstract) return true;
-
+            
             var declaredClassName = declaration.DeclaredName;
             if (!declaredClassName.StartsWith(Enumerable.ToArray(BDDPrefixes)))
             {
@@ -206,8 +206,8 @@ namespace TestCop.Plugin
 
             
             if (testClassNameFromFileName != declaredClassName)
-            {                
-                var testingWarning = new TestClassNameDoesNotMatchFileNameWarning(declaredClassName, testClassNameFromFileName, declaration);
+            {
+                var testingWarning = new TestClassNameDoesNotMatchFileNameWarning( declaredClassName, testClassNameFromFileName, declaration);
                 AddHighlighting(declaration.GetNameDocumentRange(), testingWarning);
                 return false;
             }
@@ -224,7 +224,7 @@ namespace TestCop.Plugin
                 IHighlighting highlighting = new TestMethodMissingCodeWarning(declaration, "Test method is empty");
                 AddHighlighting(declaration.GetNameDocumentRange(), highlighting);
             }
-            //declaration.Body.Accept(TreeNodeVisitor) -- extend to look at code for at least one IExpressionStatement
+            //TODO: declaration.Body.Accept(TreeNodeVisitor) -- extend to look at code for at least one IExpressionStatement
         }
 
         private void CheckElementIsPublicAndCreateWarningIfNot(IAccessRightsOwnerDeclaration declaration, IEnumerable<IAttribute> testingAttributes)
@@ -353,7 +353,7 @@ namespace TestCop.Plugin
             {
                 if (ns.StartsWith(associatedProjectsDefaultNameSpace))
                 {
-                    ///TODO: Review this can be probably be replaced with associatedProject method calls
+                    //TODO: Review this can be probably be replaced with associatedProject method calls
                     var targetsubNameSpace = ns.Substring(associatedProjectsDefaultNameSpace.Length).TrimStart(new[] { '.' });
                     string suggestedNameSpace = thisProjectsDefaultNamespace.AppendIfNotNull(".", targetsubNameSpace );
 

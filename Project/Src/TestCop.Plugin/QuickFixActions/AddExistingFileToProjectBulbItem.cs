@@ -37,17 +37,17 @@ namespace TestCop.Plugin.QuickFixActions
         {
             var list = new List<IntentionAction>();
 
-            var anchor = _highlight.FileOnDisk.Count == 1 ? new InvisibleAnchor(IntentionsAnchors.ContextActionsAnchorPosition, IntentionsAnchors.ContextActionsAnchor, false)
+            var anchor = _highlight.FileOnDisk.Count == 1 ? new InvisibleAnchor(AnchorPosition.NewBasePosition(), IntentionsAnchors.ContextActionsAnchor, false)
             : (IAnchor)new ExecutableGroupAnchor(IntentionsAnchors.ContextActionsAnchor, null, false);
             
             if (_highlight.FileOnDisk.Count > 1)
             {
-                list.AddRange(BulbActionExtensions.ToQuickFixAction(new AddFileBulb(_highlight.CurrentProject, _highlight.FileOnDisk.ToArray()), anchor, UnnamedThemedIcons.Agent16x16.Id ));
+                list.Add(BulbActionExtensions.ToQuickFixIntention(new AddFileBulb(_highlight.CurrentProject, _highlight.FileOnDisk.ToArray()), anchor, UnnamedThemedIcons.Agent16x16.Id ));
             }
 
             foreach (var fileInfo in _highlight.FileOnDisk)
             {
-                list.AddRange(BulbActionExtensions.ToQuickFixAction(new AddFileBulb(_highlight.CurrentProject, new[] { fileInfo }), anchor, UnnamedThemedIcons.Agent16x16.Id ));
+                list.Add(BulbActionExtensions.ToQuickFixIntention(new AddFileBulb(_highlight.CurrentProject, new[] { fileInfo }), anchor, UnnamedThemedIcons.Agent16x16.Id));
             }
 
             return list;
@@ -81,8 +81,7 @@ namespace TestCop.Plugin.QuickFixActions
         }
       
         protected override Action<ITextControl> ExecutePsiTransaction(ISolution solution, IProgressIndicator progress)
-        {
-            ///TODO: Cannot add/remove files under PSI transaction
+        {            
             using (var cookie = solution.CreateTransactionCookie(DefaultAction.Rollback, this.GetType().Name, progress))
             {
                 foreach (var file in _files)

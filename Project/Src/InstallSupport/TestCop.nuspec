@@ -7,6 +7,7 @@
 		<authors>Alcaeus</authors>     
 		<description>Easily switch between unit tests and code. Create missing associated files. Includes highlightings and test templates to keep test projects neat and tidy. Works with NUnit, MSTest, xUnit ...</description>
 		<releaseNotes>
+      1.10.0.8-EAP R#10.1 EAP recompile
       1.10.0.7 Able to override keyboard shortcut for running tests
       1.10.0.6 Support partial test classes. Trailing .* is ignored for partial class files e.g. MyClassTests.partial.cs or MyClass.SecurityTests.fixture.cs
       1.10.0.5 Move test file now preserves file name in all cases
@@ -45,7 +46,7 @@
     <iconUrl>https://testcop.svn.codeplex.com/svn/Project/Src/TestCop.Plugin/resources/agent48x48.png</iconUrl>
     <copyright>Copyright &#x00A9; 2013, 2014, 2015</copyright>
     <dependencies>      
-      <dependency id="Wave" version="[4.0]"/>      
+      <dependency id="Wave" version="[5.0]"/>      
     </dependencies>
     <tags>resharper unittest xunit nunit mstest tdd c# template</tags>
   </metadata>   

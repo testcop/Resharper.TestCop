@@ -23,6 +23,7 @@ using JetBrains.TextControl;
 using JetBrains.TextControl.Layout;
 using JetBrains.Threading;
 using JetBrains.UI;
+using JetBrains.UI.DataContext;
 using JetBrains.UI.PopupWindowManager;
 using JetBrains.UI.RichText;
 using JetBrains.UI.Tooltips;
@@ -198,8 +199,8 @@ namespace TestCop.Plugin.Helper
             tooltipManager.Show(tooltip,
               lifetime =>
               {
-                  var windowContextSource = context.GetData(JetBrains.UI.DataConstants.PopupWindowContextSource);
-
+                  var windowContextSource = context.GetData<PopupWindowContextSource>(UIDataConstants.PopupWindowContextSource);
+                      
                   if (windowContextSource != null)
                   {
                       var windowContext = windowContextSource.Create(lifetime);

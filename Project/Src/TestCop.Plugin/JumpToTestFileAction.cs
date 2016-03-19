@@ -28,7 +28,6 @@ using JetBrains.ReSharper.Psi.Impl;
 using JetBrains.ReSharper.Psi.Search;
 using JetBrains.ReSharper.Resources.Shell;
 using JetBrains.TextControl;
-using JetBrains.TextControl.DataConstants;
 using JetBrains.UI.ActionsRevised;
 using JetBrains.UI.PopupMenu;
 using JetBrains.Util;
@@ -36,6 +35,7 @@ using TestCop.Plugin.Extensions;
 using TestCop.Plugin.Helper;
 using DataConstants = JetBrains.TextControl.DataContext.DataConstants;
 using JetBrains.ReSharper.Psi.Modules;
+using JetBrains.TextControl.DataContext;
 
 namespace TestCop.Plugin
 {
@@ -175,8 +175,8 @@ namespace TestCop.Plugin
                 targetProjects.SelectMany(proj=>proj.Project.GetAllProjectFiles().Select(p => p.GetPsiModule())) );
             }
             else
-            {
-                ///TODO: take the regex out of targetProjects..
+            {                
+                ///TODO: investigate refactor and use regex pattern from targetProjects..
                 //look for similar named files that also have references to this code            
                 var items = new List<IProjectFile>();
                 var pattern = string.Format(@"{0}\..*{1}", clrTypeClassName.ShortName, testClassSuffix);

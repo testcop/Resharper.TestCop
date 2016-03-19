@@ -19,7 +19,10 @@ using JetBrains.ReSharper.Feature.Services.Navigation;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Resources.Shell;
+using JetBrains.UI.Controls;
+using JetBrains.UI.DataContext;
 using JetBrains.UI.PopupMenu;
+using JetBrains.UI.PopupWindowManager;
 using JetBrains.UI.RichText;
 using JetBrains.Util;
 using TestCop.Plugin.Extensions;
@@ -56,13 +59,13 @@ namespace TestCop.Plugin.Helper
             }
              
             var menu = Shell.Instance.GetComponent<JetPopupMenus>().Create();
-            menu.Caption.Value = WindowlessControl.Create("Switch to:");
+            menu.Caption.Value = WindowlessControlAutomation.Create("Switch to:");
             menu.SetItems(menuItems.ToArray());
 
             PositionPopMenuCorrectly(context, lifetime, menu);
 
             menu.KeyboardAcceleration.SetValue(KeyboardAccelerationFlags.Mnemonics);
-            menu.NoItemsBanner = WindowlessControl.Create("No destinations found.");
+            menu.NoItemsBanner = WindowlessControlAutomation.Create("No destinations found.");
      
             menuDisplayer.Invoke(menu, autoExecuteIfSingleEnabledItem);                        
         }
@@ -86,7 +89,7 @@ namespace TestCop.Plugin.Helper
         //------------------------------------------------------------------------------------------------------------------------
         private static void PositionPopMenuCorrectly(IDataContext context, Lifetime lifetime, JetPopupMenu menu)
         {
-            var windowContextSource = context.GetData(JetBrains.UI.DataConstants.PopupWindowContextSource);
+            var windowContextSource = context.GetData<PopupWindowContextSource>(UIDataConstants.PopupWindowContextSource);
 
             if (windowContextSource != null)
             {

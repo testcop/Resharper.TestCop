@@ -26,7 +26,7 @@ namespace TestCop.Plugin.Highlighting
         internal const string SeverityId = "TestClassNameDoesNotMatchFileNameWarning";
 
         public TestClassNameDoesNotMatchFileNameWarning(string declaredClassName, string testClassNameFromFileName, IAccessRightsOwnerDeclaration declaration)
-            : base(SeverityId, string.Format("Test classname and filename are not in sync {0}<>{1}.", declaredClassName, testClassNameFromFileName), declaration)
+            : base(string.Format("Test classname and filename are not in sync {0}<>{1}.", declaredClassName, testClassNameFromFileName), declaration)
         {              
         }
     }
