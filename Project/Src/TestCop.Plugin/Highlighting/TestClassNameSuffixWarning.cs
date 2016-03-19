@@ -25,7 +25,7 @@ namespace TestCop.Plugin.Highlighting
         internal const string SeverityId = "TestClassNameSuffixWarning";
 
         public TestClassNameSuffixWarning(string expectedSuffix, IAccessRightsOwnerDeclaration declaration)
-            : base(SeverityId, string.Format("Test class names should end with '{0}'.", expectedSuffix), declaration)
+            : base(string.Format("Test class names should end with '{0}'.", expectedSuffix), declaration)
         {
         }      
     }

@@ -23,11 +23,12 @@ using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.FeaturesTestFramework.Daemon;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
+using JetBrains.ReSharper.Psi.Resx.Utils;
 using JetBrains.ReSharper.TestFramework;
 using JetBrains.TestFramework;
 using JetBrains.TestFramework.Projects;
 using JetBrains.TextControl;
-using JetBrains.TextControl.DataConstants;
+using JetBrains.TextControl.DataContext;
 using JetBrains.UI.ActionsRevised;
 using JetBrains.UI.PopupMenu;
 using JetBrains.Util;
@@ -219,7 +220,10 @@ namespace TestCop.Plugin.Tests
                 foreach (var itm in Enumerable.ToList(menu.ItemKeys).Cast<SimpleMenuItem>())
                 {
                     var s = itm.Text+ itm.ShortcutText ?? "";
-                    textWriter.WriteLine("[{0}] {1}", menu.Caption.Value, s);
+                    
+                    textWriter.WriteLine("[{0}] {1}",
+                        ((JetBrains.UI.Controls.RichTextAutomation)menu.Caption.Value).RichTextBlock.Value.Text
+                        , s);                        
                 }
             };
 
