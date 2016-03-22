@@ -28,21 +28,16 @@ namespace TestCop.Plugin
         }
 
         public override void Execute(Action<DaemonStageResult> commiter)
-        {
-            // Getting PSI (AST) for the file being highlighted            
-            var file = _myDaemonProcess.SourceFile.GetTheOnlyPsiFile(CSharpLanguage.Instance) as ICSharpFile;
-            if (file == null)
-                return;
-
+        {           
             if (!Settings.FindOrphanedProjectFiles) return;
 
             //Only do the analysis on a 'key' file - as results can't be attached at a project level
             if (String.Compare(_myDaemonProcess.SourceFile.Name, "AssemblyInfo.cs", StringComparison.OrdinalIgnoreCase) != 0) 
                 return;
 
-            // Running visitor against the PSI
+            // Running visitor against the PSI            
             var elementProcessor = new ProjectAnalysisElementProcessor(this, _myDaemonProcess, _settings);
-            file.ProcessDescendants(elementProcessor);
+            File.ProcessDescendants(elementProcessor);
 
             // Checking if the daemon is interrupted by user activity
             if (_myDaemonProcess.InterruptFlag)

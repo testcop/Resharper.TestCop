@@ -40,17 +40,13 @@ namespace TestCop.Plugin
                 _mappedOnceThisSession = true;
                 ResharperHelper.ForceKeyboardBindings();
             }
-            // Getting PSI (AST) for the file being highlighted            
-            var file = _myDaemonProcess.SourceFile.GetTheOnlyPsiFile(CSharpLanguage.Instance) as ICSharpFile;
-            if (file == null)
-                return;
-
-            if (file.GetProject().IsTestProject() == false) 
+            
+            if (File.GetProject().IsTestProject() == false) 
                 return;//only apply rules with projects we recognise as test projects
 
             // Running visitor against the PSI
             var elementProcessor = new TestFileAnalysisElementProcessor(this, _myDaemonProcess, _settings);
-            file.ProcessDescendants(elementProcessor);
+            File.ProcessDescendants(elementProcessor);
 
             // Checking if the daemon is interrupted by user activity
             if (_myDaemonProcess.InterruptFlag)
