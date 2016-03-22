@@ -46,8 +46,8 @@ namespace TestCop.Plugin
         }
 
         public TestFileAnalysisElementProcessor(TestFileAnalysisDaemonStageProcess stageProcess, IDaemonProcess process, IContextBoundSettingsStore settings)
-        {
-            _highlightingConsumer = new DefaultHighlightingConsumer(stageProcess, settings);
+        {            
+            _highlightingConsumer = new FilteringHighlightingConsumer(stageProcess, settings, stageProcess.File);
             _process = process;
             _settings = settings;            
         }

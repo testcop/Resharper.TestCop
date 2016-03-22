@@ -24,9 +24,9 @@ namespace TestCop.Plugin
     public class ProjectAnalysisElementProcessor : IRecursiveElementProcessor
     {
         private readonly IDaemonProcess _process;
-        private readonly IContextBoundSettingsStore _settings;        
-        
-        private readonly DefaultHighlightingConsumer _highlightingConsumer;
+        private readonly IContextBoundSettingsStore _settings;
+
+        private readonly FilteringHighlightingConsumer _highlightingConsumer;
         
         protected void AddHighlighting(DocumentRange range, IHighlighting highlighting)
         {
@@ -38,9 +38,9 @@ namespace TestCop.Plugin
             get { return _highlightingConsumer.Highlightings; }
         }
 
-        public ProjectAnalysisElementProcessor(ProjectAnalysisDaemonStageProcess stageProcess, IDaemonProcess process, IContextBoundSettingsStore settings)
+        public ProjectAnalysisElementProcessor(ProjectAnalysisDaemonStageProcess stageProcess, IDaemonProcess process, IContextBoundSettingsStore settings )
         {
-            _highlightingConsumer = new DefaultHighlightingConsumer(stageProcess, settings);
+            _highlightingConsumer = new FilteringHighlightingConsumer(stageProcess, settings, stageProcess.File );
             _process = process;
             _settings = settings;            
         }
