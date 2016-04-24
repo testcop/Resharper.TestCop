@@ -3,10 +3,11 @@
   <metadata>     
 		<id>Resharper.TestCop.R9</id>     
 		<version>0.0.0-internal</version>
-		<title>TestCop for ReSharper 10</title>     
+		<title>TestCop for ReSharper 2016.1</title>     
 		<authors>Alcaeus</authors>     
 		<description>Easily switch between unit tests and code. Create missing associated files. Includes highlightings and test templates to keep test projects neat and tidy. Works with NUnit, MSTest, xUnit ...</description>
 		<releaseNotes>
+      1.10.1.0 R#2016.1 recompile
       1.10.0.9-EAP R#10.1 EAP recompile
       1.10.0.8-EAP R#10.1 EAP recompile
       1.10.0.7 Able to override keyboard shortcut for running tests
@@ -45,7 +46,7 @@
     <projectUrl>https://testcop.codeplex.com/</projectUrl>
     <licenseUrl>https://testcop.codeplex.com/license</licenseUrl>
     <iconUrl>https://testcop.svn.codeplex.com/svn/Project/Src/TestCop.Plugin/resources/agent48x48.png</iconUrl>
-    <copyright>Copyright &#x00A9; 2013, 2014, 2015</copyright>
+    <copyright>Copyright &#x00A9; 2013-2016</copyright>
     <dependencies>      
       <dependency id="Wave" version="[5.0]"/>      
     </dependencies>

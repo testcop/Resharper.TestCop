@@ -1,7 +1,7 @@
 ﻿// --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
-// -- Copyright 2015
+// -- Copyright 2016
 // --
 
 using System;
@@ -29,7 +29,6 @@ using JetBrains.UI.RichText;
 using JetBrains.UI.Tooltips;
 using JetBrains.Util;
 using TestCop.Plugin.Extensions;
-using DataConstants = JetBrains.ProjectModel.DataContext.DataConstants;
 
 namespace TestCop.Plugin.Helper
 {
@@ -108,7 +107,7 @@ namespace TestCop.Plugin.Helper
         public static string GetBaseFileName(IDataContext context, ISolution solution)
         {            
             IProjectModelElement projectModelElement =
-                context.GetData(DataConstants.PROJECT_MODEL_ELEMENT);
+                context.GetData(JetBrains.ProjectModel.DataContext.ProjectModelDataConstants.PROJECT_MODEL_ELEMENT);
 
             var projectItem = projectModelElement as IProjectItem;
             if (projectItem == null) return null;

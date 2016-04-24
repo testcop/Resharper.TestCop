@@ -1,7 +1,7 @@
 // --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
-// -- Copyright 2014
+// -- Copyright 2016
 // --
  
 using System;
@@ -36,9 +36,9 @@ namespace TestCop.Plugin.QuickFixActions
         public IEnumerable<IntentionAction> CreateBulbItems()
         {
             var list = new List<IntentionAction>();
-
-            var anchor = _highlight.FileOnDisk.Count == 1 ? new InvisibleAnchor(AnchorPosition.NewBasePosition(), IntentionsAnchors.ContextActionsAnchor, false)
-            : (IAnchor)new ExecutableGroupAnchor(IntentionsAnchors.ContextActionsAnchor, null, false);
+   
+            var anchor = _highlight.FileOnDisk.Count == 1 ? BulbMenuAnchors.FirstClassContextItems
+                : (IAnchor)new SubmenuAnchor(BulbMenuAnchors.FirstClassContextItems, SubmenuBehavior.ExecutableDuplicateFirst);            
             
             if (_highlight.FileOnDisk.Count > 1)
             {
@@ -58,7 +58,7 @@ namespace TestCop.Plugin.QuickFixActions
             return _highlight.IsValid();
         }
     }
-
+    
     class AddFileBulb : QuickFixBase
     {
         private readonly IProject _currentProject;
