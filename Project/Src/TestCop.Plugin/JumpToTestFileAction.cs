@@ -1,13 +1,12 @@
 ﻿// --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
-// -- Copyright 2014
+// -- Copyright 2016
 // --
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using JetBrains.ActionManagement;
 using JetBrains.Application.DataContext;
@@ -16,15 +15,10 @@ using JetBrains.Application.Settings;
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Menu;
-using JetBrains.ReSharper.Feature.Services.Navigation;
-using JetBrains.ReSharper.Feature.Services.Resources;
 using JetBrains.ReSharper.Features.Inspections.Bookmarks.NumberedBookmarks;
-using JetBrains.ReSharper.Features.Navigation.Features.Goto.GoToMember;
-using JetBrains.ReSharper.Features.Navigation.Features.NavigateFromHere;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
-using JetBrains.ReSharper.Psi.Impl;
 using JetBrains.ReSharper.Psi.Search;
 using JetBrains.ReSharper.Resources.Shell;
 using JetBrains.TextControl;
@@ -33,7 +27,6 @@ using JetBrains.UI.PopupMenu;
 using JetBrains.Util;
 using TestCop.Plugin.Extensions;
 using TestCop.Plugin.Helper;
-using DataConstants = JetBrains.TextControl.DataContext.DataConstants;
 using JetBrains.ReSharper.Psi.Modules;
 using JetBrains.TextControl.DataContext;
 
@@ -61,21 +54,21 @@ namespace TestCop.Plugin
         bool IExecutableAction.Update(IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
         {
             // fetch focused text editor control
-            ITextControl textControl = context.GetData(DataConstants.TEXT_CONTROL);
+            ITextControl textControl = context.GetData(TextControlDataConstants.TEXT_CONTROL);
             
             // enable this action if we are in text editor, disable otherwise            
             return textControl != null;
         }
 
         void IExecutableAction.Execute(IDataContext context, DelegateExecute nextExecute)
-        {            
-            ITextControl textControl = context.GetData(DataConstants.TEXT_CONTROL);
+        {
+            ITextControl textControl = context.GetData(TextControlDataConstants.TEXT_CONTROL);
             if (textControl == null)
             {
                 MessageBox.ShowError("Text control unavailable.");                
                 return;
             }
-            ISolution solution = context.GetData(JetBrains.ProjectModel.DataContext.DataConstants.SOLUTION);
+            ISolution solution = context.GetData(JetBrains.ProjectModel.DataContext.ProjectModelDataConstants.SOLUTION);
             if (solution == null){return;}
             
             IClrTypeName clrTypeClassName = ResharperHelper.GetClassNameAppropriateToLocation(solution, textControl);
@@ -83,9 +76,14 @@ namespace TestCop.Plugin
 
             var typeDeclaration = ResharperHelper.FindFirstCharpTypeDeclarationInDocument(solution, textControl.Document);
             if (typeDeclaration == null) return;
-
             
-            var currentProject = context.GetData(JetBrains.ProjectModel.DataContext.DataConstants.Project);
+            var currentProject = context.GetData(JetBrains.ProjectModel.DataContext.ProjectModelDataConstants.Project);
+            if (currentProject == null)
+            {
+                ResharperHelper.AppendLineToOutputWindow("Internal Error: No current project");
+                return;
+            }
+
             var targetProjects = currentProject.GetAssociatedProjects(textControl.ToProjectFile(solution));     
             if(targetProjects.IsEmpty())
             {
@@ -106,6 +104,14 @@ namespace TestCop.Plugin
             }
 
             bool isTestFile = baseFileName.EndsWith(settings.TestClassSuffixes());
+
+            if (isTestFile != currentProject.IsTestProject())
+            {                
+                ResharperHelper.AppendLineToOutputWindow(
+                            string.Format("Don't know how to navigate with '{0}' within project '{1}'"
+                                , baseFileName, currentProject.Name));
+                return;
+            }
            
             var elementsFoundInTarget = new List<IClrDeclaredElement>();
             var elementsFoundInSolution = new List<IClrDeclaredElement>();
