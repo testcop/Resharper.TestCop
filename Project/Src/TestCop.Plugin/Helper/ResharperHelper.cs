@@ -121,7 +121,7 @@ namespace TestCop.Plugin.Helper
        
         public static IClrTypeName FindFirstTypeInFile(ISolution solution, IDocument document)
         {
-            var firstTypeInFile = FindFirstDeclaredElementInFile(solution, document) as ITypeElement;
+            var firstTypeInFile = FindDeclaredElementInFile(solution, document, 1) as ITypeElement;
                          
             if (firstTypeInFile != null)
             {
@@ -130,16 +130,25 @@ namespace TestCop.Plugin.Helper
             }
             return null;
         }
-
-        public static IDeclaredElement FindFirstDeclaredElementInFile(ISolution solution, IDocument document)
+      
+        public static IDeclaredElement FindDeclaredElementInFile(ISolution solution, IDocument document, int declarationSequencePosition)
         {
-            for (int i = document.DocumentRange.StartOffset; i < document.DocumentRange.EndOffset; i++)
-            {
-                var firstTypeInFile = TextControlToPsi.GetContainingTypeOrTypeMember(solution, document, i);
+            var typesFound = new List<string>();
 
-                if (firstTypeInFile != null)
-                {                    
-                    return firstTypeInFile;
+            for (int i = document.DocumentRange.StartOffset; i < document.DocumentRange.EndOffset; i++)
+            {                
+                var typeInFile = TextControlToPsi.GetContainingTypeOrTypeMember(solution, document, i);
+
+                if (typeInFile != null)
+                {
+                    if(!typesFound.Contains(typeInFile.ShortName))
+                    {
+                        typesFound.Add(typeInFile.ShortName);
+                    }
+                    if(typesFound.Count==declarationSequencePosition)                    
+                    {
+                        return typeInFile;
+                    }
                 }
             }
             return null;

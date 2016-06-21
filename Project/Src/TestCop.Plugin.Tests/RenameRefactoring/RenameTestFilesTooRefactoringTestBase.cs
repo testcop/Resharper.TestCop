@@ -36,8 +36,8 @@ namespace TestCop.Plugin.Tests.RenameRefactoring
         protected abstract string SolutionName { get; }
 
         protected abstract void ConfigureForTestCopStrategy(IContextBoundSettingsStore settingsStore);
-       
-        public void DoRenameTest(string testFile, params string[] expectedRenamedTests)
+
+        public void DoRenameTest(string testFile, int typeSequenceInFile=1, params string[] expectedRenamedTests)
         {            
             ExecuteWithinSettingsTransaction((settingsStore =>
             {
@@ -55,7 +55,7 @@ namespace TestCop.Plugin.Tests.RenameRefactoring
                 }
                 lifetime.AddAction(() => SolutionManager.CloseSolution(solution));
 
-                var findFirstTypeInFile = FindFirstTypeInFile(solution, testFile);
+                var findFirstTypeInFile = FindTypeInFile(solution, testFile, typeSequenceInFile);
 
                 var fileRenames = new RenameTestFilesTooRefactoring().GetFileRenames(findFirstTypeInFile, "NewClass");
 
@@ -68,7 +68,7 @@ namespace TestCop.Plugin.Tests.RenameRefactoring
         }));
     }
        
-        private static IDeclaredElement FindFirstTypeInFile(ISolution solution, string testFile)
+        private static IDeclaredElement FindTypeInFile(ISolution solution, string testFile, int typeSequenceInFile)
         {
                 var projectFile =
                     solution.GetAllProjects()
@@ -81,7 +81,7 @@ namespace TestCop.Plugin.Tests.RenameRefactoring
             }
 
             var document = DocumentManager.GetInstance(solution).GetOrCreateDocument(projectFile);
-                var findFirstTypeInFile = ResharperHelper.FindFirstDeclaredElementInFile(solution, document);
+            var findFirstTypeInFile = ResharperHelper.FindDeclaredElementInFile(solution, document, typeSequenceInFile);
                 return findFirstTypeInFile;                                                      
         }
     }
