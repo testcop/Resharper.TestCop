@@ -31,7 +31,7 @@ namespace TestCop.Plugin.Tests.RenameRefactoring
         [Test]
         public void RenameClassRenamesTestFilesTooTest()
         {                        
-            DoRenameTest(@"<TestApplication>\NG1\ClassWithBoth.cs"
+            DoRenameTest(@"<TestApplication>\NG1\ClassWithBoth.cs", 1
                 ,@"<TestApplication.IntegrationTests>\NG1\ClassWithBothTests.cs->NewClassTests"
                 ,@"<TestApplication.Tests>\NG1\ClassWithBothTests.cs->NewClassTests" );      
         }

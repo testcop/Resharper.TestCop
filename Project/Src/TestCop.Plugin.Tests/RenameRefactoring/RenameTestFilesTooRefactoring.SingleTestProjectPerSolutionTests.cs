@@ -31,8 +31,23 @@ namespace TestCop.Plugin.Tests.RenameRefactoring
         public void RenameClassRenamesTestFilesTooTest()
         {            
             DoRenameTest(
-                  @"<MyCorp.TestApplication3.DAL>\NS1\NS2\ClassA.cs"
+                  @"<MyCorp.TestApplication3.DAL>\NS1\NS2\ClassA.cs", 1
                 , @"<MyCorp.TestApplication3.Tests>\DAL\NS1\NS2\ClassATests.cs->NewClassTests");
+        }
+
+        [Test]
+        public void RenameClassHandlesFirstClassWithilesTooTest()
+        {
+            DoRenameTest(
+                  @"<MyCorp.TestApplication3.DAL>\ClassX.cs", 1
+                , @"<MyCorp.TestApplication3.Tests>\DAL\ClassXTests.cs->NewClassTests");
+
+        }    
+
+        [Test]
+        public void RenameClassIgnoresSecondClassWithTestFilesTooTest()
+        {
+            DoRenameTest(@"<MyCorp.TestApplication3.DAL>\ClassX.cs", 2  /*no renames*/);
         }    
     }
 }

@@ -44,9 +44,16 @@ namespace TestCop.Plugin
                 var solution = project.GetSolution();
                                 
                 if (!project.IsTestProject())
-                {
+                {                                        
+                    var projectFile = typeElement.GetSourceFiles().First().ToProjectFile();
+                    if (projectFile.Name != classNameBeingRenamed + projectFile.Location.ExtensionWithDot)
+                    {
+                        ResharperHelper.AppendLineToOutputWindow("# skipped as file name doesnt match class being renamed");
+                        yield break;
+                    }
+
                     //get associated projects..
-                    var targetProjects = project.GetAssociatedProjects(typeElement.GetSourceFiles().First().ToProjectFile());
+                    var targetProjects = project.GetAssociatedProjects(projectFile);
                     if (targetProjects.IsEmpty())
                     {
                         yield break;

@@ -29,6 +29,7 @@ using TestCop.Plugin.Extensions;
 using TestCop.Plugin.Helper;
 using JetBrains.ReSharper.Psi.Modules;
 using JetBrains.TextControl.DataContext;
+using JetBrains.UI.Avalon.TreeListView;
 
 namespace TestCop.Plugin
 {
@@ -41,7 +42,20 @@ namespace TestCop.Plugin
         private Action<JetPopupMenu, JetPopupMenu.ShowWhen> _menuDisplayer = (menu, showWhen) => menu.Show(showWhen);
 
         readonly Func<IClrDeclaredElement, IClrDeclaredElement, bool> _declElementMatcher =
-                    (element, declaredElement) => element.ToString() == declaredElement.ToString();
+                    (element, declaredElement) => B(element, declaredElement);
+
+        private static bool B(IClrDeclaredElement element1, IClrDeclaredElement element2)
+        {            
+            var element1SoureFile = element1.GetSourceFiles().FirstOrDefault();
+            var element2SourceFile = element2.GetSourceFiles().FirstOrDefault();
+
+            if (element1SoureFile == null || element2SourceFile == null)
+            {
+                return element1.ToString() == element2.ToString(); 
+            }
+
+            return element1SoureFile.DisplayName == element2SourceFile.DisplayName;
+        }
 
         /// <summary>
         /// For tesing 

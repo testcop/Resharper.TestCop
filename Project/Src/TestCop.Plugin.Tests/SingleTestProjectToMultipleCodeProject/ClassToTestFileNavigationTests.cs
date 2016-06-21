@@ -49,9 +49,7 @@ namespace TestCop.Plugin.Tests.SingleTestProjectToMultipleCodeProject
         [TestCase(@"<MyCorp.TestApplication3.DAL>\NS1\ClassA.cs")]
         [TestCase(@"<MyCorp.TestApplication3.DAL>\NS1\NS2\ClassA.cs")]         
         public void Test(string testName)
-        {   
-            // http://myregexp.com/
-                     
+        {          
             ExecuteWithinSettingsTransaction((settingsStore =>
             {
                 RunGuarded(
