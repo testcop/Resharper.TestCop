@@ -47,6 +47,7 @@
     <Compile Include="ClassNotValidAtRootTests.cs" />
     <Compile Include="DAL\ClassATests.cs" />
     <Compile Include="DAL\ClassXTests.cs" />
+    <Compile Include="DAL\ClassXXTests.cs" />    
     <Compile Include="DAL\NS1\ClassATests.cs" />
     <Compile Include="DAL\NS1\NS2\ClassATests.cs" />
     <Compile Include="DAL\NS1\NS2\DALClassDWithNoCodeTests.cs" />
