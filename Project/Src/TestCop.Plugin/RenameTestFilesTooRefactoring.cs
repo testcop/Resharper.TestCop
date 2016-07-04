@@ -1,14 +1,11 @@
 ﻿// --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
-// -- Copyright 2015
+// -- Copyright 2016
 // --
 using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
 using JetBrains;
 using JetBrains.IDE;
-using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Refactorings.Specific.Rename;
 using JetBrains.ReSharper.Psi;
@@ -18,7 +15,6 @@ using JetBrains.ReSharper.Refactorings.Rename;
 using JetBrains.Util;
 using TestCop.Plugin.Extensions;
 using TestCop.Plugin.Helper;
-using TestCop.Plugin.Helper.Mapper;
 
 namespace TestCop.Plugin
 {
@@ -44,16 +40,9 @@ namespace TestCop.Plugin
                 var solution = project.GetSolution();
                                 
                 if (!project.IsTestProject())
-                {                                        
-                    var projectFile = typeElement.GetSourceFiles().First().ToProjectFile();
-                    if (projectFile.Name != classNameBeingRenamed + projectFile.Location.ExtensionWithDot)
-                    {
-                        ResharperHelper.AppendLineToOutputWindow("# skipped as file name doesnt match class being renamed");
-                        yield break;
-                    }
-
+                {                                                           
                     //get associated projects..
-                    var targetProjects = project.GetAssociatedProjects(projectFile);
+                    var targetProjects = project.GetAssociatedProjects(typeElement);
                     if (targetProjects.IsEmpty())
                     {
                         yield break;

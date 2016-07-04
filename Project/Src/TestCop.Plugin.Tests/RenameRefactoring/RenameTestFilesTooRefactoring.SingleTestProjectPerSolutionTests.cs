@@ -1,9 +1,8 @@
 ﻿// // --
 // // -- TestCop http://testcop.codeplex.com
 // // -- License http://testcop.codeplex.com/license
-// // -- Copyright 2015
+// // -- Copyright 2016
 // // --
-
 using JetBrains.Application.Settings;
 using NUnit.Framework;
 
@@ -45,9 +44,11 @@ namespace TestCop.Plugin.Tests.RenameRefactoring
         }    
 
         [Test]
-        public void RenameClassIgnoresSecondClassWithTestFilesTooTest()
+        public void RenameClassCanProcessSecondClassWithinFileTest()
         {
-            DoRenameTest(@"<MyCorp.TestApplication3.DAL>\ClassX.cs", 2  /*no renames*/);
+            DoRenameTest(@"<MyCorp.TestApplication3.DAL>\ClassX.cs",                
+                2 /*select ClassXX within the file (not ClassX) */  
+                ,@"<MyCorp.TestApplication3.Tests>\DAL\ClassXXTests.cs->NewClassTests");
         }    
     }
 }

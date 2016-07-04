@@ -27,7 +27,15 @@ namespace TestCop.Plugin.Extensions
         public static IList<TestCopProjectItem> GetAssociatedProjects(this IProject currentProject, IProjectFile  projectFile)
         {
             string currentNamespace = projectFile.CalculateExpectedNamespace(projectFile.GetPrimaryPsiFile().Language);
-            return ProjectMappingHelper.GetProjectMappingHeper().GetAssociatedProject(currentProject, projectFile, currentNamespace);
-        }       
+            return ProjectMappingHelper.GetProjectMappingHeper().GetAssociatedProject(currentProject, projectFile.Location.NameWithoutExtension, currentNamespace);
+        }
+
+        public static IList<TestCopProjectItem> GetAssociatedProjects(this IProject currentProject, ITypeElement classInProject)
+        {
+            string currentNamespace = classInProject.OwnerNamespaceDeclaration();
+            return ProjectMappingHelper.GetProjectMappingHeper().GetAssociatedProject(currentProject, classInProject.ShortName, currentNamespace);
+            //string currentNamespace = projectFile.CalculateExpectedNamespace(projectFile.GetPrimaryPsiFile().Language);
+            //return ProjectMappingHelper.GetProjectMappingHeper().GetAssociatedProject(currentProject, projectFile.Location.NameWithoutExtension, currentNamespace);
+        } 
     }
 }
