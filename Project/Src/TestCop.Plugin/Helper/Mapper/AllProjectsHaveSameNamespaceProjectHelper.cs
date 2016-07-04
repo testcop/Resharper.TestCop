@@ -1,7 +1,7 @@
 // --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
-// -- Copyright 2014
+// -- Copyright 2016
 // --
 
 using System;
@@ -37,13 +37,13 @@ namespace TestCop.Plugin.Helper.Mapper
         }
 
 
-        public override IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, IProjectFile projectFile, string currentTypeNamespace)
+        public override IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string currentClassName, string currentTypeNamespace)
         {
             const string warningMessage = "Not Supported: More than one  project has a name of ";
 
             string subNameSpace = currentTypeNamespace.RemoveLeading(currentProject.GetDefaultNamespace());
 
-            var filePatterns=AssociatedFileNames(Settings, projectFile);
+            var filePatterns=AssociatedFileNames(Settings, currentClassName);
 
             if (currentProject.IsTestProject())
             {

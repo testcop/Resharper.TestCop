@@ -1,7 +1,7 @@
 // --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
-// -- Copyright 2014
+// -- Copyright 2016
 // --
 
 using System.Collections.Generic;
@@ -12,7 +12,7 @@ namespace TestCop.Plugin.Helper.Mapper
 {
     public interface IProjectMappingHeper
     {
-        IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, IProjectFile projectFile, string currentNameSpace);
+        IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string currentClassName, string currentNameSpace);
         bool IsTestProject(IProject project);
         void DumpDebug(ISolution solution);
     }

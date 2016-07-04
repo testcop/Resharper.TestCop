@@ -1,10 +1,13 @@
+// --
+// -- TestCop http://testcop.codeplex.com
+// -- License http://testcop.codeplex.com/license
+// -- Copyright 2016
+// --
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.ReSharper.Psi.Util;
-using JetBrains.UI.Avalon.TreeListView;
 using JetBrains.Util;
 using TestCop.Plugin.Extensions;
 
@@ -12,7 +15,7 @@ namespace TestCop.Plugin.Helper.Mapper
 {
     public abstract class MappingBase : IProjectMappingHeper
     {
-        public abstract IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, IProjectFile projectFile, string currentNameSpace);
+        public abstract IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string className, string currentNameSpace);
 
         public virtual bool IsTestProject(IProject project)
         {
@@ -69,34 +72,30 @@ namespace TestCop.Plugin.Helper.Mapper
             return false;
         }
 
-        protected static IEnumerable<String> AssociatedFileNames(TestFileAnalysisSettings settings, IProjectFile projectFile)
-        {
-            return AssociatedFileNames(settings,projectFile.Location.NameWithoutExtension);
-        }
 
-        private static IEnumerable<String> AssociatedFileNames(TestFileAnalysisSettings settings, string baseFileNameWithoutExt)
+        protected static IEnumerable<String> AssociatedFileNames(TestFileAnalysisSettings settings, string className)
         {        
-            string classNameFromFileName = baseFileNameWithoutExt;
+            string classNameUnderTest = className;
 
             foreach (var suffix in settings.TestClassSuffixes())
             {
-                if (baseFileNameWithoutExt.EndsWith(suffix))
+                if (className.EndsWith(suffix))
                 {
-                    classNameFromFileName = baseFileNameWithoutExt.Split(new[] { '.' }, 2)[0].RemoveTrailing(suffix);
+                    classNameUnderTest = className.Split(new[] { '.' }, 2)[0].RemoveTrailing(suffix);
                     break;
                 }
             }
 
-            if (baseFileNameWithoutExt != classNameFromFileName)
+            if (className != classNameUnderTest)
             {
-                yield return classNameFromFileName;
+                yield return classNameUnderTest;
             }
             else
             {
                 foreach (var suffix in settings.TestClassSuffixes())
                 {
-                    yield return string.Format(@"{0}{1}", classNameFromFileName, suffix);//e.g. Class1Tests
-                    yield return string.Format(@"{0}\..*{1}", classNameFromFileName, suffix);  //e.g. Class1.SecurityTests                  
+                    yield return string.Format(@"{0}{1}", classNameUnderTest, suffix);//e.g. Class1Tests
+                    yield return string.Format(@"{0}\..*{1}", classNameUnderTest, suffix);  //e.g. Class1.SecurityTests                  
                 }
             }
         }
