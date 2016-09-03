@@ -24,7 +24,7 @@ namespace TestCop.Plugin.Highlighting
 {
     
     [ConfigurableSeverityHighlighting(SeverityId, CSharpLanguage.Name)]
-    public class TestFileNameSpaceWarning : CSharpHighlightingBase, IHighlighting
+    public class TestFileNameSpaceWarning : HighlightingBase, IHighlighting
     {
         internal const string SeverityId = "TestFileNameSpaceWarning";
 

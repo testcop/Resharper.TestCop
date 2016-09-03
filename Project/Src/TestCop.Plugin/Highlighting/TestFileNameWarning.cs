@@ -21,7 +21,7 @@ using TestCop.Plugin.Highlighting;
 namespace TestCop.Plugin.Highlighting
 {
     [ConfigurableSeverityHighlighting(SeverityId, CSharpLanguage.Name)]
-    public class TestFileNameWarning : CSharpHighlightingBase, IHighlighting
+    public class TestFileNameWarning : HighlightingBase, IHighlighting
     {
         internal const string SeverityId = "TestFileNameWarning";
         private readonly string _tooltipString;

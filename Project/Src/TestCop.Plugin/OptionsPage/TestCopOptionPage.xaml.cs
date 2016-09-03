@@ -453,7 +453,7 @@ namespace TestCop.Plugin.OptionsPage
                         TemplateApplicability.File))
 
             {
-                if (templateDialog.ShowDialog(_application.MainWindow) !=
+                if (templateDialog.ShowDialog(_application.MainWindow.GetActiveWindow()) !=
                     DialogResult.OK)
                 {
                     return;

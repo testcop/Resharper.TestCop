@@ -18,7 +18,7 @@ using TestCop.Plugin.Highlighting;
 namespace TestCop.Plugin.Highlighting
 {    
     [ConfigurableSeverityHighlighting(SeverityId, CSharpLanguage.Name)]
-    public class FilesNotPartOfProjectWarning : CSharpHighlightingBase, IHighlighting
+    public class FilesNotPartOfProjectWarning : HighlightingBase, IHighlighting
     {
         private readonly IProject _currentProject;
         private readonly IList<FileInfo> _fileOnDisk;
