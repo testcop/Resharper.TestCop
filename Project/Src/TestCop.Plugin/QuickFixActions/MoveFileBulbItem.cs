@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using JetBrains.Application.DataContext;
 using JetBrains.Application.Progress;
 using JetBrains.DataFlow;
+using JetBrains.DocumentManagers.impl;
 using JetBrains.DocumentManagers.Transactions;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Bulbs;
@@ -42,7 +43,7 @@ namespace TestCop.Plugin.QuickFixActions
             using (var cookie = solution.CreateTransactionCookie(DefaultAction.Rollback, this.GetType().Name, progress))
             {
                 IProjectFolder newFolder = (IProjectFolder)_highlight.TargetProject.FindProjectItemByLocation(_highlight.TargetFolder)
-                    ?? AddNewItemUtil.GetOrCreateProjectFolder(_highlight.TargetProject, _highlight.TargetFolder, cookie); 
+                    ?? _highlight.TargetProject.GetOrCreateProjectFolder(_highlight.TargetFolder, cookie); 
 
                 var workflow = new MoveToFolderWorkflow(solution, "ManualMoveToFolderQuickFix");
                 IProjectFolder targetFolder = newFolder ?? _highlight.TargetProject;
@@ -73,7 +74,7 @@ namespace TestCop.Plugin.QuickFixActions
 
         public IEnumerable<IntentionAction> CreateBulbItems()
         {
-          foreach (IntentionAction intentionAction in BulbActionExtensions.ToQuickFixAction(this, null, UnnamedThemedIcons.Agent16x16.Id ))
+            foreach (IntentionAction intentionAction in BulbActionExtensions.ToQuickFixIntentions(this, null, UnnamedThemedIcons.Agent16x16.Id))
               yield return intentionAction;
         }
 

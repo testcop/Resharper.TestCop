@@ -3,10 +3,11 @@
   <metadata>     
 		<id>Resharper.TestCop.R9</id>     
 		<version>0.0.0-internal</version>
-		<title>TestCop for ReSharper 2016.1</title>     
+		<title>TestCop for ReSharper 2016.2</title>     
 		<authors>Alcaeus</authors>     
 		<description>Easily switch between unit tests and code. Create missing associated files. Includes highlightings and test templates to keep test projects neat and tidy. Works with NUnit, MSTest, xUnit ...</description>
 		<releaseNotes>
+      1.10.3.0 R#2016.2 recompile
       1.10.2.1 Rename Refactoring supports rename of any class within file finding associated test files
       1.10.2.0 Rename Refactoring skips rename of secondary class within file
       1.10.1.0 R#2016.1 recompile
@@ -50,7 +51,7 @@
     <iconUrl>https://testcop.svn.codeplex.com/svn/Project/Src/TestCop.Plugin/resources/agent48x48.png</iconUrl>
     <copyright>Copyright &#x00A9; 2013-2016</copyright>
     <dependencies>      
-      <dependency id="Wave" version="[5.0]"/>      
+      <dependency id="Wave" version="[6.0]"/>      
     </dependencies>
     <tags>resharper unittest xunit nunit mstest tdd c# template</tags>
   </metadata>   

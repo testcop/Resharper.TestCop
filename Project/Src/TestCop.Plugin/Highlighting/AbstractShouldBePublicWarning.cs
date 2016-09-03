@@ -12,8 +12,8 @@ using JetBrains.ReSharper.Psi.Tree;
 
 namespace TestCop.Plugin.Highlighting
 {
-    public abstract class AbstractShouldBePublicWarning : CSharpHighlightingBase, IHighlighting
-    {
+    public abstract class AbstractShouldBePublicWarning :HighlightingBase, IHighlighting
+    {        
         private readonly string _severityId;
         private readonly string _tooltipString;
         private readonly IAccessRightsOwnerDeclaration _declaration;

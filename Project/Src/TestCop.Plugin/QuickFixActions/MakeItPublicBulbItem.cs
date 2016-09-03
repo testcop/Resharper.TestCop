@@ -49,7 +49,7 @@ namespace TestCop.Plugin.QuickFixActions
 #else     
         public IEnumerable<IntentionAction> CreateBulbItems()
         {
-            foreach (IntentionAction intentionAction in  BulbActionExtensions.ToQuickFixAction(this, null, UnnamedThemedIcons.Agent16x16.Id))
+            foreach (IntentionAction intentionAction in  BulbActionExtensions.ToQuickFixIntentions(this, null, UnnamedThemedIcons.Agent16x16.Id))
                 yield return intentionAction;
         }
 #endif

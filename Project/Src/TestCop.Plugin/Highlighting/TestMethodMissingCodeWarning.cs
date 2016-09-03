@@ -17,7 +17,7 @@ namespace TestCop.Plugin.Highlighting
 {
 
     [ConfigurableSeverityHighlighting(SeverityId, CSharpLanguage.Name)]
-    class TestMethodMissingCodeWarning : CSharpHighlightingBase, IHighlighting
+    class TestMethodMissingCodeWarning : HighlightingBase, IHighlighting
     {
         internal const string SeverityId = "TestMethodMissingCodeWarning";
 

@@ -3,6 +3,8 @@ using JetBrains.Application;
 using JetBrains.Application.DataContext;
 using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
+using JetBrains.DocumentManagers.impl;
+using JetBrains.DocumentManagers.Transactions;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.FileTemplates;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Scope;
@@ -59,8 +61,8 @@ namespace TestCop.Plugin.Helper
                 classTemplate = LoadTemplateFromQuickList(context, "Class");
             }
             IProjectFolder folder = (IProjectFolder)associatedProject.FindProjectItemByLocation(fileSystemPath)
-                                    ?? AddNewItemUtil.GetOrCreateProjectFolder(associatedProject, fileSystemPath);
-
+                                    ?? associatedProject.GetOrCreateProjectFolder(fileSystemPath);
+            
             if (folder == null)
             {
                 ResharperHelper.AppendLineToOutputWindow("Error failed to create/location project folder" + fileSystemPath);
@@ -68,7 +70,8 @@ namespace TestCop.Plugin.Helper
             }
 
             string extension = Enumerable.First(_fileExtensions.GetExtensions(associatedProject.ProjectProperties.DefaultLanguage.DefaultProjectFileType));
-            FileTemplatesManager.Instance.CreateFileFromTemplate(targetFile + extension, folder, classTemplate);
+
+            FileTemplatesManager.Instance.CreateFileFromTemplate(targetFile + extension, new ProjectFolderWithLocation(folder), classTemplate);
         }
 
         private static Template LoadTemplateFromQuickList(IDataContext context, string templateDescription)
