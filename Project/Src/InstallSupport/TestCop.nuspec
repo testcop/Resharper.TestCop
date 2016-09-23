@@ -7,6 +7,7 @@
 		<authors>Alcaeus</authors>     
 		<description>Easily switch between unit tests and code. Create missing associated files. Includes highlightings and test templates to keep test projects neat and tidy. Works with NUnit, MSTest, xUnit ...</description>
 		<releaseNotes>
+      1.10.3.1 R#2016.2 recompile
       1.10.3.0 R#2016.2 recompile
       1.10.2.1 Rename Refactoring supports rename of any class within file finding associated test files
       1.10.2.0 Rename Refactoring skips rename of secondary class within file
