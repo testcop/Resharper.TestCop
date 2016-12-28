@@ -213,9 +213,9 @@ namespace TestCop.Plugin.Tests
             return openProjectFile;
         }
 
-        public Action<JetPopupMenu, JetPopupMenu.ShowWhen> CreateJetPopMenuShowToWriterAction(TextWriter textWriter)
+        public Action<JetPopupMenus, JetPopupMenu, JetPopupMenu.ShowWhen> CreateJetPopMenuShowToWriterAction(TextWriter textWriter)
         {
-           Action<JetPopupMenu, JetPopupMenu.ShowWhen> menuDisplayer = (menu, when) =>
+           Action<JetPopupMenus, JetPopupMenu, JetPopupMenu.ShowWhen> menuDisplayer = (menus, menu, when) =>
             {
                 foreach (var itm in Enumerable.ToList(menu.ItemKeys).Cast<SimpleMenuItem>())
                 {

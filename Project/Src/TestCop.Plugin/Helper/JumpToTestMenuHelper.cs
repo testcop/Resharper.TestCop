@@ -32,7 +32,7 @@ namespace TestCop.Plugin.Helper
     public static class JumpToTestMenuHelper
     {        
         //------------------------------------------------------------------------------------------------------------------------
-        public static void PromptToOpenOrCreateClassFiles(Action<JetPopupMenu, JetPopupMenu.ShowWhen> menuDisplayer,Lifetime lifetime, IDataContext context, ISolution solution
+        public static void PromptToOpenOrCreateClassFiles(Action<JetPopupMenus, JetPopupMenu, JetPopupMenu.ShowWhen> menuDisplayer,Lifetime lifetime, IDataContext context, ISolution solution
     , IProject project, IClrTypeName clrTypeClassName, IList<TestCopProjectItem> targetProjects
     , List<IClrDeclaredElement> preferred, List<IClrDeclaredElement> fullList)
         {
@@ -57,8 +57,9 @@ namespace TestCop.Plugin.Helper
                     autoExecuteIfSingleEnabledItem = JetPopupMenu.ShowWhen.NoItemsBannerIfNoItems;
                 }
             }
-             
-            var menu = Shell.Instance.GetComponent<JetPopupMenus>().Create();
+
+            var menus = Shell.Instance.GetComponent<JetPopupMenus>();
+            var menu = menus.Create();
             menu.Caption.Value = WindowlessControlAutomation.Create("Switch to:");
             menu.SetItems(menuItems.ToArray());
 
@@ -66,8 +67,8 @@ namespace TestCop.Plugin.Helper
 
             menu.KeyboardAcceleration.SetValue(KeyboardAccelerationFlags.Mnemonics);
             menu.NoItemsBanner = WindowlessControlAutomation.Create("No destinations found.");
-     
-            menuDisplayer.Invoke(menu, autoExecuteIfSingleEnabledItem);                        
+            
+            menuDisplayer.Invoke(menus, menu, autoExecuteIfSingleEnabledItem);                        
         }
         //------------------------------------------------------------------------------------------------------------------------
         private static void AppendNavigateToMenuItems(Lifetime lifetime, ISolution solution, List<IClrDeclaredElement> clrDeclaredElements,

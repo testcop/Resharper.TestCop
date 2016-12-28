@@ -137,7 +137,7 @@ namespace TestCop.Plugin.Helper
 
             for (int i = document.DocumentRange.StartOffset; i < document.DocumentRange.EndOffset; i++)
             {                
-                var typeInFile = TextControlToPsi.GetContainingTypeOrTypeMember(solution, document, i);
+                var typeInFile = TextControlToPsi.GetContainingTypeOrTypeMember(solution, new DocumentOffset(document, i));
 
                 if (typeInFile != null)
                 {
@@ -158,7 +158,7 @@ namespace TestCop.Plugin.Helper
         {
             for (int i = document.DocumentRange.StartOffset; i < document.DocumentRange.EndOffset; i++)
             {                
-                var declaration = TextControlToPsi.GetElements<ICSharpTypeDeclaration>(solution, document, i).FirstOrDefault();
+                var declaration = TextControlToPsi.GetElements<ICSharpTypeDeclaration>(solution, new DocumentOffset(document, i)).FirstOrDefault();
 
                 if (declaration != null)
                 {

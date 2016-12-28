@@ -3,7 +3,6 @@
 // -- License http://testcop.codeplex.com/license
 // -- Copyright 2014
 // --
-using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.Tree;
@@ -14,8 +13,7 @@ using TestCop.Plugin.Highlighting;
         null, Highlighter.HighlightingGroup,
         "Test method should be public",
         "TestCop : Method with testing attributes should be public",
-        Severity.ERROR,
-        false)]
+        Severity.ERROR)]
 
 namespace TestCop.Plugin.Highlighting
 {

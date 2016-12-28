@@ -16,7 +16,6 @@ using JetBrains.ReSharper.Feature.Services.Bulbs;
 using JetBrains.ReSharper.Feature.Services.Intentions;
 using JetBrains.ReSharper.Feature.Services.QuickFixes;
 using JetBrains.ReSharper.Feature.Services.Refactorings;
-using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.ReSharper.Refactorings.Move.MoveToFolder;
 using JetBrains.ReSharper.Refactorings.Move.MoveToFolder.Impl;
 using JetBrains.TextControl;
@@ -56,9 +55,9 @@ namespace TestCop.Plugin.QuickFixActions
                         JetBrains.ActionManagement.ShellComponentsEx.ActionManager(Shell.Instance.Components)
                         .DataContexts.CreateWithoutDataRules(lifetime
                         , DataRules.AddRule(DataRules.AddRule("ManualMoveToFolderQuickFix"
-                        , JetBrains.ProjectModel.DataContext.DataConstants.PROJECT_MODEL_ELEMENTS, new IProjectModelElement[]{projectFile})
+                        , JetBrains.ProjectModel.DataContext.ProjectModelDataConstants.PROJECT_MODEL_ELEMENTS, new IProjectModelElement[]{projectFile})
                         , "ManualMoveToFolderQuickFix"
-                        , JetBrains.ProjectModel.DataContext.DataConstants.SOLUTION, solution))
+                        , JetBrains.ProjectModel.DataContext.ProjectModelDataConstants.SOLUTION, solution))
                         , workflow, new SimpleWorkflowHost())));
                                             
                 cookie.Commit(progress);

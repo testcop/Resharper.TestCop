@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Feature.Services.CSharp.Daemon;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi.CSharp;
 using TestCop.Plugin.Extensions;
@@ -12,8 +11,7 @@ using TestCop.Plugin.Highlighting;
         null, Highlighter.HighlightingGroup,
         "Orphaned file not part of project",
         "TestCop : All code files should be part of project",
-        Severity.WARNING,
-        false)]
+        Severity.WARNING)]
 
 namespace TestCop.Plugin.Highlighting
 {    
