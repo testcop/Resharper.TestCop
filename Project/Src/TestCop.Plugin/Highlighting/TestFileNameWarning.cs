@@ -4,7 +4,6 @@
 // -- Copyright 2013
 // --
 
-using JetBrains.ReSharper.Feature.Services.CSharp.Daemon;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.Tree;
@@ -15,8 +14,7 @@ using TestCop.Plugin.Highlighting;
     null, Highlighter.HighlightingGroup,
     "The file name for the test does not match testcop rules would be ClassATests.cs or ClassA.SecurityTests.cs or ClassA.SecurityIntegrationTests.cs",
     "Consistent naming aids code navigation and refactorings",
-    Severity.WARNING,
-    false)]
+    Severity.WARNING)]
 
 namespace TestCop.Plugin.Highlighting
 {

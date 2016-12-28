@@ -2,7 +2,6 @@
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
-using JetBrains.ReSharper.Psi.Tree;
 using TestCop.Plugin.Highlighting;
 
 [assembly: RegisterConfigurableSeverity(
@@ -10,8 +9,7 @@ using TestCop.Plugin.Highlighting;
     null, Highlighter.HighlightingGroup,
     "Test methods should contain code",
     "TestCop : All tests methods should test something",
-    Severity.WARNING,
-    false)]
+    Severity.WARNING)]
 
 namespace TestCop.Plugin.Highlighting
 {

@@ -1,12 +1,11 @@
 ﻿// --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
-// -- Copyright 2015
+// -- Copyright 2017
 // --
 
 using System.Reflection;
 using System.Runtime.InteropServices;
-using JetBrains.ActionManagement;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using TestCop.Plugin.Highlighting;
 
@@ -39,8 +38,8 @@ using TestCop.Plugin.Highlighting;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.10.3.1")]
-[assembly: AssemblyFileVersion("1.10.3.1")]
+[assembly: AssemblyVersion("1.10.3.3")]
+[assembly: AssemblyFileVersion("1.10.3.3")]
 
 [assembly: RegisterStaticHighlightingsGroup(Highlighter.HighlightingGroup, "Testing", true)]
 [assembly: RegisterConfigurableHighlightingsGroup("Testing", "Testing")]

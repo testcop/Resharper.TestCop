@@ -5,7 +5,6 @@
 // --
 
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Feature.Services.CSharp.Daemon;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.Tree;
@@ -17,8 +16,7 @@ using TestCop.Plugin.Highlighting;
     null, Highlighter.HighlightingGroup,
     "Namespace of file doesn't match its location",
     "Namespace of file doesn't match its location",
-    Severity.WARNING,
-    false)]
+    Severity.WARNING)]
 
 namespace TestCop.Plugin.Highlighting
 {

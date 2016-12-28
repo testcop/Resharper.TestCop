@@ -39,13 +39,17 @@ namespace TestCop.Plugin
         )]
     public class JumpToTestFileAction : IExecutableAction, IInsertLast<NavigateGlobalGroup>
     {
-        private Action<JetPopupMenu, JetPopupMenu.ShowWhen> _menuDisplayer = (menu, showWhen) => menu.Show(showWhen);
+        private Action<JetPopupMenus, JetPopupMenu, JetPopupMenu.ShowWhen> _menuDisplayer =
+            (menus, menu, showWhen) =>
+            {
+                menus.Show(menu, showWhen);                
+            };
 
         readonly Func<IClrDeclaredElement, IClrDeclaredElement, bool> _declElementMatcher =
                     (element, declaredElement) => B(element, declaredElement);
 
         private static bool B(IClrDeclaredElement element1, IClrDeclaredElement element2)
-        {            
+        {                
             var element1SoureFile = element1.GetSourceFiles().FirstOrDefault();
             var element2SourceFile = element2.GetSourceFiles().FirstOrDefault();
 
@@ -60,7 +64,7 @@ namespace TestCop.Plugin
         /// <summary>
         /// For tesing 
         /// </summary>
-        public static JumpToTestFileAction CreateWith(Action<JetPopupMenu, JetPopupMenu.ShowWhen> overrideMenuDisplay)
+        public static JumpToTestFileAction CreateWith(Action<JetPopupMenus, JetPopupMenu, JetPopupMenu.ShowWhen> overrideMenuDisplay)
         {
             return new JumpToTestFileAction{_menuDisplayer = overrideMenuDisplay};
         }
@@ -184,7 +188,7 @@ namespace TestCop.Plugin
             }
 
             IPsiServices services = solution.GetPsiServices();
-            IProject currentProject = context.GetData(JetBrains.ProjectModel.DataContext.DataConstants.Project);
+            IProject currentProject = context.GetData(JetBrains.ProjectModel.DataContext.ProjectModelDataConstants.PROJECT);
 
             var targetProjects = currentProject.GetAssociatedProjects(textControl.ToProjectFile(solution));
             ISearchDomain searchDomain;

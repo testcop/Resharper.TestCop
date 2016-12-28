@@ -4,7 +4,6 @@
 // -- Copyright 2015
 // --
 
-using System;
 using JetBrains.Application.Components;
 using JetBrains.Application.Settings;
 using JetBrains.ReSharper.Feature.Services.Daemon;
@@ -16,10 +15,10 @@ using TestCop.Plugin.Highlighting;
 
 namespace TestCop.Plugin.Tests.Highlighting
 {
-    [TestFixture]
+    [TestFixture]    
     public class TestClassNameWarningTests : CSharpHighlightingTestBase
     {
-   protected override bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile)        
+        protected override bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile)
         {
             return highlighting is AbstractTestClassNameWarning;
         }
@@ -28,26 +27,23 @@ namespace TestCop.Plugin.Tests.Highlighting
         {
             get { return @"highlighting\TestClassNameWarning"; }
         }
-        
-        #if !R7
-        public override void TestFixtureTearDown() 
+
+#if !R7
+        public override void TestFixtureTearDown()
         {
             /* this logic is needed to undo the Resharper solution caching in place for tests
              * that break the more complex 'solution based tests' within the test solution */
             base.TestFixtureTearDown();
 
             RunGuarded(
-              () => ShellInstance.GetComponent<TestSolutionManager>().CloseSolution());            
+                () => ShellInstance.GetComponent<TestSolutionManager>().CloseSolution());
 //              () => ShellInstance.GetComponent<ReuseSolutionInTestsComponent>().CloseSolution());            
         }
-        #endif
+#endif
 
-        override protected string ProjectName
+        protected override string ProjectName
         {
-            get
-            {
-                return "MyCorp.Project.Tests";
-            }
+            get { return "MyCorp.Project.Tests"; }
         }
 
         [Test]
@@ -58,20 +54,25 @@ namespace TestCop.Plugin.Tests.Highlighting
         [TestCase("ClassA_SomeCategoryTests.cs")]
         [TestCase("ClassA.WithBDDTests.cs")]
         [TestCase("ClassATests.cs")]
-        [TestCase("ClassBHasClassATests.cs")]        
+        [TestCase("ClassBHasClassATests.cs")]
         public void TestsWithClassSuffixOfTests(string testName)
         {
             ExecuteWithinSettingsTransaction((settingsStore =>
-            {
-                RunGuarded(
-                    () =>
-                    {
-                        settingsStore.SetValue<TestFileAnalysisSettings, TestProjectStrategy>(
-                            s => s.TestCopProjectStrategy, TestProjectStrategy.TestProjectHasSameNamespaceAsCodeProject);
-                    }
-                    );
-                DoTestFiles(testName);
-            }));
+                                              {
+                                                  RunGuarded(
+                                                      () =>
+                                                      {
+                                                          settingsStore
+                                                              .SetValue<TestFileAnalysisSettings, TestProjectStrategy>(
+                                                                  s => s.TestCopProjectStrategy,
+                                                                  TestProjectStrategy
+                                                                      .TestProjectHasSameNamespaceAsCodeProject);
+                                                      }
+                                                  );
+
+                                                  DoTestSolution(testName);
+
+                                              }));
         }
 
         [TestCase("TestClassWithDifferentRandomExt.cs")]
@@ -83,18 +84,22 @@ namespace TestCop.Plugin.Tests.Highlighting
             // the default suffix is 'Tests' - we test that this can be overidden 
 
             ExecuteWithinSettingsTransaction((settingsStore =>
-            {
-                RunGuarded(
-                    () =>
-                    {
-                        settingsStore.SetValue<TestFileAnalysisSettings, TestProjectStrategy>(
-                            s => s.TestCopProjectStrategy, TestProjectStrategy.TestProjectHasSameNamespaceAsCodeProject);
-                        settingsStore.SetValue<TestFileAnalysisSettings, string>(s => s.TestClassSuffix,
-                            "RandomExt");                                               
-                    }
-                    );
-                DoTestFiles(testName);
-            }));  
+                                              {
+                                                  RunGuarded(
+                                                      () =>
+                                                      {
+                                                          settingsStore
+                                                              .SetValue<TestFileAnalysisSettings, TestProjectStrategy>(
+                                                                  s => s.TestCopProjectStrategy,
+                                                                  TestProjectStrategy
+                                                                      .TestProjectHasSameNamespaceAsCodeProject);
+                                                          settingsStore.SetValue<TestFileAnalysisSettings, string>(
+                                                              s => s.TestClassSuffix,
+                                                              "RandomExt");
+                                                      }
+                                                  );
+                                                  DoTestSolution(testName);
+                                              }));
         }
     }
 }

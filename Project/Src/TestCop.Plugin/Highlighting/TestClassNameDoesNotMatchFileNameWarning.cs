@@ -4,7 +4,6 @@
 // -- Copyright 2014
 // --
 
-using JetBrains.ReSharper.Daemon.CSharp.Stages;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.Tree;
@@ -15,8 +14,7 @@ using TestCop.Plugin.Highlighting;
         null, Highlighter.HighlightingGroup,
         "Test class name should match file name",
         "TestCop : The name of the test file should match the test class name it contains",
-        Severity.ERROR,
-        false)]
+        Severity.ERROR)]
 
 namespace TestCop.Plugin.Highlighting
 {

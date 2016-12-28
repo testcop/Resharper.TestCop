@@ -40,7 +40,7 @@ namespace TestCop.Plugin.Tests.Highlighting
         }
         #endif
 
-        override protected string ProjectName
+        protected override string ProjectName
         {
             get
             {
@@ -48,7 +48,7 @@ namespace TestCop.Plugin.Tests.Highlighting
             }
         }
 
-        [Test]
+        [Test]        
         [TestCase("PrivateNUnitTestClass.cs")]
         [TestCase("PrivateNUnitTestClassDisabled.cs")]
         [TestCase("PrivateMSTestTestMethod.cs")]
@@ -64,7 +64,7 @@ namespace TestCop.Plugin.Tests.Highlighting
                             s => s.TestCopProjectStrategy, TestProjectStrategy.TestProjectHasSameNamespaceAsCodeProject);
                     }
                     );
-                DoTestFiles(testName);
+                DoTestSolution(testName);
             }));
         }
     }
