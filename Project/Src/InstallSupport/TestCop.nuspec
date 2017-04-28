@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>     
-		<id>Resharper.TestCop.R9</id>     
-		<version>0.0.0-internal</version>
-		<title>TestCop for ReSharper 2017.1</title>     
-		<authors>Alcaeus</authors>     
-		<description>Easily switch between unit tests and code. Create missing associated files. Includes highlightings and test templates to keep test projects neat and tidy. Works with NUnit, MSTest, xUnit ...</description>
-		<releaseNotes>
+  <id>Resharper.TestCop.R9</id>     
+  <version>0.0.0-internal</version>
+  <title>TestCop for ReSharper 2017.1</title>     
+  <authors>Alcaeus</authors>     
+  <description>Easily switch between unit tests and code. Create missing associated files. Includes highlightings and test templates to keep test projects neat and tidy. Works with NUnit, MSTest, xUnit ...</description>
+  <releaseNotes>
       1.10.4.1 R#2017.1 recompile
       1.10.3.3 R#2016.3 recompile
       1.10.3.2-EAP R#2016.3 recompile
@@ -50,9 +50,9 @@
       1.8.1.7 Fixed Memory Leak
       1.8.1.6 Added support for multiple test project mapping to a single code project. Can now turn off 'must be public' warnings.
     </releaseNotes>
-    <projectUrl>https://testcop.codeplex.com/</projectUrl>
+    <projectUrl>https://github.com/testcop/Resharper.TestCop/</projectUrl>
     <licenseUrl>https://testcop.codeplex.com/license</licenseUrl>
-    <iconUrl>https://testcop.svn.codeplex.com/svn/Project/Src/TestCop.Plugin/resources/agent48x48.png</iconUrl>
+    <iconUrl>https://raw.githubusercontent.com/testcop/Resharper.TestCop/master/Project/Src/TestCop.Plugin/resources/agent48x48.png</iconUrl>
     <copyright>Copyright &#x00A9; 2013-2017</copyright>
     <dependencies>      
       <dependency id="Wave" version="[8.0]"/>      
