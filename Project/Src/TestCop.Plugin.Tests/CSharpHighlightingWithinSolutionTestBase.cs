@@ -176,7 +176,7 @@ namespace TestCop.Plugin.Tests
             if (!processedFile)
             {
                 listOfProjectPaths.ForEach(f => Trace.WriteLine("Located Item:" + f));
-                Assert.Fail("Failed to locate project file by project path " + fullProjectPathToTestFile);
+                Assert.Fail("Failed to project file by project path " + fullProjectPathToTestFile);
             }
         }
 
