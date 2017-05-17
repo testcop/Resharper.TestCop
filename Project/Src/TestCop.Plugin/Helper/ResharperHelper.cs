@@ -32,6 +32,7 @@ using JetBrains.UI.PopupWindowManager;
 using JetBrains.UI.RichText;
 using JetBrains.UI.Tooltips;
 using JetBrains.Util;
+using NuGet;
 using TestCop.Plugin.Extensions;
 
 namespace TestCop.Plugin.Helper
@@ -235,9 +236,9 @@ namespace TestCop.Plugin.Helper
               });
         }
 
-        public static IEnumerable<IClrDeclaredElement> FilterOutElementsNotInProjects(IEnumerable<IClrDeclaredElement> declaredElements, IList<IProject> associatedProjects)
+        public static void RemoveElementsNotInProjects(IList<IClrDeclaredElement> declaredElements, IList<IProject> associatedProjects)
         {
-            return declaredElements.Where(p => p.GetSourceFiles().Any(de =>
+            declaredElements.RemoveAll(p => p.GetSourceFiles().Any(de =>
             {
                 var project = de.GetProject();
                 return project != null && associatedProjects.Contains(project)==false;
@@ -265,10 +266,11 @@ namespace TestCop.Plugin.Helper
             var declarationsCache = solution.GetPsiServices().Symbols
                                 .GetSymbolScope(LibrarySymbolScope.FULL, false);//, currentProject.GetResolveContext());                    
 
-            var results = declarationsCache.GetElementsByShortName(classNameToFind);
+            var results = declarationsCache.GetElementsByShortName(classNameToFind).ToList();
 
-            return FilterOutElementsNotInProjects(results, restrictToTheseProjects).ToList();
+            RemoveElementsNotInProjects(results, restrictToTheseProjects);
 
+            return results;
         }
 
         public static List<ITypeElement> FindFirstTypeWithinCodeFiles(ISolution solution, Regex regex, IProject project)

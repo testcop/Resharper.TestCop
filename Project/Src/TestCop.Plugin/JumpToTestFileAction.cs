@@ -140,23 +140,15 @@ namespace TestCop.Plugin
            
             var elementsFoundInTarget = new List<IClrDeclaredElement>();
             var elementsFoundInSolution = new List<IClrDeclaredElement>();
-
-            
-
-            var x=new ClrGotoTypeProvider( solution.GetComponent<IShellLocks>(), textControl.Lifetime,
-                Shell.Instance.GetComponent<ISettingsStore>());
-            
+          
 
             foreach (var singleTargetProject in targetProjects)
             {                
                 foreach (var regex in singleTargetProject.FilePattern)
                 {
                     //FindByClassName      
-                    var matchesInSolution = ResharperHelper.FindClass(solution, regex.ToString());
-
-                    elementsFoundInSolution.AddRangeIfMissing(matchesInSolution, _declElementMatcher);
-                    elementsFoundInTarget.AddRangeIfMissing(
-                        ResharperHelper.FilterOutElementsNotInProjects(matchesInSolution,new List<IProject>() {singleTargetProject.Project}), _declElementMatcher);
+                    elementsFoundInSolution.AddRangeIfMissing(ResharperHelper.FindClass(solution, regex.ToString()), _declElementMatcher);
+                    elementsFoundInTarget.AddRangeIfMissing(ResharperHelper.FindClass(solution, regex.ToString(), new List<IProject>() { singleTargetProject.Project }), _declElementMatcher);
                     
                      if (!isTestFile)
                      {
