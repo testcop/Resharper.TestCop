@@ -1,7 +1,7 @@
 // --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
-// -- Copyright 2017
+// -- Copyright 2016
 // --
 using System;
 using System.Collections.Generic;
@@ -71,11 +71,10 @@ namespace TestCop.Plugin.Helper.Mapper
             }
             return false;
         }
-                
-        protected static IEnumerable<String> AssociatedFileNames(TestFileAnalysisSettings settings, string className)
-        {
-            bool classHasTestSuffix = false;
 
+
+        protected static IEnumerable<String> AssociatedFileNames(TestFileAnalysisSettings settings, string className)
+        {        
             string classNameUnderTest = className;
 
             foreach (var suffix in settings.TestClassSuffixes())
@@ -83,14 +82,12 @@ namespace TestCop.Plugin.Helper.Mapper
                 if (className.EndsWith(suffix))
                 {
                     classNameUnderTest = className.Split(new[] { '.' }, 2)[0].RemoveTrailing(suffix);
-                    classHasTestSuffix = true;
                     break;
                 }
             }
 
-            if (classHasTestSuffix)
+            if (className != classNameUnderTest)
             {
-                //switching to non test
                 yield return classNameUnderTest;
             }
             else
