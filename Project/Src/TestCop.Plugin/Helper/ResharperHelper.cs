@@ -32,7 +32,6 @@ using JetBrains.UI.PopupWindowManager;
 using JetBrains.UI.RichText;
 using JetBrains.UI.Tooltips;
 using JetBrains.Util;
-using NuGet;
 using TestCop.Plugin.Extensions;
 
 namespace TestCop.Plugin.Helper
@@ -116,11 +115,12 @@ namespace TestCop.Plugin.Helper
 
             var projectItem = projectModelElement as IProjectItem;
             if (projectItem == null) return null;
-
-
+            
             FileSystemPath location = projectItem.Location;
-            string fileName = location.NameWithoutExtension;  
-                     
+            string fileName = location.NameWithoutExtension;
+            
+            fileName = fileName.RemoveTrailing(".partial");
+            
             return fileName;                        
         }
        
@@ -236,7 +236,7 @@ namespace TestCop.Plugin.Helper
               });
         }
 
-        public static void RemoveElementsNotInProjects(IList<IClrDeclaredElement> declaredElements, IList<IProject> associatedProjects)
+        public static void RemoveElementsNotInProjects(List<IClrDeclaredElement> declaredElements, IList<IProject> associatedProjects)
         {
             declaredElements.RemoveAll(p => p.GetSourceFiles().Any(de =>
             {

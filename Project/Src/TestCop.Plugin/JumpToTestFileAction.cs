@@ -122,12 +122,7 @@ namespace TestCop.Plugin
                 .GetKey<TestFileAnalysisSettings>(SettingsOptimization.OptimizeDefault);
                                                             
             var baseFileName = ResharperHelper.GetBaseFileName(context, solution);
-
-            if (typeDeclaration.IsPartial && baseFileName.Contains("."))
-            {
-                baseFileName = baseFileName.Substring(0, baseFileName.LastIndexOf('.') );
-            }
-
+            
             bool isTestFile = baseFileName.EndsWith(settings.TestClassSuffixes());
 
             if (isTestFile != currentProject.IsTestProject())
