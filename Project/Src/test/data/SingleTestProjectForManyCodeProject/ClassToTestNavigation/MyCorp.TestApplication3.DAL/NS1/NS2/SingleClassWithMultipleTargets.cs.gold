@@ -1,0 +1,13 @@
+namespace MyCorp.TestApplication3.DAL.NS1.NS2
+{
+    class SingleClassWithMultipleTargets
+    {
+    //lots of tests with different naming styles such as:
+    //SingleClassWithMultipleTargetsTests
+    //& SingleClassWithMultipleTargets.SecurityTests
+    }
+}
+
+---------------------------------------------------------
+[Switch to:] SingleClassWithMultipleTargetsTests.cs|(in <MyCorp.TestApplication3.Tests>\DAL\NS1\NS2)
+[Switch to:] SingleClassWithMultipleTargets.SecurityTests.cs|(in <MyCorp.TestApplication3.Tests>\DAL\NS1\NS2)

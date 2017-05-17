@@ -1,7 +1,7 @@
 ﻿// --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
-// -- Copyright 2014
+// -- Copyright 2017
 // --
 
 using System.Collections.Generic;
@@ -27,15 +27,17 @@ namespace TestCop.Plugin.Extensions
         public static IList<TestCopProjectItem> GetAssociatedProjects(this IProject currentProject, IProjectFile  projectFile)
         {
             string currentNamespace = projectFile.CalculateExpectedNamespace(projectFile.GetPrimaryPsiFile().Language);
-            return ProjectMappingHelper.GetProjectMappingHeper().GetAssociatedProject(currentProject, projectFile.Location.NameWithoutExtension, currentNamespace);
+
+            var fileNameToProcess=projectFile.Location.NameWithoutExtension;
+            fileNameToProcess = fileNameToProcess.RemoveTrailing(".partial");
+            
+            return ProjectMappingHelper.GetProjectMappingHeper().GetAssociatedProject(currentProject, fileNameToProcess, currentNamespace);
         }
 
         public static IList<TestCopProjectItem> GetAssociatedProjects(this IProject currentProject, ITypeElement classInProject)
         {
             string currentNamespace = classInProject.OwnerNamespaceDeclaration();
             return ProjectMappingHelper.GetProjectMappingHeper().GetAssociatedProject(currentProject, classInProject.ShortName, currentNamespace);
-            //string currentNamespace = projectFile.CalculateExpectedNamespace(projectFile.GetPrimaryPsiFile().Language);
-            //return ProjectMappingHelper.GetProjectMappingHeper().GetAssociatedProject(currentProject, projectFile.Location.NameWithoutExtension, currentNamespace);
         } 
     }
 }

@@ -35,7 +35,7 @@ namespace TestCop.Plugin.Tests.RenameRefactoring
         }
 
         [Test]
-        public void RenameClassHandlesFirstClassWithilesTooTest()
+        public void RenameClassHandlesFirstClassWithinFilesTooTest()
         {
             DoRenameTest(
                   @"<MyCorp.TestApplication3.DAL>\ClassX.cs", 1

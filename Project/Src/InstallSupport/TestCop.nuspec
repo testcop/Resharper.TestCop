@@ -7,6 +7,7 @@
   <authors>Alcaeus</authors>     
   <description>Easily switch between unit tests and code. Create missing associated files. Includes highlightings and test templates to keep test projects neat and tidy. Works with NUnit, MSTest, xUnit ...</description>
   <releaseNotes>
+      1.10.4.2 Cleanup of internal logic.
       1.10.4.1 R#2017.1 recompile
       1.10.3.3 R#2016.3 recompile
       1.10.3.2-EAP R#2016.3 recompile

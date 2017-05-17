@@ -9,16 +9,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using JetBrains.ActionManagement;
+using JetBrains.Application;
 using JetBrains.Application.DataContext;
 using JetBrains.Application.Progress;
 using JetBrains.Application.Settings;
+using JetBrains.Application.Threading;
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
+using JetBrains.ReSharper.Feature.Services.CSharp.StructuralSearch.Matchers;
 using JetBrains.ReSharper.Feature.Services.Menu;
+using JetBrains.ReSharper.Feature.Services.Navigation.Goto.ProvidersAPI;
 using JetBrains.ReSharper.Features.Inspections.Bookmarks.NumberedBookmarks;
+using JetBrains.ReSharper.Features.Navigation.Goto.GotoProviders;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
+using JetBrains.ReSharper.Psi.ExtensionsAPI.Caches2;
 using JetBrains.ReSharper.Psi.Search;
 using JetBrains.ReSharper.Resources.Shell;
 using JetBrains.TextControl;
@@ -39,6 +45,7 @@ namespace TestCop.Plugin
         )]
     public class JumpToTestFileAction : IExecutableAction, IInsertLast<NavigateGlobalGroup>
     {
+        
         private Action<JetPopupMenus, JetPopupMenu, JetPopupMenu.ShowWhen> _menuDisplayer =
             (menus, menu, showWhen) =>
             {
@@ -47,7 +54,7 @@ namespace TestCop.Plugin
 
         readonly Func<IClrDeclaredElement, IClrDeclaredElement, bool> _declElementMatcher =
                     (element, declaredElement) => B(element, declaredElement);
-
+       
         private static bool B(IClrDeclaredElement element1, IClrDeclaredElement element2)
         {                
             var element1SoureFile = element1.GetSourceFiles().FirstOrDefault();
@@ -134,34 +141,38 @@ namespace TestCop.Plugin
             var elementsFoundInTarget = new List<IClrDeclaredElement>();
             var elementsFoundInSolution = new List<IClrDeclaredElement>();
 
-            foreach (var testClassSuffix in settings.GetAppropriateTestClassSuffixes(baseFileName))
-            {
-                var classNameFromFileName = ResharperHelper.UsingFileNameGetClassName(baseFileName)
-                    .Flip(isTestFile, testClassSuffix);                
+            
 
-                if (clrTypeClassName != null)
+            var x=new ClrGotoTypeProvider( solution.GetComponent<IShellLocks>(), textControl.Lifetime,
+                Shell.Instance.GetComponent<ISettingsStore>());
+            
+
+            foreach (var singleTargetProject in targetProjects)
+            {                
+                foreach (var regex in singleTargetProject.FilePattern)
                 {
-                    string className = clrTypeClassName.ShortName.Flip(isTestFile, testClassSuffix);
+                    //FindByClassName      
+                    var matchesInSolution = ResharperHelper.FindClass(solution, regex.ToString());
+
+                    elementsFoundInSolution.AddRangeIfMissing(matchesInSolution, _declElementMatcher);
                     elementsFoundInTarget.AddRangeIfMissing(
-                        ResharperHelper.FindClass(solution, className, targetProjects), _declElementMatcher);
+                        ResharperHelper.FilterOutElementsNotInProjects(matchesInSolution,new List<IProject>() {singleTargetProject.Project}), _declElementMatcher);
                     
-                    elementsFoundInSolution.AddRangeIfMissing(
-                        ResharperHelper.FindClass(solution, className),_declElementMatcher);
-                }
-                
-                elementsFoundInTarget.AddRangeIfMissing(
-                    ResharperHelper.FindClass(solution, classNameFromFileName, targetProjects), _declElementMatcher);
-                elementsFoundInSolution.AddRangeIfMissing(
-                    ResharperHelper.FindClass(solution, classNameFromFileName),_declElementMatcher);
-
-                if (!isTestFile)
-                {
-                    var references = FindReferencesWithinAssociatedAssembly(context, solution, textControl,
-                        clrTypeClassName, testClassSuffix);
-                    elementsFoundInTarget.AddRangeIfMissing(references, _declElementMatcher);
-                }             
+                     if (!isTestFile)
+                     {
+                         //Find via filename (for when we switch to test files)
+                         var otherMatches = ResharperHelper.FindFirstTypeWithinCodeFiles(solution, regex, singleTargetProject.Project);
+                         elementsFoundInTarget.AddRangeIfMissing(otherMatches, _declElementMatcher);
+                     }                     
+                }                               
             }
 
+            if (!isTestFile)
+            {
+                var references = FindReferencesWithinAssociatedAssembly(context, solution, textControl, clrTypeClassName, targetProjects);
+                elementsFoundInTarget.AddRangeIfMissing(references, _declElementMatcher);               
+            }
+          
             JumpToTestMenuHelper.PromptToOpenOrCreateClassFiles(_menuDisplayer, textControl.Lifetime, context,
                 solution
                 , currentProject, clrTypeClassName, targetProjects
@@ -179,7 +190,8 @@ namespace TestCop.Plugin
 
         }
 
-        private IList<IClrDeclaredElement> FindReferencesWithinAssociatedAssembly(IDataContext context, ISolution solution, ITextControl textControl, IClrTypeName clrTypeClassName, string testClassSuffix)
+        private IList<IClrDeclaredElement> FindReferencesWithinAssociatedAssembly(IDataContext context, ISolution solution, ITextControl textControl
+            , IClrTypeName clrTypeClassName, IList<TestCopProjectItem> targetProjects)
         {
             if (clrTypeClassName == null)
             {
@@ -188,9 +200,7 @@ namespace TestCop.Plugin
             }
 
             IPsiServices services = solution.GetPsiServices();
-            IProject currentProject = context.GetData(JetBrains.ProjectModel.DataContext.ProjectModelDataConstants.PROJECT);
-
-            var targetProjects = currentProject.GetAssociatedProjects(textControl.ToProjectFile(solution));
+            
             ISearchDomain searchDomain;
 
             if (Settings.FindAnyUsageInTestAssembly)
@@ -199,23 +209,19 @@ namespace TestCop.Plugin
                 targetProjects.SelectMany(proj=>proj.Project.GetAllProjectFiles().Select(p => p.GetPsiModule())) );
             }
             else
-            {                
-                ///TODO: investigate refactor and use regex pattern from targetProjects..
+            {                     
                 //look for similar named files that also have references to this code            
-                var items = new List<IProjectFile>();
-                var pattern = string.Format(@"{0}\..*{1}", clrTypeClassName.ShortName, testClassSuffix);
-                var finder = new ProjectFileFinder(items, new Regex(pattern));
-                targetProjects.ForEach(p=>p.Project.Accept(finder));
+                var items = new List<IProjectFile>();                                
+                targetProjects.ForEach(p=>p.Project.Accept(new ProjectFileFinder(items, p.FilePattern)));
                 searchDomain = PsiShared.GetComponent<SearchDomainFactory>().CreateSearchDomain(items.Select(p => p.ToSourceFile()));
             }
 
             var declarationsCache = solution.GetPsiServices().Symbols
-                    .GetSymbolScope(LibrarySymbolScope.FULL, false);//, currentProject.GetResolveContext());                    
-            
+                    .GetSymbolScope(LibrarySymbolScope.NONE, false);//, currentProject.GetResolveContext());                    
+                        
             ITypeElement declaredElement = declarationsCache.GetTypeElementByCLRName(clrTypeClassName);
-                 
-            var findReferences = services.Finder.FindReferences(
-                declaredElement, searchDomain, new ProgressIndicator(textControl.Lifetime));
+            
+            var findReferences = services.Finder.FindReferences(declaredElement, searchDomain, new ProgressIndicator(textControl.Lifetime));
 
             List<IClassDeclaration> findReferencesWithinAssociatedAssembly = findReferences.Select(p => p.GetTreeNode().GetContainingNode<IClassDeclaration>(true)).ToList();
             return findReferencesWithinAssociatedAssembly
