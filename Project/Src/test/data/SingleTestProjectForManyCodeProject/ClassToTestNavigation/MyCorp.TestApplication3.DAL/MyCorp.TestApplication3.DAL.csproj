@@ -45,6 +45,7 @@
     <Compile Include="DALClassCWithNoTest.cs" />
     <Compile Include="NS1\ClassA.cs" />
     <Compile Include="NS1\NS2\ClassA.cs" />
+    <Compile Include="NS1\NS2\SingleClassWithMultipleTargets.cs" />    
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
