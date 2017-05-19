@@ -5,9 +5,7 @@
 // --
 
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Util;
 using TestCop.Plugin.Helper.Mapper;
@@ -25,9 +23,13 @@ namespace TestCop.Plugin.Extensions
         }
                      
         public static IList<TestCopProjectItem> GetAssociatedProjects(this IProject currentProject, IProjectFile  projectFile)
-        {
+        {            
             string currentNamespace = projectFile.CalculateExpectedNamespace(projectFile.GetPrimaryPsiFile().Language);
-            return ProjectMappingHelper.GetProjectMappingHeper().GetAssociatedProject(currentProject, projectFile.Location.NameWithoutExtension, currentNamespace);
+
+            var fileNameToProcess = projectFile.Location.NameWithoutExtension;
+            fileNameToProcess = fileNameToProcess.RemoveTrailing(".partial");
+            
+            return ProjectMappingHelper.GetProjectMappingHeper().GetAssociatedProject(currentProject, fileNameToProcess, currentNamespace);
         }
 
         public static IList<TestCopProjectItem> GetAssociatedProjects(this IProject currentProject, ITypeElement classInProject)

@@ -51,6 +51,8 @@
     <Compile Include="DAL\NS1\ClassATests.cs" />
     <Compile Include="DAL\NS1\NS2\ClassATests.cs" />
     <Compile Include="DAL\NS1\NS2\DALClassDWithNoCodeTests.cs" />
+    <Compile Include="DAL\NS1\NS2\SingleClassWithMultipleTargetsTests.cs" />
+    <Compile Include="DAL\NS1\NS2\SingleClassWithMultipleTargets.SecurityTests.cs" />                                     
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

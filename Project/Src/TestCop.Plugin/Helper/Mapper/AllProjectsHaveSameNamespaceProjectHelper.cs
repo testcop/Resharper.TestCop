@@ -36,7 +36,7 @@ namespace TestCop.Plugin.Helper.Mapper
             }
         }
 
-
+ 
         public override IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string currentClassName, string currentTypeNamespace)
         {
             const string warningMessage = "Not Supported: More than one  project has a name of ";
@@ -91,3 +91,4 @@ namespace TestCop.Plugin.Helper.Mapper
         }      
     }
 }
+ 
