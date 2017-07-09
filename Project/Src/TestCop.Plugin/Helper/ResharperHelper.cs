@@ -7,9 +7,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using JetBrains.Application;
 using JetBrains.Application.DataContext;
 using JetBrains.DataFlow;
+using JetBrains.DocumentManagers;
 using JetBrains.DocumentModel;
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
@@ -17,7 +19,9 @@ using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
+using JetBrains.ReSharper.Psi.Impl.CodeStyle;
 using JetBrains.ReSharper.Psi.Util;
+using JetBrains.ReSharper.Psi.Web.Util;
 using JetBrains.ReSharper.Resources.Shell;
 using JetBrains.TextControl;
 using JetBrains.TextControl.Layout;
@@ -111,11 +115,12 @@ namespace TestCop.Plugin.Helper
 
             var projectItem = projectModelElement as IProjectItem;
             if (projectItem == null) return null;
-
-
+            
             FileSystemPath location = projectItem.Location;
-            string fileName = location.NameWithoutExtension;  
-                     
+            string fileName = location.NameWithoutExtension;
+            
+            fileName = fileName.RemoveTrailing(".partial");
+            
             return fileName;                        
         }
        
@@ -130,9 +135,19 @@ namespace TestCop.Plugin.Helper
             }
             return null;
         }
-      
-        public static IDeclaredElement FindDeclaredElementInFile(ISolution solution, IDocument document, int declarationSequencePosition)
+        /*
+        public static IEnumerable<ITypeElement> GetTypesInFile(IProjectFile projectFile)
         {
+            var sourceFile = projectFile.ToSourceFile();
+            if (sourceFile == null)
+                return new List<ITypeElement>();
+            
+            var services = sourceFile.GetPsiServices();            
+            return services.Symbols.GetTypesAndNamespacesInFile(sourceFile).OfType<ITypeElement>();
+        }
+        */
+        public static IDeclaredElement FindDeclaredElementInFile(ISolution solution, IDocument document, int declarationSequencePosition)
+        {            
             var typesFound = new List<string>();
 
             for (int i = document.DocumentRange.StartOffset; i < document.DocumentRange.EndOffset; i++)
@@ -155,9 +170,9 @@ namespace TestCop.Plugin.Helper
         }
 
         public static ICSharpTypeDeclaration FindFirstCharpTypeDeclarationInDocument(ISolution solution, IDocument document)
-        {
+        {            
             for (int i = document.DocumentRange.StartOffset; i < document.DocumentRange.EndOffset; i++)
-            {                
+            {                                
                 var declaration = TextControlToPsi.GetElements<ICSharpTypeDeclaration>(solution, new DocumentOffset(document, i)).FirstOrDefault();
 
                 if (declaration != null)
@@ -247,19 +262,29 @@ namespace TestCop.Plugin.Helper
         }
 
         public static List<IClrDeclaredElement> FindClass(ISolution solution, string classNameToFind, IList<IProject> restrictToTheseProjects)
-        {
-           
-                        var declarationsCache = solution.GetPsiServices().Symbols
-                                            .GetSymbolScope(LibrarySymbolScope.FULL, false);//, currentProject.GetResolveContext());                    
-            
+        {           
+            var declarationsCache = solution.GetPsiServices().Symbols
+                                .GetSymbolScope(LibrarySymbolScope.FULL, false);//, currentProject.GetResolveContext());                    
+
             var results = declarationsCache.GetElementsByShortName(classNameToFind).ToList();
 
-            RemoveElementsNotInProjects(results, restrictToTheseProjects);    
-            
-                                                           
+            RemoveElementsNotInProjects(results, restrictToTheseProjects);
+
             return results;
         }
-               
+
+        public static List<ITypeElement> FindFirstTypeWithinCodeFiles(ISolution solution, Regex regex, IProject project)
+        {            
+            var items = new List<IProjectFile>();
+            project.Accept(new ProjectFileFinder(items, regex));
+
+            var results = items
+                .SelectMany(p=>solution.GetPsiServices().Symbols.GetTypesAndNamespacesInFile(p.ToSourceFile())).OfType<ITypeElement>()
+                .ToList();
+
+            return results;
+        }
+
         private static void ExecuteActionOnUiThread(string description, Action fOnExecute)
         {
             var threading = Shell.Instance.GetComponent<IThreading>();
@@ -270,6 +295,6 @@ namespace TestCop.Plugin.Helper
         {
             var testCopFileCreater = Shell.Instance.GetComponent<TestCopFileCreater>();
             testCopFileCreater.CreateFileWithinProject(associatedProject, fileSystemPath, targetFile);
-        }
+        }     
     }    
 }

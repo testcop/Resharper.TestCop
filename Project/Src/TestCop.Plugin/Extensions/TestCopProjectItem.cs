@@ -57,7 +57,7 @@ namespace TestCop.Plugin.Extensions
         public FileSystemPath SubNamespaceFolder
         {
             get
-            {                
+            {                               
                 return FileSystemPath.Parse(Project.ProjectFileLocation.Directory + "\\" + SubNamespace.Replace('.', '\\'));
             }
         }

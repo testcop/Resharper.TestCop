@@ -47,7 +47,8 @@ namespace TestCop.Plugin.Tests.SingleTestProjectToMultipleCodeProject
         [TestCase(@"<MyCorp.TestApplication3.DAL>\ClassA.cs")]
         [TestCase(@"<MyCorp.TestApplication3.DAL>\DALClassCWithNoTest.cs")]
         [TestCase(@"<MyCorp.TestApplication3.DAL>\NS1\ClassA.cs")]
-        [TestCase(@"<MyCorp.TestApplication3.DAL>\NS1\NS2\ClassA.cs")]         
+        [TestCase(@"<MyCorp.TestApplication3.DAL>\NS1\NS2\ClassA.cs")]
+        [TestCase(@"<MyCorp.TestApplication3.DAL>\NS1\NS2\SingleClassWithMultipleTargets.cs")]
         public void Test(string testName)
         {          
             ExecuteWithinSettingsTransaction((settingsStore =>
