@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using JetBrains.Application.DataContext;
 using JetBrains.Application.Progress;
+using JetBrains.Application.UI.Actions.ActionManager;
 using JetBrains.DataFlow;
 using JetBrains.DocumentManagers.impl;
 using JetBrains.DocumentManagers.Transactions;
@@ -52,7 +53,7 @@ namespace TestCop.Plugin.QuickFixActions
               
                 Lifetimes.Using(
                     (lifetime => WorkflowExecuter.ExecuteWithCustomHost(
-                        JetBrains.ActionManagement.ShellComponentsEx.ActionManager(Shell.Instance.Components)
+                        Shell.Instance.GetComponent<IActionManager>()
                         .DataContexts.CreateWithoutDataRules(lifetime
                         , DataRules.AddRule(DataRules.AddRule("ManualMoveToFolderQuickFix"
                         , JetBrains.ProjectModel.DataContext.ProjectModelDataConstants.PROJECT_MODEL_ELEMENTS, new IProjectModelElement[]{projectFile})

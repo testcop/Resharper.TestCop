@@ -7,35 +7,31 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
-using JetBrains.ActionManagement;
-using JetBrains.Application;
+
 using JetBrains.Application.DataContext;
 using JetBrains.Application.Progress;
 using JetBrains.Application.Settings;
-using JetBrains.Application.Threading;
+using JetBrains.Application.Shortcuts.ShortcutManager;
+using JetBrains.Application.UI.Actions;
+using JetBrains.Application.UI.ActionsRevised.Menu;
+using JetBrains.Application.UI.ActionSystem.ActionsRevised.Menu;
+using JetBrains.Application.UI.Controls.JetPopupMenu;
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Feature.Services.CSharp.StructuralSearch.Matchers;
 using JetBrains.ReSharper.Feature.Services.Menu;
-using JetBrains.ReSharper.Feature.Services.Navigation.Goto.ProvidersAPI;
 using JetBrains.ReSharper.Features.Inspections.Bookmarks.NumberedBookmarks;
-using JetBrains.ReSharper.Features.Navigation.Goto.GotoProviders;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
-using JetBrains.ReSharper.Psi.ExtensionsAPI.Caches2;
+using JetBrains.ReSharper.Psi.Modules;
 using JetBrains.ReSharper.Psi.Search;
 using JetBrains.ReSharper.Resources.Shell;
 using JetBrains.TextControl;
-using JetBrains.UI.ActionsRevised;
-using JetBrains.UI.PopupMenu;
+using JetBrains.TextControl.DataContext;
 using JetBrains.Util;
+
 using TestCop.Plugin.Extensions;
 using TestCop.Plugin.Helper;
-using JetBrains.ReSharper.Psi.Modules;
-using JetBrains.TextControl.DataContext;
-using JetBrains.UI.Avalon.TreeListView;
 
 namespace TestCop.Plugin
 {

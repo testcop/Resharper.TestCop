@@ -10,6 +10,7 @@ using System.Linq;
 using JetBrains.Application;
 using JetBrains.Application.Components;
 using JetBrains.Application.Settings;
+using JetBrains.Application.Threading;
 using JetBrains.DataFlow;
 using JetBrains.DocumentManagers;
 using JetBrains.ProjectModel;
