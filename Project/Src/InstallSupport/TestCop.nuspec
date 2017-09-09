@@ -7,6 +7,7 @@
   <authors>Alcaeus</authors>     
   <description>Easily switch between unit tests and code. Create missing associated files. Includes highlightings and test templates to keep test projects neat and tidy. Works with NUnit, MSTest, xUnit ...</description>
   <releaseNotes>
+      1.10.4.3 R#2017.2 recompile
       1.10.4.2 Refactor of logic and bug fix for find matching test files when no direct reference present
       1.10.4.1 R#2017.1 recompile
       1.10.3.3 R#2016.3 recompile
@@ -56,7 +57,7 @@
     <iconUrl>https://raw.githubusercontent.com/testcop/Resharper.TestCop/master/Project/Src/TestCop.Plugin/resources/agent48x48.png</iconUrl>
     <copyright>Copyright &#x00A9; 2013-2017</copyright>
     <dependencies>      
-      <dependency id="Wave" version="[8.0]"/>      
+      <dependency id="Wave" version="[9.0]"/>      
     </dependencies>
     <tags>resharper unittest xunit nunit mstest tdd c# template</tags>
   </metadata>   

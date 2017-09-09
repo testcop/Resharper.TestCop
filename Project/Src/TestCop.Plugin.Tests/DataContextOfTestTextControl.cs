@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using JetBrains.ActionManagement;
 using JetBrains.Application.DataContext;
+using JetBrains.Application.UI.Actions.ActionManager;
 using JetBrains.DataFlow;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.ExpressionSelection;
@@ -26,7 +26,7 @@ namespace TestCop.Plugin.Tests
             provider.AddRule("Test", JetBrains.ProjectModel.DataContext.ProjectModelDataConstants.SOLUTION, solution);
             provider.AddRule("Test", PsiDataConstants.REFERENCE, ctx => TextControlToPsi.GetReferencesAtCaret(solution, textControl).FirstOrDefault());
             provider.AddRule("Test", PsiDataConstants.SELECTED_EXPRESSION, ctx => ExpressionSelectionUtil.GetSelectedExpression<ITreeNode>(solution, textControl, false));
-            return Shell.Instance.Components.ActionManager().DataContexts.CreateWithDataRules(lifetime, provider);
+            return Shell.Instance.GetComponent<IActionManager>().DataContexts.CreateWithDataRules(lifetime, provider);
         }
     } 
 

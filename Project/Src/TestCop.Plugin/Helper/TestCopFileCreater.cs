@@ -46,7 +46,7 @@ namespace TestCop.Plugin.Helper
 
             var context = _dataContexts.CreateOnActiveControl(_lifetime);
             
-            var applicableFileTemplates = _fileTemplatesManager.FileTemplatesSupports.Where(s => s.Accepts(associatedProject));
+            var applicableFileTemplates = _fileTemplatesManager.FileTemplatesSupports;
             var applicableFileTemplateScopes = applicableFileTemplates.SelectMany(s => s.ScopePoints).Distinct().ToList();
             
             var classTemplate = _storedTemplatesProvider.EnumerateTemplates(boundSettingsStore, TemplateApplicability.File)
