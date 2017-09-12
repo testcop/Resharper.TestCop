@@ -15,7 +15,12 @@ using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Media;
 using JetBrains;
+using JetBrains.Application.Icons;
 using JetBrains.Application.Settings;
+using JetBrains.Application.UI.Components.UIApplication;
+using JetBrains.Application.UI.Options;
+using JetBrains.Application.UI.Options.OptionPages;
+using JetBrains.Application.UI.UIAutomation;
 using JetBrains.DataFlow;
 using JetBrains.ProjectModel;
 using JetBrains.ProjectModel.DataContext;
@@ -26,12 +31,8 @@ using JetBrains.ReSharper.Feature.Services.LiveTemplates.Support;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Templates;
 using JetBrains.ReSharper.LiveTemplates.UI;
 using JetBrains.ReSharper.Psi.Util;
-using JetBrains.UI.Application;
-using JetBrains.UI.Avalon;
-using JetBrains.UI.CrossFramework;
-using JetBrains.UI.Icons;
-using JetBrains.UI.Options;
-using JetBrains.UI.Options.OptionPages.ToolsPages;
+using JetBrains.UI.Extensions;
+using JetBrains.UI.StdApplicationUI;
 using JetBrains.Util;
 using JetBrains.Util.Logging;
 using TestCop.Plugin.Extensions;
@@ -436,7 +437,7 @@ namespace TestCop.Plugin.OptionsPage
                 return;
             }
                     
-            IEnumerable<IFileTemplatesSupport> applicableFileTemplates = _fileTemplatesManager.FileTemplatesSupports.Where(s => s.Accepts(project));                              
+            IEnumerable<IFileTemplatesSupport> applicableFileTemplates = _fileTemplatesManager.FileTemplatesSupports;///TODO: Need to restrict to project type .Where(s => s.Accepts(project));
             var scope = applicableFileTemplates.SelectMany(s =>s.ScopePoints)
                 .Distinct()
                 .Where(s=>s.GetDefaultUID()!= new InAnyProject().GetDefaultUID())

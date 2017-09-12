@@ -5,10 +5,10 @@
 // --
 using System;
 using JetBrains.Annotations;
+using JetBrains.Application.UI.Controls.JetPopupMenu;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.UI.Icons;
-using JetBrains.UI.PopupMenu;
 using JetBrains.UI.RichText;
 
 namespace TestCop.Plugin
