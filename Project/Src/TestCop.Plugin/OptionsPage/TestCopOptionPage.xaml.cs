@@ -437,7 +437,7 @@ namespace TestCop.Plugin.OptionsPage
                 return;
             }
                     
-            IEnumerable<IFileTemplatesSupport> applicableFileTemplates = _fileTemplatesManager.FileTemplatesSupports;                              
+            IEnumerable<IFileTemplatesSupport> applicableFileTemplates = _fileTemplatesManager.FileTemplatesSupports;///TODO: Need to restrict to project type .Where(s => s.Accepts(project));
             var scope = applicableFileTemplates.SelectMany(s =>s.ScopePoints)
                 .Distinct()
                 .Where(s=>s.GetDefaultUID()!= new InAnyProject().GetDefaultUID())
