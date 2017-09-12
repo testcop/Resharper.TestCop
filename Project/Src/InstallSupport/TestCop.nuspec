@@ -3,7 +3,7 @@
   <metadata>     
   <id>Resharper.TestCop.R9</id>     
   <version>0.0.0-internal</version>
-  <title>TestCop for ReSharper 2017.1</title>     
+  <title>TestCop for ReSharper 2017.2</title>     
   <authors>Alcaeus</authors>     
   <description>Easily switch between unit tests and code. Create missing associated files. Includes highlightings and test templates to keep test projects neat and tidy. Works with NUnit, MSTest, xUnit ...</description>
   <releaseNotes>
