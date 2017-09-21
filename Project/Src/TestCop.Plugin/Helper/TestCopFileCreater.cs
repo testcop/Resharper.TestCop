@@ -1,4 +1,11 @@
-﻿using System.Linq;
+﻿// --
+// -- TestCop http://testcop.codeplex.com
+// -- License http://testcop.codeplex.com/license
+// -- Copyright 2017
+// --
+
+using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Application;
 using JetBrains.Application.DataContext;
 using JetBrains.Application.Settings;
@@ -6,11 +13,12 @@ using JetBrains.DataFlow;
 using JetBrains.DocumentManagers.impl;
 using JetBrains.DocumentManagers.Transactions;
 using JetBrains.ProjectModel;
+using JetBrains.ReSharper.Feature.Services.LiveTemplates.Context;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.FileTemplates;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Scope;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Settings;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Templates;
-using JetBrains.ReSharper.Feature.Services.Util;
+using JetBrains.ReSharper.LiveTemplates.CSharp.Scope;
 using JetBrains.Util;
 using TestCop.Plugin.Extensions;
 
@@ -25,11 +33,12 @@ namespace TestCop.Plugin.Helper
         private readonly DataContexts _dataContexts;
         private readonly Lifetime _lifetime;
         private readonly FileTemplatesManager _fileTemplatesManager;
+        private TemplateScopeManager _scopeManager;
 
         public TestCopFileCreater(StoredTemplatesProvider storedTemplatesProvider
             , ISettingsStore settingsStore
             , IProjectFileExtensions fileExtensions
-            , DataContexts dataContexts, Lifetime lifetime, FileTemplatesManager fileTemplatesManager)
+            , DataContexts dataContexts, Lifetime lifetime, FileTemplatesManager fileTemplatesManager, TemplateScopeManager scopeManager)
         {
             _storedTemplatesProvider = storedTemplatesProvider;
             _settingsStore = settingsStore;
@@ -37,6 +46,7 @@ namespace TestCop.Plugin.Helper
             _lifetime = lifetime;
             _fileTemplatesManager = fileTemplatesManager;
             _fileExtensions = fileExtensions;
+            _scopeManager = scopeManager;
         }
 
         public  void CreateFileWithinProject(IProject associatedProject,FileSystemPath fileSystemPath, string targetFile)
@@ -45,9 +55,9 @@ namespace TestCop.Plugin.Helper
             var boundSettingsStore = _settingsStore.BindToContextTransient(ContextRange.ApplicationWide);
 
             var context = _dataContexts.CreateOnActiveControl(_lifetime);
-            
-            var applicableFileTemplates = _fileTemplatesManager.FileTemplatesSupports;///TODO: Need to restrict to project type .Where(s => s.Accepts(project));
-            var applicableFileTemplateScopes = applicableFileTemplates.SelectMany(s => s.ScopePoints).Distinct().ToList();
+                        
+            var applicableFileTemplateScopes = _scopeManager.EnumerateRealScopePoints(new TemplateAcceptanceContext(new ProjectFolderWithLocation(associatedProject)));
+            applicableFileTemplateScopes = applicableFileTemplateScopes.Distinct().Where(s => s is InLanguageSpecificProject).ToList();
             
             var classTemplate = _storedTemplatesProvider.EnumerateTemplates(boundSettingsStore, TemplateApplicability.File)
                .Where(x => x.Description == desiredTemplateName
@@ -57,7 +67,7 @@ namespace TestCop.Plugin.Helper
 
             if (classTemplate == null)
             {
-                ResharperHelper.AppendLineToOutputWindow(string.Format("File Template for '{0}' not found will default to 'Class'", desiredTemplateName));
+                ResharperHelper.AppendLineToOutputWindow(string.Format("File Template for '{0}' not found with default to 'Class'", desiredTemplateName));
                 classTemplate = LoadTemplateFromQuickList(context, "Class");
             }
             IProjectFolder folder = (IProjectFolder)associatedProject.FindProjectItemByLocation(fileSystemPath)

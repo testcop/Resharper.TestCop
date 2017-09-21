@@ -22,13 +22,17 @@ using JetBrains.Application.UI.Options;
 using JetBrains.Application.UI.Options.OptionPages;
 using JetBrains.Application.UI.UIAutomation;
 using JetBrains.DataFlow;
+using JetBrains.DocumentManagers.Transactions;
 using JetBrains.ProjectModel;
 using JetBrains.ProjectModel.DataContext;
+using JetBrains.ReSharper.Feature.Services.LiveTemplates.Context;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.FileTemplates;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Scope;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Settings;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Support;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Templates;
+using JetBrains.ReSharper.LiveTemplates.CSharp.Context;
+using JetBrains.ReSharper.LiveTemplates.CSharp.Scope;
 using JetBrains.ReSharper.LiveTemplates.UI;
 using JetBrains.ReSharper.Psi.Util;
 using JetBrains.UI.Extensions;
@@ -48,18 +52,20 @@ namespace TestCop.Plugin.OptionsPage
   {      
       private readonly Lifetime _lifetime;
       private readonly OptionsSettingsSmartContext _settings;
+      private readonly TemplateScopeManager _scopeManager;
       private readonly StoredTemplatesProvider _storedTemplatesProvider;
       private readonly UIApplication _application;
       private readonly ISolution _solution;
       private const string PID = "TestCopPageId";
       private readonly FileTemplatesManager _fileTemplatesManager;
       
-      public TestCopOptionPage(Lifetime lifetime, OptionsSettingsSmartContext settings
+      public TestCopOptionPage(Lifetime lifetime, OptionsSettingsSmartContext settings, TemplateScopeManager scopeManager
           , IThemedIconManager iconManager, UIApplication application
         , StoredTemplatesProvider storedTemplatesProvider, FileTemplatesManager fileTemplatesManager, ISolution solution = null)
       {
           _lifetime = lifetime;
           _settings = settings;
+          _scopeManager = scopeManager;
           _application = application;
           _solution = solution;
           _fileTemplatesManager = fileTemplatesManager;          
@@ -436,19 +442,13 @@ namespace TestCop.Plugin.OptionsPage
                 DisplayLoadProjectTip();
                 return;
             }
-                    
-            IEnumerable<IFileTemplatesSupport> applicableFileTemplates = _fileTemplatesManager.FileTemplatesSupports;///TODO: Need to restrict to project type .Where(s => s.Accepts(project));
-            var scope = applicableFileTemplates.SelectMany(s =>s.ScopePoints)
-                .Distinct()
-                .Where(s=>s.GetDefaultUID()!= new InAnyProject().GetDefaultUID())
-                .ToList();
-                                       
+                                          
+            var scope = _scopeManager.EnumerateRealScopePoints(new TemplateAcceptanceContext(new ProjectFolderWithLocation(project)));            
+            scope = scope.Distinct().Where(s => s is InLanguageSpecificProject).ToList();
+
             using (       
                 var templateDialog =
-                    new TemplateChooserDialog(
-                    #if !R7
-                    _lifetime,
-                    #endif
+                    new TemplateChooserDialog(_lifetime,                    
                         FileTemplatesManager.Instance.QuickListSupports,
                         scope, project.ToDataContext(),
                         TemplateApplicability.File))
