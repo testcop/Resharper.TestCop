@@ -6,17 +6,14 @@
 
 using System;
 using System.IO;
-using JetBrains.ActionManagement;
-using JetBrains.Application.DataContext;
 using JetBrains.Application.Progress;
 using JetBrains.Application.Settings;
+using JetBrains.Application.UI.ActionsRevised.Menu;
 using JetBrains.DataFlow;
 using JetBrains.DocumentManagers.Transactions;
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Daemon;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi;
-using JetBrains.UI.ActionsRevised;
 using JetBrains.Util;
 using NUnit.Framework;
 using TestCop.Plugin.Helper;

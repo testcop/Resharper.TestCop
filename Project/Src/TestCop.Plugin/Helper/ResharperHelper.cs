@@ -8,10 +8,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using JetBrains.Application;
+
 using JetBrains.Application.DataContext;
+using JetBrains.Application.Threading;
+using JetBrains.Application.UI.DataContext;
+using JetBrains.Application.UI.PopupLayout;
+using JetBrains.Application.UI.Tooltips;
 using JetBrains.DataFlow;
-using JetBrains.DocumentManagers;
 using JetBrains.DocumentModel;
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
@@ -19,18 +22,13 @@ using JetBrains.ReSharper.Feature.Services.Util;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
-using JetBrains.ReSharper.Psi.Impl.CodeStyle;
 using JetBrains.ReSharper.Psi.Util;
-using JetBrains.ReSharper.Psi.Web.Util;
 using JetBrains.ReSharper.Resources.Shell;
 using JetBrains.TextControl;
 using JetBrains.TextControl.Layout;
 using JetBrains.Threading;
 using JetBrains.UI;
-using JetBrains.UI.DataContext;
-using JetBrains.UI.PopupWindowManager;
 using JetBrains.UI.RichText;
-using JetBrains.UI.Tooltips;
 using JetBrains.Util;
 using TestCop.Plugin.Extensions;
 
@@ -227,12 +225,12 @@ namespace TestCop.Plugin.Helper
                   if (windowContextSource != null)
                   {
                       var windowContext = windowContextSource.Create(lifetime);
-                      var ctxTextControl = windowContext as TextControlPopupWindowContext;
+                      var ctxTextControl = windowContext as ITextControlPopupWindowContext;
                       return ctxTextControl == null ? windowContext :
                         ctxTextControl.OverrideLayouter(lifetime, lifetimeLayouter => new DockingLayouter(lifetimeLayouter, new TextControlAnchoringRect(lifetimeLayouter, ctxTextControl.TextControl, ctxTextControl.TextControl.Caret.Offset(), shellLocks), Anchoring2D.AnchorTopOrBottom));
                   }
 
-                  return solution.GetComponent<MainWindowPopupWindowContext>().Create(lifetime);
+                  return solution.GetComponent<IMainWindowPopupWindowContext>().Create(lifetime);
               });
         }
 
