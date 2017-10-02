@@ -12,7 +12,7 @@ namespace TestCop.Plugin.Helper.Mapper
 {
     public interface IProjectMappingHeper
     {
-        IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string currentClassName, string currentNameSpace);
+        IList<TestCopProjectItem> GetAssociatedProjectFor(IProject currentProject, IProjectFile projectFile, string overrideClassName = null);
         bool IsTestProject(IProject project);
         void DumpDebug(ISolution solution);
     }

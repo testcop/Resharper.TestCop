@@ -386,6 +386,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helper\Mapper\CodeProjectMapsToSingleTestProjectHeperTests.cs" />
     <Compile Include="MultipleTestProjectToSingleCodeProjectViaNamespace\MoveTestFiletoCorrectLocationTests.cs" />
     <Compile Include="RenameRefactoring\RenameTestFilesTooRefactoring.TestProjectHasSameNamespaceAsCodeProjectTests.cs" />
     <Compile Include="RenameRefactoring\RenameTestFilesTooRefactoringTestBase.cs" />

@@ -1,30 +1,23 @@
 ﻿// --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
-// -- Copyright 2016
+// -- Copyright 2017
 // --
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using JetBrains.ActionManagement;
-using JetBrains.Application;
 using JetBrains.Application.DataContext;
 using JetBrains.Application.Progress;
 using JetBrains.Application.Settings;
-using JetBrains.Application.Threading;
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Feature.Services.CSharp.StructuralSearch.Matchers;
 using JetBrains.ReSharper.Feature.Services.Menu;
-using JetBrains.ReSharper.Feature.Services.Navigation.Goto.ProvidersAPI;
 using JetBrains.ReSharper.Features.Inspections.Bookmarks.NumberedBookmarks;
-using JetBrains.ReSharper.Features.Navigation.Goto.GotoProviders;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Caches;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
-using JetBrains.ReSharper.Psi.ExtensionsAPI.Caches2;
 using JetBrains.ReSharper.Psi.Search;
 using JetBrains.ReSharper.Resources.Shell;
 using JetBrains.TextControl;
@@ -35,7 +28,6 @@ using TestCop.Plugin.Extensions;
 using TestCop.Plugin.Helper;
 using JetBrains.ReSharper.Psi.Modules;
 using JetBrains.TextControl.DataContext;
-using JetBrains.UI.Avalon.TreeListView;
 
 namespace TestCop.Plugin
 {
@@ -139,16 +131,16 @@ namespace TestCop.Plugin
 
             foreach (var singleTargetProject in targetProjects)
             {                
-                foreach (var regex in singleTargetProject.FilePattern)
+                foreach (var patternMatcher in singleTargetProject.FilePattern)
                 {
                     //FindByClassName      
-                    elementsFoundInSolution.AddRangeIfMissing(ResharperHelper.FindClass(solution, regex.ToString()), _declElementMatcher);
-                    elementsFoundInTarget.AddRangeIfMissing(ResharperHelper.FindClass(solution, regex.ToString(), new List<IProject>() { singleTargetProject.Project }), _declElementMatcher);
+                    elementsFoundInSolution.AddRangeIfMissing(ResharperHelper.FindClass(solution, patternMatcher.RegEx.ToString()), _declElementMatcher);
+                    elementsFoundInTarget.AddRangeIfMissing(ResharperHelper.FindClass(solution, patternMatcher.RegEx.ToString(), new List<IProject>() { singleTargetProject.Project }), _declElementMatcher);
                     
                      if (!isTestFile)
                      {
                          //Find via filename (for when we switch to test files)
-                         var otherMatches = ResharperHelper.FindFirstTypeWithinCodeFiles(solution, regex, singleTargetProject.Project);
+                         var otherMatches = ResharperHelper.FindFirstTypeWithinCodeFiles(solution, patternMatcher.RegEx, singleTargetProject.Project);
                          elementsFoundInTarget.AddRangeIfMissing(otherMatches, _declElementMatcher);
                      }                     
                 }                               
@@ -198,9 +190,9 @@ namespace TestCop.Plugin
             else
             {                     
                 //look for similar named files that also have references to this code            
-                var items = new List<IProjectFile>();                                
+                var items = new List<ProjectFileFinder.Match>();                                
                 targetProjects.ForEach(p=>p.Project.Accept(new ProjectFileFinder(items, p.FilePattern)));
-                searchDomain = PsiShared.GetComponent<SearchDomainFactory>().CreateSearchDomain(items.Select(p => p.ToSourceFile()));
+                searchDomain = PsiShared.GetComponent<SearchDomainFactory>().CreateSearchDomain(items.Select(p => p.ProjectFile.ToSourceFile()));
             }
 
             var declarationsCache = solution.GetPsiServices().Symbols

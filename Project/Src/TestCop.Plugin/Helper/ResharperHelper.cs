@@ -275,11 +275,11 @@ namespace TestCop.Plugin.Helper
 
         public static List<ITypeElement> FindFirstTypeWithinCodeFiles(ISolution solution, Regex regex, IProject project)
         {            
-            var items = new List<IProjectFile>();
+            var items = new List<ProjectFileFinder.Match>();
             project.Accept(new ProjectFileFinder(items, regex));
 
             var results = items
-                .SelectMany(p=>solution.GetPsiServices().Symbols.GetTypesAndNamespacesInFile(p.ToSourceFile())).OfType<ITypeElement>()
+                .SelectMany(p=>solution.GetPsiServices().Symbols.GetTypesAndNamespacesInFile(p.ProjectFile.ToSourceFile())).OfType<ITypeElement>()
                 .ToList();
 
             return results;

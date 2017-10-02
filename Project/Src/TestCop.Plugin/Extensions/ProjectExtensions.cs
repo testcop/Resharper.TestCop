@@ -1,13 +1,11 @@
 ﻿// --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
-// -- Copyright 2014
+// -- Copyright 2017
 // --
 
 using System.Collections.Generic;
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.Util;
 using TestCop.Plugin.Helper.Mapper;
 
 namespace TestCop.Plugin.Extensions
@@ -22,22 +20,9 @@ namespace TestCop.Plugin.Extensions
             return ProjectMappingHelper.GetProjectMappingHeper().IsTestProject(project);          
         }
                      
-        public static IList<TestCopProjectItem> GetAssociatedProjects(this IProject currentProject, IProjectFile  projectFile)
+        public static IList<TestCopProjectItem> GetAssociatedProjects(this IProject currentProject, IProjectFile  projectFile, string overrideClassName=null)
         {            
-            string currentNamespace = projectFile.CalculateExpectedNamespace(projectFile.GetPrimaryPsiFile().Language);
-
-            var fileNameToProcess = projectFile.Location.NameWithoutExtension;
-            fileNameToProcess = fileNameToProcess.RemoveTrailing(".partial");
-            
-            return ProjectMappingHelper.GetProjectMappingHeper().GetAssociatedProject(currentProject, fileNameToProcess, currentNamespace);
-        }
-
-        public static IList<TestCopProjectItem> GetAssociatedProjects(this IProject currentProject, ITypeElement classInProject)
-        {
-            string currentNamespace = classInProject.OwnerNamespaceDeclaration();
-            return ProjectMappingHelper.GetProjectMappingHeper().GetAssociatedProject(currentProject, classInProject.ShortName, currentNamespace);
-            //string currentNamespace = projectFile.CalculateExpectedNamespace(projectFile.GetPrimaryPsiFile().Language);
-            //return ProjectMappingHelper.GetProjectMappingHeper().GetAssociatedProject(currentProject, projectFile.Location.NameWithoutExtension, currentNamespace);
-        } 
+            return ProjectMappingHelper.GetProjectMappingHeper().GetAssociatedProjectFor(currentProject, projectFile, overrideClassName);
+        }              
     }
 }

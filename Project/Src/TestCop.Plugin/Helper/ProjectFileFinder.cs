@@ -4,22 +4,43 @@
 // -- Copyright 2013
 // --
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using JetBrains.ProjectModel;
+using TestCop.Plugin.Extensions;
 
 namespace TestCop.Plugin.Helper
 {    
     public class ProjectFileFinder: RecursiveProjectVisitor
     {
-        private readonly List<IProjectFile> _items;
-        private readonly Regex[] _regexs;
+        private TestCopProjectItem.FilePatternMatcher[] _filePatterns;        
+        private readonly List<Match> _itemMatches;
 
-        public ProjectFileFinder(List<IProjectFile> items, params Regex[] regexs)
+        public struct Match
         {
-            _items = items;
-            _regexs = regexs;
+            public readonly TestCopProjectItem.FilePatternMatcher Matcher;
+
+            public Match(IProjectFile projectFile, TestCopProjectItem.FilePatternMatcher matcher)
+            {
+                Matcher = matcher;                
+                ProjectFile = projectFile;
+            }
+
+            public IProjectFile ProjectFile { get; }
+        }
+
+
+        public ProjectFileFinder(List<Match> itemMatches, params TestCopProjectItem.FilePatternMatcher[] filePatterns)
+        {
+            _itemMatches = itemMatches;            
+            this._filePatterns = filePatterns;
+        }
+
+        public ProjectFileFinder(List<Match> items, Regex regex) : this(items, new TestCopProjectItem.FilePatternMatcher(regex,""))
+        {
+            
         }
 
         public override void VisitProjectFile(IProjectFile projectFile)
@@ -29,10 +50,15 @@ namespace TestCop.Plugin.Helper
 
             if (projectFile.Kind == ProjectItemKind.PHYSICAL_FILE)
             {
-                if (_regexs.Any(regex => regex.IsMatch(projectFileName)))
+                foreach (var pattern in _filePatterns)
                 {
-                    _items.Add(projectFile);
-                }               
+                    if (pattern.RegEx.IsMatch(projectFileName))
+                    {
+                        _itemMatches.Add(new Match(projectFile, pattern));
+                        break;
+                    }
+                }
+                              
             }
         }
     }
