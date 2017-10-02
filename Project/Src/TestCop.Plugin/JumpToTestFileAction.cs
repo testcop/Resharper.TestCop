@@ -7,7 +7,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.ActionManagement;
 using JetBrains.Application.DataContext;
 using JetBrains.Application.Progress;
 using JetBrains.Application.Settings;
