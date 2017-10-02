@@ -5,12 +5,10 @@
 // --
 
 using System.IO;
-using System.Text.RegularExpressions;
-using JetBrains.ActionManagement;
 using JetBrains.Application.Settings;
+using JetBrains.Application.UI.ActionsRevised.Menu;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi;
-using JetBrains.UI.ActionsRevised;
 using NUnit.Framework;
 using TestCop.Plugin.Highlighting;
 

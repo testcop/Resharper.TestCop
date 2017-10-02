@@ -5,13 +5,13 @@
 // --
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.ActionManagement;
 using JetBrains.Application.DataContext;
+using JetBrains.Application.Shortcuts.ShortcutManager;
+using JetBrains.Application.UI.ActionsRevised.Menu;
+using JetBrains.Application.UI.Controls.JetPopupMenu;
 using JetBrains.ReSharper.UnitTestFramework;
 using JetBrains.ReSharper.UnitTestFramework.Actions;
 using JetBrains.ReSharper.UnitTestFramework.Criteria;
-using JetBrains.UI.ActionsRevised;
-using JetBrains.UI.PopupMenu;
 using TestCop.Plugin.Extensions;
 
 namespace TestCop.Plugin

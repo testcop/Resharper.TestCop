@@ -8,7 +8,10 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using JetBrains.Application.DataContext;
-using JetBrains.CommonControls;
+using JetBrains.Application.UI.Controls;
+using JetBrains.Application.UI.Controls.JetPopupMenu;
+using JetBrains.Application.UI.DataContext;
+using JetBrains.Application.UI.PopupLayout;
 using JetBrains.DataFlow;
 using JetBrains.DocumentManagers;
 using JetBrains.DocumentModel;
@@ -19,10 +22,6 @@ using JetBrains.ReSharper.Feature.Services.Navigation;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Resources.Shell;
-using JetBrains.UI.Controls;
-using JetBrains.UI.DataContext;
-using JetBrains.UI.PopupMenu;
-using JetBrains.UI.PopupWindowManager;
 using JetBrains.UI.RichText;
 using JetBrains.Util;
 using TestCop.Plugin.Extensions;
@@ -82,7 +81,7 @@ namespace TestCop.Plugin.Helper
                                                                                  p =>
                                                                                  () =>
                                                                                  EditorManager.GetInstance(solution).
-                                                                                     OpenProjectFile(p, true)
+                                                                                     OpenProjectFile(p, new OpenFileOptions(true))
                     );
                 menuItems.AddRange(simpleMenuItems);
             }

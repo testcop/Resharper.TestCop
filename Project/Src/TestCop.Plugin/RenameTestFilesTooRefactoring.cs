@@ -82,7 +82,7 @@ namespace TestCop.Plugin
                                         continue;
                                     }
 
-                                    EditorManager.GetInstance(solution).OpenProjectFile(projectFileMatch.ProjectFile, false);
+                                    EditorManager.GetInstance(solution).OpenProjectFile(projectTestFile, new OpenFileOptions(false));
                                         //need to ensure class within file is renamed tooo                                    
                                     yield return
                                         new FileRename(psiModule.GetPsiServices(), projectFileMatch.ProjectFile, newTestClassName);                                

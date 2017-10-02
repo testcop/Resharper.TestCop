@@ -9,12 +9,15 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using JetBrains.ActionManagement;
+
 using JetBrains.Annotations;
-using JetBrains.Application;
 using JetBrains.Application.Components;
 using JetBrains.Application.DataContext;
 using JetBrains.Application.Settings;
+using JetBrains.Application.Threading;
+using JetBrains.Application.UI.Actions;
+using JetBrains.Application.UI.ActionsRevised.Menu;
+using JetBrains.Application.UI.Controls.JetPopupMenu;
 using JetBrains.DataFlow;
 using JetBrains.IDE;
 using JetBrains.ProjectModel;
@@ -23,14 +26,11 @@ using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.FeaturesTestFramework.Daemon;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
-using JetBrains.ReSharper.Psi.Resx.Utils;
 using JetBrains.ReSharper.TestFramework;
 using JetBrains.TestFramework;
 using JetBrains.TestFramework.Projects;
 using JetBrains.TextControl;
 using JetBrains.TextControl.DataContext;
-using JetBrains.UI.ActionsRevised;
-using JetBrains.UI.PopupMenu;
 using JetBrains.Util;
 using NUnit.Framework;
 
@@ -209,7 +209,7 @@ namespace TestCop.Plugin.Tests
 
         protected ITextControl OpenTextControl(IProjectFile projectFile, int? caretOffset = null)
         {            
-            ITextControl openProjectFile = EditorManager.GetInstance(projectFile.GetSolution()).OpenProjectFile(projectFile, true);
+            ITextControl openProjectFile = EditorManager.GetInstance(projectFile.GetSolution()).OpenProjectFile(projectFile, new OpenFileOptions(true));
             return openProjectFile;
         }
 
@@ -222,7 +222,7 @@ namespace TestCop.Plugin.Tests
                     var s = itm.Text+ itm.ShortcutText ?? "";
                     
                     textWriter.WriteLine("[{0}] {1}",
-                        ((JetBrains.UI.Controls.RichTextAutomation)menu.Caption.Value).RichTextBlock.Value.Text
+                        ((JetBrains.Application.UI.Controls.RichTextAutomation)menu.Caption.Value).RichTextBlock.Value.Text
                         , s);                        
                 }
             };
