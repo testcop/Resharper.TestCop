@@ -4,10 +4,13 @@
 // -- Copyright 2017
 // --
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using JetBrains.Application;
 using JetBrains.Application.DataContext;
+using JetBrains.Application.Progress;
 using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
 using JetBrains.DocumentManagers.impl;
@@ -49,14 +52,14 @@ namespace TestCop.Plugin.Helper
             _scopeManager = scopeManager;
         }
 
-        public  void CreateFileWithinProject(IProject associatedProject,FileSystemPath fileSystemPath, string targetFile)
+        public  void CreateFileWithinProject([NotNull] TestCopProjectItem projectItem, [NotNull] string targetFile)
         {                        
-            var desiredTemplateName = LookupTemplateName(associatedProject);
+            var desiredTemplateName = LookupTemplateName(projectItem.Project);
             var boundSettingsStore = _settingsStore.BindToContextTransient(ContextRange.ApplicationWide);
 
             var context = _dataContexts.CreateOnActiveControl(_lifetime);
                         
-            var applicableFileTemplateScopes = _scopeManager.EnumerateRealScopePoints(new TemplateAcceptanceContext(new ProjectFolderWithLocation(associatedProject)));
+            var applicableFileTemplateScopes = _scopeManager.EnumerateRealScopePoints(new TemplateAcceptanceContext(new ProjectFolderWithLocation(projectItem.Project)));
             applicableFileTemplateScopes = applicableFileTemplateScopes.Distinct().Where(s => s is InLanguageSpecificProject).ToList();
             
             var classTemplate = _storedTemplatesProvider.EnumerateTemplates(boundSettingsStore, TemplateApplicability.File)
@@ -70,18 +73,24 @@ namespace TestCop.Plugin.Helper
                 ResharperHelper.AppendLineToOutputWindow(string.Format("File Template for '{0}' not found with default to 'Class'", desiredTemplateName));
                 classTemplate = LoadTemplateFromQuickList(context, "Class");
             }
-            IProjectFolder folder = (IProjectFolder)associatedProject.FindProjectItemByLocation(fileSystemPath)
-                                    ?? associatedProject.GetOrCreateProjectFolder(fileSystemPath);
+            IProjectFolder folder = (IProjectFolder)projectItem.Project.FindProjectItemByLocation(projectItem.SubNamespaceFolder)
+                                    ?? GetOrCreateProjectFolder(projectItem);
             
             if (folder == null)
             {
-                ResharperHelper.AppendLineToOutputWindow("Error failed to create/location project folder" + fileSystemPath);
+                ResharperHelper.AppendLineToOutputWindow("Error failed to create/location project folder" + projectItem.SubNamespaceFolder);
                 return;
             }
 
-            string extension = Enumerable.First(_fileExtensions.GetExtensions(associatedProject.ProjectProperties.DefaultLanguage.DefaultProjectFileType));
+            string extension = Enumerable.First(_fileExtensions.GetExtensions(projectItem.Project.ProjectProperties.DefaultLanguage.DefaultProjectFileType));
 
             FileTemplatesManager.Instance.CreateFileFromTemplate(targetFile + extension, new ProjectFolderWithLocation(folder), classTemplate);
+        }
+
+        private static IProjectFolder GetOrCreateProjectFolder(TestCopProjectItem projectItem)
+        {
+            ///TODO: Need to create folders honouring the namespace provider setting defined with projectItem
+            return projectItem.Project.GetOrCreateProjectFolder(projectItem.SubNamespaceFolder);
         }
 
         private static Template LoadTemplateFromQuickList(IDataContext context, string templateDescription)
@@ -95,6 +104,6 @@ namespace TestCop.Plugin.Helper
                 ? TestCopSettingsManager.Instance.Settings.UnitTestFileTemplateName
                 : TestCopSettingsManager.Instance.Settings.CodeFileTemplateName;
             return desiredTemplateName;
-        }
+        }     
     }
 }

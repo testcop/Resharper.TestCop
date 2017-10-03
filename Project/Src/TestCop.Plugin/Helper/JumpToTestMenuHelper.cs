@@ -180,22 +180,21 @@ namespace TestCop.Plugin.Helper
                     targetFile += testClassSuffix;
                 }
 
-                foreach (var associatedTargetProject in associatedTargetProjects)
+                foreach (var associatedTargetProjectItem in associatedTargetProjects)
                 {
-                    if (currentFileisTestFile == associatedTargetProject.Project.IsTestProject())
+                    if (currentFileisTestFile == associatedTargetProjectItem.Project.IsTestProject())
                     {
                         ResharperHelper.AppendLineToOutputWindow(
                             string.Format("Internal Error: Attempted to create '{0}' within project '{1}'"
-                                , targetFile, associatedTargetProject.Project.Name));
+                                , targetFile, associatedTargetProjectItem.Project.Name));
                         continue;
                     }
 
-                    string targetFileLocation = associatedTargetProject.SubNamespaceFolder.FullPath + "\\" + targetFile;
+                    string targetFileLocation = associatedTargetProjectItem.SubNamespaceFolder.FullPath + "\\" + targetFile;
 
                     if (!IsMenuItemPresentForFile(currentMenus, targetFileLocation))
                     {
-                        currentMenus.AddRange(AddCreateFileMenuItem(lifetime, associatedTargetProject.Project,
-                            associatedTargetProject.SubNamespaceFolder, targetFile));
+                        currentMenus.AddRange(AddCreateFileMenuItem(lifetime, associatedTargetProjectItem, targetFile));
                         addedCreateMenuItem = true;
                     }
                 }
@@ -218,8 +217,7 @@ namespace TestCop.Plugin.Helper
         }
 
         //------------------------------------------------------------------------------------------------------------------------
-        private static List<SimpleMenuItem> AddCreateFileMenuItem(Lifetime lifetime, IProject associatedTargetProject,
-                                          FileSystemPath targetLocationDirectory, string targetFile)
+        private static List<SimpleMenuItem> AddCreateFileMenuItem(Lifetime lifetime, TestCopProjectItem projectItem, string targetFile)
         {
             var menuItems = new List<SimpleMenuItem>();
 
@@ -227,15 +225,14 @@ namespace TestCop.Plugin.Helper
                                             , null,
                                             ResharperHelper.ProtectActionFromReEntry(lifetime,"TestingMenuNavigation",
                                                                      () =>
-                                                                     ResharperHelper.CreateFileWithinProject(associatedTargetProject,
-                                                                                             targetLocationDirectory, targetFile)));
+                                                                     ResharperHelper.CreateFileWithinProject(projectItem, targetFile)));
             result.Style = MenuItemStyle.Enabled;
             result.Icon = UnnamedThemedIcons.Agent16x16.Id;
             result.Text = new RichText("Create ", TextStyle.FromForeColor(Color.Green)).Append(targetFile, TextStyle.FromForeColor(TextStyle.DefaultForegroundColor));
-            result.ShortcutText = new RichText("(" + associatedTargetProject.GetPresentableProjectPath()
+            result.ShortcutText = new RichText("(" + projectItem.Project.GetPresentableProjectPath()
                                                +
-                                               targetLocationDirectory.FullPath.RemoveLeading(
-                                                   associatedTargetProject.ProjectFileLocation.Directory.FullPath) + ")",
+                                               projectItem.SubNamespaceFolder.FullPath.RemoveLeading(
+                                                   projectItem.Project.ProjectFileLocation.Directory.FullPath) + ")",
                                                TextStyle.FromForeColor(Color.LightGray));
             menuItems.Add(result);
             return menuItems;

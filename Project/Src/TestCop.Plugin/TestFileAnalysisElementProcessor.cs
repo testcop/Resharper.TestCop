@@ -223,8 +223,7 @@ namespace TestCop.Plugin
             {
                 IHighlighting highlighting = new TestMethodMissingCodeWarning(declaration, "Test method is empty");
                 AddHighlighting(declaration.GetNameDocumentRange(), highlighting);
-            }
-            //TODO: declaration.Body.Accept(TreeNodeVisitor) -- extend to look at code for at least one IExpressionStatement
+            }            
         }
 
         private void CheckElementIsPublicAndCreateWarningIfNot(IAccessRightsOwnerDeclaration declaration, IEnumerable<IAttribute> testingAttributes)

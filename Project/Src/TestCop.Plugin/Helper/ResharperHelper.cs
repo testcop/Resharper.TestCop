@@ -289,10 +289,10 @@ namespace TestCop.Plugin.Helper
             threading.ReentrancyGuard.ExecuteOrQueueEx(description, fOnExecute);                        
         }
     
-        public static void CreateFileWithinProject(IProject associatedProject,FileSystemPath fileSystemPath, string targetFile)
+        public static void CreateFileWithinProject(TestCopProjectItem projectItem, string targetFile)
         {
             var testCopFileCreater = Shell.Instance.GetComponent<TestCopFileCreater>();
-            testCopFileCreater.CreateFileWithinProject(associatedProject, fileSystemPath, targetFile);
+            testCopFileCreater.CreateFileWithinProject(projectItem, targetFile);
         }     
     }    
 }
