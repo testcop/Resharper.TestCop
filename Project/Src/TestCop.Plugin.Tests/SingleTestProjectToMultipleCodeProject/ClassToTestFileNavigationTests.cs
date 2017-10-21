@@ -52,6 +52,7 @@ namespace TestCop.Plugin.Tests.SingleTestProjectToMultipleCodeProject
 
         [TestCase(@"<MyCorp.TestApplication3.API>\NS3\NonNamespaceFolder\ClassAInNonNamespace.cs")]
         [TestCase(@"<MyCorp.TestApplication3.API>\NS3\NonNamespaceFolder\ClassBInNonNamespace.cs")]
+        [TestCase(@"<MyCorp.TestApplication3.API>\NonNamespaceFolder\ClassDInNonNamespace.cs")]
         public void Test(string testName)
         {          
             ExecuteWithinSettingsTransaction((settingsStore =>

@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClassA.cs" />
+    <Compile Include="NonNamespaceFolder\ClassDInNonNamespace.cs" />
     <Compile Include="NS1\APIClassBWithNoTest.cs" />
     <Compile Include="NS1\ClassA.cs" />
     <Compile Include="NS1\NS2\ClassA.cs" />
