@@ -1,0 +1,10 @@
+﻿namespace MyCorp.TestApplication4.API.NS1.NS2
+{
+    class ClassEInNonNamespace
+    {
+    }
+}
+
+---------------------------------------------------------
+[Switch to:] ClassEInNonNamespaceTests.cs|(in <APITests>\NS1\NonNamespaceFolder\NS2)
+[Switch to:] Create |ClassEInNonNamespaceIntegrationTests|(<APITests>\NS1\NonNamespaceFolder\NS2)

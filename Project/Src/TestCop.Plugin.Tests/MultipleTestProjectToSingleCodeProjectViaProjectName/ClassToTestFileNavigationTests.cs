@@ -40,7 +40,9 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProjectViaProjectN
         [TestCase(@"<API>\ClassA.cs")]
         [TestCase(@"<API>\NS1\APIClassBWithNoTest.cs")]
         [TestCase(@"<API>\NS1\ClassA.cs")]
-        [TestCase(@"<API>\Properties\AssemblyInfo.cs")]     
+        [TestCase(@"<API>\Properties\AssemblyInfo.cs")]
+        [TestCase(@"<API>\NS1\NonNamespaceFolder\NS2\ClassEInNonNamespace.cs")]
+        [TestCase(@"<API>\NonNamespaceFolder\ClassDInNonNamespace.cs")]
         public void Test(string testName)
         {            
             ExecuteWithinSettingsTransaction((settingsStore =>
