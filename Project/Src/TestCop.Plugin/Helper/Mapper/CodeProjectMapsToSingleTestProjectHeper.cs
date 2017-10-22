@@ -60,9 +60,7 @@ namespace TestCop.Plugin.Helper.Mapper
                     ResharperHelper.AppendLineToOutputWindow("Didn't find project with namespace of: " + nameSpaceOfAssociateProject + " to match " + currentTypeNamespace);                    
                 }
 
-                var subDirectoryElementsWithOutExtraFolderForNS = new List<Tuple<string, bool>>(subDirectoryElements);
-
-                RemoveRootFoldersPresentInNameSpace(subDirectoryElementsWithOutExtraFolderForNS, subNameSpace);
+                var subDirectoryElementsWithOutExtraFolderForNS = new List<Tuple<string, bool>>(subDirectoryElements);                
 
                 if (subDirectoryElementsWithOutExtraFolderForNS.Count > 0)
                 {
@@ -106,35 +104,6 @@ namespace TestCop.Plugin.Helper.Mapper
                 }
                 j = j - 1;
             }
-            return subDirectoryElementsWithExtraFolderForNS;
-        }
-
-        public static List<Tuple<string, bool>> RemoveRootFoldersPresentInNameSpace(IList<Tuple<string, bool>> subDirectoryElements, string subNameSpace)
-        {
-            ///TODO: HOW TO HANDLE THIS TYPE OF TEST SETUP...
-            /// 
-            // We remove root folders now within the namespace: // <MyCorp.App.Tests>.API.ClassA --> <MyCorp.App.API>.ClassA
-            var subDirectoryElementsWithExtraFolderForNS = new List<Tuple<string, bool>>(subDirectoryElements);
-/*
-            var elemSubNameSpaceOfTest = subNameSpaceOfTest.Split('.').Where(x => !string.IsNullOrEmpty(x)).ToList();
-
-            //compare namespace path with directories - skipping the ns=false folders         
-            for (int j = 0, i = elemSubNameSpaceOfTest.Count - 1; i >= 0; i++)
-            {
-
-                while (subDirectoryElementsWithExtraFolderForNS.Count > 0 &&
-                       subDirectoryElementsWithExtraFolderForNS[0].Item2 == false) //strip out non-namespace providers
-                {
-                    subDirectoryElementsWithExtraFolderForNS.RemoveAt(0);
-                }
-
-                if (subDirectoryElementsWithExtraFolderForNS[0] == elemSubNameSpaceOfTest[i])
-                {
-                    subDirectoryElementsWithExtraFolderForNS.RemoveAt(0);
-                }
-
-            }
-            */
             return subDirectoryElementsWithExtraFolderForNS;
         }
     }
