@@ -66,7 +66,7 @@ namespace TestCop.Plugin.Helper.Mapper
 
                 if (subDirectoryElementsWithOutExtraFolderForNS.Count > 0)
                 {
-                    subDirectoryElementsWithOutExtraFolderForNS.RemoveAt(0); ///TODO: revisit this logic
+                    subDirectoryElementsWithOutExtraFolderForNS.RemoveAt(0); 
                 }
 
                 return matchedCodeProjects.Select(p => new TestCopProjectItem(p, TestCopProjectItem.ProjectItemTypeEnum.Code, subNameSpace, subDirectoryElementsWithOutExtraFolderForNS, filePatterns)).ToList();
