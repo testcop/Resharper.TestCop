@@ -52,8 +52,10 @@
   <ItemGroup>
     <Compile Include="NG1\ClassWithBothTests.cs" />
     <Compile Include="NG1\ClassWithUnitOnlyTests.cs" />
+    <Compile Include="NG1\NonNamespaceFolder\ClassDInNonNamespaceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

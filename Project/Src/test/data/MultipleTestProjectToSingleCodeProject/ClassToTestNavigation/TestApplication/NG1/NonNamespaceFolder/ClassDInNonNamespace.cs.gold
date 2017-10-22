@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace TestApplication.NG1
+{
+    class ClassDInNonNamespace
+    {
+    }
+}
+
+---------------------------------------------------------
+[Switch to:] ClassDInNonNamespaceTests.cs|(in <TestApplication.Tests>\NG1\NonNamespaceFolder)
+[Switch to:] Create |ClassDInNonNamespaceIntegrationTests|(<TestApplication.IntegrationTests>\NG1\NonNamespaceFolder)
+[Switch to:] Create |ClassDInNonNamespaceIntegrationTests|(<TestApplication.Tests>\NG1\NonNamespaceFolder)
+[Switch to:] Create |ClassDInNonNamespaceIntegrationTests|(<TestApplication.Utility.Tests>\NG1\NonNamespaceFolder)
+[Switch to:] Create |ClassDInNonNamespaceTests|(<TestApplication.IntegrationTests>\NG1\NonNamespaceFolder)
+[Switch to:] Create |ClassDInNonNamespaceTests|(<TestApplication.Utility.Tests>\NG1\NonNamespaceFolder)

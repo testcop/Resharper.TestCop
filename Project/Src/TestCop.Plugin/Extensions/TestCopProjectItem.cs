@@ -96,7 +96,7 @@ namespace TestCop.Plugin.Extensions
             return ExtractFolders(item.ParentFolder);
         }
 
-        protected static IList<Tuple<string,bool>> ExtractFolders(IProjectFolder currentFolder)
+        public static IList<Tuple<string,bool>> ExtractFolders(IProjectFolder currentFolder)
         {
             IList<Tuple<string, bool>> foldersList = new List<Tuple<string, bool>>();
 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -40,14 +40,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClassATests.cs" /> 
-    <Compile Include="ClassD.WrongFolderTests.cs"/>
+    <Compile Include="ClassATests.cs" />
+    <Compile Include="ClassD.WrongFolderTests.cs" />
     <Compile Include="ClassDTests.cs" />
-    <Compile Include="NS1\ClassForTestingPartialTests.cs" />    
-    <Compile Include="NS1\ClassForTestingPartialTests.partial.cs" />  
-    <Compile Include="NS1\ClassForTestingPartial.SecurityTests.partial.cs" />  
-    
-    <Compile Include="NS2\ClassGTests.cs" />    
+    <Compile Include="NonNamespaceFolder\ClassEInNonNamespaceTests.cs" />
+    <Compile Include="NS1\ClassForTestingPartialTests.cs" />
+    <Compile Include="NS1\ClassForTestingPartialTests.partial.cs" />
+    <Compile Include="NS1\ClassForTestingPartial.SecurityTests.partial.cs" />
+    <Compile Include="NS1\NonNamespaceFolder\ClassDInNonNamespaceTests.cs" />
+    <Compile Include="NS2\ClassGTests.cs" />
     <Compile Include="Samples\ClassCTests.cs" />
     <Compile Include="Samples\ClassB.SecurityTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -58,6 +59,7 @@
       <Name>TestApplication2</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
