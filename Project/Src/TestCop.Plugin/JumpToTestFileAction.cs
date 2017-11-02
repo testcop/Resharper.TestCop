@@ -125,8 +125,8 @@ namespace TestCop.Plugin
             if (isTestFile != currentProject.IsTestProject())
             {                
                 ResharperHelper.AppendLineToOutputWindow(
-                            string.Format("Don't know how to navigate with '{0}' within project '{1}'"
-                                , baseFileName, currentProject.Name));
+                            string.Format("Don't know how to navigate with '{0}' within project '{1}'. It is a {2} file within a {3} project"
+                                , baseFileName, currentProject.Name, isTestFile ? "test" : "code", currentProject.IsTestProject() ? "test" : "code"));
                 return;
             }
            

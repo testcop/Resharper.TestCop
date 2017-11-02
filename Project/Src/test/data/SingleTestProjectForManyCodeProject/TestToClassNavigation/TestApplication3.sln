@@ -1,11 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCorp.TestApplication3.Tests", "MyCorp.TestApplication3.Tests\MyCorp.TestApplication3.Tests.csproj", "{D589613F-9D45-41FD-8E4D-7FF39434A0AF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCorp.TestApplication3.API", "MyCorp.TestApplication3.API\MyCorp.TestApplication3.API.csproj", "{191E5761-9D3B-4570-89D1-AA6DB41D76D7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyCorp.TestApplication3.DAL", "MyCorp.TestApplication3.DAL\MyCorp.TestApplication3.DAL.csproj", "{41453C48-CC4B-427E-80B7-24F17643432D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Code", "Code", "{F5D87A4A-2E30-4DDD-BA1F-D0E110946723}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,5 +32,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{191E5761-9D3B-4570-89D1-AA6DB41D76D7} = {F5D87A4A-2E30-4DDD-BA1F-D0E110946723}
+		{41453C48-CC4B-427E-80B7-24F17643432D} = {F5D87A4A-2E30-4DDD-BA1F-D0E110946723}
 	EndGlobalSection
 EndGlobal

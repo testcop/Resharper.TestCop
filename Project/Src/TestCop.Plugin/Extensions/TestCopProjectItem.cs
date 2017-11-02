@@ -9,10 +9,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
+using JetBrains;
 using JetBrains.ProjectModel;
 using JetBrains.ProjectModel.Properties;
 using JetBrains.ReSharper.Psi.Util;
 using JetBrains.Util;
+using TestCop.Plugin.Helper;
 
 namespace TestCop.Plugin.Extensions
 {
@@ -85,7 +87,11 @@ namespace TestCop.Plugin.Extensions
             SubNamespace = subNameSpace.RemoveLeading(".");
 
             var subNameSpaceAccordingToDirectoryElements = subDirectoryElements.Where(i => i.Item2).Select(i => i.Item1).Join(@".");
-            Trace.Assert(subNameSpaceAccordingToDirectoryElements == SubNamespace);///TODO: remove the subnamespace parameter from constructor
+
+            if (subNameSpaceAccordingToDirectoryElements != SubNamespace)
+            {
+                ResharperHelper.AppendLineToOutputWindow("Error calculating sub namepsace '{0}'<>'{1}'".FormatEx(subNameSpaceAccordingToDirectoryElements, SubNamespace));
+            }
 
             this._subDirectoryElements = subDirectoryElements;
             ProjectItemType = projectItemType;
@@ -103,13 +109,15 @@ namespace TestCop.Plugin.Extensions
             var namespaceFolderProperty = currentFolder.GetSolution().GetComponent<NamespaceFolderProperty>();
 
             while (currentFolder != null) 
-            {                              
-                foldersList.Insert(0,new Tuple<string, bool>(currentFolder.Name,namespaceFolderProperty.GetNamespaceFolderProperty(currentFolder)));                                    
+            {
+                if (currentFolder.Kind == ProjectItemKind.PHYSICAL_DIRECTORY)
+                {
+                    foldersList.Insert(0,
+                        new Tuple<string, bool>(currentFolder.Name,
+                            namespaceFolderProperty.GetNamespaceFolderProperty(currentFolder)));
+                }
                 currentFolder = currentFolder.ParentFolder;
-            }
-
-            if(foldersList.Count>0)foldersList.RemoveAt(0);//we don't want the parent folder
-
+            }            
             return foldersList;
         }
     }

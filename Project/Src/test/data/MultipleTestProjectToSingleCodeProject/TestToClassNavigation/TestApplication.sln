@@ -1,9 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApplication2", "TestApplication\TestApplication2.csproj", "{191E5761-9D3B-4570-89D1-AA6DB41D76D7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApplication2Tests", "TestApplication.Tests\TestApplication2Tests.csproj", "{D589613F-9D45-41FD-8E4D-7FF39434A0AF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MyTests", "MyTests", "{116071FA-7400-4D2A-AF18-6444668194CF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MyCode", "MyCode", "{10D12374-A522-4524-9FE5-B7A84CD1356D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -22,5 +28,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{191E5761-9D3B-4570-89D1-AA6DB41D76D7} = {10D12374-A522-4524-9FE5-B7A84CD1356D}
+		{D589613F-9D45-41FD-8E4D-7FF39434A0AF} = {116071FA-7400-4D2A-AF18-6444668194CF}
 	EndGlobalSection
 EndGlobal
