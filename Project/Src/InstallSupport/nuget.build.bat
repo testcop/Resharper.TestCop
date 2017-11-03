@@ -3,7 +3,9 @@ REM Called from AfterBuild Step within csproj
 SET EnableNuGetPackageRestore=true
 SET NUGET=..\..\..\..\InstallSupport\NuGet.exe
 SET OUTDIR=C:\SourceCode\
-SET VER=%1
+SET VER=%1-EAP
+
+IF NOT EXIST %OUTDIR%\NUL OUTDIR=%TEMP%
 
 @ECHO ===NUGET Publishing Version %VER% to %OUTDIR%
 %NUGET% pack -Symbols -Version %VER% TestCop.nuspec

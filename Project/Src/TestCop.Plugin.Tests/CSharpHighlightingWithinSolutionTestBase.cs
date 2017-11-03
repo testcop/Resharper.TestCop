@@ -21,6 +21,7 @@ using JetBrains.Application.UI.Controls.JetPopupMenu;
 using JetBrains.DataFlow;
 using JetBrains.IDE;
 using JetBrains.ProjectModel;
+using JetBrains.ProjectModel.Properties;
 using JetBrains.ReSharper.Daemon.Impl;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.FeaturesTestFramework.Daemon;
@@ -33,6 +34,7 @@ using JetBrains.TextControl;
 using JetBrains.TextControl.DataContext;
 using JetBrains.Util;
 using NUnit.Framework;
+using TestCop.Plugin.Extensions;
 
 namespace TestCop.Plugin.Tests
 {        
@@ -126,8 +128,7 @@ namespace TestCop.Plugin.Tests
         {
             return true;
         }
-        
-         
+   
         public void DoTestFiles(string fullProjectPathToTestFile)
         {
             Assert.IsNotNull(_loadedTestSolution, "Expected solution to be loaded");

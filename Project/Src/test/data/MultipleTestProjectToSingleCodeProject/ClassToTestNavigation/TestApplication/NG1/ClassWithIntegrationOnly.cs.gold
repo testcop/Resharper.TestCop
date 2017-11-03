@@ -10,4 +10,6 @@
 [Switch to:] ClassWithIntegrationOnlyTests.cs|(in <TestApplication.IntegrationTests>\NG1)
 [Switch to:] ClassWithIntegrationOnlyIntegrationTests.cs|(in <TestApplication.IntegrationTests>\NG1)
 [Switch to:] Create |ClassWithIntegrationOnlyIntegrationTests|(<TestApplication.Tests>\NG1)
+[Switch to:] Create |ClassWithIntegrationOnlyIntegrationTests|(<TestApplication.Utility.Tests>\NG1)
 [Switch to:] Create |ClassWithIntegrationOnlyTests|(<TestApplication.Tests>\NG1)
+[Switch to:] Create |ClassWithIntegrationOnlyTests|(<TestApplication.Utility.Tests>\NG1)

@@ -35,16 +35,16 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProjectViaNamespac
         {
             get { return @"TestApplication.sln"; }
         }
-
+   
         [Test]
         [TestCase(@"<TestApplication>\NG1\ClassWithUnitOnly.cs")]
         [TestCase(@"<TestApplication>\NG1\ClassWithIntegrationOnly.cs")]
         [TestCase(@"<TestApplication>\NG1\ClassWithBoth.cs")]
-        [TestCase(@"<TestApplication>\Properties\AssemblyInfo.cs")]     
-        public void Test(string testName)
-        {
-            
+        [TestCase(@"<TestApplication>\Properties\AssemblyInfo.cs")]
 
+        [TestCase(@"<TestApplication>\NG1\NonNamespaceFolder\ClassDInNonNamespace.cs")]
+        public void Test(string testName)
+        {            
             ExecuteWithinSettingsTransaction((settingsStore =>
             {
                 RunGuarded(

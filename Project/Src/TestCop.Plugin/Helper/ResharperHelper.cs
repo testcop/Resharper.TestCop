@@ -273,11 +273,11 @@ namespace TestCop.Plugin.Helper
 
         public static List<ITypeElement> FindFirstTypeWithinCodeFiles(ISolution solution, Regex regex, IProject project)
         {            
-            var items = new List<IProjectFile>();
+            var items = new List<ProjectFileFinder.Match>();
             project.Accept(new ProjectFileFinder(items, regex));
 
             var results = items
-                .SelectMany(p=>solution.GetPsiServices().Symbols.GetTypesAndNamespacesInFile(p.ToSourceFile())).OfType<ITypeElement>()
+                .SelectMany(p=>solution.GetPsiServices().Symbols.GetTypesAndNamespacesInFile(p.ProjectFile.ToSourceFile())).OfType<ITypeElement>()
                 .ToList();
 
             return results;
@@ -289,10 +289,10 @@ namespace TestCop.Plugin.Helper
             threading.ReentrancyGuard.ExecuteOrQueueEx(description, fOnExecute);                        
         }
     
-        public static void CreateFileWithinProject(IProject associatedProject,FileSystemPath fileSystemPath, string targetFile)
+        public static void CreateFileWithinProject(TestCopProjectItem projectItem, string targetFile)
         {
             var testCopFileCreater = Shell.Instance.GetComponent<TestCopFileCreater>();
-            testCopFileCreater.CreateFileWithinProject(associatedProject, fileSystemPath, targetFile);
+            testCopFileCreater.CreateFileWithinProject(projectItem, targetFile);
         }     
     }    
 }

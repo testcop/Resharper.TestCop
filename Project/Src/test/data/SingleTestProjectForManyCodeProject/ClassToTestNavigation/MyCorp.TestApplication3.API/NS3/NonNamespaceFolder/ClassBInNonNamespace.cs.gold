@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MyCorp.TestApplication3.API.NS3
+{
+    class ClassBInNonNamespace
+    {
+    }
+}
+
+---------------------------------------------------------
+[Switch to:] Create |ClassBInNonNamespaceTests|(<MyCorp.TestApplication3.Tests>\API\NS3\NonNamespaceFolder)

@@ -38,7 +38,7 @@ namespace TestCop.Plugin.Tests.SingleTestProjectToMultipleCodeProject
         }
         
         [Test]
-        [TestCase(@"<MyCorp.TestApplication3.API>\ClassA.cs")]
+        [TestCase(@"<MyCorp.TestApplication3.API>\ClassA.cs")]        
         [TestCase(@"<MyCorp.TestApplication3.API>\NS1\APIClassBWithNoTest.cs")]
         [TestCase(@"<MyCorp.TestApplication3.API>\NS1\ClassA.cs")]
         [TestCase(@"<MyCorp.TestApplication3.API>\NS1\NS2\ClassA.cs")]
@@ -49,6 +49,10 @@ namespace TestCop.Plugin.Tests.SingleTestProjectToMultipleCodeProject
         [TestCase(@"<MyCorp.TestApplication3.DAL>\NS1\ClassA.cs")]
         [TestCase(@"<MyCorp.TestApplication3.DAL>\NS1\NS2\ClassA.cs")]
         [TestCase(@"<MyCorp.TestApplication3.DAL>\NS1\NS2\SingleClassWithMultipleTargets.cs")]
+
+        [TestCase(@"<MyCorp.TestApplication3.API>\NS3\NonNamespaceFolder\ClassAInNonNamespace.cs")]
+        [TestCase(@"<MyCorp.TestApplication3.API>\NS3\NonNamespaceFolder\ClassBInNonNamespace.cs")]
+        [TestCase(@"<MyCorp.TestApplication3.API>\NonNamespaceFolder\ClassDInNonNamespace.cs")]
         public void Test(string testName)
         {          
             ExecuteWithinSettingsTransaction((settingsStore =>

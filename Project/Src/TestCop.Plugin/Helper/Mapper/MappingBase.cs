@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using JetBrains.ProjectModel;
+using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Util;
 using JetBrains.Util;
 using TestCop.Plugin.Extensions;
@@ -15,8 +16,20 @@ namespace TestCop.Plugin.Helper.Mapper
 {
     public abstract class MappingBase : IProjectMappingHeper
     {
-        public abstract IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string className, string currentNameSpace);
+        public abstract IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string className, string currentNameSpace, IList<Tuple<string, bool>> subDirectoryElements);
 
+        public IList<TestCopProjectItem> GetAssociatedProjectFor(IProject currentProject, IProjectFile projectFile, string overrideClassName=null)
+        {
+            string currentNamespace = projectFile.CalculateExpectedNamespace(projectFile.GetPrimaryPsiFile().Language);
+
+            var fileNameToProcess = projectFile.Location.NameWithoutExtension;
+            fileNameToProcess = fileNameToProcess.RemoveTrailing(".partial");
+
+            var directoryPath = TestCopProjectItem.ExtractFolders(projectFile).AsIList();
+
+            return GetAssociatedProject(currentProject, string.IsNullOrEmpty(overrideClassName) ? fileNameToProcess : overrideClassName, currentNamespace, directoryPath);
+        }
+        
         public virtual bool IsTestProject(IProject project)
         {
             string currentProjectNamespace = project.GetDefaultNamespace();
@@ -73,7 +86,7 @@ namespace TestCop.Plugin.Helper.Mapper
         }
 
 
-        protected static IEnumerable<String> AssociatedFileNames(TestFileAnalysisSettings settings, string className)
+        protected static IEnumerable<TestCopProjectItem.FilePatternMatcher> AssociatedFileNames(TestFileAnalysisSettings settings, string className)
         {        
             string classNameUnderTest = className;
 
@@ -88,14 +101,14 @@ namespace TestCop.Plugin.Helper.Mapper
 
             if (className != classNameUnderTest)
             {
-                yield return classNameUnderTest;
+                yield return new TestCopProjectItem.FilePatternMatcher(new Regex(classNameUnderTest), "");
             }
             else
             {
                 foreach (var suffix in settings.TestClassSuffixes())
                 {
-                    yield return string.Format(@"{0}{1}", classNameUnderTest, suffix);//e.g. Class1Tests
-                    yield return string.Format(@"{0}\..*{1}", classNameUnderTest, suffix);  //e.g. Class1.SecurityTests                  
+                    yield return new TestCopProjectItem.FilePatternMatcher(new Regex(string.Format(@"{0}{1}", classNameUnderTest, suffix)), suffix);//e.g. Class1Tests
+                    yield return new TestCopProjectItem.FilePatternMatcher(new Regex(string.Format(@"{0}\..*{1}", classNameUnderTest, suffix)), suffix);  //e.g. Class1.SecurityTests                  
                 }
             }
         }

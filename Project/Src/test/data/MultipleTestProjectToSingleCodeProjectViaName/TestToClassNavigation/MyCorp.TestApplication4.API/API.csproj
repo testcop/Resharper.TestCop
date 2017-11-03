@@ -40,10 +40,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClassA.cs" />
+    <Compile Include="NonNamespaceFolder\ClassDInNonNamespace.cs" />
     <Compile Include="NS1\APIClassBWithNoTest.cs" />
     <Compile Include="NS1\ClassA.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -40,6 +40,10 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProjectViaProjectN
         [TestCase(@"<APITests>\ClassATests.cs")]
         [TestCase(@"<APITests>\NS1\ClassATests.cs")]
         [TestCase(@"<APITests>\Properties\AssemblyInfo.cs")]
+
+        [TestCase(@"<APITests>\NS1\NonNamespaceFolder\NS2\ClassEInNonNamespaceTests.cs")]
+        [TestCase(@"<APITests>\NonNamespaceFolder\ClassDInNonNamespaceTests.cs")]
+
         public void Test(string testName)
         {
             const string altRegEx = "^(.*?)\\.?(Integration)*Tests$";

@@ -36,8 +36,9 @@ namespace TestCop.Plugin.Helper.Mapper
             }
         }
 
- 
-        public override IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string currentClassName, string currentTypeNamespace)
+
+        public override IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string currentClassName,
+            string currentTypeNamespace, IList<Tuple<string, bool>> subDirectoryElements)
         {
             const string warningMessage = "Not Supported: More than one  project has a name of ";
 
@@ -62,7 +63,7 @@ namespace TestCop.Plugin.Helper.Mapper
                     ResharperHelper.AppendLineToOutputWindow(warningMessage + nameOfAssociateProject);
                 }
 
-                return matchedCodeProjects.Select(p => new TestCopProjectItem(p, TestCopProjectItem.ProjectItemTypeEnum.Code, subNameSpace, filePatterns)).ToList();
+                return matchedCodeProjects.Select(p => new TestCopProjectItem(p, TestCopProjectItem.ProjectItemTypeEnum.Code, subNameSpace, subDirectoryElements, filePatterns)).ToList();
             }
 
             var matchedTestProjects = currentProject.GetSolution().GetTestProjects().Where(
@@ -72,7 +73,7 @@ namespace TestCop.Plugin.Helper.Mapper
             matchedTestProjects.RemoveAll(badTestProjects.Contains);
             badTestProjects.ForEach(p => ResharperHelper.AppendLineToOutputWindow("Project {0} should have namespace of {1}".FormatEx(p.Name, currentProject.GetDefaultNamespace())));
             
-            return matchedTestProjects.Select(p => new TestCopProjectItem(p,TestCopProjectItem.ProjectItemTypeEnum.Tests,  subNameSpace, filePatterns)).ToList();                                        
+            return matchedTestProjects.Select(p => new TestCopProjectItem(p,TestCopProjectItem.ProjectItemTypeEnum.Tests,  subNameSpace, subDirectoryElements, filePatterns)).ToList();                                        
         }
 
         private static string GetNameOfAssociateCodeProject(IProject testProject)

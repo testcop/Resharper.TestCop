@@ -41,7 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\ClassATests.cs" />
+    <Compile Include="API\NonNamespaceFolder\ClassDInNonNamespaceTests.cs" />
     <Compile Include="API\NS1\ClassATests.cs" />
+    <Compile Include="API\NS1\NonNamespaceFolder\NS3\ClassEInNonNamespaceTests.cs" />
     <Compile Include="API\NS1\NS2\ClassATests.cs" />
     <Compile Include="API\NS1\NS2\ClassCTests.cs" />
     <Compile Include="ClassNotValidAtRootTests.cs" />
@@ -51,6 +53,7 @@
     <Compile Include="DAL\NS1\NS2\DALClassDWithNoCodeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

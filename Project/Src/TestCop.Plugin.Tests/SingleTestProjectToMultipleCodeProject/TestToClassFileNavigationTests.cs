@@ -47,7 +47,10 @@ namespace TestCop.Plugin.Tests.SingleTestProjectToMultipleCodeProject
         [TestCase(@"<MyCorp.TestApplication3.Tests>\DAL\ClassATests.cs")]
         [TestCase(@"<MyCorp.TestApplication3.Tests>\DAL\NS1\ClassATests.cs")]
         [TestCase(@"<MyCorp.TestApplication3.Tests>\DAL\NS1\NS2\ClassATests.cs")]
-        [TestCase(@"<MyCorp.TestApplication3.Tests>\DAL\NS1\NS2\DALClassDWithNoCodeTests.cs")]        
+        [TestCase(@"<MyCorp.TestApplication3.Tests>\DAL\NS1\NS2\DALClassDWithNoCodeTests.cs")]
+                    
+        [TestCase(@"<MyCorp.TestApplication3.Tests>\API\NS1\NonNamespaceFolder\NS3\ClassEInNonNamespaceTests.cs")]
+        [TestCase(@"<MyCorp.TestApplication3.Tests>\API\NonNamespaceFolder\ClassDInNonNamespaceTests.cs")]
         public void Test(string testName)
         {   
              // http://myregexp.com/

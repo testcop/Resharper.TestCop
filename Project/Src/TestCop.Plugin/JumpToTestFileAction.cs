@@ -1,13 +1,12 @@
 ﻿// --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
-// -- Copyright 2016
+// -- Copyright 2017
 // --
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using JetBrains.Application.DataContext;
 using JetBrains.Application.Progress;
 using JetBrains.Application.Settings;
@@ -32,6 +31,8 @@ using JetBrains.Util;
 
 using TestCop.Plugin.Extensions;
 using TestCop.Plugin.Helper;
+using JetBrains.ReSharper.Psi.Modules;
+using JetBrains.TextControl.DataContext;
 
 namespace TestCop.Plugin
 {
@@ -124,8 +125,8 @@ namespace TestCop.Plugin
             if (isTestFile != currentProject.IsTestProject())
             {                
                 ResharperHelper.AppendLineToOutputWindow(
-                            string.Format("Don't know how to navigate with '{0}' within project '{1}'"
-                                , baseFileName, currentProject.Name));
+                            string.Format("Don't know how to navigate with '{0}' within project '{1}'. It is a {2} file within a {3} project"
+                                , baseFileName, currentProject.Name, isTestFile ? "test" : "code", currentProject.IsTestProject() ? "test" : "code"));
                 return;
             }
            
@@ -135,16 +136,16 @@ namespace TestCop.Plugin
 
             foreach (var singleTargetProject in targetProjects)
             {                
-                foreach (var regex in singleTargetProject.FilePattern)
+                foreach (var patternMatcher in singleTargetProject.FilePattern)
                 {
                     //FindByClassName      
-                    elementsFoundInSolution.AddRangeIfMissing(ResharperHelper.FindClass(solution, regex.ToString()), _declElementMatcher);
-                    elementsFoundInTarget.AddRangeIfMissing(ResharperHelper.FindClass(solution, regex.ToString(), new List<IProject>() { singleTargetProject.Project }), _declElementMatcher);
+                    elementsFoundInSolution.AddRangeIfMissing(ResharperHelper.FindClass(solution, patternMatcher.RegEx.ToString()), _declElementMatcher);
+                    elementsFoundInTarget.AddRangeIfMissing(ResharperHelper.FindClass(solution, patternMatcher.RegEx.ToString(), new List<IProject>() { singleTargetProject.Project }), _declElementMatcher);
                     
                      if (!isTestFile)
                      {
                          //Find via filename (for when we switch to test files)
-                         var otherMatches = ResharperHelper.FindFirstTypeWithinCodeFiles(solution, regex, singleTargetProject.Project);
+                         var otherMatches = ResharperHelper.FindFirstTypeWithinCodeFiles(solution, patternMatcher.RegEx, singleTargetProject.Project);
                          elementsFoundInTarget.AddRangeIfMissing(otherMatches, _declElementMatcher);
                      }                     
                 }                               
@@ -194,9 +195,9 @@ namespace TestCop.Plugin
             else
             {                     
                 //look for similar named files that also have references to this code            
-                var items = new List<IProjectFile>();                                
+                var items = new List<ProjectFileFinder.Match>();                                
                 targetProjects.ForEach(p=>p.Project.Accept(new ProjectFileFinder(items, p.FilePattern)));
-                searchDomain = PsiShared.GetComponent<SearchDomainFactory>().CreateSearchDomain(items.Select(p => p.ToSourceFile()));
+                searchDomain = PsiShared.GetComponent<SearchDomainFactory>().CreateSearchDomain(items.Select(p => p.ProjectFile.ToSourceFile()));
             }
 
             var declarationsCache = solution.GetPsiServices().Symbols

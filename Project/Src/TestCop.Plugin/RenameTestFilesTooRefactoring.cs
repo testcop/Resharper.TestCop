@@ -10,6 +10,7 @@ using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Refactorings.Specific.Rename;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.Modules;
+using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Psi.Util;
 using JetBrains.ReSharper.Refactorings.Rename;
 using JetBrains.Util;
@@ -32,18 +33,27 @@ namespace TestCop.Plugin
             var psiModule = clrDeclaredElement.Module as IProjectPsiModule;
             
             if (psiModule == null) yield break;
+            
 
-            if (typeElement != null)//only support renaming of 'types' 
+           if (typeElement != null)//only support renaming of 'types' 
             {
                 var classNameBeingRenamed = declaredElement.ShortName;
                 var project = psiModule.Project;
                 var solution = project.GetSolution();
-                                
+
                 if (!project.IsTestProject())
-                {                                                           
+                {
+                    var projectFiles = declaredElement.GetSourceFiles().ToList(x => x.ToProjectFile());
                     //get associated projects..
-                    var targetProjects = project.GetAssociatedProjects(typeElement);
-                    if (targetProjects.IsEmpty())
+
+                    IList<TestCopProjectItem> targetProjects = new List<TestCopProjectItem>();
+                    foreach (var projectFile in projectFiles)
+                    {
+                        targetProjects.AddRange(project.GetAssociatedProjects(projectFile, classNameBeingRenamed));
+                    }
+                    
+                    //var targetProjects = project.GetAssociatedProjects(projectFiles);
+                    if (targetProjects.IsNullOrEmpty())
                     {
                         yield break;
                     }
@@ -51,31 +61,31 @@ namespace TestCop.Plugin
                     //now look for expected file names that are also in correct locations
                     foreach (var targetProject in targetProjects)
                     {
-                        var projectTestFilesWithMatchingName = new List<IProjectFile>();
+                        var projectTestFilesWithMatchingName = new List<ProjectFileFinder.Match>();
                         targetProject.Project.Accept(new ProjectFileFinder(projectTestFilesWithMatchingName, targetProject.FilePattern));
                         
-                        foreach (var projectTestFile in projectTestFilesWithMatchingName)
+                        foreach (var projectFileMatch in projectTestFilesWithMatchingName)
                         {
                             string expectedNameSpace =
-                                projectTestFile.CalculateExpectedNamespace(projectTestFile.GetPrimaryPsiFile().Language);
+                                projectFileMatch.ProjectFile.CalculateExpectedNamespace(projectFileMatch.ProjectFile.GetPrimaryPsiFile().Language);
 
                             if (expectedNameSpace==targetProject.FullNamespace())
-                            {                                                                                          
-                                    var newTestClassName = newName +
-                                                           projectTestFile.Location.NameWithoutExtension.Substring(
-                                                               classNameBeingRenamed.Length);
-                                    ResharperHelper.AppendLineToOutputWindow(
-                                        "Renaming {0} to {1}".FormatEx(projectTestFile.Location.FullPath, newTestClassName));
-                                    if (projectTestFile.Location.NameWithoutExtension == newTestClassName)
+                            {
+                                string currentName=projectFileMatch.ProjectFile.Location.NameWithoutExtension;
+                                var newTestClassName = newName + currentName.Substring(classNameBeingRenamed.Length);
+                                   
+                                ResharperHelper.AppendLineToOutputWindow(
+                                        "Renaming {0} to {1}".FormatEx(projectFileMatch.ProjectFile.Location.FullPath, newTestClassName));
+                                    if (projectFileMatch.ProjectFile.Location.NameWithoutExtension == newTestClassName)
                                     {
                                         ResharperHelper.AppendLineToOutputWindow("# skip as same name");
                                         continue;
                                     }
 
-                                    EditorManager.GetInstance(solution).OpenProjectFile(projectTestFile, new OpenFileOptions(false));
+                                    EditorManager.GetInstance(solution).OpenProjectFile(projectFileMatch.ProjectFile, new OpenFileOptions(false));
                                         //need to ensure class within file is renamed tooo                                    
                                     yield return
-                                        new FileRename(psiModule.GetPsiServices(), projectTestFile, newTestClassName);                                
+                                        new FileRename(psiModule.GetPsiServices(), projectFileMatch.ProjectFile, newTestClassName);                                
                             }                                                       
                             
                         }                   

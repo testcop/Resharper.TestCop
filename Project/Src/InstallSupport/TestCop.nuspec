@@ -7,6 +7,9 @@
   <authors>Alcaeus</authors>     
   <description>Easily switch between unit tests and code. Create missing associated files. Includes highlightings and test templates to keep test projects neat and tidy. Works with NUnit, MSTest, xUnit ...</description>
   <releaseNotes>
+      1.10.4.7 Ignores virtual folders when deriving target folder (Issue#11)
+      1.10.4.6 Replaced assert in code with error msg (Issue#11)
+      1.10.4.5 Changes to support non-namespace folders in project
       1.10.4.4 Bug fix corrected template selection
       1.10.4.3 R#2017.2 recompile
       1.10.4.2 Refactor of logic and bug fix for find matching test files when no direct reference present
