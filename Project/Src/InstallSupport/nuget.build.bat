@@ -5,7 +5,7 @@ SET NUGET=..\..\..\..\InstallSupport\NuGet.exe
 SET OUTDIR=C:\SourceCode\
 SET VER=%1-EAP
 
-IF NOT EXIST %OUTDIR%\NUL OUTDIR=%TEMP%
+IF NOT EXIST %OUTDIR%\NUL SET OUTDIR=%TEMP%
 
 @ECHO ===NUGET Publishing Version %VER% to %OUTDIR%
 %NUGET% pack -Symbols -Version %VER% TestCop.nuspec
