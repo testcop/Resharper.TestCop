@@ -1,4 +1,0 @@
-[TestFixture]
-public class ClassATests
-{
-}
