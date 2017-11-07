@@ -1,4 +1,0 @@
-[TestFixture]
-class PrivateNUnitTestClass
-{
-}

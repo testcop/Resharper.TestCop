@@ -3,7 +3,7 @@ REM Called from AfterBuild Step within csproj
 SET EnableNuGetPackageRestore=true
 SET NUGET=..\..\..\..\InstallSupport\NuGet.exe
 SET OUTDIR=C:\SourceCode\
-SET VER=%1-EAP
+SET VER=%1
 
 IF NOT EXIST %OUTDIR%\NUL OUTDIR=%TEMP%
 
