@@ -5,7 +5,6 @@
 // --
  
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
@@ -54,6 +53,7 @@ namespace TestCop.Plugin.OptionsPage
       private readonly OptionsSettingsSmartContext _settings;
       private readonly TemplateScopeManager _scopeManager;
       private readonly StoredTemplatesProvider _storedTemplatesProvider;
+      private readonly ILiveTemplatesUIHelper _templatesUiHelper;
       private readonly UIApplication _application;
       private readonly ISolution _solution;
       private const string PID = "TestCopPageId";
@@ -61,7 +61,7 @@ namespace TestCop.Plugin.OptionsPage
       
       public TestCopOptionPage(Lifetime lifetime, OptionsSettingsSmartContext settings, TemplateScopeManager scopeManager
           , IThemedIconManager iconManager, UIApplication application
-        , StoredTemplatesProvider storedTemplatesProvider, FileTemplatesManager fileTemplatesManager, ISolution solution = null)
+        , StoredTemplatesProvider storedTemplatesProvider, ILiveTemplatesUIHelper templatesUiHelper, FileTemplatesManager fileTemplatesManager, ISolution solution = null)
       {
           _lifetime = lifetime;
           _settings = settings;
@@ -70,6 +70,7 @@ namespace TestCop.Plugin.OptionsPage
           _solution = solution;
           _fileTemplatesManager = fileTemplatesManager;          
           _storedTemplatesProvider = storedTemplatesProvider;
+          _templatesUiHelper = templatesUiHelper;
 
           InitializeComponent();
           var testFileAnalysisSettings = settings.GetKey<TestFileAnalysisSettings>(SettingsOptimization.DoMeSlowly);
@@ -425,9 +426,7 @@ namespace TestCop.Plugin.OptionsPage
       }
       
       private void FileTemplateSelectFromList(object sender, System.Windows.Input.MouseButtonEventArgs e)
-      {                    
-          Template template=null;
-                                  
+      {                                             
             if (_solution == null)
             {
                 ResharperHelper.AppendLineToOutputWindow("Unable to identify current solution.");
@@ -446,27 +445,15 @@ namespace TestCop.Plugin.OptionsPage
             var scope = _scopeManager.EnumerateRealScopePoints(new TemplateAcceptanceContext(new ProjectFolderWithLocation(project)));            
             scope = scope.Distinct().Where(s => s is InLanguageSpecificProject).ToList();
 
-            using (       
-                var templateDialog =
-                    new TemplateChooserDialog(_lifetime,                    
-                        FileTemplatesManager.Instance.QuickListSupports,
-                        scope, project.ToDataContext(),
-                        TemplateApplicability.File))
 
+          var template = _templatesUiHelper.ChooseTemplate(
+              FileTemplatesManager.Instance.QuickListSupports, scope, project.ToDataContext(),
+              TemplateApplicability.File);
+                                                                                                                                        
+            if (template != null)
             {
-                if (templateDialog.ShowDialog(_application.MainWindow.GetActiveWindow()) !=
-                    DialogResult.OK)
-                {
-                    return;
-                }
-                template = templateDialog.Template;
-            }
-                          
-                                                                                              
-          if (template != null)
-          {
-              ((TextBox) sender).Text = template.Description;
-          }          
+                ((TextBox) sender).Text = template.Description;
+            }          
       }
       
       private void ResetButton_OnClick(object sender, RoutedEventArgs e)
@@ -501,7 +488,7 @@ namespace TestCop.Plugin.OptionsPage
                     "maps to the namespace of the test within the single test project.";
 
                   AppendMoreInfoHyperLink(tbStrategyOverview
-                      , "http://testcop.codeplex.com/wikipage?title=Single%20Test%20Project%20Within%20Solution");
+                      , "https://github.com/testcop/docs/blob/master/wiki/Single_Test_Project_Within_Solution.md");
                       
                   break;
 
@@ -513,7 +500,7 @@ namespace TestCop.Plugin.OptionsPage
                     "maps to the name of the code project.  For example : DalTests => Dal";
 
                   AppendMoreInfoHyperLink(tbStrategyOverview
-                    ,"http://testcop.codeplex.com/wikipage?title=Each%20test%20project%20maps%20to%20a%20code%20project%20via%20project%20name");
+                    , "https://github.com/testcop/docs/blob/master/wiki/Each_test_project_maps_to_a_code_project_via_project_name.md");
 
                   break;
 
@@ -524,7 +511,7 @@ namespace TestCop.Plugin.OptionsPage
                     "maps to the namespace of the code project. For example : mycorp.myapp.tests.dal => mycorp.myapp.dal";
 
                   AppendMoreInfoHyperLink(tbStrategyOverview
-                          ,"http://testcop.codeplex.com/wikipage?title=Each%20test%20project%20maps%20to%20a%20code%20project%20via%20namespace");
+                          , "https://github.com/testcop/docs/blob/master/wiki/Each_test_project_maps_to_a_code_project_via_namespace.md");
                       
                   break;
 

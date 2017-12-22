@@ -3,10 +3,11 @@
   <metadata>     
   <id>Resharper.TestCop.R9</id>     
   <version>0.0.0-internal</version>
-  <title>TestCop for ReSharper 2017.2</title>     
+  <title>TestCop for ReSharper 2017.3</title>     
   <authors>Alcaeus</authors>     
   <description>Easily switch between unit tests and code. Create missing associated files. Includes highlightings and test templates to keep test projects neat and tidy. Works with NUnit, MSTest, xUnit ...</description>
   <releaseNotes>
+      1.10.5.1 R#2017.3 Recompile
       1.10.4.7 Ignores virtual folders when deriving target folder (Issue#11)
       1.10.4.6 Replaced assert in code with error msg (Issue#11)
       1.10.4.5 Changes to support non-namespace folders in project
@@ -57,11 +58,11 @@
       1.8.1.6 Added support for multiple test project mapping to a single code project. Can now turn off 'must be public' warnings.
     </releaseNotes>
     <projectUrl>https://github.com/testcop/Resharper.TestCop/</projectUrl>
-    <licenseUrl>https://testcop.codeplex.com/license</licenseUrl>
+    <licenseUrl>https://github.com/testcop/Resharper.TestCop</licenseUrl>
     <iconUrl>https://raw.githubusercontent.com/testcop/Resharper.TestCop/master/Project/Src/TestCop.Plugin/resources/agent48x48.png</iconUrl>
-    <copyright>Copyright &#x00A9; 2013-2017</copyright>
+    <copyright>Copyright &#x00A9; 2013-2018</copyright>
     <dependencies>      
-      <dependency id="Wave" version="[9.0]"/>      
+      <dependency id="Wave" version="[11.0.0]"/>      
     </dependencies>
     <tags>resharper unittest xunit nunit mstest tdd c# template</tags>
   </metadata>   
