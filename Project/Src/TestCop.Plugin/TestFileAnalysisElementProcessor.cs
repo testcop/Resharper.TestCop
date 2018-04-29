@@ -35,7 +35,7 @@ namespace TestCop.Plugin
         private readonly IContextBoundSettingsStore _settings;
         private readonly DefaultHighlightingConsumer _highlightingConsumer;
 
-        public IList<HighlightingInfo> Highlightings
+        public IReadOnlyCollection<HighlightingInfo> Highlightings
         {
             get { return _highlightingConsumer.Highlightings; }
         }
