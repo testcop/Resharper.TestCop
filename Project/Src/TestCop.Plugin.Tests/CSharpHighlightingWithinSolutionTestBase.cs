@@ -119,7 +119,7 @@ namespace TestCop.Plugin.Tests
             return new TestHighlightingDumper(sourceFile, writer, GetActiveStages(sourceFile.GetSolution()), HighlightingPredicate, CompilerIdsLanguage);
         }
 
-        protected virtual IList<IDaemonStage> GetActiveStages(ISolution solution)
+        protected virtual IReadOnlyCollection<IDaemonStage> GetActiveStages(ISolution solution)
         {
             return DaemonStageManager.GetInstance(solution).Stages;
         }
