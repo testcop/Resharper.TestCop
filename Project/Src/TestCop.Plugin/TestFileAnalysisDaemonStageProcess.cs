@@ -5,14 +5,15 @@
 // --
 
 using System;
-using JetBrains.Application.Progress;
+
 using JetBrains.Application.Settings;
 using JetBrains.ReSharper.Daemon.CSharp.Stages;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi;
-using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.Tree;
+using JetBrains.ReSharper.UnitTestFramework.DotNetCore.Exceptions;
+
 using TestCop.Plugin.Extensions;
 using TestCop.Plugin.Helper;
 
@@ -50,7 +51,7 @@ namespace TestCop.Plugin
 
             // Checking if the daemon is interrupted by user activity
             if (_myDaemonProcess.InterruptFlag)
-                throw new ProcessCancelledException();
+                throw new ProcessExitedUnexpectedlyException();
 
             // Commit the result into document
             commiter(new DaemonStageResult(elementProcessor.Highlightings));

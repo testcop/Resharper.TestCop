@@ -33,7 +33,7 @@ namespace TestCop.Plugin
             _highlightingConsumer.AddHighlighting(highlighting, range);
         }
 
-        public IList<HighlightingInfo> Highlightings
+        public IReadOnlyCollection<HighlightingInfo> Highlightings
         {
             get { return _highlightingConsumer.Highlightings; }
         }
