@@ -9,11 +9,7 @@ using System.Linq;
 using JetBrains.Application.Settings;
 using JetBrains.DocumentModel;
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Daemon;
-using JetBrains.ReSharper.Daemon.CSharp.Stages;
 using JetBrains.ReSharper.Feature.Services.Daemon;
-using JetBrains.ReSharper.Feature.Services.Util;
-using JetBrains.ReSharper.I18n.Services;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.ExtensionsAPI.Caches2;
@@ -46,10 +42,10 @@ namespace TestCop.Plugin
         }
 
         public TestFileAnalysisElementProcessor(TestFileAnalysisDaemonStageProcess stageProcess, IDaemonProcess process, IContextBoundSettingsStore settings)
-        {            
-            _highlightingConsumer = new FilteringHighlightingConsumer(stageProcess.File.GetSourceFile(), stageProcess.File);
+        {
+            _highlightingConsumer = new FilteringHighlightingConsumer(stageProcess.File.GetSourceFile(), stageProcess.File, settings);
             _process = process;
-            _settings = settings;            
+            _settings = settings;
         }
 
         private ISolution Solution { get { return _process.Solution; } }
@@ -70,7 +66,7 @@ namespace TestCop.Plugin
                 return testingAttributes;
             }
         }
-      
+
         private TestFileAnalysisSettings Settings
         {
             get { return _settings.GetKey<TestFileAnalysisSettings>(SettingsOptimization.OptimizeDefault); }
@@ -80,11 +76,11 @@ namespace TestCop.Plugin
         {
             get
             {
-                var prefix = Settings.BddPrefixes();               
+                var prefix = Settings.BddPrefixes();
                 return prefix;
             }
         }
-              
+
         public bool InteriorShouldBeProcessed(ITreeNode element)
         {
             return true;
@@ -95,38 +91,38 @@ namespace TestCop.Plugin
         }
 
         public void ProcessAfterInterior(ITreeNode element)
-        {                                     
+        {
             var functionDeclaration = element as ICSharpFunctionDeclaration;
-            
+
             if (functionDeclaration != null)
             {
-                ProcessFunctionDeclaration(functionDeclaration);                
+                ProcessFunctionDeclaration(functionDeclaration);
             }
-            
+
             var typeDeclaration = element as ICSharpTypeDeclaration;
             if (typeDeclaration != null)
             {
-                ProcessTypeDeclaration(typeDeclaration);                           
+                ProcessTypeDeclaration(typeDeclaration);
             }
         }
-        
+
         private void ProcessTypeDeclaration(ICSharpTypeDeclaration declaration)
         {
             if (declaration.GetContainingNode<ICSharpTypeDeclaration>() != null)
             {
                 return;//Dont instpect types already within a type
             }
-            
+
             var testingAttributes = FindTestingAttributes(declaration, TestAttributes);
             if (testingAttributes.Count == 0)
             {
                 /* type is missing attributes - lets check the body */
                 if (!CheckMethodsForTestingAttributes(declaration, TestAttributes)) return;
             }
-            
+
             //We have a testing attribute so now check some conformance.                       
             CheckElementIsPublicAndCreateWarningIfNot(declaration, testingAttributes);
-            
+
             if (CheckNamingOfTypeEndsWithTestSuffix(declaration))
             {
                 if (CheckNamingOfFileAgainstTypeAndCreateWarningIfNot(declaration))
@@ -136,14 +132,14 @@ namespace TestCop.Plugin
             }
 
         }
-        
-        private static bool CheckMethodsForTestingAttributes(ICSharpTypeDeclaration declaration, IList<string> testAttributes )
+
+        private static bool CheckMethodsForTestingAttributes(ICSharpTypeDeclaration declaration, IList<string> testAttributes)
         {
             var sourceFile = declaration.GetSourceFile();
             if (declaration.DeclaredElement == null) return false;
             foreach (var m in declaration.DeclaredElement.Methods.SelectMany(m => m.GetDeclarationsIn(sourceFile)).OfType<IAttributesOwnerDeclaration>())
             {
-                if (Enumerable.Any(FindTestingAttributes(m, testAttributes))) return true;                
+                if (Enumerable.Any(FindTestingAttributes(m, testAttributes))) return true;
             }
             return false;
         }
@@ -160,8 +156,8 @@ namespace TestCop.Plugin
             // Nothing to calculate
             if (declaration.Body == null) return;
 
-            var testingAttributes = FindTestingAttributes(declaration, TestAttributes);                
-            if (testingAttributes.Count==0) return;
+            var testingAttributes = FindTestingAttributes(declaration, TestAttributes);
+            if (testingAttributes.Count == 0) return;
 
             CheckElementIsPublicAndCreateWarningIfNot(declaration, testingAttributes);
             CheckTestMethodHasCodeAndCreateWarningIfNot(declaration);
@@ -169,13 +165,13 @@ namespace TestCop.Plugin
 
         public bool ProcessingIsFinished
         {
-            get {  return _process.InterruptFlag; }
+            get { return _process.InterruptFlag; }
         }
 
         private bool CheckNamingOfTypeEndsWithTestSuffix(ICSharpTypeDeclaration declaration)
         {
             if (declaration.IsAbstract) return true;
-            
+
             var declaredClassName = declaration.DeclaredName;
             if (!declaredClassName.StartsWith(Enumerable.ToArray(BDDPrefixes)))
             {
@@ -191,7 +187,7 @@ namespace TestCop.Plugin
         }
 
         private bool CheckNamingOfFileAgainstTypeAndCreateWarningIfNot(ICSharpTypeDeclaration declaration)
-        {            
+        {
             var declaredClassName = declaration.DeclaredName;
             if (declaredClassName.StartsWith(Enumerable.ToArray(BDDPrefixes))) return false;
 
@@ -204,37 +200,37 @@ namespace TestCop.Plugin
 
             var testClassNameFromFileName = currentFileName.Replace(".", "");
 
-            
+
             if (testClassNameFromFileName != declaredClassName)
             {
-                var testingWarning = new TestClassNameDoesNotMatchFileNameWarning( declaredClassName, testClassNameFromFileName, declaration);
+                var testingWarning = new TestClassNameDoesNotMatchFileNameWarning(declaredClassName, testClassNameFromFileName, declaration);
                 AddHighlighting(declaration.GetNameDocumentRange(), testingWarning);
                 return false;
             }
 
             return true;
         }
-        
+
         private void CheckTestMethodHasCodeAndCreateWarningIfNot(ICSharpFunctionDeclaration declaration)
         {
             var statements = declaration.Body.Statements;
-            
+
             if (!statements.Any())
             {
                 IHighlighting highlighting = new TestMethodMissingCodeWarning(declaration, "Test method is empty");
                 AddHighlighting(declaration.GetNameDocumentRange(), highlighting);
-            }            
+            }
         }
 
         private void CheckElementIsPublicAndCreateWarningIfNot(IAccessRightsOwnerDeclaration declaration, IEnumerable<IAttribute> testingAttributes)
         {
             AccessRights accessRights = declaration.GetAccessRights();
             if (accessRights == AccessRights.PUBLIC) return;
-            
+
             foreach (var attribute in testingAttributes)
             {
-                IHighlighting highlighting;                     
-                
+                IHighlighting highlighting;
+
                 if (declaration.DeclaredElement.IsClass())
                 {
                     highlighting = new ClassShouldBePublicWarning(attribute.Name.QualifiedName, declaration);
@@ -248,11 +244,11 @@ namespace TestCop.Plugin
                 return;
             }
         }
-  
+
         private void CheckClassnameInFileNameActuallyExistsAndCreateWarningIfNot(ICSharpTypeDeclaration thisDeclaration)
-        {            
+        {
             if (thisDeclaration.IsAbstract) return;
-            
+
             var currentFileName = CurrentSourceFile.GetLocation().NameWithoutExtension;
 
             var appropriateTestClassSuffixes = TestCopSettingsManager.Instance.Settings.GetAppropriateTestClassSuffixes(currentFileName);
@@ -260,7 +256,7 @@ namespace TestCop.Plugin
             foreach (var testClassSuffix in appropriateTestClassSuffixes)
             {
                 var className =
-                    currentFileName.Split(new[] {'.'}, 2)[0].RemoveTrailing(testClassSuffix);
+                    currentFileName.Split(new[] { '.' }, 2)[0].RemoveTrailing(testClassSuffix);
 
                 var declaredElements = ResharperHelper.FindClass(Solution, className);
 
@@ -315,14 +311,14 @@ namespace TestCop.Plugin
         }
 
         private void CheckClassNamespaceOfTestMatchesClassUnderTest(ICSharpTypeDeclaration thisDeclaration, List<IClrDeclaredElement> declaredElements)
-        {            
+        {
             var thisProject = thisDeclaration.GetProject();
             if (thisProject == null) return;
 
             var associatedProject = thisProject.GetAssociatedProjects(CurrentSourceFile.ToProjectFile()).FirstOrDefault();
 
             if (associatedProject == null) return;
-            ResharperHelper.RemoveElementsNotInProjects(declaredElements,new []{associatedProject.Project});   
+            ResharperHelper.RemoveElementsNotInProjects(declaredElements, new[] { associatedProject.Project });
 
             var thisProjectsDefaultNamespace = thisProject.GetDefaultNamespace();
             if (string.IsNullOrEmpty(thisProjectsDefaultNamespace)) return;
@@ -332,11 +328,11 @@ namespace TestCop.Plugin
 
             //var nsToBeFoundShouldBe = associatedProject.Project.GetDefaultNamespace()+associatedProject.SubNamespace;
             var nsToBeFoundShouldBe = associatedProject.FullNamespace();
-            
+
             //Lookup the namespaces of the declaredElements we've found that possibly match this test             
             IList<string> foundNameSpaces = new List<string>();
             foreach (var declaredTestElement in declaredElements)
-            {                
+            {
                 var cls = declaredTestElement as TypeElement;
                 if (cls == null) continue;
                 var ns = cls.OwnerNamespaceDeclaration();
@@ -354,16 +350,16 @@ namespace TestCop.Plugin
                 {
                     //TODO: Review this can be probably be replaced with associatedProject method calls
                     var targetsubNameSpace = ns.Substring(associatedProjectsDefaultNameSpace.Length).TrimStart(new[] { '.' });
-                    string suggestedNameSpace = thisProjectsDefaultNamespace.AppendIfNotNull(".", targetsubNameSpace );
+                    string suggestedNameSpace = thisProjectsDefaultNamespace.AppendIfNotNull(".", targetsubNameSpace);
 
                     var targetFolder = thisProject.Location.Combine(targetsubNameSpace.Replace(".", @"\"));
-                                        
+
                     var highlight = new TestFileNameSpaceWarning(CurrentSourceFile.ToProjectFile(), thisDeclaration, suggestedNameSpace
                         , thisProject, targetFolder);
-                                                
-                    AddHighlighting(thisDeclaration.GetNameDocumentRange(), highlight);                   
+
+                    AddHighlighting(thisDeclaration.GetNameDocumentRange(), highlight);
                 }
-            }            
-        }         
+            }
+        }
     }
 }
