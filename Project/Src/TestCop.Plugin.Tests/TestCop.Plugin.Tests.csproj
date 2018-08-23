@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\..\packages\JetBrains.ReSharper.SDK.Tests.2018.1.0\build\JetBrains.ReSharper.SDK.Tests.props" Condition="Exists('..\..\packages\JetBrains.ReSharper.SDK.Tests.2018.1.0\build\JetBrains.ReSharper.SDK.Tests.props')" />
   <Import Project="..\..\packages\JetBrains.ReSharper.SDK.Internal.112.0.20180414.74655\build\net45\JetBrains.ReSharper.SDK.Internal.props" Condition="Exists('..\..\packages\JetBrains.ReSharper.SDK.Internal.112.0.20180414.74655\build\net45\JetBrains.ReSharper.SDK.Internal.props')" />
   <Import Project="..\..\packages\JetBrains.Psi.Features.VisualStudio.112.0.20180414.70849\build\net45\JetBrains.Psi.Features.VisualStudio.props" Condition="Exists('..\..\packages\JetBrains.Psi.Features.VisualStudio.112.0.20180414.70849\build\net45\JetBrains.Psi.Features.VisualStudio.props')" />
@@ -45,7 +45,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TestCop.Plugin.Tests</RootNamespace>
     <AssemblyName>Resharper.Testcop.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
     <SccProjectName>SAK</SccProjectName>
@@ -165,7 +165,6 @@
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-
     <Reference Include="NuGet.Commands, Version=4.5.0.18023, Culture=neutral, PublicKeyToken=5aaa11a165479571, processorArchitecture=MSIL">
       <HintPath>..\..\packages\JetBrains.NuGet.Ultimate.4.5.0.20180215\lib\net45\NuGet.Commands.dll</HintPath>
     </Reference>
@@ -207,7 +206,6 @@
     </Reference>
     <Reference Include="NuGet.Versioning, Version=4.5.0.18023, Culture=neutral, PublicKeyToken=5aaa11a165479571, processorArchitecture=MSIL">
       <HintPath>..\..\packages\JetBrains.NuGet.Versioning.4.5.0.20180215\lib\net45\NuGet.Versioning.dll</HintPath>
-
     </Reference>
     <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
