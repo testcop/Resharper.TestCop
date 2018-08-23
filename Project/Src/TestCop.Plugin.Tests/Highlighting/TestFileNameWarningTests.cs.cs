@@ -5,7 +5,7 @@
 // --
 
 using System.IO;
-
+using JetBrains.Application.Settings;
 using JetBrains.Application.UI.ActionsRevised.Menu;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi;
@@ -16,7 +16,7 @@ namespace TestCop.Plugin.Tests.Highlighting
     [TestFixture]
     public class TestFileNameWarningTests : CSharpHighlightingWithinSolutionTestBase
     {
-        protected override bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile)
+        protected override bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile, IContextBoundSettingsStore settingsStore)
         {
             return highlighting.GetType().FullName.Contains("TestCop");
         }
@@ -42,11 +42,11 @@ namespace TestCop.Plugin.Tests.Highlighting
         [TestCase(@"<TestApplication.Tests>\ClassATests.cs")]
         [TestCase(@"<TestApplication.Tests>\ClassA.SomeMoreTests.cs")]
         [TestCase(@"<TestApplication.Tests>\ClassE.WithNestedTests.cs")]
-        [TestCase(@"<TestApplication.Tests>\AbstractTestClass.cs")]  
+        [TestCase(@"<TestApplication.Tests>\AbstractTestClass.cs")]
         public void Test(string testName)
         {
             DoTestFiles(testName);
         }
-       
+
     }
 }

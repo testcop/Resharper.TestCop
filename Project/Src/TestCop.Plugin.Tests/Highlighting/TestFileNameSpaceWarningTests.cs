@@ -5,7 +5,7 @@
 // --
 
 using System.IO;
-
+using JetBrains.Application.Settings;
 using JetBrains.Application.UI.ActionsRevised.Menu;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi;
@@ -13,11 +13,11 @@ using NUnit.Framework;
 using TestCop.Plugin.Highlighting;
 
 namespace TestCop.Plugin.Tests.Highlighting
-{    
+{
     [TestFixture]
     public class TestFileNameSpaceWarningTests : CSharpHighlightingWithinSolutionTestBase
     {
-        protected override bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile)
+        protected override bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile, IContextBoundSettingsStore settingsStore)
         {
             return highlighting is TestFileNameSpaceWarning;
         }
@@ -39,11 +39,11 @@ namespace TestCop.Plugin.Tests.Highlighting
 
         [Test]
         [TestCase(@"<TestApplication.Tests>\Samples\ClassCTests.cs")]
-        [TestCase(@"<TestApplication.Tests>\ClassDTests.cs")]     
+        [TestCase(@"<TestApplication.Tests>\ClassDTests.cs")]
         public void Test(string testName)
         {
             DoTestFiles(testName);
         }
-       
+
     }
 }

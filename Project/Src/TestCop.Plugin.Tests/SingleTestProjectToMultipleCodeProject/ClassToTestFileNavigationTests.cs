@@ -13,11 +13,11 @@ using NUnit.Framework;
 using TestCop.Plugin.Highlighting;
 
 namespace TestCop.Plugin.Tests.SingleTestProjectToMultipleCodeProject
-{    
+{
     [TestFixture]
     public class ClassToTestFileNavigationTests : CSharpHighlightingWithinSolutionTestBase
     {
-        protected override bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile)
+        protected override bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile, IContextBoundSettingsStore settingsStore)
         {
             return highlighting is TestFileNameSpaceWarning;
         }
@@ -36,9 +36,9 @@ namespace TestCop.Plugin.Tests.SingleTestProjectToMultipleCodeProject
         {
             get { return @"TestApplication3.sln"; }
         }
-        
+
         [Test]
-        [TestCase(@"<MyCorp.TestApplication3.API>\ClassA.cs")]        
+        [TestCase(@"<MyCorp.TestApplication3.API>\ClassA.cs")]
         [TestCase(@"<MyCorp.TestApplication3.API>\NS1\APIClassBWithNoTest.cs")]
         [TestCase(@"<MyCorp.TestApplication3.API>\NS1\ClassA.cs")]
         [TestCase(@"<MyCorp.TestApplication3.API>\NS1\NS2\ClassA.cs")]
@@ -54,12 +54,12 @@ namespace TestCop.Plugin.Tests.SingleTestProjectToMultipleCodeProject
         [TestCase(@"<MyCorp.TestApplication3.API>\NS3\NonNamespaceFolder\ClassBInNonNamespace.cs")]
         [TestCase(@"<MyCorp.TestApplication3.API>\NonNamespaceFolder\ClassDInNonNamespace.cs")]
         public void Test(string testName)
-        {          
+        {
             ExecuteWithinSettingsTransaction((settingsStore =>
             {
                 RunGuarded(
                     () =>
-                    {                        
+                    {
                         SetupTestCopSettings(settingsStore);
                     }
                     );

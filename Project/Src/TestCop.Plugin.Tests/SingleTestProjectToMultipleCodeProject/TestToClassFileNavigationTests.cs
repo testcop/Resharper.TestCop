@@ -17,7 +17,7 @@ namespace TestCop.Plugin.Tests.SingleTestProjectToMultipleCodeProject
     [TestFixture]
     public class TestToClassFileNavigationTests : CSharpHighlightingWithinSolutionTestBase
     {
-        protected override bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile)
+        protected override bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile, IContextBoundSettingsStore settingsStore)
         {
             return highlighting is TestFileNameSpaceWarning;
         }
@@ -42,19 +42,19 @@ namespace TestCop.Plugin.Tests.SingleTestProjectToMultipleCodeProject
         [TestCase(@"<MyCorp.TestApplication3.Tests>\API\ClassATests.cs")]
         [TestCase(@"<MyCorp.TestApplication3.Tests>\API\NS1\ClassATests.cs")]
         [TestCase(@"<MyCorp.TestApplication3.Tests>\API\NS1\NS2\ClassCTests.cs")]
-        [TestCase(@"<MyCorp.TestApplication3.Tests>\API\NS1\NS2\ClassATests.cs")]        
+        [TestCase(@"<MyCorp.TestApplication3.Tests>\API\NS1\NS2\ClassATests.cs")]
         [TestCase(@"<MyCorp.TestApplication3.Tests>\ClassNotValidAtRootTests.cs")]
         [TestCase(@"<MyCorp.TestApplication3.Tests>\DAL\ClassATests.cs")]
         [TestCase(@"<MyCorp.TestApplication3.Tests>\DAL\NS1\ClassATests.cs")]
         [TestCase(@"<MyCorp.TestApplication3.Tests>\DAL\NS1\NS2\ClassATests.cs")]
         [TestCase(@"<MyCorp.TestApplication3.Tests>\DAL\NS1\NS2\DALClassDWithNoCodeTests.cs")]
-                    
+
         [TestCase(@"<MyCorp.TestApplication3.Tests>\API\NS1\NonNamespaceFolder\NS3\ClassEInNonNamespaceTests.cs")]
         [TestCase(@"<MyCorp.TestApplication3.Tests>\API\NonNamespaceFolder\ClassDInNonNamespaceTests.cs")]
         public void Test(string testName)
-        {   
-             // http://myregexp.com/
-        
+        {
+            // http://myregexp.com/
+
             ExecuteWithinSettingsTransaction((settingsStore =>
             {
                 RunGuarded(
@@ -63,7 +63,7 @@ namespace TestCop.Plugin.Tests.SingleTestProjectToMultipleCodeProject
                         ClearRegExSettingsPriorToRun(settingsStore);
 
                         settingsStore.SetValue<TestFileAnalysisSettings, TestProjectStrategy>(
-                            s => s.TestCopProjectStrategy, TestProjectStrategy.SingleTestProjectPerSolution );
+                            s => s.TestCopProjectStrategy, TestProjectStrategy.SingleTestProjectPerSolution);
 
                         settingsStore.SetValue<TestFileAnalysisSettings, string>(
                             s => s.SingleTestRegexTestToAssembly, RegExTests.RegexForSingleTestProjectStrategy);
@@ -74,7 +74,7 @@ namespace TestCop.Plugin.Tests.SingleTestProjectToMultipleCodeProject
                         settingsStore.SetValue<TestFileAnalysisSettings, string>(
                             s => s.SingleTestRegexCodeToTestAssembly, @"NOT REQ FOR TEST");
                         settingsStore.SetValue<TestFileAnalysisSettings, string>(
-                            s => s.SingleTestRegexCodeToTestReplace, @"NOT REQ FOR TEST"); 
+                            s => s.SingleTestRegexCodeToTestReplace, @"NOT REQ FOR TEST");
                     }
 
                     );

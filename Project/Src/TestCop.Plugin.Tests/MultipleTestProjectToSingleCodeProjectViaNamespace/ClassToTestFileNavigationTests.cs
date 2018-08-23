@@ -12,11 +12,11 @@ using JetBrains.ReSharper.Psi;
 using NUnit.Framework;
 
 namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProjectViaNamespace
-{    
+{
     [TestFixture]
     public class ClassToTestFileNavigationTests : CSharpHighlightingWithinSolutionTestBase
     {
-        protected override bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile)
+        protected override bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile, IContextBoundSettingsStore settingsStore)
         {
             return highlighting.GetType().Namespace.Contains("TestCop");
         }
@@ -35,7 +35,7 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProjectViaNamespac
         {
             get { return @"TestApplication.sln"; }
         }
-   
+
         [Test]
         [TestCase(@"<TestApplication>\NG1\ClassWithUnitOnly.cs")]
         [TestCase(@"<TestApplication>\NG1\ClassWithIntegrationOnly.cs")]
@@ -44,15 +44,15 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProjectViaNamespac
 
         [TestCase(@"<TestApplication>\NG1\NonNamespaceFolder\ClassDInNonNamespace.cs")]
         public void Test(string testName)
-        {            
+        {
             ExecuteWithinSettingsTransaction((settingsStore =>
             {
                 RunGuarded(
                     () =>
-                    {                        
+                    {
                         SetupTestCopSettings(settingsStore);
                     }
-                    
+
                     );
                 DoTestFiles(testName);
             }));
