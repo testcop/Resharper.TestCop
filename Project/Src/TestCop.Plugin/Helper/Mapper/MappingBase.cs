@@ -18,7 +18,7 @@ namespace TestCop.Plugin.Helper.Mapper
     {
         public abstract IList<TestCopProjectItem> GetAssociatedProject(IProject currentProject, string className, string currentNameSpace, IList<Tuple<string, bool>> subDirectoryElements);
 
-        public IList<TestCopProjectItem> GetAssociatedProjectFor(IProject currentProject, IProjectFile projectFile, string overrideClassName=null)
+        public IList<TestCopProjectItem> GetAssociatedProjectFor(IProject currentProject, IProjectFile projectFile, string overrideClassName = null)
         {
             string currentNamespace = projectFile.CalculateExpectedNamespace(projectFile.GetPrimaryPsiFile().Language);
 
@@ -29,7 +29,7 @@ namespace TestCop.Plugin.Helper.Mapper
 
             return GetAssociatedProject(currentProject, string.IsNullOrEmpty(overrideClassName) ? fileNameToProcess : overrideClassName, currentNamespace, directoryPath);
         }
-        
+
         public virtual bool IsTestProject(IProject project)
         {
             string currentProjectNamespace = project.GetDefaultNamespace();
@@ -51,13 +51,18 @@ namespace TestCop.Plugin.Helper.Mapper
         public void DumpDebug(ISolution solution)
         {
             var rx = TestingRegEx;
-            solution.GetAllCodeProjects().ForEach(
-                p => ResharperHelper.AppendLineToOutputWindow("\tProject Namespace:" + p.GetDefaultNamespace()
-                                                              +
-                                                              (rx.IsMatch(p.GetDefaultNamespace() ?? "")
-                                                                  ? " matches "
-                                                                  : " does not match ")
-                                                              + rx));
+
+            foreach (var p in solution.GetAllCodeProjects())
+            {
+                ResharperHelper.AppendLineToOutputWindow(
+                    "\tProject Namespace:"
+                    + p.GetDefaultNamespace()
+                    + (rx.IsMatch(
+                        p.GetDefaultNamespace() ?? "")
+                        ? " matches "
+                        : " does not match ")
+                    + rx);
+            }
         }
 
         protected static TestFileAnalysisSettings Settings
@@ -87,7 +92,7 @@ namespace TestCop.Plugin.Helper.Mapper
 
 
         protected static IEnumerable<TestCopProjectItem.FilePatternMatcher> AssociatedFileNames(TestFileAnalysisSettings settings, string className)
-        {        
+        {
             string classNameUnderTest = className;
 
             foreach (var suffix in settings.TestClassSuffixes())

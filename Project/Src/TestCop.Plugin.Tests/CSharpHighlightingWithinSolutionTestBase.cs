@@ -21,7 +21,6 @@ using JetBrains.Application.UI.Controls.JetPopupMenu;
 using JetBrains.DataFlow;
 using JetBrains.IDE;
 using JetBrains.ProjectModel;
-using JetBrains.ProjectModel.Properties;
 using JetBrains.ReSharper.Daemon.Impl;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.FeaturesTestFramework.Daemon;
@@ -34,20 +33,19 @@ using JetBrains.TextControl;
 using JetBrains.TextControl.DataContext;
 using JetBrains.Util;
 using NUnit.Framework;
-using TestCop.Plugin.Extensions;
 
 namespace TestCop.Plugin.Tests
-{        
+{
     [System.ComponentModel.Category("CSharp")]
     [TestFileExtension(".cs")]
     [TestFixture]
-    public abstract class CSharpHighlightingWithinSolutionTestBase : BaseTest     
+    public abstract class CSharpHighlightingWithinSolutionTestBase : BaseTest
     {
         private ISolution _loadedTestSolution;
 
         protected ISolution LoadedTestSolution
         {
-            get { return _loadedTestSolution; }            
+            get { return _loadedTestSolution; }
         }
 
         protected abstract string SolutionName { get; }
@@ -65,9 +63,9 @@ namespace TestCop.Plugin.Tests
                 return ShellInstance.GetComponent<TestSolutionManager>();
             }
         }
-        
+
         public override void TestFixtureSetUp()
-        {            
+        {
             base.TestFixtureSetUp();
             RunGuarded(() =>
                            {
@@ -80,14 +78,14 @@ namespace TestCop.Plugin.Tests
                                        Assert.Fail("Solution file doesn't exist: " + solutionFilePath);
                                    }
 
-                                   _loadedTestSolution =                            
+                                   _loadedTestSolution =
                                        SolutionManager.OpenExistingSolution(solutionFilePath);
                                    Assert.IsNotNull(_loadedTestSolution, "Failed to load solution " + solutionFilePath.FullPath);
                                }
                            });
 
         }
-        
+
         public override void TestFixtureTearDown()
         {
             Assert.IsNotNull(_loadedTestSolution, "_loadedTestSolution == null");
@@ -96,7 +94,7 @@ namespace TestCop.Plugin.Tests
                                ShellInstance.GetComponent<TestSolutionManager>().CloseSolution(_loadedTestSolution);
                                _loadedTestSolution = null;
                            });
-           
+
             base.TestFixtureTearDown();
         }
 
@@ -111,7 +109,7 @@ namespace TestCop.Plugin.Tests
 
             settingsStore.SetValue<TestFileAnalysisSettings, string>(
                 s => s.SingleTestRegexTestToAssembly, "NOT SET BY TEST");
-        
+
         }
 
         protected virtual TestHighlightingDumper CreateHighlightDumper(IPsiSourceFile sourceFile, TextWriter writer)
@@ -123,12 +121,12 @@ namespace TestCop.Plugin.Tests
         {
             return DaemonStageManager.GetInstance(solution).Stages;
         }
-           
-        protected virtual bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile)
+
+        protected virtual bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile, IContextBoundSettingsStore settingsStore)
         {
             return true;
         }
-   
+
         public void DoTestFiles(string fullProjectPathToTestFile)
         {
             Assert.IsNotNull(_loadedTestSolution, "Expected solution to be loaded");
@@ -145,13 +143,13 @@ namespace TestCop.Plugin.Tests
                                         foreach (IProjectFile projectFile in
                                                 projectFiles.Where(p => p.LanguageType.Is<CSharpProjectFileType>()))
                                         {
-                                            listOfProjectPaths.Add(projectFile.GetPresentableProjectPath());                                            
+                                            listOfProjectPaths.Add(projectFile.GetPresentableProjectPath());
                                             if (fullProjectPathToTestFile != projectFile.GetPresentableProjectPath())
                                                 continue;
-                                                                                       
+
                                             IPsiSourceFile sourceFile = projectFile.ToSourceFile();
                                             Assert.IsNotNull(sourceFile);
-                                            
+
                                             if (!sourceFile.Properties.IsNonUserFile)
                                             {
                                                 processedFile = true;
@@ -182,25 +180,25 @@ namespace TestCop.Plugin.Tests
         }
 
         protected virtual void DumperShortCutAction(IProjectFile projectFile, TextWriter textwriter)
-        {            
+        {
             Lifetimes.Using((lifetime =>
-                {                                    
+                {
                     using (ITextControl textControl = OpenTextControl(projectFile))
                     {
                         var jumpToTestFileAction = GetShortcutAction(textwriter);
-                        if(jumpToTestFileAction==null) return;
+                        if (jumpToTestFileAction == null) return;
 
-                        IDataContext context = DataContextOfTestTextControl.Create(lifetime,textControl, _loadedTestSolution);
-                        
+                        IDataContext context = DataContextOfTestTextControl.Create(lifetime, textControl, _loadedTestSolution);
+
                         Func<Lifetime, DataContexts, IDataContext> dataContext = textControl.ToDataContext();
 
                         if ((jumpToTestFileAction).Update(context, new ActionPresentation(), null))
-                        {                            
-                            (jumpToTestFileAction).Execute(context, null);                                    
-                        }                        
+                        {
+                            (jumpToTestFileAction).Execute(context, null);
+                        }
                     }
-                }));             
-             
+                }));
+
         }
 
         protected virtual IExecutableAction GetShortcutAction(TextWriter textwriter)
@@ -209,27 +207,27 @@ namespace TestCop.Plugin.Tests
         }
 
         protected ITextControl OpenTextControl(IProjectFile projectFile, int? caretOffset = null)
-        {            
+        {
             ITextControl openProjectFile = EditorManager.GetInstance(projectFile.GetSolution()).OpenProjectFile(projectFile, new OpenFileOptions(true));
             return openProjectFile;
         }
 
         public Action<JetPopupMenus, JetPopupMenu, JetPopupMenu.ShowWhen> CreateJetPopMenuShowToWriterAction(TextWriter textWriter)
         {
-           Action<JetPopupMenus, JetPopupMenu, JetPopupMenu.ShowWhen> menuDisplayer = (menus, menu, when) =>
-            {
-                foreach (var itm in Enumerable.ToList(menu.ItemKeys).Cast<SimpleMenuItem>())
-                {
-                    var s = itm.Text+ itm.ShortcutText ?? "";
-                    
-                    textWriter.WriteLine("[{0}] {1}",
-                        ((JetBrains.Application.UI.Controls.RichTextAutomation)menu.Caption.Value).RichTextBlock.Value.Text
-                        , s);                        
-                }
-            };
+            Action<JetPopupMenus, JetPopupMenu, JetPopupMenu.ShowWhen> menuDisplayer = (menus, menu, when) =>
+             {
+                 foreach (var itm in Enumerable.ToList(menu.ItemKeys).Cast<SimpleMenuItem>())
+                 {
+                     var s = itm.Text + itm.ShortcutText ?? "";
+
+                     textWriter.WriteLine("[{0}] {1}",
+                         ((JetBrains.Application.UI.Controls.RichTextAutomation)menu.Caption.Value).RichTextBlock.Value.Text
+                         , s);
+                 }
+             };
 
             return menuDisplayer;
         }
     }
-        
+
 }

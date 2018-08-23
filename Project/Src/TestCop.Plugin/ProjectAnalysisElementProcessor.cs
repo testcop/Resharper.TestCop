@@ -11,7 +11,6 @@ using System.Linq;
 using JetBrains.Application.Settings;
 using JetBrains.DocumentModel;
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Daemon.CSharp.Stages;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
@@ -27,7 +26,7 @@ namespace TestCop.Plugin
         private readonly IContextBoundSettingsStore _settings;
 
         private readonly FilteringHighlightingConsumer _highlightingConsumer;
-        
+
         protected void AddHighlighting(DocumentRange range, IHighlighting highlighting)
         {
             _highlightingConsumer.AddHighlighting(highlighting, range);
@@ -38,13 +37,13 @@ namespace TestCop.Plugin
             get { return _highlightingConsumer.Highlightings; }
         }
 
-        public ProjectAnalysisElementProcessor(ProjectAnalysisDaemonStageProcess stageProcess, IDaemonProcess process, IContextBoundSettingsStore settings )
+        public ProjectAnalysisElementProcessor(ProjectAnalysisDaemonStageProcess stageProcess, IDaemonProcess process, IContextBoundSettingsStore settings)
         {
-            _highlightingConsumer = new FilteringHighlightingConsumer(stageProcess.File.GetSourceFile(), stageProcess.File );
+            _highlightingConsumer = new FilteringHighlightingConsumer(stageProcess.File.GetSourceFile(), stageProcess.File, settings);
             _process = process;
-            _settings = settings;            
+            _settings = settings;
         }
-        
+
         public bool InteriorShouldBeProcessed(ITreeNode element)
         {
             return false;
@@ -55,32 +54,32 @@ namespace TestCop.Plugin
         }
 
         public void ProcessAfterInterior(ITreeNode element)
-        {            
+        {
             var usingBlock = element as IUsingList;
             if (usingBlock != null)
             {
-                CheckForProjectFilesNotInProjectAndWarn(element);                
-            }                    
+                CheckForProjectFilesNotInProjectAndWarn(element);
+            }
         }
-   
+
         public bool ProcessingIsFinished
         {
-            get {  return _process.InterruptFlag; }
+            get { return _process.InterruptFlag; }
         }
 
         private void CheckForProjectFilesNotInProjectAndWarn(ITreeNode element)
         {
             string[] filesToFind = Settings.OrphanedFilesPatterns.Split('|');
-            if (filesToFind.Length == 0) filesToFind = new []{"*.cs"};
-                        
+            if (filesToFind.Length == 0) filesToFind = new[] { "*.cs" };
+
             var currentProject = element.GetProject();
-            
+
             var allProjectFileLocations = currentProject.GetAllProjectFiles().Select(p => p.Location).ToList();
             var allProjectFiles = allProjectFileLocations.Select(loc => loc.FullPath).ToList();
             var allProjectFolders = allProjectFileLocations.Select(loc => loc.Directory.FullPath).Distinct();
 
-            var filesOnDisk = new List<FileInfo>();            
-            filesToFind.ForEach(regex=>filesOnDisk.AddRange(
+            var filesOnDisk = new List<FileInfo>();
+            filesToFind.ForEach(regex => filesOnDisk.AddRange(
                 allProjectFolders.SelectMany(
                     directory => new System.IO.DirectoryInfo(directory).EnumerateFiles(regex, System.IO.SearchOption.TopDirectoryOnly).Select(f => f))
                         ));
@@ -90,14 +89,14 @@ namespace TestCop.Plugin
 
             foreach (var fileOnDisk in filesOnDisk)
             {
-                if (allProjectFiles.Any(x => String.Compare(x, fileOnDisk.FullName,  StringComparison.OrdinalIgnoreCase) == 0)) continue;
-                orphanedFiles.Add(fileOnDisk);               
+                if (allProjectFiles.Any(x => String.Compare(x, fileOnDisk.FullName, StringComparison.OrdinalIgnoreCase) == 0)) continue;
+                orphanedFiles.Add(fileOnDisk);
             }
 
             if (orphanedFiles.Count > 0)
             {
                 IHighlighting highlighting = new FilesNotPartOfProjectWarning(currentProject, orphanedFiles);
-                AddHighlighting(element.GetDocumentRange(), highlighting);                                 
+                AddHighlighting(element.GetDocumentRange(), highlighting);
             }
         }
 

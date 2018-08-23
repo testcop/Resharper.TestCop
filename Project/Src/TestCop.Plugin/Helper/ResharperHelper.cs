@@ -26,7 +26,6 @@ using JetBrains.ReSharper.Psi.Util;
 using JetBrains.ReSharper.Resources.Shell;
 using JetBrains.TextControl;
 using JetBrains.TextControl.Layout;
-using JetBrains.Threading;
 using JetBrains.UI;
 using JetBrains.UI.RichText;
 using JetBrains.Util;
@@ -38,7 +37,7 @@ namespace TestCop.Plugin.Helper
     {
         public static string MacroNameSwitchBetweenFiles
         {
-            get { return "Resharper.ReSharper_"+typeof (JumpToTestFileAction).Name.RemoveTrailing("Action"); }
+            get { return "Resharper.ReSharper_" + typeof(JumpToTestFileAction).Name.RemoveTrailing("Action"); }
         }
 
         public static string MacroNameRunTests
@@ -52,23 +51,23 @@ namespace TestCop.Plugin.Helper
               () =>
               {
                   if (DTEHelper.VisualStudioIsPresent())
-                  {          
-                        DTEHelper.AssignKeyboardShortcutIfMissing(
-                            TestCopSettingsManager.Instance.Settings.OutputPanelOpenOnKeyboardMapping
-                            , MacroNameSwitchBetweenFiles
-                            , TestCopSettingsManager.Instance.Settings.ShortcutToSwitchBetweenFiles);
+                  {
+                      DTEHelper.AssignKeyboardShortcutIfMissing(
+                          TestCopSettingsManager.Instance.Settings.OutputPanelOpenOnKeyboardMapping
+                          , MacroNameSwitchBetweenFiles
+                          , TestCopSettingsManager.Instance.Settings.ShortcutToSwitchBetweenFiles);
 
-                        DTEHelper.AssignKeyboardShortcutIfMissing(
-                            TestCopSettingsManager.Instance.Settings.OutputPanelOpenOnKeyboardMapping
-                            , MacroNameRunTests
-                            , TestCopSettingsManager.Instance.Settings.ShortcutToRunTests);                            
+                      DTEHelper.AssignKeyboardShortcutIfMissing(
+                          TestCopSettingsManager.Instance.Settings.OutputPanelOpenOnKeyboardMapping
+                          , MacroNameRunTests
+                          , TestCopSettingsManager.Instance.Settings.ShortcutToRunTests);
 
-                    }
-                });          
+                  }
+              });
         }
 
         public static void AppendLineToOutputWindow(string msg)
-        { 
+        {
             ExecuteActionOnUiThread("testCop append text to output pane",
                 () =>
                 {
@@ -81,51 +80,51 @@ namespace TestCop.Plugin.Helper
         public static Action ProtectActionFromReEntry(Lifetime lifetime, string name, Action fOnExecute)
         {
             Action fOnExecute2 = () => IThreadingEx.ExecuteOrQueue(
-                Shell.Instance.Locks, lifetime, name,()=> ReadLockCookie.Execute(fOnExecute) );
+                Shell.Instance.Locks, lifetime, name, () => ReadLockCookie.Execute(fOnExecute));
             return fOnExecute2;
         }
 
         public static string UsingFileNameGetClassName(string baseFileName)
         {
             const char splitChar = '.';
-            
+
             if (baseFileName.Contains(splitChar))
-            {                
+            {
                 string className = baseFileName.Split(new[] { splitChar })[0];
                 return className;
-            }          
+            }
 
             return baseFileName;
         }
-        
+
         public static string GetRelativeNameSpace(IProject project, IClrTypeName clrTypeClassName)
-        {                        
+        {
             string targetNameSpace =
                 clrTypeClassName.GetNamespaceName().RemoveLeading(project.GetDefaultNamespace()).RemoveLeading(".");
 
-            return targetNameSpace;            
+            return targetNameSpace;
         }
 
         public static string GetBaseFileName(IDataContext context, ISolution solution)
-        {            
+        {
             IProjectModelElement projectModelElement =
                 context.GetData(JetBrains.ProjectModel.DataContext.ProjectModelDataConstants.PROJECT_MODEL_ELEMENT);
 
             var projectItem = projectModelElement as IProjectItem;
             if (projectItem == null) return null;
-            
+
             FileSystemPath location = projectItem.Location;
             string fileName = location.NameWithoutExtension;
-            
+
             fileName = fileName.RemoveTrailing(".partial");
-            
-            return fileName;                        
+
+            return fileName;
         }
-       
+
         public static IClrTypeName FindFirstTypeInFile(ISolution solution, IDocument document)
         {
             var firstTypeInFile = FindDeclaredElementInFile(solution, document, 1) as ITypeElement;
-                         
+
             if (firstTypeInFile != null)
             {
                 AppendLineToOutputWindow("Hunted and found first name in file to be " + firstTypeInFile.GetClrName());
@@ -145,20 +144,20 @@ namespace TestCop.Plugin.Helper
         }
         */
         public static IDeclaredElement FindDeclaredElementInFile(ISolution solution, IDocument document, int declarationSequencePosition)
-        {            
+        {
             var typesFound = new List<string>();
 
             for (int i = document.DocumentRange.StartOffset; i < document.DocumentRange.EndOffset; i++)
-            {                
+            {
                 var typeInFile = TextControlToPsi.GetContainingTypeOrTypeMember(solution, new DocumentOffset(document, i));
 
                 if (typeInFile != null)
                 {
-                    if(!typesFound.Contains(typeInFile.ShortName))
+                    if (!typesFound.Contains(typeInFile.ShortName))
                     {
                         typesFound.Add(typeInFile.ShortName);
                     }
-                    if(typesFound.Count==declarationSequencePosition)                    
+                    if (typesFound.Count == declarationSequencePosition)
                     {
                         return typeInFile;
                     }
@@ -168,9 +167,9 @@ namespace TestCop.Plugin.Helper
         }
 
         public static ICSharpTypeDeclaration FindFirstCharpTypeDeclarationInDocument(ISolution solution, IDocument document)
-        {            
+        {
             for (int i = document.DocumentRange.StartOffset; i < document.DocumentRange.EndOffset; i++)
-            {                                
+            {
                 var declaration = TextControlToPsi.GetElements<ICSharpTypeDeclaration>(solution, new DocumentOffset(document, i)).FirstOrDefault();
 
                 if (declaration != null)
@@ -180,7 +179,7 @@ namespace TestCop.Plugin.Helper
             }
             return null;
         }
-        
+
         public static IClrTypeName GetClassNameAppropriateToLocation(ISolution solution, ITextControl textControl)
         {
             IDeclaredElement documentElement = TextControlToPsi.GetContainingTypeOrTypeMember(solution, textControl);
@@ -201,9 +200,9 @@ namespace TestCop.Plugin.Helper
             if (documentElement is ITypeElement && clrTypeName == null)
             {
                 var containingType = ((ITypeElement)documentElement).GetContainingType();
-                if (containingType != null) clrTypeName= containingType.GetClrName();                
+                if (containingType != null) clrTypeName = containingType.GetClrName();
             }
-          
+
             if (clrTypeName == null)
             {
                 AppendLineToOutputWindow("Unable to identify the class from current cursor position.");
@@ -211,7 +210,7 @@ namespace TestCop.Plugin.Helper
             }
             return clrTypeName;
         }
-      
+
         public static void ShowTooltip(IDataContext context, ISolution solution, RichText tooltip)
         {
             var shellLocks = solution.GetComponent<IShellLocks>();
@@ -221,7 +220,7 @@ namespace TestCop.Plugin.Helper
               lifetime =>
               {
                   var windowContextSource = context.GetData<PopupWindowContextSource>(UIDataConstants.PopupWindowContextSource);
-                      
+
                   if (windowContextSource != null)
                   {
                       var windowContext = windowContextSource.Create(lifetime);
@@ -239,7 +238,7 @@ namespace TestCop.Plugin.Helper
             declaredElements.RemoveAll(p => p.GetSourceFiles().Any(de =>
             {
                 var project = de.GetProject();
-                return project != null && associatedProjects.Contains(project)==false;
+                return project != null && associatedProjects.Contains(project) == false;
             }));
         }
 
@@ -256,11 +255,11 @@ namespace TestCop.Plugin.Helper
 
         public static List<IClrDeclaredElement> FindClass(ISolution solution, string classNameToFind, IList<TestCopProjectItem> restrictToTheseProjects)
         {
-            return FindClass(solution, classNameToFind, restrictToTheseProjects.ToList(p=>p.Project));
+            return FindClass(solution, classNameToFind, restrictToTheseProjects.ToList(p => p.Project));
         }
 
         public static List<IClrDeclaredElement> FindClass(ISolution solution, string classNameToFind, IList<IProject> restrictToTheseProjects)
-        {           
+        {
             var declarationsCache = solution.GetPsiServices().Symbols
                                 .GetSymbolScope(LibrarySymbolScope.FULL, false);//, currentProject.GetResolveContext());                    
 
@@ -272,12 +271,12 @@ namespace TestCop.Plugin.Helper
         }
 
         public static List<ITypeElement> FindFirstTypeWithinCodeFiles(ISolution solution, Regex regex, IProject project)
-        {            
+        {
             var items = new List<ProjectFileFinder.Match>();
             project.Accept(new ProjectFileFinder(items, regex));
 
             var results = items
-                .SelectMany(p=>solution.GetPsiServices().Symbols.GetTypesAndNamespacesInFile(p.ProjectFile.ToSourceFile())).OfType<ITypeElement>()
+                .SelectMany(p => solution.GetPsiServices().Symbols.GetTypesAndNamespacesInFile(p.ProjectFile.ToSourceFile())).OfType<ITypeElement>()
                 .ToList();
 
             return results;
@@ -286,13 +285,13 @@ namespace TestCop.Plugin.Helper
         private static void ExecuteActionOnUiThread(string description, Action fOnExecute)
         {
             var threading = Shell.Instance.GetComponent<IThreading>();
-            threading.ReentrancyGuard.ExecuteOrQueueEx(description, fOnExecute);                        
+            threading.ReentrancyGuard.ExecuteOrQueue(description, fOnExecute);
         }
-    
+
         public static void CreateFileWithinProject(TestCopProjectItem projectItem, string targetFile)
         {
             var testCopFileCreater = Shell.Instance.GetComponent<TestCopFileCreater>();
             testCopFileCreater.CreateFileWithinProject(projectItem, targetFile);
-        }     
-    }    
+        }
+    }
 }

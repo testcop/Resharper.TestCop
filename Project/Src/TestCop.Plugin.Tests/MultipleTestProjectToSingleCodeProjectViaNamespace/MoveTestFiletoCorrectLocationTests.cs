@@ -27,18 +27,18 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProjectViaNamespac
     {
         private Action actionToRun;
 
-        protected override bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile)
+        protected override bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile, IContextBoundSettingsStore settingsStore)
         {
             if (highlighting is TestFileNameSpaceWarning)
-            {                                
+            {
                 var fixer = new MoveFileBulbItem(highlighting as TestFileNameSpaceWarning);
 
                 IProjectFile projectFile = sourceFile.ToProjectFile();
                 var textControl = base.OpenTextControl(projectFile);
 
 
-                actionToRun = ()=> fixer.Execute(LoadedTestSolution, textControl);                
-                return true;                                 
+                actionToRun = () => fixer.Execute(LoadedTestSolution, textControl);
+                return true;
             }
             return false;
         }
@@ -58,14 +58,14 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProjectViaNamespac
             get { return @"TestApplication.sln"; }
         }
 
-        [Test,Ignore("need to get test logic working")]
+        [Test, Ignore("need to get test logic working")]
         [TestCase(@"<TestApplication2Tests>\ClassD.WrongFolderTests.cs")]
         public void Test(string testName)
         {
             const string altRegEx = "^(.*?)\\.?(Integration)*Tests$";
 
             ExecuteWithinSettingsTransaction((settingsStore =>
-            {                
+            {
                 RunGuarded(
                     () =>
                     {

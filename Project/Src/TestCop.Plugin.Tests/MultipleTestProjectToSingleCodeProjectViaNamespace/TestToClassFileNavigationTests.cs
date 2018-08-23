@@ -16,7 +16,7 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProjectViaNamespac
     [TestFixture]
     public class TestToClassFileNavigationTests : CSharpHighlightingWithinSolutionTestBase
     {
-        protected override bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile)
+        protected override bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile, IContextBoundSettingsStore settingsStore)
         {
             return highlighting.GetType().Namespace.Contains("TestCop");
         }
@@ -35,7 +35,7 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProjectViaNamespac
         {
             get { return @"TestApplication.sln"; }
         }
-    
+
         [Test]
         [TestCase(@"<TestApplication2Tests>\ClassATests.cs")]
         [TestCase(@"<TestApplication2Tests>\NS1\ClassForTestingPartialTests.cs")]
