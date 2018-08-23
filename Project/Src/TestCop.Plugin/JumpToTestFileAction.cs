@@ -194,7 +194,10 @@ namespace TestCop.Plugin
             {
                 //look for similar named files that also have references to this code            
                 var items = new List<ProjectFileFinder.Match>();
-                targetProjects.ForEach(p => p.Project.Accept(new ProjectFileFinder(items, p.FilePattern)));
+                foreach (var project in targetProjects)
+                {
+                    project.Project.Accept(new ProjectFileFinder(items, project.FilePattern));
+                }
                 searchDomain = PsiShared.GetComponent<SearchDomainFactory>().CreateSearchDomain(items.Select(p => p.ProjectFile.ToSourceFile()));
             }
 
