@@ -31,7 +31,7 @@ namespace TestCop.Plugin.Helper.Mapper
 
                 if (matchedCodeProjects.Count() > 1)
                 {
-                    ResharperHelper.AppendLineToOutputWindow(warningMessage + nameSpaceOfAssociateProject);
+                    ResharperHelper.AppendLineToOutputWindow(currentProject.Locks, warningMessage + nameSpaceOfAssociateProject);
                 }
 
                 return matchedCodeProjects.Select(p => new TestCopProjectItem(p, TestCopProjectItem.ProjectItemTypeEnum.Code, subNameSpace, subDirectoryElements, filePatterns)).ToList();
@@ -54,7 +54,7 @@ namespace TestCop.Plugin.Helper.Mapper
             string result;
             if (RegexReplace(testNameSpacePattern, replaceText, currentProjectNamespace, out result)) return result;
 
-            ResharperHelper.AppendLineToOutputWindow("ERROR: Regex pattern matching failed to extract group - check your regex replace string of " + replaceText);
+            ResharperHelper.AppendLineToOutputWindow(testProject.Locks, "ERROR: Regex pattern matching failed to extract group - check your regex replace string of " + replaceText);
             throw new ApplicationException("Unexpected internal error -regex error in testcop - {0} - {1}".FormatEx(testNameSpacePattern, replaceText));
         }      
     }

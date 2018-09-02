@@ -6,6 +6,7 @@
 
 using System;
 using JetBrains.Application.Settings;
+using JetBrains.Application.Threading;
 using JetBrains.ReSharper.Feature.Services.CSharp.Daemon;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
@@ -15,6 +16,13 @@ namespace TestCop.Plugin
     [DaemonStage]
     public class TestAnalysisDaemonStage : CSharpDaemonStageBase
     {
+        private readonly IShellLocks myShellLocks;
+
+        public TestAnalysisDaemonStage(IShellLocks shellLocks)
+        {
+            myShellLocks = shellLocks;
+        }
+
         /// <summary>
         /// Daemon stage for analysis. This class is automatically loaded by ReSharper daemon 
         /// because it's marked with the attribute.
@@ -24,8 +32,8 @@ namespace TestCop.Plugin
         {
             if (process == null)
                 throw new ArgumentNullException("process");
-
-            return new TestFileAnalysisDaemonStageProcess(process,settings, file);
+            
+            return new TestFileAnalysisDaemonStageProcess(myShellLocks, process, settings, file);
         }             
     }
 

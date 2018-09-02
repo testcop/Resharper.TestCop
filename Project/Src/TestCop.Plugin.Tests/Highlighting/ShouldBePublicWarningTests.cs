@@ -18,7 +18,7 @@ namespace TestCop.Plugin.Tests.Highlighting
     [TestFixture]
     public class ShouldBePublicWarningTests : CSharpHighlightingTestBase
     {
-        protected override bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile)        
+        protected override bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile, IContextBoundSettingsStore settingsStore)        
         {
             return highlighting is AbstractShouldBePublicWarning;
         }

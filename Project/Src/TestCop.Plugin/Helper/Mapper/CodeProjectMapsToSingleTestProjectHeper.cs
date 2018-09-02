@@ -52,12 +52,12 @@ namespace TestCop.Plugin.Helper.Mapper
 
                 if (matchedCodeProjects.Count() > 1)
                 {
-                    ResharperHelper.AppendLineToOutputWindow(warningMessage + nameSpaceOfAssociateProject);
+                    ResharperHelper.AppendLineToOutputWindow(currentProject.Locks, warningMessage + nameSpaceOfAssociateProject);
                 }
 
                 if (matchedCodeProjects.Count == 0)
                 {
-                    ResharperHelper.AppendLineToOutputWindow("Didn't find project with namespace of: " + nameSpaceOfAssociateProject + " to match " + currentTypeNamespace);                    
+                    ResharperHelper.AppendLineToOutputWindow(currentProject.Locks, "Didn't find project with namespace of: " + nameSpaceOfAssociateProject + " to match " + currentTypeNamespace);                    
                 }
 
                 var subDirectoryElementsWithOutExtraFolderForNS = new List<Tuple<string, bool>>(subDirectoryElements);                
@@ -79,7 +79,7 @@ namespace TestCop.Plugin.Helper.Mapper
             var matchedTestProjects = currentProject.GetSolution().GetTestProjects().ToList();
             if (matchedTestProjects.Count > 1)
             {
-                ResharperHelper.AppendLineToOutputWindow("Not Supported: Expected only one test project for all code projects to use");                
+                ResharperHelper.AppendLineToOutputWindow(currentProject.Locks, "Not Supported: Expected only one test project for all code projects to use");                
             }
 
             var subDirectoryElementsWithExtraFolderForNS = AddMissingDirectoryElementsInNamespace(subDirectoryElements, subNameSpaceOfTest);

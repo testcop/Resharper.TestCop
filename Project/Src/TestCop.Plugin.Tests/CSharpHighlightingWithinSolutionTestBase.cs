@@ -124,7 +124,7 @@ namespace TestCop.Plugin.Tests
             return DaemonStageManager.GetInstance(solution).Stages;
         }
            
-        protected virtual bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile)
+        protected virtual bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile, IContextBoundSettingsStore settingsStore)
         {
             return true;
         }

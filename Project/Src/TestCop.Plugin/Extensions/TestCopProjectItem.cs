@@ -90,7 +90,7 @@ namespace TestCop.Plugin.Extensions
 
             if (subNameSpaceAccordingToDirectoryElements != SubNamespace)
             {
-                ResharperHelper.AppendLineToOutputWindow("Error calculating sub namepsace '{0}'<>'{1}'".FormatEx(subNameSpaceAccordingToDirectoryElements, SubNamespace));
+                ResharperHelper.AppendLineToOutputWindow(project.Locks, "Error calculating sub namepsace '{0}'<>'{1}'".FormatEx(subNameSpaceAccordingToDirectoryElements, SubNamespace));
             }
 
             this._subDirectoryElements = subDirectoryElements;

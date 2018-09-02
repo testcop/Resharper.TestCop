@@ -5,7 +5,7 @@
 // --
 
 using System.IO;
-
+using JetBrains.Application.Settings;
 using JetBrains.Application.UI.ActionsRevised.Menu;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi;
@@ -17,7 +17,7 @@ namespace TestCop.Plugin.Tests.Highlighting
     [TestFixture]
     public class TestFileNameSpaceWarningTests : CSharpHighlightingWithinSolutionTestBase
     {
-        protected override bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile)
+        protected override bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile, IContextBoundSettingsStore settingsStore)
         {
             return highlighting is TestFileNameSpaceWarning;
         }

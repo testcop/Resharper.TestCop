@@ -17,7 +17,7 @@ namespace TestCop.Plugin.Tests.SingleTestProjectToMultipleCodeProject
     [TestFixture]
     public class TestToClassFileNavigationTests : CSharpHighlightingWithinSolutionTestBase
     {
-        protected override bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile)
+        protected override bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile, IContextBoundSettingsStore settingsStore)
         {
             return highlighting is TestFileNameSpaceWarning;
         }

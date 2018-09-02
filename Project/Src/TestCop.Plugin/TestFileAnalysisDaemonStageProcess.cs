@@ -1,12 +1,13 @@
 ﻿// --
 // -- TestCop http://testcop.codeplex.com
 // -- License http://testcop.codeplex.com/license
-// -- Copyright 2014
+// -- Copyright 2018
 // --
 
 using System;
 
 using JetBrains.Application.Settings;
+using JetBrains.Application.Threading;
 using JetBrains.ReSharper.Daemon.CSharp.Stages;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi;
@@ -21,12 +22,14 @@ namespace TestCop.Plugin
 {
     public class TestFileAnalysisDaemonStageProcess : CSharpDaemonStageProcessBase
     {
+        private readonly IShellLocks _myShellLocks;
         private readonly IDaemonProcess _myDaemonProcess;
         private readonly IContextBoundSettingsStore _settings;
 
-        public TestFileAnalysisDaemonStageProcess(IDaemonProcess daemonProcess, IContextBoundSettingsStore settings, ICSharpFile file)
+        public TestFileAnalysisDaemonStageProcess(IShellLocks shellLocks, IDaemonProcess daemonProcess, IContextBoundSettingsStore settings, ICSharpFile file)
             : base(daemonProcess, file)
         {
+            _myShellLocks = shellLocks;
             _myDaemonProcess = daemonProcess;            
             _settings = settings;            
         }
@@ -39,7 +42,7 @@ namespace TestCop.Plugin
             {
                 //not a nice solution but I needed a way to ensure the testcop key mappings are put in place
                 _mappedOnceThisSession = true;
-                ResharperHelper.ForceKeyboardBindings();
+                ResharperHelper.ForceKeyboardBindings(_myShellLocks);
             }
             
             if (File.GetProject().IsTestProject() == false) 

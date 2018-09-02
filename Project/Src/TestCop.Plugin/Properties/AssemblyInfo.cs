@@ -39,8 +39,8 @@ using TestCop.Plugin.Highlighting;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("1.10.6.1")]
-[assembly: AssemblyFileVersion("1.10.6.1")]
+[assembly: AssemblyVersion("1.10.6.2")]
+[assembly: AssemblyFileVersion("1.10.6.2")]
 [assembly: RegisterStaticHighlightingsGroup(Highlighter.HighlightingGroup, "Testing", true)]
 [assembly: RegisterConfigurableHighlightingsGroup("Testing", "Testing")]
     

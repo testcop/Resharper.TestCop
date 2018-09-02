@@ -184,7 +184,7 @@ namespace TestCop.Plugin.Helper
                 {
                     if (currentFileisTestFile == associatedTargetProjectItem.Project.IsTestProject())
                     {
-                        ResharperHelper.AppendLineToOutputWindow(
+                        ResharperHelper.AppendLineToOutputWindow(project.Locks,
                             string.Format("Internal Error: Attempted to create '{0}' within project '{1}'"
                                 , targetFile, associatedTargetProjectItem.Project.Name));
                         continue;

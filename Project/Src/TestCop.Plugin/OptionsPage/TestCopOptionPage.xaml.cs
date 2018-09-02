@@ -11,7 +11,6 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Forms;
 using System.Windows.Media;
 using JetBrains;
 using JetBrains.Application.Icons;
@@ -21,21 +20,15 @@ using JetBrains.Application.UI.Options;
 using JetBrains.Application.UI.Options.OptionPages;
 using JetBrains.Application.UI.UIAutomation;
 using JetBrains.DataFlow;
-using JetBrains.DocumentManagers.Transactions;
 using JetBrains.ProjectModel;
 using JetBrains.ProjectModel.DataContext;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Context;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.FileTemplates;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Scope;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Settings;
-using JetBrains.ReSharper.Feature.Services.LiveTemplates.Support;
-using JetBrains.ReSharper.Feature.Services.LiveTemplates.Templates;
-using JetBrains.ReSharper.LiveTemplates.CSharp.Context;
-using JetBrains.ReSharper.LiveTemplates.CSharp.Scope;
 using JetBrains.ReSharper.LiveTemplates.UI;
 using JetBrains.ReSharper.Psi.Util;
 using JetBrains.UI.Extensions;
-using JetBrains.UI.StdApplicationUI;
 using JetBrains.Util;
 using JetBrains.Util.Logging;
 using TestCop.Plugin.Extensions;
@@ -429,7 +422,7 @@ namespace TestCop.Plugin.OptionsPage
       {                                             
             if (_solution == null)
             {
-                ResharperHelper.AppendLineToOutputWindow("Unable to identify current solution.");
+                ResharperHelper.AppendLineToOutputWindow(_solution.Locks, "Unable to identify current solution.");
                 DisplayLoadProjectTip();
                 return; 
             }
@@ -437,7 +430,7 @@ namespace TestCop.Plugin.OptionsPage
             var project = _solution.GetAllCodeProjects().FirstOrDefault();
             if (project == null)
             {
-                ResharperHelper.AppendLineToOutputWindow("Unable to identify a code project.");
+                ResharperHelper.AppendLineToOutputWindow(_solution.Locks, "Unable to identify a code project.");
                 DisplayLoadProjectTip();
                 return;
             }

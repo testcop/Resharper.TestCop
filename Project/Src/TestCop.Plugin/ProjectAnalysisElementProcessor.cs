@@ -40,7 +40,7 @@ namespace TestCop.Plugin
 
         public ProjectAnalysisElementProcessor(ProjectAnalysisDaemonStageProcess stageProcess, IDaemonProcess process, IContextBoundSettingsStore settings )
         {
-            _highlightingConsumer = new FilteringHighlightingConsumer(stageProcess.File.GetSourceFile(), stageProcess.File );
+            _highlightingConsumer = new FilteringHighlightingConsumer(stageProcess.File.GetSourceFile(), stageProcess.File , settings);
             _process = process;
             _settings = settings;            
         }

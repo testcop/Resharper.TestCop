@@ -52,7 +52,7 @@ namespace TestCop.Plugin.Helper.Mapper
         {
             var rx = TestingRegEx;
             solution.GetAllCodeProjects().ForEach(
-                p => ResharperHelper.AppendLineToOutputWindow("\tProject Namespace:" + p.GetDefaultNamespace()
+                p => ResharperHelper.AppendLineToOutputWindow(solution.Locks, "\tProject Namespace:" + p.GetDefaultNamespace()
                                                               +
                                                               (rx.IsMatch(p.GetDefaultNamespace() ?? "")
                                                                   ? " matches "
