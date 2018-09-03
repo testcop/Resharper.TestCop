@@ -1,6 +1,6 @@
 ﻿// --
-// -- TestCop http://testcop.codeplex.com
-// -- License http://testcop.codeplex.com/license
+// -- TestCop http://github.com/testcop
+// -- License http://github.com/testcop/license
 // -- Copyright 2018
 // --
 
@@ -214,7 +214,7 @@ namespace TestCop.Plugin.Helper
       
         public static void ShowTooltip(IDataContext context, ISolution solution, RichText tooltip)
         {
-            var shellLocks = solution.GetComponent<IShellLocks>();
+            var shellLocks = solution.Locks;
             var tooltipManager = solution.GetComponent<ITooltipManager>();
 
             tooltipManager.Show(tooltip,
