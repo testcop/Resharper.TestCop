@@ -1,6 +1,6 @@
 // --
-// -- TestCop http://testcop.codeplex.com
-// -- License http://testcop.codeplex.com/license
+// -- TestCop http://github.com/testcop
+// -- License http://github.com/testcop/license
 // -- Copyright 2016
 // --
 
@@ -56,11 +56,11 @@ namespace TestCop.Plugin.Helper.Mapper
                 var badProjects=matchedCodeProjects.Where(p => p.GetDefaultNamespace() != currentProject.GetDefaultNamespace()).ToList();
                 matchedCodeProjects.RemoveAll(badProjects.Contains);
 
-                badProjects.ForEach(p =>ResharperHelper.AppendLineToOutputWindow("Project {0} should have namespace of {1}".FormatEx(p.Name, currentProject.GetDefaultNamespace())));
+                badProjects.ForEach(p =>ResharperHelper.AppendLineToOutputWindow(currentProject.Locks, "Project {0} should have namespace of {1}".FormatEx(p.Name, currentProject.GetDefaultNamespace())));
 
                 if (matchedCodeProjects.Count() > 1)
                 {
-                    ResharperHelper.AppendLineToOutputWindow(warningMessage + nameOfAssociateProject);
+                    ResharperHelper.AppendLineToOutputWindow(currentProject.Locks, warningMessage + nameOfAssociateProject);
                 }
 
                 return matchedCodeProjects.Select(p => new TestCopProjectItem(p, TestCopProjectItem.ProjectItemTypeEnum.Code, subNameSpace, subDirectoryElements, filePatterns)).ToList();
@@ -71,7 +71,7 @@ namespace TestCop.Plugin.Helper.Mapper
 
             var badTestProjects=matchedTestProjects.Where(p => p.GetDefaultNamespace() != currentProject.GetDefaultNamespace()).ToList();
             matchedTestProjects.RemoveAll(badTestProjects.Contains);
-            badTestProjects.ForEach(p => ResharperHelper.AppendLineToOutputWindow("Project {0} should have namespace of {1}".FormatEx(p.Name, currentProject.GetDefaultNamespace())));
+            badTestProjects.ForEach(p => ResharperHelper.AppendLineToOutputWindow(currentProject.Locks, "Project {0} should have namespace of {1}".FormatEx(p.Name, currentProject.GetDefaultNamespace())));
             
             return matchedTestProjects.Select(p => new TestCopProjectItem(p,TestCopProjectItem.ProjectItemTypeEnum.Tests,  subNameSpace, subDirectoryElements, filePatterns)).ToList();                                        
         }
@@ -87,7 +87,7 @@ namespace TestCop.Plugin.Helper.Mapper
             string result;
             if (RegexReplace(testNamePattern, replaceText, currentProjectName, out result)) return result;
 
-            ResharperHelper.AppendLineToOutputWindow("ERROR: Regex pattern matching failed to extract group - check your regex replace string of " + replaceText);
+            ResharperHelper.AppendLineToOutputWindow(testProject.Locks, "ERROR: Regex pattern matching failed to extract group - check your regex replace string of " + replaceText);
             throw new ApplicationException("Unexpected internal error -regex error in testcop - {0} - {1}".FormatEx(testNamePattern, replaceText));
         }      
     }

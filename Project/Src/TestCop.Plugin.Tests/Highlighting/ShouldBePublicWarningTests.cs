@@ -1,6 +1,6 @@
 // --
-// -- TestCop http://testcop.codeplex.com
-// -- License http://testcop.codeplex.com/license
+// -- TestCop http://github.com/testcop
+// -- License http://github.com/testcop/license
 // -- Copyright 2015
 // --
 
@@ -18,7 +18,7 @@ namespace TestCop.Plugin.Tests.Highlighting
     [TestFixture]
     public class ShouldBePublicWarningTests : CSharpHighlightingTestBase
     {
-        protected override bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile)        
+        protected override bool HighlightingPredicate(IHighlighting highlighting, IPsiSourceFile sourceFile, IContextBoundSettingsStore settingsStore)        
         {
             return highlighting is AbstractShouldBePublicWarning;
         }

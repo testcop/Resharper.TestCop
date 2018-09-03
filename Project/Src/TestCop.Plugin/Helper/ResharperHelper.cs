@@ -1,7 +1,7 @@
 ﻿// --
-// -- TestCop http://testcop.codeplex.com
-// -- License http://testcop.codeplex.com/license
-// -- Copyright 2016
+// -- TestCop http://github.com/testcop
+// -- License http://github.com/testcop/license
+// -- Copyright 2018
 // --
 
 using System;
@@ -30,6 +30,7 @@ using JetBrains.Threading;
 using JetBrains.UI;
 using JetBrains.UI.RichText;
 using JetBrains.Util;
+using JetBrains.Util.Threading.Tasks;
 using TestCop.Plugin.Extensions;
 
 namespace TestCop.Plugin.Helper
@@ -46,9 +47,9 @@ namespace TestCop.Plugin.Helper
             get { return "ReSharper_" + typeof(TestCopUnitTestRunContextAction).Name.RemoveTrailing("Action"); }
         }
 
-        public static void ForceKeyboardBindings()
-        {
-            ExecuteActionOnUiThread("force TestCop keyboard shortcut hack on every startup",
+        public static void ForceKeyboardBindings(IShellLocks shellLocks)
+        {            
+            ExecuteActionOnUiThread(shellLocks, "force TestCop keyboard shortcut hack on every startup",
               () =>
               {
                   if (DTEHelper.VisualStudioIsPresent())
@@ -64,18 +65,17 @@ namespace TestCop.Plugin.Helper
                             , TestCopSettingsManager.Instance.Settings.ShortcutToRunTests);                            
 
                     }
-                });          
+                });                        
         }
 
-        public static void AppendLineToOutputWindow(string msg)
-        { 
-            ExecuteActionOnUiThread("testCop append text to output pane",
+        public static void AppendLineToOutputWindow(IShellLocks shellLocks, string msg)
+        {            
+            ExecuteActionOnUiThread(shellLocks, "testCop append text to output pane",
                 () =>
                 {
                     if (DTEHelper.VisualStudioIsPresent())
                         DTEHelper.GetOutputWindowPane("TestCop", false).OutputString(msg + "\n");
-                });
-
+                });            
         }
 
         public static Action ProtectActionFromReEntry(Lifetime lifetime, string name, Action fOnExecute)
@@ -128,7 +128,7 @@ namespace TestCop.Plugin.Helper
                          
             if (firstTypeInFile != null)
             {
-                AppendLineToOutputWindow("Hunted and found first name in file to be " + firstTypeInFile.GetClrName());
+                AppendLineToOutputWindow(solution.Locks, "Hunted and found first name in file to be " + firstTypeInFile.GetClrName());
                 return firstTypeInFile.GetClrName();
             }
             return null;
@@ -206,7 +206,7 @@ namespace TestCop.Plugin.Helper
           
             if (clrTypeName == null)
             {
-                AppendLineToOutputWindow("Unable to identify the class from current cursor position.");
+                AppendLineToOutputWindow(solution.Locks, "Unable to identify the class from current cursor position.");
                 return FindFirstTypeInFile(solution, textControl.Document);
             }
             return clrTypeName;
@@ -214,7 +214,7 @@ namespace TestCop.Plugin.Helper
       
         public static void ShowTooltip(IDataContext context, ISolution solution, RichText tooltip)
         {
-            var shellLocks = solution.GetComponent<IShellLocks>();
+            var shellLocks = solution.Locks;
             var tooltipManager = solution.GetComponent<ITooltipManager>();
 
             tooltipManager.Show(tooltip,
@@ -283,10 +283,9 @@ namespace TestCop.Plugin.Helper
             return results;
         }
 
-        private static void ExecuteActionOnUiThread(string description, Action fOnExecute)
+        private static void ExecuteActionOnUiThread(IShellLocks shellLocks, string description, Action fOnExecute)
         {
-            var threading = Shell.Instance.GetComponent<IThreading>();
-            threading.ReentrancyGuard.ExecuteOrQueueEx(description, fOnExecute);                        
+            shellLocks.ExecuteOrQueueEx(description, fOnExecute);                        
         }
     
         public static void CreateFileWithinProject(TestCopProjectItem projectItem, string targetFile)

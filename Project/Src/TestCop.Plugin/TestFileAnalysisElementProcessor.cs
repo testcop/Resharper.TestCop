@@ -1,6 +1,6 @@
 // --
-// -- TestCop http://testcop.codeplex.com
-// -- License http://testcop.codeplex.com/license
+// -- TestCop http://github.com/testcop
+// -- License http://github.com/testcop/license
 // -- Copyright 2017
 // --
 
@@ -47,7 +47,7 @@ namespace TestCop.Plugin
 
         public TestFileAnalysisElementProcessor(TestFileAnalysisDaemonStageProcess stageProcess, IDaemonProcess process, IContextBoundSettingsStore settings)
         {            
-            _highlightingConsumer = new FilteringHighlightingConsumer(stageProcess.File.GetSourceFile(), stageProcess.File);
+            _highlightingConsumer = new FilteringHighlightingConsumer(stageProcess.File.GetSourceFile(), stageProcess.File, settings);
             _process = process;
             _settings = settings;            
         }

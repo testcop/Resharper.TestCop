@@ -1,6 +1,6 @@
 ﻿// --
-// -- TestCop http://testcop.codeplex.com
-// -- License http://testcop.codeplex.com/license
+// -- TestCop http://github.com/testcop
+// -- License http://github.com/testcop/license
 // -- Copyright 2016
 // --
 using System.Collections.Generic;
@@ -74,11 +74,11 @@ namespace TestCop.Plugin
                                 string currentName=projectFileMatch.ProjectFile.Location.NameWithoutExtension;
                                 var newTestClassName = newName + currentName.Substring(classNameBeingRenamed.Length);
                                    
-                                ResharperHelper.AppendLineToOutputWindow(
+                                ResharperHelper.AppendLineToOutputWindow(project.Locks,
                                         "Renaming {0} to {1}".FormatEx(projectFileMatch.ProjectFile.Location.FullPath, newTestClassName));
                                     if (projectFileMatch.ProjectFile.Location.NameWithoutExtension == newTestClassName)
                                     {
-                                        ResharperHelper.AppendLineToOutputWindow("# skip as same name");
+                                        ResharperHelper.AppendLineToOutputWindow(project.Locks, "# skip as same name");
                                         continue;
                                     }
 

@@ -1,6 +1,6 @@
 ﻿// --
-// -- TestCop http://testcop.codeplex.com
-// -- License http://testcop.codeplex.com/license
+// -- TestCop http://github.com/testcop
+// -- License http://github.com/testcop/license
 // -- Copyright 2017
 // --
 
@@ -31,8 +31,6 @@ using JetBrains.Util;
 
 using TestCop.Plugin.Extensions;
 using TestCop.Plugin.Helper;
-using JetBrains.ReSharper.Psi.Modules;
-using JetBrains.TextControl.DataContext;
 
 namespace TestCop.Plugin
 {
@@ -102,14 +100,14 @@ namespace TestCop.Plugin
             var currentProject = context.GetData(JetBrains.ProjectModel.DataContext.ProjectModelDataConstants.Project);
             if (currentProject == null)
             {
-                ResharperHelper.AppendLineToOutputWindow("Internal Error: No current project");
+                ResharperHelper.AppendLineToOutputWindow(solution.Locks, "Internal Error: No current project");
                 return;
             }
 
             var targetProjects = currentProject.GetAssociatedProjects(textControl.ToProjectFile(solution));     
             if(targetProjects.IsEmpty())
             {
-                ResharperHelper.AppendLineToOutputWindow("Unable to locate associated assembly - check project namespaces and testcop Regex");
+                ResharperHelper.AppendLineToOutputWindow(solution.Locks, "Unable to locate associated assembly - check project namespaces and testcop Regex");
                 //ProjectMappingHelper.GetProjectMappingHeper().DumpDebug(solution);
                 return;
             }
@@ -124,7 +122,7 @@ namespace TestCop.Plugin
 
             if (isTestFile != currentProject.IsTestProject())
             {                
-                ResharperHelper.AppendLineToOutputWindow(
+                ResharperHelper.AppendLineToOutputWindow(solution.Locks,
                             string.Format("Don't know how to navigate with '{0}' within project '{1}'. It is a {2} file within a {3} project"
                                 , baseFileName, currentProject.Name, isTestFile ? "test" : "code", currentProject.IsTestProject() ? "test" : "code"));
                 return;
@@ -179,7 +177,7 @@ namespace TestCop.Plugin
         {
             if (clrTypeClassName == null)
             {
-                ResharperHelper.AppendLineToOutputWindow("FindReferencesWithinAssociatedAssembly() - clrTypeClassName was null");
+                ResharperHelper.AppendLineToOutputWindow(solution.Locks, "FindReferencesWithinAssociatedAssembly() - clrTypeClassName was null");
                 return new List<IClrDeclaredElement>();
             }
 

@@ -1,6 +1,6 @@
 // --
-// -- TestCop http://testcop.codeplex.com
-// -- License http://testcop.codeplex.com/license
+// -- TestCop http://github.com/testcop
+// -- License http://github.com/testcop/license
 // -- Copyright 2016
 // --
 using System;
@@ -52,7 +52,7 @@ namespace TestCop.Plugin.Helper.Mapper
         {
             var rx = TestingRegEx;
             solution.GetAllCodeProjects().ForEach(
-                p => ResharperHelper.AppendLineToOutputWindow("\tProject Namespace:" + p.GetDefaultNamespace()
+                p => ResharperHelper.AppendLineToOutputWindow(solution.Locks, "\tProject Namespace:" + p.GetDefaultNamespace()
                                                               +
                                                               (rx.IsMatch(p.GetDefaultNamespace() ?? "")
                                                                   ? " matches "
