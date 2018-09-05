@@ -64,7 +64,7 @@
     <iconUrl>https://raw.githubusercontent.com/testcop/Resharper.TestCop/master/Project/Src/TestCop.Plugin/resources/agent48x48.png</iconUrl>
     <copyright>Copyright &#x00A9; 2013-2018</copyright>
     <dependencies>      
-      <dependency id="Wave" version="[$WAVEID$.0.0]"/>      
+      <dependency id="Wave" version="[$WAVEID$.0.0]"/>         
     </dependencies>
     <tags>resharper unittest xunit nunit mstest tdd c# template</tags>
   </metadata>   
