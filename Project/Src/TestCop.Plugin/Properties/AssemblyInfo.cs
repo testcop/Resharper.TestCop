@@ -1,7 +1,7 @@
 ﻿// --
 // -- TestCop http://github.com/testcop
 // -- License http://github.com/testcop/license
-// -- Copyright 2017
+// -- Copyright 2018
 // --
 
 using System.Reflection;
@@ -39,8 +39,8 @@ using TestCop.Plugin.Highlighting;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("1.10.6.2")]
-[assembly: AssemblyFileVersion("1.10.6.2")]
+[assembly: AssemblyVersion("1.10.6.3")]
+[assembly: AssemblyFileVersion("1.10.6.3")]
 [assembly: RegisterStaticHighlightingsGroup(Highlighter.HighlightingGroup, "Testing", true)]
 [assembly: RegisterConfigurableHighlightingsGroup("Testing", "Testing")]
     
