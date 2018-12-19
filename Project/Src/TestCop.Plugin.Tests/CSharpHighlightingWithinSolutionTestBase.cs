@@ -184,23 +184,35 @@ namespace TestCop.Plugin.Tests
         protected virtual void DumperShortCutAction(IProjectFile projectFile, TextWriter textwriter)
         {            
             Lifetimes.Using((lifetime =>
-                {                                    
-                    using (ITextControl textControl = OpenTextControl(projectFile))
-                    {
-                        var jumpToTestFileAction = GetShortcutAction(textwriter);
-                        if(jumpToTestFileAction==null) return;
+                             {
+                                var textControl = OpenTextControl(projectFile);
+                                try
+                                {                                                                           
+                                var jumpToTestFileAction = GetShortcutAction(textwriter);
+                                if(jumpToTestFileAction==null) return;
 
-                        IDataContext context = DataContextOfTestTextControl.Create(lifetime,textControl, _loadedTestSolution);
-                        
-                        Func<Lifetime, DataContexts, IDataContext> dataContext = textControl.ToDataContext();
+                                IDataContext context = DataContextOfTestTextControl.Create(lifetime,textControl, _loadedTestSolution);
+                                
+                                Func<Lifetime, DataContexts, IDataContext> dataContext = textControl.ToDataContext();
 
-                        if ((jumpToTestFileAction).Update(context, new ActionPresentation(), null))
-                        {                            
-                            (jumpToTestFileAction).Execute(context, null);                                    
-                        }                        
-                    }
+                                if ((jumpToTestFileAction).Update(context, new ActionPresentation(), null))
+                                {                            
+                                    (jumpToTestFileAction).Execute(context, null);                                    
+                                }
+                                }
+                                finally
+                                {
+                                    CloseTextControl(textControl);
+                                }
+                                 
                 }));             
              
+        }
+
+        private void CloseTextControl(ITextControl textControl)
+        {            
+            if(textControl != null)
+                _loadedTestSolution.GetComponent<IEditorManager>().CloseTextControl(textControl, CloseTextControlSaveOptions.SaveIfDirty);
         }
 
         protected virtual IExecutableAction GetShortcutAction(TextWriter textwriter)

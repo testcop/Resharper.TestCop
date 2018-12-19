@@ -1,13 +1,14 @@
 ﻿// --
 // -- TestCop http://github.com/testcop
 // -- License http://github.com/testcop/license
-// -- Copyright 2014
+// -- Copyright 2018
 // --
 
 using System;
 using System.IO;
 using JetBrains.Application.Progress;
 using JetBrains.Application.Settings;
+using JetBrains.Application.Threading;
 using JetBrains.Application.UI.ActionsRevised.Menu;
 using JetBrains.DataFlow;
 using JetBrains.DocumentManagers.Transactions;
@@ -58,7 +59,7 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProjectViaNamespac
             get { return @"TestApplication.sln"; }
         }
 
-        [Test,Ignore("need to get test logic working")]
+        [Test]
         [TestCase(@"<TestApplication2Tests>\ClassD.WrongFolderTests.cs")]
         public void Test(string testName)
         {
@@ -84,13 +85,17 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProjectViaNamespac
 
                 Lifetimes.Using(lifetime =>
                                 {
-                                    using (var cookie = LoadedTestSolution.CreateTransactionCookie(DefaultAction.Rollback,
-                                            this.GetType().Name, new ProgressIndicator(lifetime)))
-                                    {
+                                    LoadedTestSolution.Locks.ExecuteWithReadLock(() =>
+                                                                                 {
+                                                                                     using (var cookie =
+                                                                                         LoadedTestSolution.CreateTransactionCookie(DefaultAction.Rollback,
+                                                                                                 this.GetType().Name,new ProgressIndicator(lifetime)))
+                                                                                     {
 
-                                        ResharperHelper.ProtectActionFromReEntry(lifetime, "X", actionToRun);
-                                    }
-                                });
+                                                                                         ResharperHelper.ProtectActionFromReEntry(lifetime, "X",actionToRun);
+                                                                                     }
+                                                                                 });
+            });
             }));
         }
     }
