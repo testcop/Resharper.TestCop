@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
   <Import Project="..\..\packages\JetBrains.ReSharper.SDK.Internal.183.0.20190127.84934\build\net461\JetBrains.ReSharper.SDK.Internal.props" Condition="Exists('..\..\packages\JetBrains.ReSharper.SDK.Internal.183.0.20190127.84934\build\net461\JetBrains.ReSharper.SDK.Internal.props')" />
   <Import Project="..\..\packages\JetBrains.Psi.Features.VisualStudio.183.0.20190124.113324\build\net461\JetBrains.Psi.Features.VisualStudio.props" Condition="Exists('..\..\packages\JetBrains.Psi.Features.VisualStudio.183.0.20190124.113324\build\net461\JetBrains.Psi.Features.VisualStudio.props')" />
   <Import Project="..\..\packages\JetBrains.Psi.Features.UIInteractive.Features.183.0.20190124.113324\build\net461\JetBrains.Psi.Features.UIInteractive.Features.props" Condition="Exists('..\..\packages\JetBrains.Psi.Features.UIInteractive.Features.183.0.20190124.113324\build\net461\JetBrains.Psi.Features.UIInteractive.Features.props')" />
@@ -28,6 +29,7 @@
   <Import Project="..\..\packages\JetBrains.Platform.Core.Shell.183.0.20190124.112411\build\net461\JetBrains.Platform.Core.Shell.props" Condition="Exists('..\..\packages\JetBrains.Platform.Core.Shell.183.0.20190124.112411\build\net461\JetBrains.Platform.Core.Shell.props')" />
   <Import Project="..\..\packages\JetBrains.Platform.Interop.dotMemoryUnit.Framework.183.0.20190124.112739\build\net461\JetBrains.Platform.Interop.dotMemoryUnit.Framework.props" Condition="Exists('..\..\packages\JetBrains.Platform.Interop.dotMemoryUnit.Framework.183.0.20190124.112739\build\net461\JetBrains.Platform.Interop.dotMemoryUnit.Framework.props')" />
   <Import Project="..\..\packages\JetBrains.ExternalAnnotations.10.2.55\build\JetBrains.ExternalAnnotations.props" Condition="Exists('..\..\packages\JetBrains.ExternalAnnotations.10.2.55\build\JetBrains.ExternalAnnotations.props')" />
+
   <Import Project="..\..\packages\JetBrains.Build.Platform.Tasks.ProxyToSolutionCompiledTask.2.0.20170904.2\build\JetBrains.Build.Platform.Tasks.ProxyToSolutionCompiledTask.Props" Condition="Exists('..\..\packages\JetBrains.Build.Platform.Tasks.ProxyToSolutionCompiledTask.2.0.20170904.2\build\JetBrains.Build.Platform.Tasks.ProxyToSolutionCompiledTask.Props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -639,4 +641,5 @@
   <Import Project="..\..\packages\JetBrains.Psi.Features.UIInteractive.Features.183.0.20190124.113324\build\net461\JetBrains.Psi.Features.UIInteractive.Features.targets" Condition="Exists('..\..\packages\JetBrains.Psi.Features.UIInteractive.Features.183.0.20190124.113324\build\net461\JetBrains.Psi.Features.UIInteractive.Features.targets')" />
   <Import Project="..\..\packages\JetBrains.Psi.Features.VisualStudio.183.0.20190124.113324\build\net461\JetBrains.Psi.Features.VisualStudio.targets" Condition="Exists('..\..\packages\JetBrains.Psi.Features.VisualStudio.183.0.20190124.113324\build\net461\JetBrains.Psi.Features.VisualStudio.targets')" />
   <Import Project="..\..\packages\JetBrains.ReSharper.SDK.Internal.183.0.20190127.84934\build\net461\JetBrains.ReSharper.SDK.Internal.targets" Condition="Exists('..\..\packages\JetBrains.ReSharper.SDK.Internal.183.0.20190127.84934\build\net461\JetBrains.ReSharper.SDK.Internal.targets')" />
+
 </Project>
