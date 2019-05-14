@@ -11,6 +11,7 @@ using System.Linq;
 using System.Windows.Controls;
 using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
+using JetBrains.Lifetimes;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Scope;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Settings;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Templates;
@@ -20,7 +21,7 @@ using TestCop.Plugin.Helper;
 
 
 namespace TestCop.Plugin.OptionsPage
-{    
+{
     public class IsAFileTemplateValidationRule : ValidationRule
     {
         private readonly Lifetime _lifetime;

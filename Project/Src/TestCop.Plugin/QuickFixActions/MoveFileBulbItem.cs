@@ -23,6 +23,7 @@ using JetBrains.TextControl;
 using JetBrains.Util;
 using TestCop.Plugin.Highlighting;
 using JetBrains.ReSharper.Resources.Shell;
+using JetBrains.Lifetimes;
 
 namespace TestCop.Plugin.QuickFixActions
 {    
@@ -51,7 +52,7 @@ namespace TestCop.Plugin.QuickFixActions
                 var dataProvider = new MoveToFolderDataProvider(true, false, targetFolder, new List<string>(), new List<string>());
                 workflow.SetDataProvider(dataProvider);
               
-                Lifetimes.Using(
+                Lifetime.Using(
                     (lifetime => WorkflowExecuter.ExecuteWithCustomHost(
                         Shell.Instance.GetComponent<IActionManager>()
                         .DataContexts.CreateWithoutDataRules(lifetime

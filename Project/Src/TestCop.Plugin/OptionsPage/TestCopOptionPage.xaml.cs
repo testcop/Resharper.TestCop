@@ -36,10 +36,11 @@ using TestCop.Plugin.Helper;
 using Binding = System.Windows.Data.Binding;
 using ListBox = System.Windows.Controls.ListBox;
 using TextBox = System.Windows.Controls.TextBox;
+using JetBrains.Lifetimes;
 
 namespace TestCop.Plugin.OptionsPage
 {
-  [OptionsPage(PID, "TestCop ", typeof(UnnamedThemedIcons.Agent16x16), ParentId = ToolsPage.PID)]  
+    [OptionsPage(PID, "TestCop ", typeof(UnnamedThemedIcons.Agent16x16), ParentId = ToolsPage.PID)]  
   public partial class TestCopOptionPage : IOptionsPage
   {      
       private readonly Lifetime _lifetime;

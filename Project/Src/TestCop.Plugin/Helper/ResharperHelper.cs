@@ -16,6 +16,7 @@ using JetBrains.Application.UI.PopupLayout;
 using JetBrains.Application.UI.Tooltips;
 using JetBrains.DataFlow;
 using JetBrains.DocumentModel;
+using JetBrains.Lifetimes;
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Util;

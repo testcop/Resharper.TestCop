@@ -11,6 +11,7 @@ using JetBrains.ReSharper.Psi.DataContext;
 using JetBrains.ReSharper.Psi.Services;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.TextControl;
+using JetBrains.Lifetimes;
 
 using JetBrains.ReSharper.Resources.Shell;
 

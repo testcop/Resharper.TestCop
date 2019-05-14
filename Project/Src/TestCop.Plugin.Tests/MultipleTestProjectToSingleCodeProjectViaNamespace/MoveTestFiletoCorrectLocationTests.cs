@@ -12,6 +12,7 @@ using JetBrains.Application.Threading;
 using JetBrains.Application.UI.ActionsRevised.Menu;
 using JetBrains.DataFlow;
 using JetBrains.DocumentManagers.Transactions;
+using JetBrains.Lifetimes;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi;
@@ -83,7 +84,7 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProjectViaNamespac
                     );
                 DoTestFiles(testName);
 
-                Lifetimes.Using(lifetime =>
+                Lifetime.Using(lifetime =>
                                 {
                                     LoadedTestSolution.Locks.ExecuteWithReadLock(() =>
                                                                                  {
