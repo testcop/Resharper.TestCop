@@ -9,9 +9,9 @@ using System.Collections.Generic;
 using JetBrains.Application.DataContext;
 using JetBrains.Application.Progress;
 using JetBrains.Application.UI.Actions.ActionManager;
-using JetBrains.DataFlow;
 using JetBrains.DocumentManagers.impl;
 using JetBrains.DocumentManagers.Transactions;
+using JetBrains.Lifetimes;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Bulbs;
 using JetBrains.ReSharper.Feature.Services.Intentions;
@@ -51,7 +51,7 @@ namespace TestCop.Plugin.QuickFixActions
                 var dataProvider = new MoveToFolderDataProvider(true, false, targetFolder, new List<string>(), new List<string>());
                 workflow.SetDataProvider(dataProvider);
               
-                Lifetimes.Using(
+                Lifetime.Using(
                     (lifetime => WorkflowExecuter.ExecuteWithCustomHost(
                         Shell.Instance.GetComponent<IActionManager>()
                         .DataContexts.CreateWithoutDataRules(lifetime

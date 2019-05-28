@@ -3,6 +3,7 @@ using System.Linq;
 using JetBrains.Application.DataContext;
 using JetBrains.Application.UI.Actions.ActionManager;
 using JetBrains.DataFlow;
+using JetBrains.Lifetimes;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.ExpressionSelection;
 using JetBrains.ReSharper.Feature.Services.Util;

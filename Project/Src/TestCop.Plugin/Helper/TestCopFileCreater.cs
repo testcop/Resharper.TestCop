@@ -11,6 +11,7 @@ using JetBrains.Application.DataContext;
 using JetBrains.Application.Settings;
 using JetBrains.DataFlow;
 using JetBrains.DocumentManagers.impl;
+using JetBrains.Lifetimes;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.Context;
 using JetBrains.ReSharper.Feature.Services.LiveTemplates.FileTemplates;
@@ -79,7 +80,7 @@ namespace TestCop.Plugin.Helper
 
             string extension = Enumerable.First(_fileExtensions.GetExtensions(projectItem.Project.ProjectProperties.DefaultLanguage.DefaultProjectFileType));
 
-            FileTemplatesManager.Instance.CreateFileFromTemplate(targetFile + extension, new ProjectFolderWithLocation(folder), classTemplate);
+            FileTemplatesManager.Instance.CreateFileFromTemplateAsync(targetFile + extension, new ProjectFolderWithLocation(folder), classTemplate);
         }
 
         private static IProjectFolder GetOrCreateProjectFolder(TestCopProjectItem projectItem)
