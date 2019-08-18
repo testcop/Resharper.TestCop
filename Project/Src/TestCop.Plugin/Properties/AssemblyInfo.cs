@@ -18,7 +18,7 @@ using TestCop.Plugin.Highlighting;
 [assembly: AssemblyProduct("TestCop")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyCopyright("Copyright 2018")]
+[assembly: AssemblyCopyright("Copyright 2019")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -40,8 +40,8 @@ using TestCop.Plugin.Highlighting;
 // [assembly: AssemblyVersion("1.0.*")]
 
 
-[assembly: AssemblyVersion("1.10.6.4")]
-[assembly: AssemblyFileVersion("1.10.6.4")]
+[assembly: AssemblyVersion("1.10.8.1")]
+[assembly: AssemblyFileVersion("1.10.8.1")]
 
 [assembly: RegisterStaticHighlightingsGroup(Highlighter.HighlightingGroup, "Testing", true)]
 [assembly: RegisterConfigurableHighlightingsGroup("Testing", "Testing")]

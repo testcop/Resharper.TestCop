@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-
+using System.Threading.Tasks;
 using JetBrains.Annotations;
 using JetBrains.Application.Components;
 using JetBrains.Application.DataContext;
@@ -20,6 +20,7 @@ using JetBrains.Application.UI.ActionsRevised.Menu;
 using JetBrains.Application.UI.Controls.JetPopupMenu;
 using JetBrains.DataFlow;
 using JetBrains.IDE;
+using JetBrains.Lifetimes;
 using JetBrains.ProjectModel;
 using JetBrains.ProjectModel.Properties;
 using JetBrains.ReSharper.Daemon.Impl;
@@ -183,7 +184,7 @@ namespace TestCop.Plugin.Tests
 
         protected virtual void DumperShortCutAction(IProjectFile projectFile, TextWriter textwriter)
         {            
-            Lifetimes.Using((lifetime =>
+            Lifetime.Using((lifetime =>
                              {
                                 var textControl = OpenTextControl(projectFile);
                                 try
@@ -221,9 +222,10 @@ namespace TestCop.Plugin.Tests
         }
 
         protected ITextControl OpenTextControl(IProjectFile projectFile, int? caretOffset = null)
-        {            
-            ITextControl openProjectFile = EditorManager.GetInstance(projectFile.GetSolution()).OpenProjectFile(projectFile, new OpenFileOptions(true));
-            return openProjectFile;
+        {
+            Task<ITextControl> openProjectFileAsync = EditorManager.GetInstance(projectFile.GetSolution()).OpenProjectFileAsync(projectFile, new OpenFileOptions(true));
+            openProjectFileAsync.Wait();
+            return openProjectFileAsync.Result;
         }
 
         public Action<JetPopupMenus, JetPopupMenu, JetPopupMenu.ShowWhen> CreateJetPopMenuShowToWriterAction(TextWriter textWriter)

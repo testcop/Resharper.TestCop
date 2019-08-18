@@ -16,6 +16,7 @@ using JetBrains.DataFlow;
 using JetBrains.DocumentManagers;
 using JetBrains.DocumentModel;
 using JetBrains.IDE;
+using JetBrains.Lifetimes;
 using JetBrains.Metadata.Reader.API;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Navigation;
@@ -78,10 +79,8 @@ namespace TestCop.Plugin.Helper
                 var simpleMenuItems = DescribeFilesAssociatedWithDeclaredElement(lifetime, DocumentManager.GetInstance(solution),
                                                                                  declaredElement
                                                                                  ,
-                                                                                 p =>
-                                                                                 () =>
-                                                                                 EditorManager.GetInstance(solution).
-                                                                                     OpenProjectFile(p, new OpenFileOptions(true))
+                                                                                 p => async () =>
+                                                                                 await EditorManager.GetInstance(solution).OpenProjectFileAsync(p, new OpenFileOptions(true)).ConfigureAwait(false)
                     );
                 menuItems.AddRange(simpleMenuItems);
             }

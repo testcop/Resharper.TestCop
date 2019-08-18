@@ -13,6 +13,7 @@ using JetBrains.Application.Settings;
 using JetBrains.Application.Threading;
 using JetBrains.DataFlow;
 using JetBrains.DocumentManagers;
+using JetBrains.Lifetimes;
 using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Psi;
 using JetBrains.TestFramework;
@@ -42,7 +43,7 @@ namespace TestCop.Plugin.Tests.RenameRefactoring
         {            
             ExecuteWithinSettingsTransaction((settingsStore =>
             {
-            this.RunGuarded((Action)(() => Lifetimes.Using((Action<Lifetime>)(lifetime =>
+            this.RunGuarded((Action)(() => Lifetime.Using((Action<Lifetime>)(lifetime =>
             {                
                 ConfigureForTestCopStrategy(settingsStore);
 
