@@ -5,14 +5,17 @@
 // --
  
 using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
 using JetBrains;
+using JetBrains.Annotations;
 using JetBrains.Application.Icons;
 using JetBrains.Application.Settings;
 using JetBrains.Application.UI.Components.UIApplication;
@@ -526,6 +529,14 @@ namespace TestCop.Plugin.OptionsPage
           
           tb.Append(hyperl);
           hyperl.RequestNavigate += (sender, args) => System.Diagnostics.Process.Start(args.Uri.AbsoluteUri);    
+      }
+
+      public event PropertyChangedEventHandler PropertyChanged;
+
+      [NotifyPropertyChangedInvocator]
+      protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+      {
+          PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
       }
   }
 }

@@ -1,7 +1,7 @@
 // --
 // -- TestCop http://github.com/testcop
 // -- License http://github.com/testcop/license
-// -- Copyright 2017
+// -- Copyright 2019
 // --
 
 using System.Collections.Generic;
@@ -35,9 +35,9 @@ namespace TestCop.Plugin
         private readonly IContextBoundSettingsStore _settings;
         private readonly DefaultHighlightingConsumer _highlightingConsumer;
 
-        public IReadOnlyCollection<HighlightingInfo> Highlightings
+        public IReadOnlyList<HighlightingInfo> Highlightings
         {
-            get { return _highlightingConsumer.Highlightings; }
+            get { return _highlightingConsumer.Highlightings.AsIReadOnlyList(); }
         }
 
         protected void AddHighlighting(DocumentRange range, IHighlighting highlighting)

@@ -1,7 +1,7 @@
 // --
 // -- TestCop http://github.com/testcop
 // -- License http://github.com/testcop/license
-// -- Copyright 2017
+// -- Copyright 2019
 // --
 
 using System;
@@ -33,9 +33,9 @@ namespace TestCop.Plugin
             _highlightingConsumer.AddHighlighting(highlighting, range);
         }
 
-        public IReadOnlyCollection<HighlightingInfo> Highlightings
+        public IReadOnlyList<HighlightingInfo> Highlightings
         {
-            get { return _highlightingConsumer.Highlightings; }
+            get { return _highlightingConsumer.Highlightings.AsIReadOnlyList(); }
         }
 
         public ProjectAnalysisElementProcessor(ProjectAnalysisDaemonStageProcess stageProcess, IDaemonProcess process, IContextBoundSettingsStore settings )
