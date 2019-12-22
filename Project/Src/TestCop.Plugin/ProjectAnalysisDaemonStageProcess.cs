@@ -13,6 +13,7 @@ using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.UnitTestFramework.DotNetCore.Exceptions;
+using JetBrains.Util;
 
 namespace TestCop.Plugin
 {

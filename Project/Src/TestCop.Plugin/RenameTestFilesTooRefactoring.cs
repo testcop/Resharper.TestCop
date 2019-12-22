@@ -43,12 +43,10 @@ namespace TestCop.Plugin
 
                 if (!project.IsTestProject())
                 {
-                    var projectFiles = declaredElement.GetSourceFiles().ToList(x => x.ToProjectFile());
-                    //get associated projects..
-
                     IList<TestCopProjectItem> targetProjects = new List<TestCopProjectItem>();
-                    foreach (var projectFile in projectFiles)
+                    foreach (var sourceFile in declaredElement.GetSourceFiles())
                     {
+                        var projectFile = sourceFile.ToProjectFile();
                         targetProjects.AddRange(project.GetAssociatedProjects(projectFile, classNameBeingRenamed));
                     }
                     
