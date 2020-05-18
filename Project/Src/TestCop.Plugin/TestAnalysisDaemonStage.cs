@@ -13,7 +13,7 @@ using JetBrains.ReSharper.Psi.CSharp.Tree;
 
 namespace TestCop.Plugin
 {
-    [DaemonStage]
+    [DaemonStage(StagesBefore = new [] {typeof(FilteringHighlightingDaemonStage)})]
     public class TestAnalysisDaemonStage : CSharpDaemonStageBase
     {
         private readonly IShellLocks myShellLocks;
@@ -37,7 +37,7 @@ namespace TestCop.Plugin
         }             
     }
 
-    [DaemonStage]
+    [DaemonStage(StagesBefore = new [] {typeof(FilteringHighlightingDaemonStage)})]
     public class TestAnalysisProjectDaemonStage : CSharpDaemonStageBase
     {
         /// <summary>
