@@ -85,6 +85,8 @@ namespace TestCop.Plugin
             var allProjectFiles = allProjectFileLocations.Select(loc => loc.FullPath).ToList();
             var allProjectFolders = allProjectFileLocations.Select(loc => loc.Directory).Distinct();
 
+            allProjectFolders = allProjectFolders.Where(x => !InDirectory(directoriesToSkip, x));
+
             var filesOnDisk = new List<FileInfo>();
             filesToFind.ForEach(regex => filesOnDisk.AddRange(
                                     allProjectFolders.SelectMany(
@@ -102,8 +104,7 @@ namespace TestCop.Plugin
                 if (allProjectFiles.Any(
                     x => String.Compare(x, fileOnDisk.FullName, StringComparison.OrdinalIgnoreCase) == 0)) continue;
                 
-                if(!InDirectory(directoriesToSkip, FileSystemPath.TryParse(fileOnDisk.FullName)))
-                    orphanedFiles.Add(fileOnDisk);
+                orphanedFiles.Add(fileOnDisk);
             }
 
             if (orphanedFiles.Count > 0)
