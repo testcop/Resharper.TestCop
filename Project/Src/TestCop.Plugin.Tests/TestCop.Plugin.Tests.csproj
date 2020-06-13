@@ -390,6 +390,7 @@
   <ItemGroup>
     <Compile Include="Helper\Mapper\CodeProjectMapsToSingleTestProjectHeperTests.cs" />
     <Compile Include="MultipleTestProjectToSingleCodeProjectViaNamespace\MoveTestFiletoCorrectLocationTests.cs" />
+    <Compile Include="ProjectAnalysisElementProcessorTests.cs" />
     <Compile Include="RenameRefactoring\RenameTestFilesTooRefactoring.TestProjectHasSameNamespaceAsCodeProjectTests.cs" />
     <Compile Include="RenameRefactoring\RenameTestFilesTooRefactoringTestBase.cs" />
     <Compile Include="RenameRefactoring\RenameTestFilesTooRefactoring.SingleTestProjectPerSolutionTests.cs" />
