@@ -1,7 +1,7 @@
 // --
 // -- TestCop http://github.com/testcop
 // -- License http://github.com/testcop/license
-// -- Copyright 2013
+// -- Copyright 2020
 // --
 
 using JetBrains.ProjectModel;
@@ -9,19 +9,16 @@ using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.Util;
-using TestCop.Plugin.Highlighting;
-
-[assembly: RegisterConfigurableSeverity(
-    TestFileNameSpaceWarning.SeverityId,
-    null, Highlighter.HighlightingGroup,
-    "Namespace of file doesn't match its location",
-    "Namespace of file doesn't match its location",
-    Severity.WARNING)]
 
 namespace TestCop.Plugin.Highlighting
 {
-    
     [ConfigurableSeverityHighlighting(SeverityId, CSharpLanguage.Name)]
+    [RegisterConfigurableSeverity(
+        TestFileNameSpaceWarning.SeverityId,
+        null, Highlighter.HighlightingGroup,
+        "Namespace of file doesn't match its location",
+        "Namespace of file doesn't match its location",
+        Severity.WARNING)]
     public class TestFileNameSpaceWarning : HighlightingBase, IHighlighting
     {
         internal const string SeverityId = "TestFileNameSpaceWarning";

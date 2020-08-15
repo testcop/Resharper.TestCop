@@ -155,7 +155,6 @@ namespace TestCop.Plugin
 			///<example>
 			///  <code>themediconmanager.GetIcon&lt;UnnamedThemedIcons.Agent48x48&gt;()        // Icon image for rendering</code>
 			///</example>
-
 			public static global::JetBrains.UI.Icons.IconId Id = new global::JetBrains.UI.Icons.CompiledIcons.CompiledIconId("Resharper.Testcop;component/resources/ThemedIcons.Unnamed.Generated.Xaml", 0, "Agent48x48");
 		}
 		

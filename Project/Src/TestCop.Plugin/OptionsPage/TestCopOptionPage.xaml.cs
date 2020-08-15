@@ -55,6 +55,7 @@ namespace TestCop.Plugin.OptionsPage
       private readonly ISolution _solution;
       private const string PID = "TestCopPageId";
       private readonly FileTemplatesManager _fileTemplatesManager;
+      private readonly ILogger _logger;
       
       public TestCopOptionPage(Lifetime lifetime, OptionsSettingsSmartContext settings, TemplateScopeManager scopeManager
           , IThemedIconManager iconManager, UIApplication application
@@ -68,6 +69,7 @@ namespace TestCop.Plugin.OptionsPage
           _fileTemplatesManager = fileTemplatesManager;          
           _storedTemplatesProvider = storedTemplatesProvider;
           _templatesUiHelper = templatesUiHelper;
+          _logger = Logger.GetLogger<TestCopOptionPage>();
 
           InitializeComponent();
           var testFileAnalysisSettings = settings.GetKey<TestFileAnalysisSettings>(SettingsOptimization.DoMeSlowly);
@@ -456,16 +458,16 @@ namespace TestCop.Plugin.OptionsPage
       private void ResetButton_OnClick(object sender, RoutedEventArgs e)
       {
           SingleTestNamespaceRegExTextBox.Text=
-            SettingsEntryAttribute.ReflectionHelpers.GetDefaultValueFromRuntimeType<TestFileAnalysisSettings, string>(l => l.SingleTestRegexTestToAssembly, Logger.Interface);
+            SettingsEntryAttribute.ReflectionHelpers.GetDefaultValueFromRuntimeType<TestFileAnalysisSettings, string>(l => l.SingleTestRegexTestToAssembly, _logger) ?? string.Empty;
           SingleTestNamespaceToAssemblyRegExReplaceTextBox.Text =
-            SettingsEntryAttribute.ReflectionHelpers.GetDefaultValueFromRuntimeType<TestFileAnalysisSettings, string>(l => l.SingleTestRegexTestToAssemblyProjectReplace, Logger.Interface);
+            SettingsEntryAttribute.ReflectionHelpers.GetDefaultValueFromRuntimeType<TestFileAnalysisSettings, string>(l => l.SingleTestRegexTestToAssemblyProjectReplace, _logger) ?? string.Empty;
           SingleTestNamespaceToAssemblySubNameSpaceRegExReplaceTextBox.Text =
-            SettingsEntryAttribute.ReflectionHelpers.GetDefaultValueFromRuntimeType<TestFileAnalysisSettings, string>(l => l.SingleTestRegexTestToAssemblyProjectSubNamespaceReplace, Logger.Interface);
+            SettingsEntryAttribute.ReflectionHelpers.GetDefaultValueFromRuntimeType<TestFileAnalysisSettings, string>(l => l.SingleTestRegexTestToAssemblyProjectSubNamespaceReplace, _logger) ?? string.Empty;
           SingleTestCodeNamespaceRegExTextBox.Text =
-            SettingsEntryAttribute.ReflectionHelpers.GetDefaultValueFromRuntimeType<TestFileAnalysisSettings, string>(l => l.SingleTestRegexCodeToTestAssembly, Logger.Interface);
-          SingleTestCodeNamespaceToTestRegExReplaceTextBox.Text =
-            SettingsEntryAttribute.ReflectionHelpers.GetDefaultValueFromRuntimeType<TestFileAnalysisSettings, string>(l => l.SingleTestRegexCodeToTestReplace, Logger.Interface);
-      }
+            SettingsEntryAttribute.ReflectionHelpers.GetDefaultValueFromRuntimeType<TestFileAnalysisSettings, string>(l => l.SingleTestRegexCodeToTestAssembly, _logger) ?? string.Empty;
+            SingleTestCodeNamespaceToTestRegExReplaceTextBox.Text =
+            SettingsEntryAttribute.ReflectionHelpers.GetDefaultValueFromRuntimeType<TestFileAnalysisSettings, string>(l => l.SingleTestRegexCodeToTestReplace, _logger) ?? string.Empty;
+        }
 
       private void TestCopStrategyCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
       {

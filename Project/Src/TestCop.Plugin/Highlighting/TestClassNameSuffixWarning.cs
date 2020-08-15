@@ -1,23 +1,21 @@
 // --
 // -- TestCop http://github.com/testcop
 // -- License http://github.com/testcop/license
-// -- Copyright 2014
+// -- Copyright 2020
 // --
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.Tree;
-using TestCop.Plugin.Highlighting;
-
-[assembly: RegisterConfigurableSeverity(
-       TestClassNameSuffixWarning.SeverityId,
-       null, Highlighter.HighlightingGroup,
-       "All test classes should have the same suffix",
-       "TestCop : To easily identify a test class by its name it must have the configured suffix",
-       Severity.ERROR)]
 
 namespace TestCop.Plugin.Highlighting
 {
     [ConfigurableSeverityHighlighting(SeverityId, CSharpLanguage.Name)]
+    [RegisterConfigurableSeverity(
+        TestClassNameSuffixWarning.SeverityId,
+        null, Highlighter.HighlightingGroup,
+        "All test classes should have the same suffix",
+        "TestCop : To easily identify a test class by its name it must have the configured suffix",
+        Severity.ERROR)]
     public class TestClassNameSuffixWarning : AbstractTestClassNameWarning
     {
         internal const string SeverityId = "TestClassNameSuffixWarning";

@@ -1,24 +1,22 @@
 // --
 // -- TestCop http://github.com/testcop
 // -- License http://github.com/testcop/license
-// -- Copyright 2013
+// -- Copyright 2020
 // --
 
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.Tree;
-using TestCop.Plugin.Highlighting;
-
-[assembly: RegisterConfigurableSeverity(
-    TestFileNameWarning.SeverityId,
-    null, Highlighter.HighlightingGroup,
-    "The file name for the test does not match testcop rules would be ClassATests.cs or ClassA.SecurityTests.cs or ClassA.SecurityIntegrationTests.cs",
-    "Consistent naming aids code navigation and refactorings",
-    Severity.WARNING)]
 
 namespace TestCop.Plugin.Highlighting
 {
     [ConfigurableSeverityHighlighting(SeverityId, CSharpLanguage.Name)]
+    [RegisterConfigurableSeverity(
+        TestFileNameWarning.SeverityId,
+        null, Highlighter.HighlightingGroup,
+        "The file name for the test does not match testcop rules would be ClassATests.cs or ClassA.SecurityTests.cs or ClassA.SecurityIntegrationTests.cs",
+        "Consistent naming aids code navigation and refactorings",
+        Severity.WARNING)]
     public class TestFileNameWarning : HighlightingBase, IHighlighting
     {
         internal const string SeverityId = "TestFileNameWarning";

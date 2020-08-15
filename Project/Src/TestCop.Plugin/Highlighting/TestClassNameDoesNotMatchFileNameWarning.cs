@@ -1,24 +1,22 @@
 // --
 // -- TestCop http://github.com/testcop
 // -- License http://github.com/testcop/license
-// -- Copyright 2014
+// -- Copyright 2020
 // --
 
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.Tree;
-using TestCop.Plugin.Highlighting;
 
-[assembly: RegisterConfigurableSeverity(
+namespace TestCop.Plugin.Highlighting
+{
+    [ConfigurableSeverityHighlighting(SeverityId, CSharpLanguage.Name)]
+    [RegisterConfigurableSeverity(
         TestClassNameDoesNotMatchFileNameWarning.SeverityId,
         null, Highlighter.HighlightingGroup,
         "Test class name should match file name",
         "TestCop : The name of the test file should match the test class name it contains",
         Severity.ERROR)]
-
-namespace TestCop.Plugin.Highlighting
-{
-    [ConfigurableSeverityHighlighting(SeverityId, CSharpLanguage.Name)]
     public class TestClassNameDoesNotMatchFileNameWarning : AbstractTestClassNameWarning
     {
         internal const string SeverityId = "TestClassNameDoesNotMatchFileNameWarning";

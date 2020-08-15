@@ -1,7 +1,7 @@
 ﻿// --
 // -- TestCop http://github.com/testcop
 // -- License http://github.com/testcop/license
-// -- Copyright 2015
+// -- Copyright 2020
 // --
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +16,9 @@ using TestCop.Plugin.Extensions;
 
 namespace TestCop.Plugin
 {    
-    [Action("Testcop Run Unit Tests", Id = 92407+1, ShortcutScope = ShortcutScope.TextEditor, Icon = typeof(UnnamedThemedIcons.Agent16x16))]
+    [Action("TestCop Run Unit Tests", Id = 92407+1, ShortcutScope = ShortcutScope.TextEditor, Icon = typeof(UnnamedThemedIcons.Agent16x16)
+     , IdeaShortcuts = new []{"Control+G Control+X"}, VsShortcuts = new []{"Control+G Control+X"}
+    )]
     public class TestCopUnitTestRunContextAction : UnitTestRunFromContextAction
     {
         protected override IHostProvider GetHostProvider()

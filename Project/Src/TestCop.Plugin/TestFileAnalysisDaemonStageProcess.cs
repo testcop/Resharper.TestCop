@@ -1,7 +1,7 @@
 ﻿// --
 // -- TestCop http://github.com/testcop
 // -- License http://github.com/testcop/license
-// -- Copyright 2018
+// -- Copyright 2020
 // --
 
 using System;
@@ -13,8 +13,6 @@ using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.Tree;
-using JetBrains.ReSharper.UnitTestFramework.DotNetCore.Exceptions;
-using JetBrains.Util;
 using TestCop.Plugin.Extensions;
 using TestCop.Plugin.Helper;
 
@@ -54,7 +52,7 @@ namespace TestCop.Plugin
 
             // Checking if the daemon is interrupted by user activity
             if (_myDaemonProcess.InterruptFlag)
-                throw new ProcessExitedUnexpectedlyException();
+                throw new OperationCanceledException();
 
             // Commit the result into document
             commiter(new DaemonStageResult(elementProcessor.Highlightings));

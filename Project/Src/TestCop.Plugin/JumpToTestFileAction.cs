@@ -1,7 +1,7 @@
 ﻿// --
 // -- TestCop http://github.com/testcop
 // -- License http://github.com/testcop/license
-// -- Copyright 2017
+// -- Copyright 2020
 // --
 
 using System;
@@ -35,8 +35,7 @@ using TestCop.Plugin.Helper;
 namespace TestCop.Plugin
 {
     [Action("Jump to and from test file", Id = 92407, ShortcutScope = ShortcutScope.TextEditor, Icon = typeof(UnnamedThemedIcons.Agent16x16)
-        //    , IdeaShortcuts = new []{"Control+G Control+T"}
-        //    , VsShortcuts = new []{"Control+G Control+T"}
+        , IdeaShortcuts = new []{"Control+G Control+T"}, VsShortcuts = new []{"Control+G Control+T"}
         )]
     public class JumpToTestFileAction : IExecutableAction, IInsertLast<NavigateGlobalGroup>
     {

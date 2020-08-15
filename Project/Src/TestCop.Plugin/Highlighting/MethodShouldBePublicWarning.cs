@@ -1,23 +1,21 @@
 // --
 // -- TestCop http://github.com/testcop
 // -- License http://github.com/testcop/license
-// -- Copyright 2014
+// -- Copyright 2020
 // --
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.Tree;
-using TestCop.Plugin.Highlighting;
 
-[assembly: RegisterConfigurableSeverity(
+namespace TestCop.Plugin.Highlighting
+{
+    [ConfigurableSeverityHighlighting(SeverityId, CSharpLanguage.Name)]
+    [RegisterConfigurableSeverity(
         MethodShouldBePublicWarning.SeverityId,
         null, Highlighter.HighlightingGroup,
         "Test method should be public",
         "TestCop : Method with testing attributes should be public",
         Severity.ERROR)]
-
-namespace TestCop.Plugin.Highlighting
-{
-    [ConfigurableSeverityHighlighting(SeverityId, CSharpLanguage.Name)]
     public class MethodShouldBePublicWarning : AbstractShouldBePublicWarning
     {
         internal const string SeverityId = "MethodShouldBePublic";

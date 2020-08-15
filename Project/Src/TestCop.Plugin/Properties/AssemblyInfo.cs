@@ -41,9 +41,9 @@ using TestCop.Plugin.Highlighting;
 
 
 
-[assembly: AssemblyVersion("1.10.10.3")]
-[assembly: AssemblyFileVersion("1.10.10.3")]
+[assembly: AssemblyVersion("1.10.11.4")]
+[assembly: AssemblyFileVersion("1.10.11.4")]
 
-[assembly: RegisterStaticHighlightingsGroup(Highlighter.HighlightingGroup, "Testing", true)]
-[assembly: RegisterConfigurableHighlightingsGroup("Testing", "Testing")]
+//[assembly: RegisterStaticHighlightingsGroup( "Testing", true)]
+//[assembly: RegisterConfigurableHighlightingsGroup("Testing", "Testing", Highlighter.HighlightingGroup)]
     

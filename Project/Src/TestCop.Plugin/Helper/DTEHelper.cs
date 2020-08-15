@@ -48,13 +48,17 @@ namespace TestCop.Plugin.Helper
                             return;
                         }
                     }
-
+                    /* TODO
                     command.Bindings = string.IsNullOrEmpty(keyboardShortcut)
                         ? new Object[] {}
                         : new Object[] {keyboardShortcut};
                     GetOutputWindowPane(dte, "TestCop", showOutputPane).OutputString(
-                        string.Format("Setting keyboard shortcut for '{0}' to '{1}'\n", macroName, keyboardShortcut)
+                        string.Format("TestCop is setting keyboard shortcut for '{0}' to '{1}'\n", macroName, keyboardShortcut)
                         );
+                    */
+                    GetOutputWindowPane(dte, "TestCop", showOutputPane).OutputString(
+                        string.Format("TestCop SKIPPED setting keyboard shortcut for '{0}' to '{1}'\n", macroName, keyboardShortcut)
+                    );
                 }
             }
             catch (Exception e)
