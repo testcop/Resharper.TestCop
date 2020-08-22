@@ -59,14 +59,14 @@
                     <TextBlock TextWrapping="Wrap" Height="auto" FontWeight="Bold"><Run Text="Keyboard Shortcut"/><Run Language="en-gb" Text="s"/></TextBlock>
                     <StackPanel Orientation="Horizontal" Margin="-1,0,1,0" >
                         <TextBlock TextWrapping="Wrap" Height="auto" ><Run Text="Shortcut to switch between test and code:"/></TextBlock>
-                        <TextBox x:Name="SwitchBetweenFilesShortcutTextBox" Width="150" MaxLength="50" Foreground="#FFEC3939"/>
+                        <TextBox x:Name="SwitchBetweenFilesShortcutTextBox" Width="150" MaxLength="50" Foreground="#FFEC3939" IsEnabled="False"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="-1,0,1,0" >
                         <TextBlock TextWrapping="Wrap" Height="auto" ><Run Text="Shortcut to run associated tests:"/></TextBlock>
-                        <TextBox x:Name="RunTestsShortcutTextBox" Width="150" MaxLength="50" Foreground="#FFEC3939"/>
+                        <TextBox x:Name="RunTestsShortcutTextBox" Width="150" MaxLength="50" Foreground="#FFEC3939" IsEnabled="False"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="-1,0,1,0" >
-                        <CheckBox Content="Show panel when mapping keyboard shortcut" x:Name="OutputPanelOpenOnKeyboardMapping" />
+                        <CheckBox Content="Show panel when mapping keyboard shortcut" x:Name="OutputPanelOpenOnKeyboardMapping" IsEnabled="False" />
                     </StackPanel>
                     <Separator Height="21" Margin="0" HorizontalAlignment="Right" Width="390"/>
                     <TextBlock TextWrapping="Wrap" Height="auto" FontWeight="Bold"><Run Text="Orphaned Files"/><Run Language="en-gb" Text="s"/></TextBlock>

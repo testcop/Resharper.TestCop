@@ -523,16 +523,17 @@
     <Compile Include="QuickFixActions\DeleteFileBulbItem.cs" />
     <Compile Include="QuickFixActions\MoveFileBulbItem.cs" />
     <Compile Include="QuickFixActions\MakeItPublicBulbItem.cs" />
+    <Compile Include="RegisterKeyboardShortcuts.cs" />
     <Compile Include="resources\ThemedIcons.Unnamed.Generated.cs" />
     <Compile Include="Extensions\ProjectExtensions.cs" />
-    <Compile Include="RunTestAction.cs">
+    <Compile Include="TestCopUnitTestRunContextAction.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="SimpleMenuItemForProjectItem.cs" />
     <Compile Include="TestFileAnalysisSettings.cs" />
     <Compile Include="TestAnalysisDaemonStage.cs" />
     <Compile Include="TestFileAnalysisDaemonStageProcess.cs" />
-    <Compile Include="JumpToTestFileAction.cs" />
+    <Compile Include="TestCopJumpToTestFileAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helper\ResharperHelper.cs" />
     <Compile Include="TestFileAnalysisElementProcessor.cs" />

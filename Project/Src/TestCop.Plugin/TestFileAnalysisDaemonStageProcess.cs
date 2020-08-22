@@ -40,7 +40,7 @@ namespace TestCop.Plugin
             {
                 //not a nice solution but I needed a way to ensure the testcop key mappings are put in place
                 _mappedOnceThisSession = true;
-                ResharperHelper.ForceKeyboardBindings(_myShellLocks);
+                ResharperHelper.PrintKeyboardBindings(_myShellLocks);
             }
             
             if (File.GetProject().IsTestProject() == false) 

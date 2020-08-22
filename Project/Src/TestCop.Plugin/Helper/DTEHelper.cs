@@ -1,13 +1,14 @@
 ﻿// --
 // -- TestCop http://github.com/testcop
 // -- License http://github.com/testcop/license
-// -- Copyright 2014
+// -- Copyright 2020
 // --
 
 using System;
 using EnvDTE;
 using JetBrains;
 using JetBrains.ReSharper.Resources.Shell;
+using JetBrains.Util.Logging;
 
 namespace TestCop.Plugin.Helper
 {
@@ -27,7 +28,7 @@ namespace TestCop.Plugin.Helper
         /// <summary>
         /// Must run on main UI thread
         /// </summary>        
-        public static void AssignKeyboardShortcutIfMissing(bool showOutputPane, string macroName, string keyboardShortcut)
+        public static void PrintoutKeyboardShortcut(bool showOutputPane, string macroName, string keyboardShortcut)
         {                   
             var dte = Shell.Instance.GetComponent<DTE>();
 
@@ -39,25 +40,64 @@ namespace TestCop.Plugin.Helper
                 {
                     var currentBindings = (System.Object[]) command.Bindings;
 
-                    if (currentBindings.Length == 1)
+                    if (currentBindings.Length > 0)
                     {
-                        if (currentBindings[0].ToString() == keyboardShortcut)
+                        //if (currentBindings[0].ToString() == keyboardShortcut)
+                        for (int i = 0; i < currentBindings.Length; i++)
                         {
                             GetOutputWindowPane(dte, "TestCop", showOutputPane).OutputString(
-                                string.Format("Keyboard shortcut for '{0}' is '{1}'\n", macroName, keyboardShortcut));
-                            return;
+                                $"TestCop keyboard shortcut for '{macroName}' is already set to '{currentBindings[i]}'\n");
                         }
+                        return;
                     }
-                    /* TODO
+                    GetOutputWindowPane(dte, "TestCop", showOutputPane).OutputString(
+                        $"Within Visual Studio - please map testCop keyboard shortcut for '{macroName}' to '{keyboardShortcut}'\n");
+
+                }
+            }
+            catch (Exception e)
+            {
+                GetOutputWindowPane(dte, "TestCop", showOutputPane).OutputString(
+                    "Error on setting '{0}' to '{1}. Ex={2}'\n".FormatEx(macroName, keyboardShortcut, e.ToString()));
+                Logger.LogException(e);
+            }
+        }
+
+        /// <summary>
+        /// Must run on main UI thread
+        /// </summary>        
+        public static void AssignKeyboardShortcutIfMissing(bool showOutputPane, string macroName, string keyboardShortcut)
+        {
+            var dte = Shell.Instance.GetComponent<DTE>();
+
+            try
+            {
+                var command = dte.Commands.Item(macroName);
+
+                if (command != null)
+                {
+                    var currentBindings = (System.Object[])command.Bindings;
+
+                    if (currentBindings.Length > 0)
+                    {
+                        for (int i = 0; i < currentBindings.Length; i++)
+                        {
+                            Logger.LogMessage($"Note TestCop keyboard shortcut for '{macroName}' is already set to '{currentBindings[i]}'\n");
+
+                            GetOutputWindowPane(dte, "TestCop", showOutputPane).OutputString(
+                                $"Note TestCop keyboard shortcut for '{macroName}' is already set to '{currentBindings[i]}'\n");
+                        }
+                        return;
+                    }
+                    
                     command.Bindings = string.IsNullOrEmpty(keyboardShortcut)
                         ? new Object[] {}
                         : new Object[] {keyboardShortcut};
+
+                    Logger.LogMessage($"TestCop is setting keyboard shortcut for '{macroName}' to '{keyboardShortcut}'\n");
+
                     GetOutputWindowPane(dte, "TestCop", showOutputPane).OutputString(
-                        string.Format("TestCop is setting keyboard shortcut for '{0}' to '{1}'\n", macroName, keyboardShortcut)
-                        );
-                    */
-                    GetOutputWindowPane(dte, "TestCop", showOutputPane).OutputString(
-                        string.Format("TestCop SKIPPED setting keyboard shortcut for '{0}' to '{1}'\n", macroName, keyboardShortcut)
+                        $"TestCop is setting keyboard shortcut for '{macroName}' to '{keyboardShortcut}'\n"
                     );
                 }
             }
@@ -65,9 +105,10 @@ namespace TestCop.Plugin.Helper
             {
                 GetOutputWindowPane(dte, "TestCop", showOutputPane).OutputString(
                     "Error on setting '{0}' to '{1}. Ex={2}'\n".FormatEx(macroName, keyboardShortcut, e.ToString()));
+                Logger.LogException(e);
             }
         }
-        
+
         public static OutputWindowPane GetOutputWindowPane(string name, bool show)
         {               
             var dte = Shell.Instance.GetComponent<DTE>();

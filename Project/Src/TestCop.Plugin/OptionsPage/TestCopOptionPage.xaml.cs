@@ -98,9 +98,6 @@ namespace TestCop.Plugin.OptionsPage
           testFileAnalysisSettings.TestingAttributes().ForEach(p => testingAttributesListBox.Items.Add(p));
           testFileAnalysisSettings.BddPrefixes().ForEach(p => contextPrefixesListBox.Items.Add(p));
 
-          SwitchBetweenFilesShortcutTextBox.Text = testFileAnalysisSettings.ShortcutToSwitchBetweenFiles;
-          RunTestsShortcutTextBox.Text = testFileAnalysisSettings.ShortcutToRunTests;
-
           OrphanedFilesPatternsTextBox.Text = testFileAnalysisSettings.OrphanedFilesPatterns;
 
           BindWithValidationMustBeAFileTemplate(testFileAnalysisSettings, codeTemplateTextBox, P(x=>x.CodeFileTemplateName));
@@ -230,16 +227,6 @@ namespace TestCop.Plugin.OptionsPage
 
           _settings.SetValue((TestFileAnalysisSettings s) => s.SupportRenameRefactor, SupportRenameRefactor.IsChecked);
           _settings.SetValue((TestFileAnalysisSettings s) => s.OrphanedFilesPatterns, OrphanedFilesPatternsTextBox.Text);
-          
-          DTEHelper.AssignKeyboardShortcutIfMissing(
-              true, ResharperHelper.MacroNameSwitchBetweenFiles, SwitchBetweenFilesShortcutTextBox.Text);
-
-          _settings.SetValue((TestFileAnalysisSettings s) => s.ShortcutToSwitchBetweenFiles, SwitchBetweenFilesShortcutTextBox.Text);
-
-          DTEHelper.AssignKeyboardShortcutIfMissing(
-              true, ResharperHelper.MacroNameRunTests, RunTestsShortcutTextBox.Text);
-          
-          _settings.SetValue((TestFileAnalysisSettings s) => s.ShortcutToRunTests, RunTestsShortcutTextBox.Text);
           
           return true;
       }
