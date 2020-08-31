@@ -46,7 +46,7 @@ namespace TestCop.Plugin.Helper
                         for (int i = 0; i < currentBindings.Length; i++)
                         {
                             GetOutputWindowPane(dte, "TestCop", showOutputPane).OutputString(
-                                $"TestCop keyboard shortcut for '{macroName}' is already set to '{currentBindings[i]}'\n");
+                                $"TestCop keyboard shortcut for '{macroName}' is set to '{currentBindings[i]}'\n");
                         }
                         return;
                     }
@@ -82,10 +82,8 @@ namespace TestCop.Plugin.Helper
                     {
                         for (int i = 0; i < currentBindings.Length; i++)
                         {
-                            Logger.LogMessage($"Note TestCop keyboard shortcut for '{macroName}' is already set to '{currentBindings[i]}'\n");
-
-                            GetOutputWindowPane(dte, "TestCop", showOutputPane).OutputString(
-                                $"Note TestCop keyboard shortcut for '{macroName}' is already set to '{currentBindings[i]}'\n");
+                            Logger.LogMessage($"Note that the TestCop keyboard shortcut for '{macroName}' is already set to '{currentBindings[i]}'\n");
+                            //GetOutputWindowPane(dte, "TestCop", showOutputPane).OutputString($"TestCop keyboard shortcut for '{macroName}' is already set to '{currentBindings[i]}'\n");
                         }
                         return;
                     }
