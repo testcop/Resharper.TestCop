@@ -19,7 +19,7 @@
                     <TextBlock  Height="10px" FontWeight="Bold"><Run Text=""/></TextBlock>
                     <Border BorderThickness="1,1,1,1" CornerRadius="8,8,8,8" Background="#FF6FAEAE">
                         <Border BorderThickness="8,5,8,5" >
-                        <TextBlock x:Name="tbStrategyOverview" TextWrapping="Wrap" Height="auto"  HorizontalAlignment="Left" ><Run Text="Strategy...strategy...strategy..."/><LineBreak/><Run Language="en-gb" Text="Strategy..."/><LineBreak/><Run Language="en-gb"/></TextBlock>
+                            <TextBlock x:Name="tbStrategyOverview" TextWrapping="Wrap" Height="auto"  HorizontalAlignment="Left" ><Run Text="Strategy...strategy...strategy..."/><LineBreak/><Run Language="en-gb" Text="Strategy..."/><LineBreak/><Run Language="en-gb"/></TextBlock>
                         </Border>
                     </Border>
                 </StackPanel>
@@ -57,16 +57,10 @@
 
                     <Separator Height="21" Margin="0" HorizontalAlignment="Right" Width="390"/>
                     <TextBlock TextWrapping="Wrap" Height="auto" FontWeight="Bold"><Run Text="Keyboard Shortcut"/><Run Language="en-gb" Text="s"/></TextBlock>
+                    <StackPanel Orientation="Horizontal" Margin="-1,0,1,0" />
+                    <StackPanel Orientation="Horizontal" Margin="-1,0,1,0" />
                     <StackPanel Orientation="Horizontal" Margin="-1,0,1,0" >
-                        <TextBlock TextWrapping="Wrap" Height="auto" ><Run Text="Shortcut to switch between test and code:"/></TextBlock>
-                        <TextBox x:Name="SwitchBetweenFilesShortcutTextBox" Width="150" MaxLength="50" Foreground="#FFEC3939" IsEnabled="False"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="-1,0,1,0" >
-                        <TextBlock TextWrapping="Wrap" Height="auto" ><Run Text="Shortcut to run associated tests:"/></TextBlock>
-                        <TextBox x:Name="RunTestsShortcutTextBox" Width="150" MaxLength="50" Foreground="#FFEC3939" IsEnabled="False"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="-1,0,1,0" >
-                        <CheckBox Content="Show panel when mapping keyboard shortcut" x:Name="OutputPanelOpenOnKeyboardMapping" IsEnabled="False" />
+                        <CheckBox Content="Show panel when mapping keyboard shortcut" x:Name="OutputPanelOpenOnKeyboardMapping" />
                     </StackPanel>
                     <Separator Height="21" Margin="0" HorizontalAlignment="Right" Width="390"/>
                     <TextBlock TextWrapping="Wrap" Height="auto" FontWeight="Bold"><Run Text="Orphaned Files"/><Run Language="en-gb" Text="s"/></TextBlock>

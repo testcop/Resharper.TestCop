@@ -1,7 +1,7 @@
 ﻿// --
 // -- TestCop http://github.com/testcop
 // -- License http://github.com/testcop/license
-// -- Copyright 2014
+// -- Copyright 2020
 // --
  
 using System;
