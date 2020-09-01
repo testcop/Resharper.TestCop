@@ -43,7 +43,7 @@ namespace TestCop.Plugin
              JetPopupMenu menuAction=null;
 
             //Not the most elegant approach but avoids code duplication by using the main TestCop action
-            var switchAction = (IExecutableAction) JumpToTestFileAction.CreateWith((menus, menu, when) => menuAction=menu);
+            var switchAction = (IExecutableAction) TestCopJumpToTestFileAction.CreateWith((menus, menu, when) => menuAction=menu);
             switchAction.Execute(context, null);
 
             if (menuAction == null) 

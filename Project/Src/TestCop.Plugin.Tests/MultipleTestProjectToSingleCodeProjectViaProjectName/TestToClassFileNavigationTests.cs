@@ -28,7 +28,7 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProjectViaProjectN
 
         protected override IExecutableAction GetShortcutAction(TextWriter textwriter)
         {
-            var jumpToTestFileAction = JumpToTestFileAction.CreateWith(CreateJetPopMenuShowToWriterAction(textwriter));
+            var jumpToTestFileAction = TestCopJumpToTestFileAction.CreateWith(CreateJetPopMenuShowToWriterAction(textwriter));
             return jumpToTestFileAction;
         }
         protected override string SolutionName

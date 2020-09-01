@@ -10,7 +10,9 @@ using System.Linq;
 using JetBrains.Application.DataContext;
 using JetBrains.Application.Progress;
 using JetBrains.Application.Settings;
+using JetBrains.Application.Shell;
 using JetBrains.Application.Shortcuts.ShortcutManager;
+using JetBrains.Application.Threading;
 using JetBrains.Application.UI.Actions;
 using JetBrains.Application.UI.ActionsRevised.Menu;
 using JetBrains.Application.UI.ActionSystem.ActionsRevised.Menu;
@@ -36,10 +38,9 @@ namespace TestCop.Plugin
 {
     [Action("Jump to and from test file", Id = 92407, ShortcutScope = ShortcutScope.TextEditor, Icon = typeof(UnnamedThemedIcons.Agent16x16)
         , IdeaShortcuts = new []{"Control+G Control+T"}, VsShortcuts = new []{"Control+G Control+T"}
-        )]
-    public class JumpToTestFileAction : IExecutableAction, IInsertLast<NavigateGlobalGroup>
+    )]
+    public class TestCopJumpToTestFileAction : IExecutableAction, IInsertLast<NavigateGlobalGroup>
     {
-        
         private Action<JetPopupMenus, JetPopupMenu, JetPopupMenu.ShowWhen> _menuDisplayer =
             (menus, menu, showWhen) =>
             {
@@ -65,9 +66,9 @@ namespace TestCop.Plugin
         /// <summary>
         /// For tesing 
         /// </summary>
-        public static JumpToTestFileAction CreateWith(Action<JetPopupMenus, JetPopupMenu, JetPopupMenu.ShowWhen> overrideMenuDisplay)
+        public static TestCopJumpToTestFileAction CreateWith(Action<JetPopupMenus, JetPopupMenu, JetPopupMenu.ShowWhen> overrideMenuDisplay)
         {
-            return new JumpToTestFileAction{_menuDisplayer = overrideMenuDisplay};
+            return new TestCopJumpToTestFileAction{_menuDisplayer = overrideMenuDisplay};
         }
         
         bool IExecutableAction.Update(IDataContext context, ActionPresentation presentation, DelegateUpdate nextUpdate)
@@ -208,7 +209,7 @@ namespace TestCop.Plugin
             return findReferencesWithinAssociatedAssembly
                 .Select(p => p.DeclaredElement).ToList()                
                 .Select(p => p as IClrDeclaredElement).ToList();                                    
-        }               
+        }
     }
 }
 
