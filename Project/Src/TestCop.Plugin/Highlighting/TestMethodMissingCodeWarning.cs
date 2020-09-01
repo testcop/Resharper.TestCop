@@ -1,20 +1,22 @@
-﻿using JetBrains.ReSharper.Feature.Services.CSharp.Daemon;
+﻿// --
+// -- TestCop http://github.com/testcop
+// -- License http://github.com/testcop/license
+// -- Copyright 2020
+// --
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
-using TestCop.Plugin.Highlighting;
-
-[assembly: RegisterConfigurableSeverity(
-    TestMethodMissingCodeWarning.SeverityId,
-    null, Highlighter.HighlightingGroup,
-    "Test methods should contain code",
-    "TestCop : All tests methods should test something",
-    Severity.WARNING)]
 
 namespace TestCop.Plugin.Highlighting
 {
 
     [ConfigurableSeverityHighlighting(SeverityId, CSharpLanguage.Name)]
+    [RegisterConfigurableSeverity(
+        TestMethodMissingCodeWarning.SeverityId,
+        null, Highlighter.HighlightingGroup,
+        "Test methods should contain code",
+        "TestCop : All tests methods should test something",
+        Severity.WARNING)]
     class TestMethodMissingCodeWarning : HighlightingBase, IHighlighting
     {
         internal const string SeverityId = "TestMethodMissingCodeWarning";

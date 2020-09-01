@@ -31,6 +31,7 @@ using JetBrains.Threading;
 using JetBrains.UI;
 using JetBrains.UI.RichText;
 using JetBrains.Util;
+using JetBrains.Util.Logging;
 using JetBrains.Util.Threading.Tasks;
 using TestCop.Plugin.Extensions;
 
@@ -40,7 +41,7 @@ namespace TestCop.Plugin.Helper
     {
         public static string MacroNameSwitchBetweenFiles
         {
-            get { return "Resharper.ReSharper_"+typeof (JumpToTestFileAction).Name.RemoveTrailing("Action"); }
+            get { return "Resharper.ReSharper_"+typeof (TestCopJumpToTestFileAction).Name.RemoveTrailing("Action"); }
         }
 
         public static string MacroNameRunTests
@@ -48,19 +49,19 @@ namespace TestCop.Plugin.Helper
             get { return "ReSharper_" + typeof(TestCopUnitTestRunContextAction).Name.RemoveTrailing("Action"); }
         }
 
-        public static void ForceKeyboardBindings(IShellLocks shellLocks)
+        public static void PrintKeyboardBindings(IShellLocks shellLocks)
         {            
-            ExecuteActionOnUiThread(shellLocks, "force TestCop keyboard shortcut hack on every startup",
+            ExecuteActionOnUiThread(shellLocks, "Print TestCop keyboard shortcut",
               () =>
               {
                   if (DTEHelper.VisualStudioIsPresent())
                   {          
-                        DTEHelper.AssignKeyboardShortcutIfMissing(
+                        DTEHelper.PrintoutKeyboardShortcut(
                             TestCopSettingsManager.Instance.Settings.OutputPanelOpenOnKeyboardMapping
                             , MacroNameSwitchBetweenFiles
                             , TestCopSettingsManager.Instance.Settings.ShortcutToSwitchBetweenFiles);
 
-                        DTEHelper.AssignKeyboardShortcutIfMissing(
+                        DTEHelper.PrintoutKeyboardShortcut(
                             TestCopSettingsManager.Instance.Settings.OutputPanelOpenOnKeyboardMapping
                             , MacroNameRunTests
                             , TestCopSettingsManager.Instance.Settings.ShortcutToRunTests);                            
@@ -69,8 +70,30 @@ namespace TestCop.Plugin.Helper
                 });                        
         }
 
+        public static void ForceKeyboardBindings(IShellLocks shellLocks)
+        {
+            ExecuteActionOnUiThread(shellLocks, "force TestCop keyboard shortcut",
+                () =>
+                {
+                    if (DTEHelper.VisualStudioIsPresent())
+                    {
+                        DTEHelper.AssignKeyboardShortcutIfMissing(
+                            TestCopSettingsManager.Instance.Settings.OutputPanelOpenOnKeyboardMapping
+                            , MacroNameSwitchBetweenFiles
+                            , TestCopSettingsManager.Instance.Settings.ShortcutToSwitchBetweenFiles);
+
+                        DTEHelper.AssignKeyboardShortcutIfMissing(
+                            TestCopSettingsManager.Instance.Settings.OutputPanelOpenOnKeyboardMapping
+                            , MacroNameRunTests
+                            , TestCopSettingsManager.Instance.Settings.ShortcutToRunTests);
+
+                    }
+                });
+        }
+
         public static void AppendLineToOutputWindow(IShellLocks shellLocks, string msg)
-        {            
+        {
+            Logger.LogMessage(msg);
             ExecuteActionOnUiThread(shellLocks, "testCop append text to output pane",
                 () =>
                 {

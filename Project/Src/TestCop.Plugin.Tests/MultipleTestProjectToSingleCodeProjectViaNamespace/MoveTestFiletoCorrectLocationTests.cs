@@ -52,7 +52,7 @@ namespace TestCop.Plugin.Tests.MultipleTestProjectToSingleCodeProjectViaNamespac
 
         protected override IExecutableAction GetShortcutAction(TextWriter textwriter)
         {
-            IExecutableAction jumpToTestFileAction = JumpToTestFileAction.CreateWith(CreateJetPopMenuShowToWriterAction(textwriter));
+            IExecutableAction jumpToTestFileAction = TestCopJumpToTestFileAction.CreateWith(CreateJetPopMenuShowToWriterAction(textwriter));
             return jumpToTestFileAction;
         }
         protected override string SolutionName

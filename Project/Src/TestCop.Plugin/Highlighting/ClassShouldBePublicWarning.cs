@@ -9,16 +9,17 @@ using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.Tree;
 using TestCop.Plugin.Highlighting;
 
-[assembly: RegisterConfigurableSeverity(
-        ClassShouldBePublicWarning.SeverityId,
-        null, Highlighter.HighlightingGroup,
-        "Test class should be public",
-        "TestCop : Class with testing attributes should be public",
-        Severity.ERROR)]
+
 
 namespace TestCop.Plugin.Highlighting
 {
     [ConfigurableSeverityHighlighting(SeverityId, CSharpLanguage.Name)]
+    [RegisterConfigurableSeverity(
+    ClassShouldBePublicWarning.SeverityId,
+    null, Highlighter.HighlightingGroup,
+    "Test class should be public",
+    "TestCop : Class with testing attributes should be public",
+    Severity.ERROR)]
     public class ClassShouldBePublicWarning : AbstractShouldBePublicWarning
     {
         internal const string SeverityId = "ClassShouldBePublic";
