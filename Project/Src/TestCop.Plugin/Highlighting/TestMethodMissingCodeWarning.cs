@@ -12,7 +12,7 @@ namespace TestCop.Plugin.Highlighting
 
     [ConfigurableSeverityHighlighting(SeverityId, CSharpLanguage.Name)]
     [RegisterConfigurableSeverity(
-        TestMethodMissingCodeWarning.SeverityId,
+        SeverityId,
         null, Highlighter.HighlightingGroup,
         "Test methods should contain code",
         "TestCop : All tests methods should test something",

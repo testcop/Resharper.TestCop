@@ -7,15 +7,18 @@ using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.Tree;
 
+
 namespace TestCop.Plugin.Highlighting
 {
     [ConfigurableSeverityHighlighting(SeverityId, CSharpLanguage.Name)]
     [RegisterConfigurableSeverity(
-        TestClassNameSuffixWarning.SeverityId,
+        SeverityId,
         null, Highlighter.HighlightingGroup,
         "All test classes should have the same suffix",
         "TestCop : To easily identify a test class by its name it must have the configured suffix",
         Severity.ERROR)]
+    [RegisterStaticHighlightingsGroup("Testing", true)]
+    [RegisterConfigurableHighlightingsGroup("Testing", "Testing", Highlighter.HighlightingGroup)]
     public class TestClassNameSuffixWarning : AbstractTestClassNameWarning
     {
         internal const string SeverityId = "TestClassNameSuffixWarning";

@@ -14,7 +14,7 @@ namespace TestCop.Plugin.Highlighting
 {
     [ConfigurableSeverityHighlighting(SeverityId, CSharpLanguage.Name)]
     [RegisterConfigurableSeverity(
-        TestFileNameSpaceWarning.SeverityId,
+        SeverityId,
         null, Highlighter.HighlightingGroup,
         "Namespace of file doesn't match its location",
         "Namespace of file doesn't match its location",
