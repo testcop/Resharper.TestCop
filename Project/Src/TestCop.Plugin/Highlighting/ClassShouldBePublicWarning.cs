@@ -7,15 +7,12 @@
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi.CSharp;
 using JetBrains.ReSharper.Psi.Tree;
-using TestCop.Plugin.Highlighting;
-
-
 
 namespace TestCop.Plugin.Highlighting
 {
     [ConfigurableSeverityHighlighting(SeverityId, CSharpLanguage.Name)]
     [RegisterConfigurableSeverity(
-    ClassShouldBePublicWarning.SeverityId,
+    SeverityId,
     null, Highlighter.HighlightingGroup,
     "Test class should be public",
     "TestCop : Class with testing attributes should be public",

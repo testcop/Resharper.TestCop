@@ -12,7 +12,7 @@ namespace TestCop.Plugin.Highlighting
 {
     [ConfigurableSeverityHighlighting(SeverityId, CSharpLanguage.Name)]
     [RegisterConfigurableSeverity(
-        TestClassNameDoesNotMatchFileNameWarning.SeverityId,
+        SeverityId,
         null, Highlighter.HighlightingGroup,
         "Test class name should match file name",
         "TestCop : The name of the test file should match the test class name it contains",

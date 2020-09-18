@@ -4,13 +4,12 @@ using JetBrains.ProjectModel;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi.CSharp;
 using TestCop.Plugin.Extensions;
-using TestCop.Plugin.Highlighting;
 
 namespace TestCop.Plugin.Highlighting
 {    
     [ConfigurableSeverityHighlighting(SeverityId, CSharpLanguage.Name)]
     [RegisterConfigurableSeverity(
-        FilesNotPartOfProjectWarning.SeverityId,
+        SeverityId,
         null, Highlighter.HighlightingGroup,
         "Orphaned file not part of project",
         "TestCop : All code files should be part of project",

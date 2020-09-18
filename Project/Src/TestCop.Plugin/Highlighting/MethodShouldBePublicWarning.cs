@@ -11,7 +11,7 @@ namespace TestCop.Plugin.Highlighting
 {
     [ConfigurableSeverityHighlighting(SeverityId, CSharpLanguage.Name)]
     [RegisterConfigurableSeverity(
-        MethodShouldBePublicWarning.SeverityId,
+        SeverityId,
         null, Highlighter.HighlightingGroup,
         "Test method should be public",
         "TestCop : Method with testing attributes should be public",

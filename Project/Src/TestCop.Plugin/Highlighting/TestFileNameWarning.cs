@@ -12,7 +12,7 @@ namespace TestCop.Plugin.Highlighting
 {
     [ConfigurableSeverityHighlighting(SeverityId, CSharpLanguage.Name)]
     [RegisterConfigurableSeverity(
-        TestFileNameWarning.SeverityId,
+        SeverityId,
         null, Highlighter.HighlightingGroup,
         "The file name for the test does not match testcop rules would be ClassATests.cs or ClassA.SecurityTests.cs or ClassA.SecurityIntegrationTests.cs",
         "Consistent naming aids code navigation and refactorings",
