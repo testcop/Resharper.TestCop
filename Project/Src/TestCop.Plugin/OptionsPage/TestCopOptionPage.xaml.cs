@@ -18,11 +18,10 @@ using JetBrains;
 using JetBrains.Annotations;
 using JetBrains.Application.Icons;
 using JetBrains.Application.Settings;
-using JetBrains.Application.UI.Components.UIApplication;
+using JetBrains.Application.UI.Components;
 using JetBrains.Application.UI.Options;
 using JetBrains.Application.UI.Options.OptionPages;
 using JetBrains.Application.UI.UIAutomation;
-using JetBrains.DataFlow;
 using JetBrains.Lifetimes;
 using JetBrains.ProjectModel;
 using JetBrains.ProjectModel.DataContext;
@@ -51,14 +50,14 @@ namespace TestCop.Plugin.OptionsPage
       private readonly TemplateScopeManager _scopeManager;
       private readonly StoredTemplatesProvider _storedTemplatesProvider;
       private readonly ILiveTemplatesUIHelper _templatesUiHelper;
-      private readonly UIApplication _application;
-      private readonly ISolution _solution;
+      private readonly IUIApplication _application;
+        private readonly ISolution _solution;
       private const string PID = "TestCopPageId";
       private readonly FileTemplatesManager _fileTemplatesManager;
       private readonly ILogger _logger;
       
       public TestCopOptionPage(Lifetime lifetime, OptionsSettingsSmartContext settings, TemplateScopeManager scopeManager
-          , IThemedIconManager iconManager, UIApplication application
+          , IThemedIconManager iconManager, IUIApplication application
         , StoredTemplatesProvider storedTemplatesProvider, ILiveTemplatesUIHelper templatesUiHelper, FileTemplatesManager fileTemplatesManager, ISolution solution = null)
       {
           _lifetime = lifetime;
@@ -410,38 +409,34 @@ namespace TestCop.Plugin.OptionsPage
           LoadProjectToSelectFileTemplate.Visibility=Visibility.Visible;
           LoadProjectToSelectFileTemplate.Foreground = new SolidColorBrush(Colors.Red);
       }
-      
+
       private void FileTemplateSelectFromList(object sender, System.Windows.Input.MouseButtonEventArgs e)
-      {                                             
-            if (_solution == null)
-            {
-                ResharperHelper.AppendLineToOutputWindow(_solution.Locks, "Unable to identify current solution.");
-                DisplayLoadProjectTip();
-                return; 
-            }
+      {
+          if (_solution == null)
+          {
+              ResharperHelper.AppendLineToOutputWindow(_solution.Locks, "Unable to identify current solution.");
+              DisplayLoadProjectTip();
+              return;
+          }
 
-            var project = _solution.GetAllCodeProjects().FirstOrDefault();
-            if (project == null)
-            {
-                ResharperHelper.AppendLineToOutputWindow(_solution.Locks, "Unable to identify a code project.");
-                DisplayLoadProjectTip();
-                return;
-            }
-                                          
-            var scope = _scopeManager.EnumerateRealScopePoints(new TemplateAcceptanceContext(new ProjectFolderWithLocation(project)));            
-            scope = scope.Distinct().Where(s => s is InLanguageSpecificProject).ToList();
+          var project = _solution.GetAllCodeProjects().FirstOrDefault();
+          if (project == null)
+          {
+              ResharperHelper.AppendLineToOutputWindow(_solution.Locks, "Unable to identify a code project.");
+              DisplayLoadProjectTip();
+              return;
+          }
+
+          var scope = _scopeManager.EnumerateRealScopePoints(
+              new TemplateAcceptanceContext(new ProjectFolderWithLocation(project)));
+          scope = scope.Distinct().Where(s => s is InLanguageSpecificProject).ToList();
 
 
-          var template = _templatesUiHelper.ChooseTemplate(
+          _templatesUiHelper.ChooseTemplate(
               FileTemplatesManager.Instance.QuickListSupports, scope, project.ToDataContext(),
-              TemplateApplicability.File);
-                                                                                                                                        
-            if (template != null)
-            {
-                ((TextBox) sender).Text = template.Description;
-            }          
+              TemplateApplicability.File, template => { ((TextBox) sender).Text = template.Description; });
       }
-      
+
       private void ResetButton_OnClick(object sender, RoutedEventArgs e)
       {
           SingleTestNamespaceRegExTextBox.Text=

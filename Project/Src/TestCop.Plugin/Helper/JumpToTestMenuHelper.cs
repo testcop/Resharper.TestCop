@@ -92,8 +92,7 @@ namespace TestCop.Plugin.Helper
 
             if (windowContextSource != null)
             {
-                var windowContext = windowContextSource.Create(lifetime);
-                menu.PopupWindowContext = windowContext;
+                menu.PopupWindowContextSource = windowContextSource;
             }
         }
         //------------------------------------------------------------------------------------------------------------------------
