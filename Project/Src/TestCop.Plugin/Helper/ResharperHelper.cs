@@ -235,29 +235,17 @@ namespace TestCop.Plugin.Helper
             }
             return clrTypeName;
         }
-      
+        /*
         public static void ShowTooltip(IDataContext context, ISolution solution, RichText tooltip)
         {
-            var shellLocks = solution.Locks;
             var tooltipManager = solution.GetComponent<ITooltipManager>();
 
-            tooltipManager.Show(tooltip,
-              lifetime =>
-              {
-                  var windowContextSource = context.GetData<PopupWindowContextSource>(UIDataConstants.PopupWindowContextSource);
-                      
-                  if (windowContextSource != null)
-                  {
-                      var windowContext = windowContextSource.Create(lifetime);
-                      var ctxTextControl = windowContext as ITextControlPopupWindowContext;
-                      return ctxTextControl == null ? windowContext :
-                        ctxTextControl.OverrideLayouter(lifetime, lifetimeLayouter => new DockingLayouter(lifetimeLayouter, new TextControlAnchoringRect(lifetimeLayouter, ctxTextControl.TextControl, ctxTextControl.TextControl.Caret.Offset(), shellLocks), Anchoring2D.AnchorTopOrBottom));
-                  }
+            var windowContextSource = context.GetData<PopupWindowContextSource>(UIDataConstants.PopupWindowContextSource)
+                                      ?? solution.GetComponent<IMainWindowPopupWindowContext>().Source;
 
-                  return solution.GetComponent<IMainWindowPopupWindowContext>().Create(lifetime);
-              });
+            tooltipManager.Show(tooltip, windowContextSource);
         }
-
+        */
         public static void RemoveElementsNotInProjects(List<IClrDeclaredElement> declaredElements, IList<IProject> associatedProjects)
         {
             declaredElements.RemoveAll(p => p.GetSourceFiles().Any(de =>
