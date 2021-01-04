@@ -41,3 +41,4 @@ using TestCop.Plugin.Highlighting;
 
 [assembly: AssemblyVersion("1.10.12.1")]
 [assembly: AssemblyFileVersion("1.10.12.1")]
+
