@@ -12,6 +12,8 @@ IF NOT EXIST %OUTDIR%\NUL OUTDIR=%TEMP%
 REM Extract Wave Version from Package. JetBrains.Platform.Sdk.*.*.*.*
 SET VV=DIR /B ..\..\..\..\..\Packages\JetBrains.Platform.Sdk.*
 for /f "usebackq tokens=4 delims=." %%a in (`%VV%`) do SET WAVEID=%%a
+REM need to manually override WAVEID as the platform SDK is outdated
+SET WAVEID=211
 @ECHO Resharper Platform WAVE Id=%WAVEID%
 
 @ECHO ===NUGET Publishing Version %VER% to %OUTDIR%
