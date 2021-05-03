@@ -2,82 +2,85 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>     
   <id>Resharper.TestCop.R9</id>     
-  <version>0.0.0-internal</version>
+  <version>1.10.12.2</version>
 
-  <title>TestCop for ReSharper 2020.3</title>     
+  <title>TestCop for ReSharper 2021.1</title>     
   <authors>Alcaeus</authors>     
   <description>Easily switch between unit tests and code. Create missing associated files. Includes highlightings and test templates to keep test projects neat and tidy. Works with NUnit, MSTest, xUnit ...</description>
   <releaseNotes>
-    1.10.12.1 R#2020.3 Recompiled
-    1.10.11.2 bug fix for R# option severity screen
-    1.10.11.1 R#2020.2 Recompiled
-    1.10.10.3 BugFix - excludes project output from orphaned files scan
-    1.10.10.2 Highlighting config fix RSRP-476959
-    1.10.10.1 R#2020.1 Recompiled
-    1.10.9.1 R#2019.3.1 Recompiled
-    1.10.8.1 R#2019.2.1 Recompiled
-    1.10.7.1 R#2019.1.1 Recompiled
-    1.10.6.4 R#2018.3.2 Recompiled
-    1.10.6.3 R#2018.3 Recompile
-    1.10.6.2 R#2018.2 Recompile
-    1.10.6.1 R#2018.1 Recompile
-    1.10.5.1 R#2017.3 Recompile
-    1.10.4.7 Ignores virtual folders when deriving target folder (Issue#11)
-    1.10.4.6 Replaced assert in code with error msg (Issue#11)
-    1.10.4.5 Changes to support non-namespace folders in project
-    1.10.4.4 Bug fix corrected template selection
-    1.10.4.3 R#2017.2 recompile
-    1.10.4.2 Refactor of logic and bug fix for find matching test files when no direct reference present
-    1.10.4.1 R#2017.1 recompile
-    1.10.3.3 R#2016.3 recompile
-    1.10.3.2-EAP R#2016.3 recompile
-    1.10.3.1 R#2016.2 recompile
-    1.10.3.0 R#2016.2 recompile
-    1.10.2.1 Rename Refactoring supports rename of any class within file finding associated test files
-    1.10.2.0 Rename Refactoring skips rename of secondary class within file
-    1.10.1.0 R#2016.1 recompile
-    1.10.0.9-EAP R#10.1 EAP recompile
-    1.10.0.8-EAP R#10.1 EAP recompile
-    1.10.0.7 Able to override keyboard shortcut for running tests
-    1.10.0.6 Support partial test classes. Trailing .* is ignored for partial class files e.g. MyClassTests.partial.cs or MyClass.SecurityTests.fixture.cs
-    1.10.0.5 Move test file now preserves file name in all cases
-    1.10.0.3 Added the test templates back into the build (template for when testcop creates the test class)
-    1.10.0.1 Added ability to run associated unit tests
-    1.10.0.0 Recompiled with R#10
-    1.9.2.4 Only checks test files within recognised Test projects
-    1.9.2.3 Added support for // Resharper Disable
-    1.9.2.2 Internal code cleanup
-    1.9.2.1 Rename refactor bug fix for associated test files
-    1.9.2.0 Recompiled with R#9.2
-    1.9.2.0-Beta Recompiled with R#9.2 - however tests need rework
-    1.9.1.3 Added ability to run associated unit tests
-    1.9.1.2 Added document links to dialog
-    1.9.1.1 Adding unit test file templates
-    1.9.1.0 Rebuilt with R#9.1
-    1.9.0.2 Bug fixes for strategy using the regex from default strategy for test assembly identification.
-    1.9.0.1 Rebuilt with R#9.0 - BETA
-    1.8.2.7 Added support for multiple test project mapping to a single code project by using project name.
-    1.8.2.6 Quickfixes added to move test class to correct folder and delete orphaned files.
-    Test file rename refactor support added (off by default).
-    1.8.2.5 Support for multiple test class suffix (comma separated)
-    1.8.2.4 Adding support to find orphaned project files
-    1.8.2.3 Support added for solutions with a single test project for all code projects.
-    1.8.2.2 Beta. Refactor of code. Supported added for single test project for all code projects within solution
-    1.8.2.1 -
-    1.8.2.0 Rebuilt with R#8.2
-    1.8.2.0-EAP Puts exact match first in list when switching from test to code
-    1.8.1.9 Minor bug fix to file template selection within settings dialog
-    1.8.1.8 Now ignores nested test classes
-    1.8.1.7 Fixed Memory Leak
-    1.8.1.6 Added support for multiple test project mapping to a single code project. Can now turn off 'must be public' warnings.
+      1.10.12.2 R#2021.1 Recompiled
+      1.10.11.2 bug fix for R# option severity screen
+      1.10.11.1 R#2020.2 Recompiled
+      1.10.10.3 BugFix - excludes project output from orphaned files scan
+      1.10.10.2 Highlighting config fix RSRP-476959
+      1.10.10.1 R#2020.1 Recompiled
+      1.10.9.1 R#2019.3.1 Recompiled
+      1.10.8.1 R#2019.2.1 Recompiled
+      1.10.7.1 R#2019.1.1 Recompiled
+      1.10.6.4 R#2018.3.2 Recompiled
+      1.10.6.3 R#2018.3 Recompile
+      1.10.6.2 R#2018.2 Recompile
+      1.10.6.1 R#2018.1 Recompile
+      1.10.5.1 R#2017.3 Recompile
+      1.10.4.7 Ignores virtual folders when deriving target folder (Issue#11)
+      1.10.4.6 Replaced assert in code with error msg (Issue#11)
+      1.10.4.5 Changes to support non-namespace folders in project
+      1.10.4.4 Bug fix corrected template selection
+      1.10.4.3 R#2017.2 recompile
+      1.10.4.2 Refactor of logic and bug fix for find matching test files when no direct reference present
+      1.10.4.1 R#2017.1 recompile
+      1.10.3.3 R#2016.3 recompile
+      1.10.3.2-EAP R#2016.3 recompile
+      1.10.3.1 R#2016.2 recompile
+      1.10.3.0 R#2016.2 recompile
+      1.10.2.1 Rename Refactoring supports rename of any class within file finding associated test files
+      1.10.2.0 Rename Refactoring skips rename of secondary class within file
+      1.10.1.0 R#2016.1 recompile
+      1.10.0.9-EAP R#10.1 EAP recompile
+      1.10.0.8-EAP R#10.1 EAP recompile
+      1.10.0.7 Able to override keyboard shortcut for running tests
+      1.10.0.6 Support partial test classes. Trailing .* is ignored for partial class files e.g. MyClassTests.partial.cs or MyClass.SecurityTests.fixture.cs
+      1.10.0.5 Move test file now preserves file name in all cases
+      1.10.0.3 Added the test templates back into the build (template for when testcop creates the test class)
+      1.10.0.1 Added ability to run associated unit tests
+      1.10.0.0 Recompiled with R#10
+      1.9.2.4 Only checks test files within recognised Test projects
+      1.9.2.3 Added support for // Resharper Disable
+      1.9.2.2 Internal code cleanup
+      1.9.2.1 Rename refactor bug fix for associated test files
+      1.9.2.0 Recompiled with R#9.2
+      1.9.2.0-Beta Recompiled with R#9.2 - however tests need rework
+      1.9.1.3 Added ability to run associated unit tests
+      1.9.1.2 Added document links to dialog
+      1.9.1.1 Adding unit test file templates
+      1.9.1.0 Rebuilt with R#9.1
+      1.9.0.2 Bug fixes for strategy using the regex from default strategy for test assembly identification.
+      1.9.0.1 Rebuilt with R#9.0 - BETA
+      1.8.2.7 Added support for multiple test project mapping to a single code project by using project name.
+      1.8.2.6 Quickfixes added to move test class to correct folder and delete orphaned files.
+      Test file rename refactor support added (off by default).
+      1.8.2.5 Support for multiple test class suffix (comma separated)
+      1.8.2.4 Adding support to find orphaned project files
+      1.8.2.3 Support added for solutions with a single test project for all code projects.
+      1.8.2.2 Beta. Refactor of code. Supported added for single test project for all code projects within solution
+      1.8.2.1 -
+      1.8.2.0 Rebuilt with R#8.2
+      1.8.2.0-EAP Puts exact match first in list when switching from test to code
+      1.8.1.9 Minor bug fix to file template selection within settings dialog
+      1.8.1.8 Now ignores nested test classes
+      1.8.1.7 Fixed Memory Leak
+      1.8.1.6 Added support for multiple test project mapping to a single code project. Can now turn off 'must be public' warnings.
   </releaseNotes>
     <projectUrl>https://github.com/testcop/Resharper.TestCop/</projectUrl>
-    <licenseUrl>https://github.com/testcop/Resharper.TestCop</licenseUrl>
+    <licenseUrl>https://github.com/testcop/Resharper.TestCop/LICENSE</licenseUrl>
     <iconUrl>https://raw.githubusercontent.com/testcop/Resharper.TestCop/master/Project/Src/TestCop.Plugin/resources/agent48x48.png</iconUrl>
     <icon>images\agent48x48.png</icon>
-    <copyright>Copyright &#x00A9; 2013-2018</copyright>
-    <dependencies>      
-      <dependency id="Wave" version="[$WAVEID$.0.0]"/>         
+    <copyright>Copyright &#x00A9; 2013-2021</copyright>
+    <dependencies>
+        <!--      
+        <dependency id="Wave" version="[$WAVEID$.0.0]"/>         
+        -->
+        <dependency id="Wave" version="[211.0.0]"/>
     </dependencies>
     <tags>resharper unittest xunit nunit mstest tdd c# template</tags>
   </metadata>   
