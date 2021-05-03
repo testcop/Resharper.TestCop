@@ -632,7 +632,7 @@
       <Output TaskParameter="Assemblies" ItemName="AssemblyVersion" />
     </GetAssemblyIdentity>
     <Message Text="Releasing %(AssemblyVersion.Version)" Importance="high" />
-    <Exec Command="$(ProjectDir)\..\InstallSupport\nuget.build.bat %(AssemblyVersion.Version)" WorkingDirectory="$(OutputPath)" />
+    <Exec Command="$(ProjectDir)\..\InstallSupport\nuget.build.bat %(AssemblyVersion.Version) $(TargetDir)" WorkingDirectory="$(OutputPath)" />
   </Target>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Import Project="..\..\packages\Antlr2.Tools.2.7.6.4\build\Antlr2.Tools.targets" Condition="Exists('..\..\packages\Antlr2.Tools.2.7.6.4\build\Antlr2.Tools.targets')" />
