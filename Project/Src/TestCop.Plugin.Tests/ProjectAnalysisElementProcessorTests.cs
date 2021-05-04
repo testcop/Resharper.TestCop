@@ -12,7 +12,7 @@ using NUnit.Framework;
 namespace TestCop.Plugin.Tests
 {
     [TestFixture]
-    class ProjectAnalysisElementProcessorTests
+    public class ProjectAnalysisElementProcessorTests
     {
         [Test]
         public void IsNotInDirectoryTest()
