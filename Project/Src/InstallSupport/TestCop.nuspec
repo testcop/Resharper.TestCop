@@ -1,13 +1,14 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
-  <metadata>     
-  <id>Resharper.TestCop.R9</id>     
+  <metadata>
+  <id>Resharper.TestCop.R9</id>
   <version>0.0.0-internal</version>
 
-  <title>TestCop for ReSharper 2020.3</title>     
-  <authors>Alcaeus</authors>     
+  <title>TestCop for ReSharper 2021.1</title>
+  <authors>Alcaeus</authors>
   <description>Easily switch between unit tests and code. Create missing associated files. Includes highlightings and test templates to keep test projects neat and tidy. Works with NUnit, MSTest, xUnit ...</description>
   <releaseNotes>
+    1.10.13.1 R#2021.1 Recompiled
     1.10.12.1 R#2020.3 Recompiled
     1.10.11.2 bug fix for R# option severity screen
     1.10.11.1 R#2020.2 Recompiled
@@ -76,8 +77,8 @@
     <iconUrl>https://raw.githubusercontent.com/testcop/Resharper.TestCop/master/Project/Src/TestCop.Plugin/resources/agent48x48.png</iconUrl>
     <icon>images\agent48x48.png</icon>
     <copyright>Copyright &#x00A9; 2013-2018</copyright>
-    <dependencies>      
-      <dependency id="Wave" version="[$WAVEID$.0.0]"/>         
+    <dependencies>
+      <dependency id="Wave" version="[$WAVEID$.0.0]"/>
     </dependencies>
     <tags>resharper unittest xunit nunit mstest tdd c# template</tags>
   </metadata>   
@@ -87,5 +88,5 @@
     <file src="Resharper.TestCop.pdb" target="dotFiles\" />
     <file src="..\..\..\ResharperTemplates\templates.DotSettings"
           target="dotFiles\Extensions\Resharper.TestCop.R9\settings\" />
-  </files> 
+  </files>
 </package>
