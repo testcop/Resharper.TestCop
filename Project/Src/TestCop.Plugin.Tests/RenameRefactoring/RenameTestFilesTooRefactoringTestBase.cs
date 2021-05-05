@@ -55,7 +55,8 @@ namespace TestCop.Plugin.Tests.RenameRefactoring
                     var solutionFolder = this.CopyTestDataDirectoryToTemp(lifetime,@"..\..\"+RelativeTestDataPath);
                     solution = (ISolution)this.SolutionManager.OpenExistingSolution(FileSystemPath.Parse(solutionFolder).Combine(SolutionName));
                 }
-                lifetime.AddAction(() => SolutionManager.CloseSolution(solution));
+
+                lifetime.OnTermination(() => SolutionManager.CloseSolution(solution));
 
                 var findFirstTypeInFile = FindTypeInFile(solution, testFile, typeSequenceInFile);
 
@@ -65,7 +66,7 @@ namespace TestCop.Plugin.Tests.RenameRefactoring
 
                 Assert.AreEqual(expectedRenamedTests.Length, filesToRename.Count);
 
-                expectedRenamedTests.ForEach(expectation=>CollectionAssert.Contains(filesToRename, expectation));                                    
+                expectedRenamedTests.ForEach(expectation=>CollectionAssert.Contains(filesToRename, expectation));
             }))));
         }));
     }
