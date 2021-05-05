@@ -24,6 +24,8 @@ using TestCop.Plugin.Helper;
 
 namespace TestCop.Plugin.Tests.RenameRefactoring
 {
+    using System.Collections.Generic;
+
     [TestFixture]
     public abstract class RenameTestFilesTooRefactoringTestBase : BaseTest
     {        
@@ -66,7 +68,10 @@ namespace TestCop.Plugin.Tests.RenameRefactoring
 
                 Assert.AreEqual(expectedRenamedTests.Length, filesToRename.Count);
 
-                expectedRenamedTests.ForEach(expectation=>CollectionAssert.Contains(filesToRename, expectation));
+                foreach (string expectation in expectedRenamedTests)
+                {
+                    CollectionAssert.Contains(filesToRename, expectation);
+                }
             }))));
         }));
     }
@@ -79,7 +84,12 @@ namespace TestCop.Plugin.Tests.RenameRefactoring
 
             if (projectFile == null)
             {
-                solution.GetAllProjects().SelectMany(p => p.GetAllProjectFiles()).ForEach(p=>Debug.WriteLine(p.GetPresentableProjectPath()));
+                IEnumerable<IProjectFile> projectFiles = solution.GetAllProjects().SelectMany(p => p.GetAllProjectFiles());
+
+                foreach (IProjectFile file in projectFiles)
+                {
+                    Debug.WriteLine(file.GetPresentableProjectPath());
+                }
                 throw new Exception("Whilst configuring test I didn't find project item: "+testFile);
             }
 
