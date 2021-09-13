@@ -35,29 +35,32 @@ namespace TestCop.Plugin.Helper.Mapper
             string currentProjectNamespace = project.GetDefaultNamespace();
             if (string.IsNullOrEmpty(currentProjectNamespace)) return false;
 
-            return TestingRegEx.IsMatch(currentProjectNamespace);
+            return this.TestNameSpaceRegEx.IsMatch(currentProjectNamespace);
         }
 
-        protected virtual Regex TestingRegEx
+        protected virtual Regex TestNameSpaceRegEx
         {
             get
             {
-                var testNameSpacePattern = Settings.TestProjectToCodeProjectNameSpaceRegEx;
-                var regEx = new Regex(testNameSpacePattern);
+                string testNameSpacePattern = Settings.TestProjectToCodeProjectNameSpaceRegEx;
+                Regex regEx = new Regex(testNameSpacePattern);
                 return regEx;
             }
         }
 
         public void DumpDebug(ISolution solution)
         {
-            var rx = TestingRegEx;
-            solution.GetAllCodeProjects().ForEach(
-                p => ResharperHelper.AppendLineToOutputWindow(solution.Locks, "\tProject Namespace:" + p.GetDefaultNamespace()
-                                                              +
-                                                              (rx.IsMatch(p.GetDefaultNamespace() ?? "")
-                                                                  ? " matches "
-                                                                  : " does not match ")
-                                                              + rx));
+            Regex testNameSpaceRegEx = this.TestNameSpaceRegEx;
+
+            foreach (IProject project in solution.GetAllCodeProjects())
+            {
+                string projectDefaultNameSpace = project.GetDefaultNamespace();
+                bool matchesTestNameSpace = testNameSpaceRegEx.IsMatch(projectDefaultNameSpace ?? "");
+                string matchResult = matchesTestNameSpace ? " matches " : " does not match ";
+
+                ResharperHelper.AppendLineToOutputWindow(solution.Locks,
+                    $"\tProject Namespace:{projectDefaultNameSpace}{matchResult}{testNameSpaceRegEx}");
+            }
         }
 
         protected static TestFileAnalysisSettings Settings

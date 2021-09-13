@@ -7,12 +7,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using JetBrains.Application.DataContext;
 using JetBrains.Application.Progress;
 using JetBrains.Application.Settings;
-using JetBrains.Application.Shell;
 using JetBrains.Application.Shortcuts.ShortcutManager;
-using JetBrains.Application.Threading;
 using JetBrains.Application.UI.Actions;
 using JetBrains.Application.UI.ActionsRevised.Menu;
 using JetBrains.Application.UI.ActionSystem.ActionsRevised.Menu;
@@ -97,7 +96,7 @@ namespace TestCop.Plugin
             var typeDeclaration = ResharperHelper.FindFirstCharpTypeDeclarationInDocument(solution, textControl.Document);
             if (typeDeclaration == null) return;
             
-            var currentProject = context.GetData(JetBrains.ProjectModel.DataContext.ProjectModelDataConstants.Project);
+            var currentProject = context.GetData(JetBrains.ProjectModel.DataContext.ProjectModelDataConstants.PROJECT);
             if (currentProject == null)
             {
                 ResharperHelper.AppendLineToOutputWindow(solution.Locks, "Internal Error: No current project");
@@ -194,7 +193,11 @@ namespace TestCop.Plugin
             {                     
                 //look for similar named files that also have references to this code            
                 var items = new List<ProjectFileFinder.Match>();                                
-                targetProjects.ForEach(p=>p.Project.Accept(new ProjectFileFinder(items, p.FilePattern)));
+                foreach (TestCopProjectItem projectItem in targetProjects)
+                {
+                    projectItem.Project.Accept(new ProjectFileFinder(items, projectItem.FilePattern));
+                }
+
                 searchDomain = PsiShared.GetComponent<SearchDomainFactory>().CreateSearchDomain(items.Select(p => p.ProjectFile.ToSourceFile()));
             }
 

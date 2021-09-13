@@ -93,9 +93,16 @@ namespace TestCop.Plugin.OptionsPage
           SingleTestNamespaceToAssemblySubNameSpaceRegExReplaceTextBox.BindWithRegexMatchesValidation(testFileAnalysisSettings, P(x => x.SingleTestRegexTestToAssemblyProjectSubNamespaceReplace), "^[\\$\\.a-zA-Z1-9]*$");
           SingleTestCodeNamespaceRegExTextBox.BindWithValidationMustBeARegex(testFileAnalysisSettings, P(x => x.SingleTestRegexCodeToTestAssembly));
           SingleTestCodeNamespaceToTestRegExReplaceTextBox.BindWithRegexMatchesValidation(testFileAnalysisSettings, P(x => x.SingleTestRegexCodeToTestReplace), "^[\\$\\.a-zA-Z1-9]*$");
-          //          
-          testFileAnalysisSettings.TestingAttributes().ForEach(p => testingAttributesListBox.Items.Add(p));
-          testFileAnalysisSettings.BddPrefixes().ForEach(p => contextPrefixesListBox.Items.Add(p));
+          //
+
+          foreach (string testingAttribute in testFileAnalysisSettings.TestingAttributes())
+          {
+              this.testingAttributesListBox.Items.Add(testingAttribute);
+          }
+          foreach (string bddPrefix in testFileAnalysisSettings.BddPrefixes())
+          {
+              this.contextPrefixesListBox.Items.Add(bddPrefix);
+          }
 
           OrphanedFilesPatternsTextBox.Text = testFileAnalysisSettings.OrphanedFilesPatterns;
 
@@ -150,9 +157,7 @@ namespace TestCop.Plugin.OptionsPage
 
       private static string P<T>(Expression<Func<TestFileAnalysisSettings, T>> expression)
       {
-          var member = expression.Body as MemberExpression;
-
-          if (member != null)
+          if (expression.Body is MemberExpression member)
               return member.Member.Name;
 
           throw new ArgumentException("Expression is not a member access", "expression");
@@ -357,8 +362,11 @@ namespace TestCop.Plugin.OptionsPage
       private string GetSampleClassNames()
       {
           string sampleFileNames = "";
-          testClassSuffixTextBox.Text.Split(',').ForEach(s =>
-              sampleFileNames=sampleFileNames.AppendIfNotNull(" ,", "ClassA{0}, ClassA.Security{0}".FormatEx(s)));
+          foreach (string s in this.testClassSuffixTextBox.Text.Split(','))
+          {
+              sampleFileNames=sampleFileNames.AppendIfNotNull(" ,", "ClassA{0}, ClassA.Security{0}".FormatEx(s));
+          }
+
           return sampleFileNames;
       }
 
@@ -508,9 +516,11 @@ namespace TestCop.Plugin.OptionsPage
           tb.Append(new System.Windows.Documents.LineBreak());
 
           System.Windows.Documents.Hyperlink hyperl =
-              new System.Windows.Documents.Hyperlink(new System.Windows.Documents.Run("More information..."));
-          hyperl.NavigateUri = new Uri(hlink);
-          
+              new System.Windows.Documents.Hyperlink(new System.Windows.Documents.Run("More information..."))
+              {
+                  NavigateUri = new Uri(hlink)
+              };
+
           tb.Append(hyperl);
           hyperl.RequestNavigate += (sender, args) => System.Diagnostics.Process.Start(args.Uri.AbsoluteUri);    
       }

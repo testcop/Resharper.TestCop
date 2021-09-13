@@ -8,17 +8,17 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+
 using JetBrains.Application.Settings;
 using JetBrains.DocumentModel;
 using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Daemon.CSharp.Stages;
 using JetBrains.ReSharper.Feature.Services.Daemon;
 using JetBrains.ReSharper.Psi;
 using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.PsiGen.Util;
 using JetBrains.Util;
-using TestCop.Plugin.Helper;
+
 using TestCop.Plugin.Highlighting;
 
 namespace TestCop.Plugin
@@ -60,8 +60,7 @@ namespace TestCop.Plugin
 
         public void ProcessAfterInterior(ITreeNode element)
         {
-            var usingBlock = element as IUsingList;
-            if (usingBlock != null)
+            if (element is IUsingList)
             {
                 CheckForProjectFilesNotInProjectAndWarn(element);
             }
@@ -88,14 +87,16 @@ namespace TestCop.Plugin
             allProjectFolders = allProjectFolders.Where(x => !InDirectory(directoriesToSkip, x));
 
             var filesOnDisk = new List<FileInfo>();
-            filesToFind.ForEach(regex => filesOnDisk.AddRange(
-                                    allProjectFolders.SelectMany(
-                                        directory =>
-                                            new System.IO.DirectoryInfo(directory.FullPath)
-                                                .EnumerateFiles(regex, System.IO.SearchOption.TopDirectoryOnly)
-                                                .Select(f => f))
-                                ));
-
+            foreach (string regex in filesToFind)
+            {
+                filesOnDisk.AddRange(
+                    allProjectFolders.SelectMany(
+                        directory =>
+                            new System.IO.DirectoryInfo(directory.FullPath)
+                                .EnumerateFiles(regex, System.IO.SearchOption.TopDirectoryOnly)
+                                .Select(f => f))
+                );
+            }
 
             var orphanedFiles = new List<FileInfo>();
 

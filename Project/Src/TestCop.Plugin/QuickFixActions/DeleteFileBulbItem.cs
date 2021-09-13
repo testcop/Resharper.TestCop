@@ -4,22 +4,25 @@
 // -- Copyright 2016
 // --
 
-using System.Collections.Generic;
-using System.IO;
-using JetBrains;
-using JetBrains.Application.UI.Controls.BulbMenu.Anchors;
-using JetBrains.ProjectModel;
-using JetBrains.ReSharper.Feature.Services.Bulbs;
-using JetBrains.ReSharper.Feature.Services.Intentions;
-using JetBrains.ReSharper.Feature.Services.QuickFixes;
-using JetBrains.TextControl;
-using JetBrains.Util;
-using TestCop.Plugin.Extensions;
-using TestCop.Plugin.Helper;
-using TestCop.Plugin.Highlighting;
-
 namespace TestCop.Plugin.QuickFixActions
 {
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+
+    using JetBrains;
+    using JetBrains.Application.UI.Controls.BulbMenu.Anchors;
+    using JetBrains.ProjectModel;
+    using JetBrains.ReSharper.Feature.Services.Bulbs;
+    using JetBrains.ReSharper.Feature.Services.Intentions;
+    using JetBrains.ReSharper.Feature.Services.QuickFixes;
+    using JetBrains.TextControl;
+    using JetBrains.Util;
+
+    using TestCop.Plugin.Extensions;
+    using TestCop.Plugin.Helper;
+    using TestCop.Plugin.Highlighting;
+
     [QuickFix]
     public class DeleteFileBulbItem : IQuickFix
     {
@@ -32,20 +35,18 @@ namespace TestCop.Plugin.QuickFixActions
              
         public IEnumerable<IntentionAction> CreateBulbItems()
         {            
-            var list = new List<IntentionAction>();
+            List<IntentionAction> list = new List<IntentionAction>();
                    
-            var anchor = _highlight.FileOnDisk.Count == 1 ? BulbMenuAnchors.FirstClassContextItems
+            IAnchor anchor = _highlight.FileOnDisk.Count == 1 ? BulbMenuAnchors.FirstClassContextItems
                 : (IAnchor)new SubmenuAnchor(BulbMenuAnchors.FirstClassContextItems, SubmenuBehavior.ExecutableDuplicateFirst);            
                                 
             if (_highlight.FileOnDisk.Count > 1)
             {                
-                list.Add(BulbActionExtensions.ToQuickFixIntention(new RemoveFileBulb(_highlight.CurrentProject, _highlight.FileOnDisk.ToArray()), anchor, UnnamedThemedIcons.Agent16x16.Id));
+                list.Add(new RemoveFileBulb(this._highlight.CurrentProject, this._highlight.FileOnDisk.ToArray()).ToQuickFixIntention(anchor, UnnamedThemedIcons.Agent16x16.Id));
             }
 
-            _highlight.FileOnDisk.ForEach(f=>
-                list.Add(BulbActionExtensions.ToQuickFixIntention(new RemoveFileBulb(_highlight.CurrentProject, new[] { f }), anchor, UnnamedThemedIcons.Agent16x16.Id))
-            );
-       
+            list.AddRange(this._highlight.FileOnDisk.Select(file => new RemoveFileBulb(this._highlight.CurrentProject, new[] { file }).ToQuickFixIntention(anchor, UnnamedThemedIcons.Agent16x16.Id)));
+
             return list;    
         }
 
@@ -75,7 +76,7 @@ namespace TestCop.Plugin.QuickFixActions
 
         public void Execute(ISolution solution, ITextControl textControl)
         {
-            foreach (var file in _files)
+            foreach (FileInfo file in _files)
             {
                 file.Delete();   
             }            

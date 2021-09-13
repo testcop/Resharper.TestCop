@@ -7,7 +7,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
-using JetBrains.Application;
+
 using JetBrains.Application.Components;
 using JetBrains.Application.Settings;
 using JetBrains.Application.Threading;
@@ -19,7 +19,9 @@ using JetBrains.ReSharper.Psi;
 using JetBrains.TestFramework;
 using JetBrains.TestFramework.Projects;
 using JetBrains.Util;
+
 using NUnit.Framework;
+
 using TestCop.Plugin.Helper;
 
 namespace TestCop.Plugin.Tests.RenameRefactoring
