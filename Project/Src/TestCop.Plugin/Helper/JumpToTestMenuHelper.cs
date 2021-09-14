@@ -7,12 +7,12 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+
 using JetBrains.Application.DataContext;
 using JetBrains.Application.UI.Controls;
 using JetBrains.Application.UI.Controls.JetPopupMenu;
 using JetBrains.Application.UI.DataContext;
 using JetBrains.Application.UI.PopupLayout;
-using JetBrains.DataFlow;
 using JetBrains.DocumentManagers;
 using JetBrains.DocumentModel;
 using JetBrains.IDE;
@@ -25,6 +25,7 @@ using JetBrains.ReSharper.Psi.Tree;
 using JetBrains.ReSharper.Resources.Shell;
 using JetBrains.UI.RichText;
 using JetBrains.Util;
+
 using TestCop.Plugin.Extensions;
 
 namespace TestCop.Plugin.Helper
@@ -107,15 +108,17 @@ namespace TestCop.Plugin.Helper
                 IProjectFile currentProjectFile = projectFile;
                 var np = new ProjectFileNavigationPoint(currentProjectFile);
 
-                var result = new SimpleMenuItemForProjectItem(np.GetPresentationText()
-                                                , np.GetPresentationImage()
-                                                , ResharperHelper.ProtectActionFromReEntry(lifetime,"TestingMenuNavigation", clickAction.Invoke(projectFile))
-                                                , projectFile, declaredElement
-                                                );
+                SimpleMenuItemForProjectItem result = new SimpleMenuItemForProjectItem(np.GetPresentationText()
+                    , np.GetPresentationImage()
+                    , ResharperHelper.ProtectActionFromReEntry(lifetime, "TestingMenuNavigation", clickAction.Invoke(projectFile))
+                    , projectFile, declaredElement
+                )
+                {
+                    ShortcutText = np.GetSecondaryPresentationText(),
+                    Style = MenuItemStyle.Enabled,
+                    Tag = projectFile.Location.FullPath
+                };
 
-                result.ShortcutText = np.GetSecondaryPresentationText();
-                result.Style = MenuItemStyle.Enabled;
-                result.Tag = projectFile.Location.FullPath;
 
                 menuItems.Add(result);
             }
@@ -217,21 +220,22 @@ namespace TestCop.Plugin.Helper
         //------------------------------------------------------------------------------------------------------------------------
         private static List<SimpleMenuItem> AddCreateFileMenuItem(Lifetime lifetime, TestCopProjectItem projectItem, string targetFile)
         {
-            var menuItems = new List<SimpleMenuItem>();
+            List<SimpleMenuItem> menuItems = new List<SimpleMenuItem>();
 
-            var result = new SimpleMenuItem("Create associated file"
-                                            , null,
-                                            ResharperHelper.ProtectActionFromReEntry(lifetime,"TestingMenuNavigation",
-                                                                     () =>
-                                                                     ResharperHelper.CreateFileWithinProject(projectItem, targetFile)));
-            result.Style = MenuItemStyle.Enabled;
-            result.Icon = UnnamedThemedIcons.Agent16x16.Id;
-            result.Text = new RichText("Create ", TextStyle.FromForeColor(Color.Green)).Append(targetFile, TextStyle.FromForeColor(TextStyle.DefaultForegroundColor));
-            result.ShortcutText = new RichText("(" + projectItem.Project.GetPresentableProjectPath()
-                                               +
-                                               projectItem.SubNamespaceFolder.FullPath.RemoveLeading(
-                                                   projectItem.Project.ProjectFileLocation.Directory.FullPath) + ")",
-                                               TextStyle.FromForeColor(Color.LightGray));
+            SimpleMenuItem result = new SimpleMenuItem("Create associated file"
+                , null
+                , ResharperHelper.ProtectActionFromReEntry(lifetime, "TestingMenuNavigation"
+                , () => ResharperHelper.CreateFileWithinProject(projectItem, targetFile))) 
+            {
+                Style = MenuItemStyle.Enabled,
+                Icon = UnnamedThemedIcons.Agent16x16.Id,
+                Text = new RichText("Create ", TextStyle.FromForeColor(Color.Green))
+                    .Append(targetFile, TextStyle.FromForeColor(TextStyle.DefaultForegroundColor)),
+                ShortcutText = new RichText("(" + projectItem.Project.GetPresentableProjectPath()
+                                                + projectItem.SubNamespaceFolder.FullPath.RemoveLeading(projectItem.Project.ProjectFileLocation.Directory.FullPath) 
+                                                + ")", 
+                    TextStyle.FromForeColor(Color.LightGray))
+            };
             menuItems.Add(result);
             return menuItems;
         }        

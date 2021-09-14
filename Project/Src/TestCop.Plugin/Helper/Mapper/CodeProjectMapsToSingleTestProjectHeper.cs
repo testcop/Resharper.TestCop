@@ -16,7 +16,7 @@ namespace TestCop.Plugin.Helper.Mapper
 {
     public class CodeProjectMapsToSingleTestProjectHeper : MappingBase
     {
-        protected override Regex TestingRegEx
+        protected override Regex TestNameSpaceRegEx
         {
             get
             {

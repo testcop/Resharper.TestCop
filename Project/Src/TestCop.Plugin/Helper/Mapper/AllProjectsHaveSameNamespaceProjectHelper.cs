@@ -23,10 +23,10 @@ namespace TestCop.Plugin.Helper.Mapper
             string currentProjectName = project.Name;
             if (string.IsNullOrEmpty(currentProjectName)) return false;
 
-            return TestingRegEx.IsMatch(currentProjectName);
+            return this.TestNameSpaceRegEx.IsMatch(currentProjectName);
         }
 
-        protected override Regex TestingRegEx
+        protected override Regex TestNameSpaceRegEx
         {
             get
             {

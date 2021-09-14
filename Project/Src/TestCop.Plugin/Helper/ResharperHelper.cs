@@ -11,9 +11,6 @@ using System.Text.RegularExpressions;
 
 using JetBrains.Application.DataContext;
 using JetBrains.Application.Threading;
-using JetBrains.Application.UI.DataContext;
-using JetBrains.Application.UI.PopupLayout;
-using JetBrains.Application.UI.Tooltips;
 using JetBrains.DataFlow;
 using JetBrains.DocumentModel;
 using JetBrains.Lifetimes;
@@ -26,13 +23,9 @@ using JetBrains.ReSharper.Psi.CSharp.Tree;
 using JetBrains.ReSharper.Psi.Util;
 using JetBrains.ReSharper.Resources.Shell;
 using JetBrains.TextControl;
-using JetBrains.TextControl.Layout;
-using JetBrains.Threading;
-using JetBrains.UI;
-using JetBrains.UI.RichText;
 using JetBrains.Util;
 using JetBrains.Util.Logging;
-using JetBrains.Util.Threading.Tasks;
+
 using TestCop.Plugin.Extensions;
 
 namespace TestCop.Plugin.Helper
@@ -104,8 +97,8 @@ namespace TestCop.Plugin.Helper
 
         public static Action ProtectActionFromReEntry(Lifetime lifetime, string name, Action fOnExecute)
         {
-            Action fOnExecute2 = () => IThreadingEx.ExecuteOrQueue(
-                Shell.Instance.Locks, lifetime, name,()=> ReadLockCookie.Execute(fOnExecute) );
+            void fOnExecute2() => IThreadingEx.ExecuteOrQueue(
+                Shell.Instance.Locks, lifetime, name, () => ReadLockCookie.Execute(fOnExecute));
             return fOnExecute2;
         }
 
@@ -135,8 +128,7 @@ namespace TestCop.Plugin.Helper
             IProjectModelElement projectModelElement =
                 context.GetData(JetBrains.ProjectModel.DataContext.ProjectModelDataConstants.PROJECT_MODEL_ELEMENT);
 
-            var projectItem = projectModelElement as IProjectItem;
-            if (projectItem == null) return null;
+            if (!(projectModelElement is IProjectItem projectItem)) return null;
             
             FileSystemPath location = projectItem.Location;
             string fileName = location.NameWithoutExtension;
@@ -148,9 +140,7 @@ namespace TestCop.Plugin.Helper
        
         public static IClrTypeName FindFirstTypeInFile(ISolution solution, IDocument document)
         {
-            var firstTypeInFile = FindDeclaredElementInFile(solution, document, 1) as ITypeElement;
-                         
-            if (firstTypeInFile != null)
+            if (FindDeclaredElementInFile(solution, document, 1) is ITypeElement firstTypeInFile)
             {
                 AppendLineToOutputWindow(solution.Locks, "Hunted and found first name in file to be " + firstTypeInFile.GetClrName());
                 return firstTypeInFile.GetClrName();
@@ -217,14 +207,14 @@ namespace TestCop.Plugin.Helper
 
             IClrTypeName clrTypeName = null;
 
-            if (documentElement is IClass)
+            if (documentElement is IClass @class)
             {
-                clrTypeName = ((IClass)documentElement).GetClrName();
+                clrTypeName = @class.GetClrName();
             }
 
-            if (documentElement is ITypeElement && clrTypeName == null)
+            if (documentElement is ITypeElement element && clrTypeName == null)
             {
-                var containingType = ((ITypeElement)documentElement).GetContainingType();
+                var containingType = element.GetContainingType();
                 if (containingType != null) clrTypeName= containingType.GetClrName();                
             }
           
