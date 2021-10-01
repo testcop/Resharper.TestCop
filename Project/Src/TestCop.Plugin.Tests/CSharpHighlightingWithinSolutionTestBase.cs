@@ -74,7 +74,7 @@ namespace TestCop.Plugin.Tests
                            {
                                using (Locks.UsingWriteLock())
                                {
-                                   FileSystemPath solutionFilePath = GetTestDataFilePath2(SolutionName);
+                                   VirtualFileSystemPath solutionFilePath = GetVirtualTestDataFilePath(SolutionName);
 
                                    if (!solutionFilePath.ExistsFile)
                                    {

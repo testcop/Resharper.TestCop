@@ -77,7 +77,7 @@ namespace TestCop.Plugin
             if (filesToFind.Length == 0) filesToFind = new[] {"*.cs"};
 
             var currentProject = element.GetProject();
-            var directoriesToSkip = currentProject.GetOutputDirectories();
+            ICollection<VirtualFileSystemPath> directoriesToSkip = currentProject.GetOutputDirectories();
             directoriesToSkip.AddAll(currentProject.GetIntermidiateDirectories());
 
             var allProjectFileLocations = currentProject.GetAllProjectFiles().Select(p => p.Location).ToList();
@@ -115,7 +115,7 @@ namespace TestCop.Plugin
             }
         }
 
-        public static bool InDirectory(ICollection<FileSystemPath> directoriesToSkip, FileSystemPath fileOnDisk)
+        public static bool InDirectory(ICollection<VirtualFileSystemPath> directoriesToSkip, VirtualFileSystemPath fileOnDisk)
         {
             if (fileOnDisk == null || directoriesToSkip == null) return false;
             return directoriesToSkip.Any(x => x.IsPrefixOf(fileOnDisk));

@@ -130,7 +130,7 @@ namespace TestCop.Plugin.Helper
 
             if (!(projectModelElement is IProjectItem projectItem)) return null;
             
-            FileSystemPath location = projectItem.Location;
+            VirtualFileSystemPath location = projectItem.Location;
             string fileName = location.NameWithoutExtension;
             
             fileName = fileName.RemoveTrailing(".partial");
