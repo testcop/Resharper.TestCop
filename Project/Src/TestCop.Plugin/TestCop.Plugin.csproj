@@ -119,10 +119,11 @@
     <Reference Include="DotNetZip, Version=1.11.0.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
       <HintPath>..\..\packages\DotNetZip.1.11.0\lib\net20\DotNetZip.dll</HintPath>
     </Reference>
-    <Reference Include="envdte, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <SpecificVersion>False</SpecificVersion>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-      <HintPath>C:\Windows\assembly\GAC\EnvDTE\8.0.0.0__b03f5f7f11d50a3a\envdte.dll</HintPath>
+    <Reference Include="envdte, Version=17.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\envdte.17.0.0-previews-4-31709-430\lib\net472\envdte.dll</HintPath>
+    </Reference>
+    <Reference Include="envdte80, Version=17.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\envdte80.17.0.0-previews-4-31709-430\lib\net472\envdte80.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=1.0.7896.26902, Culture=neutral, PublicKeyToken=af5372d9166ac06b, processorArchitecture=MSIL">
       <HintPath>..\..\packages\JetBrains.SharpZipLib.Stripped.0.87.20210814.37\lib\net\ICSharpCode.SharpZipLib.dll</HintPath>
@@ -135,10 +136,6 @@
     </Reference>
     <Reference Include="JetBrains.Lifetimes, Version=777.0.0.0, Culture=neutral, PublicKeyToken=3c74c1a6a8683340, processorArchitecture=MSIL">
       <HintPath>..\..\packages\JetBrains.Lifetimes.2021.2.0\lib\net461\JetBrains.Lifetimes.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.MSBuild.Logger, Version=1.0.0.0, Culture=neutral, PublicKeyToken=1982a8b0ca24c5dc, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\JetBrains.Platform.MSBuild.Logger.1.0.20170331.0\lib\net\JetBrains.MSBuild.Logger.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="JetBrains.MSBuild.Logger.Api, Version=1.0.0.0, Culture=neutral, PublicKeyToken=1982a8b0ca24c5dc, processorArchitecture=MSIL">
       <HintPath>..\..\packages\JetBrains.Platform.MSBuild.Logger.Api.1.0.20170809\lib\net\JetBrains.MSBuild.Logger.Api.dll</HintPath>
@@ -180,27 +177,12 @@
     <Reference Include="JetBrains.ReSharper.TestRunner.Utilities, Version=2.6.1.6, Culture=neutral, PublicKeyToken=5c492ec4f3eccde3, processorArchitecture=MSIL">
       <HintPath>..\..\packages\JetBrains.ReSharper.TestRunner.Utilities.2.6.1.6\lib\net40\JetBrains.ReSharper.TestRunner.Utilities.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.System.Reflection.Metadata, Version=1.0.0.0, Culture=neutral, PublicKeyToken=4fea49dae943e013, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\JetBrains.System.Reflection.Metadata.20170417.0.0.0\lib\net45\JetBrains.System.Reflection.Metadata.dll</HintPath>
-    </Reference>
     <Reference Include="JetBrains.Toolset.ScriptSourcesCompiler.Interface, Version=1.0.0.0, Culture=neutral, PublicKeyToken=1982a8b0ca24c5dc, processorArchitecture=MSIL">
       <HintPath>..\..\packages\JetBrains.Toolset.ScriptSourcesCompiler.Interface.1.0.20170420.1\lib\netstandard2.0\JetBrains.Toolset.ScriptSourcesCompiler.Interface.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="MahApps.Metro, Version=1.5.0.23, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
       <HintPath>..\..\packages\JetBrains.MahApps.Metro.1.5.0.1\lib\net45\MahApps.Metro.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Build, Version=15.1.0.0, Culture=neutral, PublicKeyToken=5aaa11a165479571, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\JetBrains.MSBuild.Xplat.Engine.20161013.1.0\lib\net45\Microsoft.Build.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Build.Framework, Version=15.1.0.0, Culture=neutral, PublicKeyToken=5aaa11a165479571, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\JetBrains.MSBuild.Xplat.Engine.20161013.1.0\lib\net45\Microsoft.Build.Framework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Build.Utilities.Core, Version=15.1.0.0, Culture=neutral, PublicKeyToken=5aaa11a165479571, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\JetBrains.MSBuild.Xplat.Engine.20161013.1.0\lib\net45\Microsoft.Build.Utilities.Core.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CodeAnalysis, Version=42.42.42.42, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\JetBrains.Roslyn.References.Repack.42.42.20210813.103922\Lib\Net\Microsoft.CodeAnalysis.dll</HintPath>
@@ -281,6 +263,9 @@
     <Reference Include="Microsoft.TestPlatform.VsTestConsole.TranslationLayer, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\JetBrains.Microsoft.TestPlatform.TranslationLayer.16.0.0.20191015\lib\net451\Microsoft.TestPlatform.VsTestConsole.TranslationLayer.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.Interop, Version=17.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.VisualStudio.Interop.17.0.0-previews-5-31722-452\lib\net472\Microsoft.VisualStudio.Interop.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.Shell.Interop, Version=7.1.40304.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <HintPath>..\..\packages\JetBrains.Platform.Lib.VisualStudio.AnyVs.ShellInterop.PrivateBuild.2.0.20141005.1\lib\net20\Microsoft.VisualStudio.Shell.Interop.dll</HintPath>
     </Reference>
@@ -304,11 +289,7 @@
     <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\JetBrains.Windows7APICodePack.Stripped.1.1.20210120.1\lib\netstandard2.0\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
     </Reference>
-    <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\JetBrains.Toolset.RefAsm.Net461.NetStandard.2.0.20210225.212946\lib\net461\netstandard.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
-    </Reference>
+    <Reference Include="netstandard" />
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -382,8 +363,6 @@
     <Reference Include="System.Collections.Immutable, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Collections.Immutable.5.0.0\lib\net461\System.Collections.Immutable.dll</HintPath>
     </Reference>
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Drawing.Common, Version=4.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -401,11 +380,6 @@
     </Reference>
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Net.Http, Version=4.1.1.3, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\System.Net.Http.4.3.4\lib\net46\System.Net.Http.dll</HintPath>
-      <Private>True</Private>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
@@ -455,10 +429,6 @@
     <Reference Include="System.Text.Encoding.CodePages, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Text.Encoding.CodePages.4.3.0\lib\net46\System.Text.Encoding.CodePages.dll</HintPath>
     </Reference>
-    <Reference Include="System.Threading.Tasks.Dataflow, Version=4.6.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\JetBrains.MSBuild.Xplat.Engine.20161013.1.0\lib\net45\System.Threading.Tasks.Dataflow.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
     </Reference>
@@ -485,10 +455,6 @@
     </Reference>
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <HintPath>..\..\packages\xunit.abstractions.2.0.3\lib\net35\xunit.abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="xunit.runner.utility.desktop, Version=2.2.0.3239, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\xunit.runner.utility.JetBrains.2.2.0\lib\net35\xunit.runner.utility.desktop.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="xunit.runner.utility.net452, Version=2.4.1.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <HintPath>..\..\packages\xunit.runner.utility.2.4.1\lib\net452\xunit.runner.utility.net452.dll</HintPath>
