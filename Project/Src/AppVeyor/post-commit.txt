@@ -1,7 +1,0 @@
-#! /bin/bash
-basedir="$(dirname "$0")"
-. $basedir/version.sh
-if [ "$version" != "" ]; then
-    git tag -a "v$version" -m "`git log -1 --format=%s`"
-    echo "Created a new tag, v$version"    
-fi

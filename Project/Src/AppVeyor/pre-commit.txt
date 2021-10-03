@@ -1,8 +1,0 @@
-#! /bin/bash
-basedir="$(dirname "$0")"
-. $basedir/version.sh
-if [ "$version" != "" ]; then
-    sed -i "1s/.*/version: ${version}.{build}/" $TOP_LVL/appveyor.yml
-    git add $TOP_LVL/appveyor.yml
-    echo "Modified AppVeyor config version, v$version"    
-fi
