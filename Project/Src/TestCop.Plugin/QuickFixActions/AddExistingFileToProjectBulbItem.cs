@@ -86,7 +86,7 @@ namespace TestCop.Plugin.QuickFixActions
             {
                 foreach (var file in _files)
                 {
-                    _currentProject.AddExistenFile(FileSystemPath.Parse(file.FullName), cookie);
+                    _currentProject.AddExistenFile(FileSystemPath.Parse(file.FullName).ToVirtualFileSystemPath(), cookie);
                 }
                 cookie.Commit(progress);
             }

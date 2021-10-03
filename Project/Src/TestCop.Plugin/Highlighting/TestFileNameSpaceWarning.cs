@@ -39,7 +39,7 @@ namespace TestCop.Plugin.Highlighting
         }
 
         private readonly IProject _targetProject;
-        private readonly FileSystemPath _targetFolder;
+        private readonly VirtualFileSystemPath _targetFolder;
         
         public IAccessRightsOwnerDeclaration Declaration
         {
@@ -48,7 +48,7 @@ namespace TestCop.Plugin.Highlighting
 
         public TestFileNameSpaceWarning(IProjectItem offendingProjectItem, IAccessRightsOwnerDeclaration declaration
             , string expectedNameSpace
-            , IProject targetProject, FileSystemPath targetFolder)
+            , IProject targetProject, VirtualFileSystemPath targetFolder)
         {
             _offendingProjectItem = offendingProjectItem;
             _declaration = declaration;
@@ -82,7 +82,7 @@ namespace TestCop.Plugin.Highlighting
             get { return _targetProject; }
         }
 
-        public FileSystemPath TargetFolder
+        public VirtualFileSystemPath TargetFolder
         {
             get { return _targetFolder; }
         }

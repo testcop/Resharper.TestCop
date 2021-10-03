@@ -9,13 +9,19 @@ using JetBrains.Application.DataContext;
 using JetBrains.Application.Shortcuts.ShortcutManager;
 using JetBrains.Application.UI.ActionsRevised.Menu;
 using JetBrains.Application.UI.Controls.JetPopupMenu;
-using JetBrains.ReSharper.UnitTestFramework;
 using JetBrains.ReSharper.UnitTestFramework.Actions;
 using JetBrains.ReSharper.UnitTestFramework.Criteria;
+using JetBrains.ReSharper.UnitTestFramework.Elements;
+using JetBrains.ReSharper.UnitTestFramework.Execution.Hosting;
+using JetBrains.ReSharper.UnitTestFramework.Execution.Launch;
 using TestCop.Plugin.Extensions;
 
 namespace TestCop.Plugin
-{    
+{
+    using JetBrains.ReSharper.Psi;
+    using JetBrains.ReSharper.UnitTestFramework;
+    using JetBrains.ReSharper.UnitTestFramework.Features;
+
     [Action("TestCop Run Unit Tests", Id = 92407+1, ShortcutScope = ShortcutScope.TextEditor, Icon = typeof(UnnamedThemedIcons.Agent16x16)
      , IdeaShortcuts = new []{"Control+G Control+X"}, VsShortcuts = new []{"Control+G Control+X"}
     )]
@@ -51,7 +57,7 @@ namespace TestCop.Plugin
                 return null;
             }
             
-            var itms = menuAction.ItemKeys.Where(i => i is SimpleMenuItemForProjectItem) //only links to project files
+            List<IDeclaredElement> itms = menuAction.ItemKeys.Where(i => i is SimpleMenuItemForProjectItem) //only links to project files
                 .Cast<SimpleMenuItemForProjectItem>()
                 .Where(i => i.AssociatedProjectItem.GetProject().IsTestProject())//only files within test projects
                 .Select(i => i.DeclaredElement) 
@@ -61,8 +67,8 @@ namespace TestCop.Plugin
             {
                 return null;
             }
-            
-            var mgr = context.GetComponent<IUnitTestElementStuff>();
+
+            var mgr = context.GetComponent<IUnitTestPsiManager>();
             var unitTestElements = new List<IUnitTestElement>();
 
             unitTestElements.AddRange(mgr.GetElements(itms));

@@ -56,8 +56,8 @@ namespace TestCop.Plugin.Tests.RenameRefactoring
                 ISolution solution;
                 using (Locks.UsingWriteLock())
                 {
-                    var solutionFolder = this.CopyTestDataDirectoryToTemp(lifetime,@"..\..\"+RelativeTestDataPath);
-                    solution = (ISolution)this.SolutionManager.OpenExistingSolution(FileSystemPath.Parse(solutionFolder).Combine(SolutionName));
+                    VirtualFileSystemPath solutionPath = this.VirtualTestDataPath.Combine(this.SolutionName);
+                    solution = (ISolution)this.SolutionManager.OpenExistingSolution(solutionPath);
                 }
 
                 lifetime.OnTermination(() => SolutionManager.CloseSolution(solution));

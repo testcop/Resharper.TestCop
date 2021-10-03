@@ -22,6 +22,8 @@ using TestCop.Plugin.Extensions;
 
 namespace TestCop.Plugin.Helper
 {
+    using JetBrains.Util;
+
     [ShellComponent]
     public class TestCopFileCreater
     {
@@ -69,7 +71,7 @@ namespace TestCop.Plugin.Helper
                 ResharperHelper.AppendLineToOutputWindow(shellLocks, string.Format("File Template for '{0}' not found with default to 'Class'", desiredTemplateName));
                 classTemplate = LoadTemplateFromQuickList(context, "Class");
             }
-            IProjectFolder folder = (IProjectFolder)projectItem.Project.FindProjectItemByLocation(projectItem.SubNamespaceFolder)
+            IProjectFolder folder = (IProjectFolder)projectItem.Project.FindProjectItemByLocation(projectItem.SubNamespaceFolder.ToVirtualFileSystemPath())
                                     ?? GetOrCreateProjectFolder(projectItem);
             
             if (folder == null)
@@ -86,7 +88,7 @@ namespace TestCop.Plugin.Helper
         private static IProjectFolder GetOrCreateProjectFolder(TestCopProjectItem projectItem)
         {
             ///TODO: Need to create folders honouring the namespace provider setting defined with projectItem
-            return projectItem.Project.GetOrCreateProjectFolder(projectItem.SubNamespaceFolder);
+            return projectItem.Project.GetOrCreateProjectFolder(projectItem.SubNamespaceFolder.ToVirtualFileSystemPath());
         }
 
         private static Template LoadTemplateFromQuickList(IDataContext context, string templateDescription)
