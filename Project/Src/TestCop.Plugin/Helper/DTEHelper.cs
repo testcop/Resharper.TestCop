@@ -4,93 +4,101 @@
 // -- Copyright 2020
 // --
 
-using System;
-using EnvDTE;
-using JetBrains;
-using JetBrains.ReSharper.Resources.Shell;
-using JetBrains.Util.Logging;
-
 namespace TestCop.Plugin.Helper
 {
+    using System;
+
+    using EnvDTE;
+
+    using EnvDTE80;
+
+    using JetBrains;
+    using JetBrains.ReSharper.Resources.Shell;
+    using JetBrains.Util.Logging;
+
     public static class DTEHelper
     {
         public static bool VisualStudioIsPresent()
-        {                      
-            return Shell.Instance.HasComponent<DTE>();
+        {
+            return Shell.Instance.HasComponent<DTE2>();
         }
 
         public static void RefreshSolutionExplorerWindow()
         {
-            var dte = Shell.Instance.GetComponent<DTE>();            
+            DTE2 dte = Shell.Instance.GetComponent<DTE2>();
             dte.Commands.Raise("{1496A755-94DE-11D0-8C3F-00C04FC2AAE2}", 222, null, null);
         }
-   
+
         /// <summary>
         /// Must run on main UI thread
-        /// </summary>        
+        /// </summary>
         public static void PrintoutKeyboardShortcut(bool showOutputPane, string macroName, string keyboardShortcut)
-        {                   
-            var dte = Shell.Instance.GetComponent<DTE>();
+        {
+            DTE2 dte = Shell.Instance.GetComponent<DTE2>();
 
             try
             {
-                var command = dte.Commands.Item(macroName);
+                Command command = dte.Commands.Item(macroName);
 
                 if (command != null)
                 {
-                    var currentBindings = (System.Object[]) command.Bindings;
+                    object[] currentBindings = (object[])command.Bindings;
 
                     if (currentBindings.Length > 0)
                     {
                         //if (currentBindings[0].ToString() == keyboardShortcut)
-                        for (int i = 0; i < currentBindings.Length; i++)
+                        foreach (object t in currentBindings)
                         {
                             GetOutputWindowPane(dte, "TestCop", showOutputPane).OutputString(
-                                $"TestCop keyboard shortcut for '{macroName}' is set to '{currentBindings[i]}'\n");
+                                $"TestCop keyboard shortcut for '{macroName}' is set to '{t}'\n");
                         }
+
                         return;
                     }
+
                     GetOutputWindowPane(dte, "TestCop", showOutputPane).OutputString(
                         $"Within Visual Studio - please map testCop keyboard shortcut for '{macroName}' to '{keyboardShortcut}'\n");
-
                 }
             }
             catch (Exception e)
             {
                 GetOutputWindowPane(dte, "TestCop", showOutputPane).OutputString(
-                    "Error on setting '{0}' to '{1}. Ex={2}'\n".FormatEx(macroName, keyboardShortcut, e.ToString()));
+                    "Error on setting '{0}' to '{1}. Ex={2}'\n".FormatEx(macroName, keyboardShortcut, e));
                 Logger.LogException(e);
             }
         }
 
         /// <summary>
         /// Must run on main UI thread
-        /// </summary>        
+        /// </summary>
         public static void AssignKeyboardShortcutIfMissing(bool showOutputPane, string macroName, string keyboardShortcut)
         {
-            var dte = Shell.Instance.GetComponent<DTE>();
+            DTE2 dte = Shell.Instance.GetComponent<DTE2>();
 
             try
             {
-                var command = dte.Commands.Item(macroName);
+                Command command = dte.Commands.Item(macroName);
 
                 if (command != null)
                 {
-                    var currentBindings = (System.Object[])command.Bindings;
+                    object[] currentBindings = (object[])command.Bindings;
 
                     if (currentBindings.Length > 0)
                     {
-                        for (int i = 0; i < currentBindings.Length; i++)
+                        foreach (object t in currentBindings)
                         {
-                            Logger.LogMessage($"Note that the TestCop keyboard shortcut for '{macroName}' is already set to '{currentBindings[i]}'\n");
+                            Logger.LogMessage(
+                                $"Note that the TestCop keyboard shortcut for '{macroName}' is already set to '{t}'\n");
+
                             //GetOutputWindowPane(dte, "TestCop", showOutputPane).OutputString($"TestCop keyboard shortcut for '{macroName}' is already set to '{currentBindings[i]}'\n");
                         }
+
                         return;
                     }
-                    
+
                     command.Bindings = string.IsNullOrEmpty(keyboardShortcut)
-                        ? new Object[] {}
-                        : new Object[] {keyboardShortcut};
+                        ? new object[] { }
+                        : new object[] { keyboardShortcut };
 
                     Logger.LogMessage($"TestCop is setting keyboard shortcut for '{macroName}' to '{keyboardShortcut}'\n");
 
@@ -102,42 +110,46 @@ namespace TestCop.Plugin.Helper
             catch (Exception e)
             {
                 GetOutputWindowPane(dte, "TestCop", showOutputPane).OutputString(
-                    "Error on setting '{0}' to '{1}. Ex={2}'\n".FormatEx(macroName, keyboardShortcut, e.ToString()));
+                    "Error on setting '{0}' to '{1}. Ex={2}'\n".FormatEx(macroName, keyboardShortcut, e));
                 Logger.LogException(e);
             }
         }
 
         public static OutputWindowPane GetOutputWindowPane(string name, bool show)
-        {               
-            var dte = Shell.Instance.GetComponent<DTE>();
+        {
+            DTE2 dte = Shell.Instance.GetComponent<DTE2>();
             return GetOutputWindowPane(dte, name, show);
-        }      
+        }
 
         /// <summary>
         /// Must run on main UI thread
         /// </summary>
-        private static OutputWindowPane GetOutputWindowPane(DTE dte, string name, bool show)
+        private static OutputWindowPane GetOutputWindowPane(DTE2 dte, string name, bool show)
         {
             /* If compilation generates:: 'EnvDTE.Constants' can be used only as one of its applicable interfaces
              * then set DTE assembly reference property Embed Interop Types = false  */
-            
-            var win = dte.Windows.Item(EnvDTE.Constants.vsWindowKindOutput);            
-            if(show)win.Visible = true;
 
-            var ow = (OutputWindow) win.Object;
+            Window win = dte.Windows.Item(Constants.vsWindowKindOutput);
+
+            if (show)
+            {
+                win.Visible = true;
+            }
+
+            OutputWindow ow = (OutputWindow)win.Object;
             OutputWindowPane owpane;
+
             try
             {
                 owpane = ow.OutputWindowPanes.Item(name);
             }
-            catch(Exception)            
+            catch (Exception)
             {
                 owpane = ow.OutputWindowPanes.Add(name);
             }
 
             owpane.Activate();
             return owpane;
-        }        
+        }
     }
-
 }
