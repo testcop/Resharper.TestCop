@@ -6,27 +6,27 @@
 
 namespace TestCop.Plugin.Helper
 {
-    using System;
-
-    using EnvDTE;
-
-    using EnvDTE80;
-
     using JetBrains;
     using JetBrains.ReSharper.Resources.Shell;
     using JetBrains.Util.Logging;
+    using JetBrains.VsIntegration.Interop.Declarations;
+    using JetBrains.VsIntegration.Shell.EnvDte;
+
+    using System;
+
+    using JetBrains.Platform.VisualStudio.Protocol.TemporarilyExposedToFront;
 
     public static class DTEHelper
     {
         public static bool VisualStudioIsPresent()
         {
-            return Shell.Instance.HasComponent<DTE2>();
+            return Shell.Instance.HasComponent<IEnvDteWrapper>();
         }
 
         public static void RefreshSolutionExplorerWindow()
         {
-            DTE2 dte = Shell.Instance.GetComponent<DTE2>();
-            dte.Commands.Raise("{1496A755-94DE-11D0-8C3F-00C04FC2AAE2}", 222, null, null);
+            IEnvDteWrapper dte = Shell.Instance.GetComponent<IEnvDteWrapper>();
+            dte.Commands.Raise(VsConstants.VSStd2K.ToString(), (int)VsKnownCommands.VSStd2KCmdID.SLNREFRESH, null, null);
         }
 
         /// <summary>
@@ -34,15 +34,15 @@ namespace TestCop.Plugin.Helper
         /// </summary>
         public static void PrintoutKeyboardShortcut(bool showOutputPane, string macroName, string keyboardShortcut)
         {
-            DTE2 dte = Shell.Instance.GetComponent<DTE2>();
+            IEnvDteWrapper dte = Shell.Instance.GetComponent<IEnvDteWrapper>();
 
             try
             {
-                Command command = dte.Commands.Item(macroName);
+                IEnvDteCommand command = GetCommand(dte, macroName);
 
                 if (command != null)
                 {
-                    object[] currentBindings = (object[])command.Bindings;
+                    object[] currentBindings = command.Bindings;
 
                     if (currentBindings.Length > 0)
                     {
@@ -73,15 +73,15 @@ namespace TestCop.Plugin.Helper
         /// </summary>
         public static void AssignKeyboardShortcutIfMissing(bool showOutputPane, string macroName, string keyboardShortcut)
         {
-            DTE2 dte = Shell.Instance.GetComponent<DTE2>();
+            IEnvDteWrapper dte = Shell.Instance.GetComponent<IEnvDteWrapper>();
 
             try
             {
-                Command command = dte.Commands.Item(macroName);
+                IEnvDteCommand command = GetCommand(dte, macroName);
 
                 if (command != null)
                 {
-                    object[] currentBindings = (object[])command.Bindings;
+                    object[] currentBindings = command.Bindings;
 
                     if (currentBindings.Length > 0)
                     {
@@ -115,41 +115,38 @@ namespace TestCop.Plugin.Helper
             }
         }
 
-        public static OutputWindowPane GetOutputWindowPane(string name, bool show)
+        public static IEnvDteOutputWindowPane GetOutputWindowPane(string name, bool show)
         {
-            DTE2 dte = Shell.Instance.GetComponent<DTE2>();
+            IEnvDteWrapper dte = Shell.Instance.GetComponent<IEnvDteWrapper>();
             return GetOutputWindowPane(dte, name, show);
+        }
+
+        private static IEnvDteCommand GetCommand(IEnvDteWrapper dte, string macroName)
+        {
+            dte.Commands.CommandInfo(macroName, out string cmdGuid, out int cmdId);
+
+            IEnvDteCommand command = dte.Commands.TryGetCommand(cmdGuid, cmdId);
+            return command;
         }
 
         /// <summary>
         /// Must run on main UI thread
         /// </summary>
-        private static OutputWindowPane GetOutputWindowPane(DTE2 dte, string name, bool show)
+        private static IEnvDteOutputWindowPane GetOutputWindowPane(IEnvDteWrapper dte, string name, bool show)
         {
-            /* If compilation generates:: 'EnvDTE.Constants' can be used only as one of its applicable interfaces
-             * then set DTE assembly reference property Embed Interop Types = false  */
-
-            Window win = dte.Windows.Item(Constants.vsWindowKindOutput);
+            IEnvDteWindow window = dte.Windows.TryGetWindow(VsConstants.StandardToolWindows.Output.ToString());
 
             if (show)
             {
-                win.Visible = true;
+                window.Visible = true;
             }
-
-            OutputWindow ow = (OutputWindow)win.Object;
-            OutputWindowPane owpane;
-
-            try
-            {
-                owpane = ow.OutputWindowPanes.Item(name);
-            }
-            catch (Exception)
-            {
-                owpane = ow.OutputWindowPanes.Add(name);
-            }
-
-            owpane.Activate();
-            return owpane;
+            
+            IEnvDteOutputWindow outputWindow = (IEnvDteOutputWindow)window.Object;
+            IEnvDteOutputWindowPane outputWindowPane = outputWindow.OutputWindowPanes.TryGetPane(name) ?? outputWindow.OutputWindowPanes.Add(name);
+            
+            
+            outputWindowPane.Activate();
+            return outputWindowPane;
         }
     }
 }
