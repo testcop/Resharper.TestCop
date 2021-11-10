@@ -42,11 +42,17 @@ using TextBox = System.Windows.Controls.TextBox;
 
 namespace TestCop.Plugin.OptionsPage
 {
-  [OptionsPage(PID, "TestCop ", typeof(UnnamedThemedIcons.Agent16x16), ParentId = ToolsPage.PID)]  
+    using System.Collections.Generic;
+
+    using JetBrains.ReSharper.Feature.Services.LiveTemplates.Support;
+    using JetBrains.ReSharper.Resources.Shell;
+
+    [OptionsPage(PID, "TestCop ", typeof(UnnamedThemedIcons.Agent16x16), ParentId = ToolsPage.PID)]  
   public partial class TestCopOptionPage : IOptionsPage
   {      
       private readonly Lifetime _lifetime;
       private readonly OptionsSettingsSmartContext _settings;
+      private readonly IContextBoundSettingsStore _settingsStore;
       private readonly TemplateScopeManager _scopeManager;
       private readonly StoredTemplatesProvider _storedTemplatesProvider;
       private readonly ILiveTemplatesUIHelper _templatesUiHelper;
@@ -56,12 +62,13 @@ namespace TestCop.Plugin.OptionsPage
       private readonly FileTemplatesManager _fileTemplatesManager;
       private readonly ILogger _logger;
       
-      public TestCopOptionPage(Lifetime lifetime, OptionsSettingsSmartContext settings, TemplateScopeManager scopeManager
+      public TestCopOptionPage(Lifetime lifetime, OptionsSettingsSmartContext settings, IContextBoundSettingsStore settingsStore, TemplateScopeManager scopeManager
           , IThemedIconManager iconManager, IUIApplication application
         , StoredTemplatesProvider storedTemplatesProvider, ILiveTemplatesUIHelper templatesUiHelper, FileTemplatesManager fileTemplatesManager, ISolution solution = null)
       {
           _lifetime = lifetime;
           _settings = settings;
+          _settingsStore = settingsStore;
           _scopeManager = scopeManager;
           _application = application;
           _solution = solution;
@@ -427,7 +434,7 @@ namespace TestCop.Plugin.OptionsPage
               return;
           }
 
-          var project = _solution.GetAllCodeProjects().FirstOrDefault();
+          IProject project = _solution.GetAllCodeProjects().FirstOrDefault();
           if (project == null)
           {
               ResharperHelper.AppendLineToOutputWindow(_solution.Locks, "Unable to identify a code project.");
@@ -435,14 +442,16 @@ namespace TestCop.Plugin.OptionsPage
               return;
           }
 
-          var scope = _scopeManager.EnumerateRealScopePoints(
+          IEnumerable<ITemplateScopePoint> scope = _scopeManager.EnumerateRealScopePoints(
               new TemplateAcceptanceContext(new ProjectFolderWithLocation(project)));
           scope = scope.Distinct().Where(s => s is InLanguageSpecificProject).ToList();
-
-
-          _templatesUiHelper.ChooseTemplate(
-              FileTemplatesManager.Instance.QuickListSupports, scope, project.ToDataContext(),
-              TemplateApplicability.File, template => { ((TextBox) sender).Text = template.Description; });
+          using (ReadLockCookie.Create()) {
+              IEnumerable<QuickListSupport> quickListSupports = FileTemplatesManager.Instance.QuickListSupports;
+              
+              _templatesUiHelper.ChooseTemplate(this._settingsStore,
+                  quickListSupports,
+                  TemplateApplicability.File, template => { ((TextBox) sender).Text = template.Description; });
+          }
       }
 
       private void ResetButton_OnClick(object sender, RoutedEventArgs e)

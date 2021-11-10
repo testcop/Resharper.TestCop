@@ -14,8 +14,6 @@ namespace TestCop.Plugin.Helper
 
     using System;
 
-    using JetBrains.Platform.VisualStudio.Protocol.TemporarilyExposedToFront;
-
     public static class DTEHelper
     {
         public static bool VisualStudioIsPresent()
@@ -38,7 +36,7 @@ namespace TestCop.Plugin.Helper
 
             try
             {
-                IEnvDteCommand command = GetCommand(dte, macroName);
+                IEnvDteCommand command = dte.Commands.TryGetCommand(macroName);
 
                 if (command != null)
                 {
@@ -77,7 +75,7 @@ namespace TestCop.Plugin.Helper
 
             try
             {
-                IEnvDteCommand command = GetCommand(dte, macroName);
+                IEnvDteCommand command = dte.Commands.TryGetCommand(macroName);
 
                 if (command != null)
                 {
@@ -121,31 +119,23 @@ namespace TestCop.Plugin.Helper
             return GetOutputWindowPane(dte, name, show);
         }
 
-        private static IEnvDteCommand GetCommand(IEnvDteWrapper dte, string macroName)
-        {
-            dte.Commands.CommandInfo(macroName, out string cmdGuid, out int cmdId);
-
-            IEnvDteCommand command = dte.Commands.TryGetCommand(cmdGuid, cmdId);
-            return command;
-        }
-
         /// <summary>
         /// Must run on main UI thread
         /// </summary>
         private static IEnvDteOutputWindowPane GetOutputWindowPane(IEnvDteWrapper dte, string name, bool show)
         {
-            IEnvDteWindow window = dte.Windows.TryGetWindow(VsConstants.StandardToolWindows.Output.ToString());
+            IEnvDteWindow window = dte.Windows.TryGetWindow(VsConstants.StandardToolWindows.Output.ToString("B"));
+            window.Activate();
 
             if (show)
             {
                 window.Visible = true;
             }
-            
-            IEnvDteOutputWindow outputWindow = (IEnvDteOutputWindow)window.Object;
-            IEnvDteOutputWindowPane outputWindowPane = outputWindow.OutputWindowPanes.TryGetPane(name) ?? outputWindow.OutputWindowPanes.Add(name);
-            
-            
-            outputWindowPane.Activate();
+
+            IEnvDteOutputWindow outputWindow = dte.Windows.Dte.TryCreateOutputWindow(window.Object);
+            IEnvDteOutputWindowPane outputWindowPane = outputWindow?.OutputWindowPanes.TryGetPane(name) ?? outputWindow?.OutputWindowPanes.Add(name);
+
+            outputWindowPane?.Activate();
             return outputWindowPane;
         }
     }
