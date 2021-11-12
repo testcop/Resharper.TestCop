@@ -107,13 +107,7 @@ namespace TestCop.Plugin
             _settingsStore = settingsStore;
         }
 
-        public static TestCopSettingsManager Instance
-        {
-            get
-            {
-                return Shell.Instance.GetComponent<TestCopSettingsManager>();
-            }
-        }
+        public static TestCopSettingsManager Instance => Shell.Instance.GetComponent<TestCopSettingsManager>();
 
         public TestFileAnalysisSettings Settings
         {
