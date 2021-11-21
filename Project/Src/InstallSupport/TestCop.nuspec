@@ -8,9 +8,12 @@
   <authors>Alcaeus</authors>
   <description>Easily switch between unit tests and code. Create missing associated files. Includes highlightings and test templates to keep test projects neat and tidy. Works with NUnit, MSTest, xUnit ...</description>
   <releaseNotes>
-	  1.10.15.2-EAP BugFix - Fix automatic shortcut assignment
-	  1.10.15.1-EAP Recompiled with R# SDK 2021.3.0-eap01
-	  1.10.14.1 Upgraded to .NET 4.7.2 and Recompiled with R# SDK 2021.2
+    1.10.15.5-EAP Recompiled with R# SDK 2021.3.0-eap07 and applied api changes
+    1.10.15.4-EAP Recompiled with R# SDK 2021.3.0-eap05 and migrated to R# DTE wrapper
+    1.10.15.3-EAP Recompiled with R# SDK 2021.3.0-eap03 and removed explicit DTE dependencies
+    1.10.15.2-EAP BugFix - Fix automatic shortcut assignment
+    1.10.15.1-EAP Recompiled with R# SDK 2021.3.0-eap01
+    1.10.14.1 Upgraded to .NET 4.7.2 and Recompiled with R# SDK 2021.2
     1.10.13.1 R#2021.1 Recompiled
     1.10.12.1 R#2020.3 Recompiled
     1.10.11.2 bug fix for R# option severity screen
