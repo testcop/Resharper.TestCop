@@ -74,7 +74,7 @@ namespace TestCop.Plugin.QuickFixActions
             return null;
         }
 
-        public override string Text => $"Move file file to : {this._highlight.ExpectedNameSpace}";
+        public override string Text => $"Move file to : {this._highlight.ExpectedNameSpace}";
 
         public IEnumerable<IntentionAction> CreateBulbItems()
         {
