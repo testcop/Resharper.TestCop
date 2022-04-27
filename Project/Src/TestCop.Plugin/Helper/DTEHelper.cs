@@ -125,10 +125,10 @@ namespace TestCop.Plugin.Helper
         private static IEnvDteOutputWindowPane GetOutputWindowPane(IEnvDteWrapper dte, string name, bool show)
         {
             IEnvDteWindow window = dte.Windows.TryGetWindow(VsConstants.StandardToolWindows.Output.ToString("B"));
-            window.Activate();
-
+            
             if (show)
             {
+                window.Activate();
                 window.Visible = true;
             }
 
