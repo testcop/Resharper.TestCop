@@ -80,8 +80,10 @@ namespace TestCop.Plugin
                                         continue;
                                     }
 
+                                    IEditorManager editorManager = solution.GetComponent<IEditorManager>();
+
                                     //TODO EditorManager.GetInstance(solution).OpenProjectFile(projectFileMatch.ProjectFile, new OpenFileOptions(false));
-                                    EditorManager.GetInstance(solution).OpenProjectFileAsync(projectFileMatch.ProjectFile, new OpenFileOptions(false));
+                                    editorManager.OpenProjectFileAsync(projectFileMatch.ProjectFile, new OpenFileOptions(false));
                                     //need to ensure class within file is renamed tooo                                    
                                 yield return
                                         new FileRename(psiModule.GetPsiServices(), projectFileMatch.ProjectFile, newTestClassName);                                

@@ -34,6 +34,7 @@ using JetBrains.TestFramework.Projects;
 using JetBrains.TextControl;
 using JetBrains.TextControl.DataContext;
 using JetBrains.Util;
+
 using NUnit.Framework;
 using TestCop.Plugin.Extensions;
 
@@ -223,7 +224,8 @@ namespace TestCop.Plugin.Tests
 
         protected ITextControl OpenTextControl(IProjectFile projectFile, int? caretOffset = null)
         {
-            Task<ITextControl> openProjectFileAsync = EditorManager.GetInstance(projectFile.GetSolution()).OpenProjectFileAsync(projectFile, new OpenFileOptions(true));
+            IEditorManager editorManager = projectFile.GetSolution().GetComponent<IEditorManager>();
+            Task<ITextControl> openProjectFileAsync = editorManager.OpenProjectFileAsync(projectFile, new OpenFileOptions(true));
             openProjectFileAsync.Wait();
             return openProjectFileAsync.Result;
         }

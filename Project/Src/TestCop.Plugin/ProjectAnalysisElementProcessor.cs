@@ -78,7 +78,7 @@ namespace TestCop.Plugin
 
             var currentProject = element.GetProject();
             ICollection<VirtualFileSystemPath> directoriesToSkip = currentProject.GetOutputDirectories();
-            directoriesToSkip.AddAll(currentProject.GetIntermidiateDirectories());
+            directoriesToSkip.AddAll(currentProject.GetIntermediateDirectories());
 
             var allProjectFileLocations = currentProject.GetAllProjectFiles().Select(p => p.Location).ToList();
             var allProjectFiles = allProjectFileLocations.Select(loc => loc.FullPath).ToList();
