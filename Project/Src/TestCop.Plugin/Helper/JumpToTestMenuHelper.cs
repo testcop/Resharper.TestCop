@@ -30,6 +30,8 @@ using TestCop.Plugin.Extensions;
 
 namespace TestCop.Plugin.Helper
 {
+    using JetBrains.Util.Media;
+
     public static class JumpToTestMenuHelper
     {        
         //------------------------------------------------------------------------------------------------------------------------
@@ -75,13 +77,16 @@ namespace TestCop.Plugin.Helper
         private static void AppendNavigateToMenuItems(Lifetime lifetime, ISolution solution, List<IClrDeclaredElement> clrDeclaredElements,
                                                       List<SimpleMenuItem> menuItems)
         {
+            IEditorManager editorManager = solution.GetComponent<IEditorManager>();
+            DocumentManager documentManager = solution.GetComponent<DocumentManager>();
+
             foreach (var declaredElement in clrDeclaredElements)
             {
-                var simpleMenuItems = DescribeFilesAssociatedWithDeclaredElement(lifetime, DocumentManager.GetInstance(solution),
+                var simpleMenuItems = DescribeFilesAssociatedWithDeclaredElement(lifetime, documentManager,
                                                                                  declaredElement
                                                                                  ,
                                                                                  p => async () =>
-                                                                                 await EditorManager.GetInstance(solution).OpenProjectFileAsync(p, new OpenFileOptions(true)).ConfigureAwait(false)
+                                                                                 await editorManager.OpenProjectFileAsync(p, new OpenFileOptions(true)).ConfigureAwait(false)
                     );
                 menuItems.AddRange(simpleMenuItems);
             }
@@ -229,12 +234,12 @@ namespace TestCop.Plugin.Helper
             {
                 Style = MenuItemStyle.Enabled,
                 Icon = UnnamedThemedIcons.Agent16x16.Id,
-                Text = new RichText("Create ", TextStyle.FromForeColor(Color.Green))
+                Text = new RichText("Create ", TextStyle.FromForeColor(JetRgbaColor.FromArgb(Color.Green.A, Color.Green.R, Color.Green.G, Color.Green.B)))
                     .Append(targetFile, TextStyle.FromForeColor(TextStyle.DefaultForegroundColor)),
                 ShortcutText = new RichText("(" + projectItem.Project.GetPresentableProjectPath()
                                                 + projectItem.SubNamespaceFolder.FullPath.RemoveLeading(projectItem.Project.ProjectFileLocation.Directory.FullPath) 
                                                 + ")", 
-                    TextStyle.FromForeColor(Color.LightGray))
+                    TextStyle.FromForeColor(JetRgbaColor.FromArgb(Color.LightGray.A, Color.LightGray.R, Color.LightGray.G, Color.LightGray.B)))
             };
             menuItems.Add(result);
             return menuItems;

@@ -95,7 +95,8 @@ namespace TestCop.Plugin.Tests.RenameRefactoring
                 throw new Exception("Whilst configuring test I didn't find project item: "+testFile);
             }
 
-            var document = DocumentManager.GetInstance(solution).GetOrCreateDocument(projectFile);
+            DocumentManager documentManager = solution.GetComponent<DocumentManager>();
+            var document = documentManager.GetOrCreateDocument(projectFile);
             var findFirstTypeInFile = ResharperHelper.FindDeclaredElementInFile(solution, document, typeSequenceInFile);
                 return findFirstTypeInFile;                                                      
         }
