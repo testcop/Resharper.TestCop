@@ -12,4 +12,4 @@
 //should remove trailing .*. from file name as this is a partial class.
 
 ---------------------------------------------------------
-[Switch to:] ClassForTestingPartial.cs|(in <TestApplication2>\NS1)
+[Switch to:] ClassForTestingPartial.cs| (in <TestApplication2>\NS1)

@@ -14,6 +14,6 @@ namespace MyCorp.TestApplication3.Tests.DAL
 }
 
 ---------------------------------------------------------
-[Switch to:] ClassA.cs|(in <MyCorp.TestApplication3.DAL>)
-[Switch to:] ClassA.cs|(in <MyCorp.TestApplication3.DAL>\NS1)
-[Switch to:] ClassA.cs|(in <MyCorp.TestApplication3.DAL>\NS1\NS2)
+[Switch to:] ClassA.cs| (in <MyCorp.TestApplication3.DAL>)
+[Switch to:] ClassA.cs| (in <MyCorp.TestApplication3.DAL>\NS1)
+[Switch to:] ClassA.cs| (in <MyCorp.TestApplication3.DAL>\NS1\NS2)

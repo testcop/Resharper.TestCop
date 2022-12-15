@@ -16,4 +16,4 @@ namespace TestCop.TestApplication2Tests
 }
 
 ---------------------------------------------------------
-[Switch to:] ClassA.cs|(in <TestApplication2>)
+[Switch to:] ClassA.cs| (in <TestApplication2>)

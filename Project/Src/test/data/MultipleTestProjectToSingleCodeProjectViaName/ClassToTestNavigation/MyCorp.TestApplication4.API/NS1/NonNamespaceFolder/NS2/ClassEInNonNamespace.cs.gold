@@ -6,5 +6,5 @@
 }
 
 ---------------------------------------------------------
-[Switch to:] ClassEInNonNamespaceTests.cs|(in <APITests>\NS1\NonNamespaceFolder\NS2)
+[Switch to:] ClassEInNonNamespaceTests.cs| (in <APITests>\NS1\NonNamespaceFolder\NS2)
 [Switch to:] Create |ClassEInNonNamespaceIntegrationTests|(<APITests>\NS1\NonNamespaceFolder\NS2)

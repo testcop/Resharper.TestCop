@@ -11,7 +11,7 @@ namespace MyCorp.TestApplication4.API.NS1
 }
 
 ---------------------------------------------------------
-[Switch to:] ClassATests.cs|(in <APITests>\NS1)
-[Switch to:] ClassATests.cs|(in <APITests>)
-[Switch to:] ClassA.SecurityTests.cs|(in <APITests>\NS1)
+[Switch to:] ClassATests.cs| (in <APITests>\NS1)
+[Switch to:] ClassATests.cs| (in <APITests>)
+[Switch to:] ClassA.SecurityTests.cs| (in <APITests>\NS1)
 [Switch to:] Create |ClassAIntegrationTests|(<APITests>\NS1)

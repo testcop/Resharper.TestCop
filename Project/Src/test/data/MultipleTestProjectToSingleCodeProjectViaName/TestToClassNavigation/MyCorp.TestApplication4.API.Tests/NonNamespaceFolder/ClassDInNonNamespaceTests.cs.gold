@@ -12,4 +12,4 @@ namespace MyCorp.TestApplication4.API
 }
 
 ---------------------------------------------------------
-[Switch to:] ClassDInNonNamespace.cs|(in <API>\NonNamespaceFolder)
+[Switch to:] ClassDInNonNamespace.cs| (in <API>\NonNamespaceFolder)

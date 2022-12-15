@@ -20,5 +20,5 @@ namespace TestCop.TestApplication.Tests.Samples
 
 ---------------------------------------------------------
 (0): ReSharper Warning: Namespace of test expected to be TestCop.TestApplication.Tests
-[Switch to:] ClassC.cs|(in <TestApplication>)
+[Switch to:] ClassC.cs| (in <TestApplication>)
 [Switch to:] Create |ClassC|(<TestApplication>\Samples)
