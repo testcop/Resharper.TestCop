@@ -12,4 +12,4 @@ namespace MyCorp.TestApplication3.API.NS3
 }
 
 ---------------------------------------------------------
-[Switch to:] ClassAInNonNamespaceTests.cs|(in <MyCorp.TestApplication3.Tests>\API\NS3\NonNamespaceFolder)
+[Switch to:] ClassAInNonNamespaceTests.cs| (in <MyCorp.TestApplication3.Tests>\API\NS3\NonNamespaceFolder)

@@ -17,5 +17,5 @@ namespace TestCop.TestApplication2Tests.NS2
 
 ---------------------------------------------------------
 (0): ReSharper Warning: Test method is empty
-[Switch to:] ClassG.cs|(in <TestApplication2>\NS2)
-[Switch to:] ClassG.cs|(in <TestApplication2>\NS1)
+[Switch to:] ClassG.cs| (in <TestApplication2>\NS2)
+[Switch to:] ClassG.cs| (in <TestApplication2>\NS1)

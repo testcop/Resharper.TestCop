@@ -14,6 +14,6 @@ namespace MyCorp.TestApplication3.Tests.API.NS1.NS2
 }
 
 ---------------------------------------------------------
-[Switch to:] ClassA.cs|(in <MyCorp.TestApplication3.API>\NS1\NS2)
-[Switch to:] ClassA.cs|(in <MyCorp.TestApplication3.API>)
-[Switch to:] ClassA.cs|(in <MyCorp.TestApplication3.API>\NS1)
+[Switch to:] ClassA.cs| (in <MyCorp.TestApplication3.API>\NS1\NS2)
+[Switch to:] ClassA.cs| (in <MyCorp.TestApplication3.API>)
+[Switch to:] ClassA.cs| (in <MyCorp.TestApplication3.API>\NS1)

@@ -9,5 +9,5 @@ namespace MyCorp.TestApplication3.DAL.NS1.NS2
 }
 
 ---------------------------------------------------------
-[Switch to:] SingleClassWithMultipleTargetsTests.cs|(in <MyCorp.TestApplication3.Tests>\DAL\NS1\NS2)
-[Switch to:] SingleClassWithMultipleTargets.SecurityTests.cs|(in <MyCorp.TestApplication3.Tests>\DAL\NS1\NS2)
+[Switch to:] SingleClassWithMultipleTargetsTests.cs| (in <MyCorp.TestApplication3.Tests>\DAL\NS1\NS2)
+[Switch to:] SingleClassWithMultipleTargets.SecurityTests.cs| (in <MyCorp.TestApplication3.Tests>\DAL\NS1\NS2)
