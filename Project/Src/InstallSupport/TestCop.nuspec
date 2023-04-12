@@ -4,11 +4,12 @@
   <id>Resharper.TestCop.R9</id>
   <version>0.0.0-internal</version>
 
-  <title>TestCop for ReSharper 2022.3</title>
+  <title>TestCop for ReSharper 2023.1</title>
   <authors>Alcaeus</authors>
   <description>Easily switch between unit tests and code. Create missing associated files. Includes highlightings and test templates to keep test projects neat and tidy. Works with NUnit, MSTest, xUnit ...</description>
   <releaseNotes>
-    1.10.18.0 Recompiled with R# SDK 2022.2.3
+    1.10.19.0 Recompiled with R# SDK 2023.1.0
+	1.10.18.0 Recompiled with R# SDK 2022.2.3
     1.10.17.1 Recompiled with R# SDK 2022.2.2
     1.10.17.0-EAP Recompiled with R# SDK 2022.2.0-eap06
     1.10.16.0 Recompiled with R# SDK 2022.1.0
